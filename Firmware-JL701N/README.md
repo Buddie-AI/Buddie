@@ -53,9 +53,9 @@ https://doc.zh-jieli.com/Tools/zh-cn/dev_tools/dev_env/index.html
 使用 VSCode 编译是通过调用 `make` 命令实现的。
 
 #### 2.1 在SDK根目录下使用VSCode打开项目
-
-![firmware_open_vscode.jpg](../image/firmware/firmware_open_vscode.jpg)
-
+<p align="center">
+  <img src="../image/firmware/firmware_open_vscode.jpg" width="300" />
+</p>
 
 
 #### 2.2 安装必要的扩展插件：**Task Explorer** 和 **C/C++**
