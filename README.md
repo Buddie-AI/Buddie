@@ -5,13 +5,19 @@
   <img src="image/logo.png" alt="BUDDIE.AI Logo" style="max-width: 1200px; height: auto;">
 </div>
 
-<div style="color: #0ABAB5; font-size: 2.5em; font-weight: bold; text-align: center; margin-bottom: 60px;">
-BUDDIE.AI
+<div align="center">
 
-Build Your AI Voice Interaction Assistant
+# 🤖 BUDDIE.AI
 
-打造每个人的专属 AI 语音交互伙伴！
+# 🎯 Build Your AI Voice Interaction Assistant
+
+# ✨ 打造每个人的专属 AI 语音交互伙伴！
+
+![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=for-the-badge)
+![AI](https://img.shields.io/badge/AI-Voice%20Assistant-green?style=for-the-badge)
+
 </div>
+
 
 <div style="text-align: center; margin: 20px 0;">
   <img src="https://img.shields.io/github/downloads/yourname/yourproject/total?style=for-the-badge&logo=github&color=0ABAB5" alt="GitHub Downloads">
