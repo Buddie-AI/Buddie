@@ -15,15 +15,10 @@
 
 ![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=for-the-badge)
 ![AI](https://img.shields.io/badge/AI-Voice%20Assistant-green?style=for-the-badge)
-
-</div>
-
-
-<div style="text-align: center; margin: 20px 0;">
-  <img src="https://img.shields.io/github/downloads/yourname/yourproject/total?style=for-the-badge&logo=github&color=0ABAB5" alt="GitHub Downloads">
-  <img src="https://img.shields.io/github/release/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5" alt="GitHub Release">
-  <img src="https://img.shields.io/github/stars/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5" alt="GitHub Stars">
-  <img src="https://img.shields.io/github/forks/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5" alt="GitHub Forks">
+![GitHub Downloads](https://img.shields.io/github/downloads/yourname/yourproject/total?style=for-the-badge&logo=github&color=0ABAB5)
+![GitHub Release](https://img.shields.io/github/release/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5)
+![GitHub Stars](https://img.shields.io/github/stars/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5)
+![GitHub Forks](https://img.shields.io/github/forks/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5)
 </div>
 
 
