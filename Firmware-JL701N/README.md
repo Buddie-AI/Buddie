@@ -1,32 +1,112 @@
 # Buddie-Firmware-JL701N
 
-**这是一个基于杰理AC701N系列芯片的蓝牙低功耗(BLE)固件开发基础代码仓库。**
 
-本仓库提供了一套针对杰理AC701N芯片的基础固件框架和示例代码，旨在帮助开发者快速搭建和开发基于该芯片的BLE应用，例如数据传输、信标(Beacon)、遥控器等。
+本仓库包含 Buddie AI 耳机的固件源码与技术文档，适用于基于杰理 AC701N 芯片的开发板。该固件方案专为**低功耗音频实时传输**设计，内置高效的音频压缩模块。
+
+配合我们开源的手机端 AI 应用，可实现以下核心功能：
+
+- 实时转录说话内容
+- 通过耳机和AI助手进行语音交互
+- 在线上会议转录我和其他人的说话内容
+
+
 
 ## 🛠 系统需求
 
-*   **操作系统:** Windows 10 及以上版本 (64位系统推荐)
-*   **硬件:** 基于杰理AC701N芯片的开发板
-*   **其他:** USB 数据线 (用于连接开发板和供电/烧录)
+- **操作系统:** Windows 10 及以上版本 (64位系统推荐)
+- **硬件:** 
+  - 杰理 AC701N 开发板
+  - 强制下载工具
+- **其他：**USB **数据线**（type-A） 
 
 ## 📚 准备工作
 
-在开始编译和烧录代码前，请确保完成以下准备工作：
+本项目，我们建议在 Windows 环境下使用 VSCode 进行编译。环境搭建过程如下：
 
-1.  **安装杰理开发工具链:**
-    *   访问[珠海杰理科技官网](http://www.zh-jieli.com/)或开发者社区，下载适用于 **AC701N** 芯片的最新版本 **SDK** 和 **开发工具（IDE）**。
-    *   运行安装程序，按照提示完成安装。通常安装路径不要包含中文或空格。
-    *   (可选但推荐) 将工具链的 `bin` 目录添加到系统的 `PATH` 环境变量中，方便命令行操作。
+1. [配置windows系统上的开发环境](#1-配置-Windows-开发环境)  
+2. [VSCode上的开发环境](#2-使用-vscode-编译SDK)
+3. [使用强制下载工具烧录固件](#3-使用强制下载工具烧录固件)
 
-2.  **安装杰理开发IDE:**
-    *   SDK 包中通常包含杰理专用的集成开发环境 (IDE)。安装该 IDE。
-    *   启动 IDE，可能需要根据提示进行一些初始配置（如选择工作空间、注册等）。
+### 1 配置 Windows 开发环境
 
-3.  **连接开发板:**
-    *   使用 USB 数据线将开发板连接到电脑。
-    *   **安装USB转串口驱动：** 开发板通常通过 CH340、CP210x 或杰理虚拟串口与电脑通信。根据开发板使用的芯片型号，在电脑上安装对应的 USB 转串口驱动程序。驱动通常可在开发板供应商处或芯片厂商官网下载（如 [沁恒官网](http://www.wch.cn/) 找 CH340 驱动）。
-    *   连接成功后，在 Windows 设备管理器中应能看到对应的串行端口 (COMx)。
+该 SDK 项目专为 **Windows 系统** 设计，默认使用 **Code::Blocks** 作为开发环境。
+
+整个配置流程分为三个主要步骤：
+
+1. **下载并安装 [Code::Blocks 的 Windows 版本](https://pkgman.jieliapp.com/s/codeblocks)**
+
+2. **首次打开 Code::Blocks 并立即关闭**
+   此操作将生成必要的配置文件，为后续开发做准备。
+
+3. **下载并安装 [最新版本的杰理 Windows 工具链](https://pkgman.jieliapp.com/s/win-toolchain)**
+   [点击此处下载]
+
+完成以上步骤后，您就可以打开 Code::Blocks 项目，开始编译和开发工作。（推荐使用VSCode进行编译和开发工作）
+
+如果需要更多的工具链和后处理工具，请参考： **[最新工具版本](https://doc.zh-jieli.com/Tools/zh-cn/other_info/index.html)**。
+
+如需获取更详细的程序开发相关工具说明，请点击下方链接：  
+https://doc.zh-jieli.com/Tools/zh-cn/dev_tools/dev_env/index.html
+
+### 2 使用 VSCode 编译SDK
+
+使用 VSCode 编译是通过调用 `make` 命令实现的。
+
+#### 2.1 在SDK根目录下使用VSCode打开项目
+
+![firmware_open_vscode.jpg](../image/firmware/firmware_open_vscode.jpg)
+
+
+
+#### 2.2 安装必要的扩展插件：**Task Explorer** 和 **C/C++**
+
+![firmware_vscode_task.jpg](../image/firmware/firmware_vscode_task.jpg)
+
+![firmware_vscode_c_cpp_ext.jpg](../image/firmware/firmware_vscode_c_cpp_ext.jpg)
+
+
+
+#### 2.3 选择对应的任务进行编译
+
+点击 **TASK EXPLORER > SDK > vscode**，即可查看可用的任务列表：
+
+- **all**：编译整个项目
+- **clean**：清除编译输出文件
+
+![firmware_vscode_build.jpg](../image/firmware/firmware_vscode_build.jpg)
+
+
+
+### 3 使用强制下载工具烧录固件
+
+#### 3.1 连接电脑和开发板
+
+将强制下载工具的 USB 母口连接至电脑，USB 公口连接至原型板或开发板。
+ （**注意：** 请勿连接反向，具体接法请参考下方图片。）
+
+1. 具体操作步骤如下：
+   1. 按照图片中的指引正确连接设备。
+   2. 强制下载工具上的绿灯和红灯会开始闪烁。
+   3. 按下强制下载工具上的按键——绿灯熄灭，红灯常亮。
+   4. 此时即可将程序烧录到开发板上。
+
+![firmware_board_connect.jpg](../image/firmware/firmware_board_connect.jpg)
+
+**更多详细信息**，请参考：[**升级与下载说明**](https://doc.zh-jieli.com/Tools/zh-cn/dev_tools/forced_upgrade/upgrade_and_download.html)。
+
+#### 3.2 烧录固件
+
+在连接好电脑和开发板之后，按下强制下载工具上的按键。在强制下载工具上**绿灯熄灭，红灯常亮**的状态下，开始烧录。
+
+1. 点击 [**all** task](#23-选择对应的任务进行编译) ，会自动执行编译和烧录任务
+
+2. 当终端显示下载完毕生成UFW文件时，表示烧录完成。
+3. 再次按下强制下载工具上的按键，绿灯和红灯会开始闪烁，开发板运行烧录的程序。
+
+![烧录成功](../image/firmware/firmware_flashing.png)
+
+
+
 
 ## 🚀 入门指南
 
