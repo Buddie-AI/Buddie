@@ -60,10 +60,14 @@ https://doc.zh-jieli.com/Tools/zh-cn/dev_tools/dev_env/index.html
 
 #### 2.2 安装必要的扩展插件：**Task Explorer** 和 **C/C++**
 
-![firmware_vscode_task.jpg](../image/firmware/firmware_vscode_task.jpg)
+<p align="center">
+  <img src="../image/firmware/firmware_vscode_task.jpg" width="300" />
+</p>
 
-![firmware_vscode_c_cpp_ext.jpg](../image/firmware/firmware_vscode_c_cpp_ext.jpg)
 
+<p align="center">
+  <img src="../image/firmware/firmware_vscode_c_cpp_ext.jpg" width="300" />
+</p>
 
 
 #### 2.3 选择对应的任务进行编译
@@ -73,8 +77,9 @@ https://doc.zh-jieli.com/Tools/zh-cn/dev_tools/dev_env/index.html
 - **all**：编译整个项目
 - **clean**：清除编译输出文件
 
-![firmware_vscode_build.jpg](../image/firmware/firmware_vscode_build.jpg)
-
+<p align="center">
+  <img src="../image/firmware/firmware_vscode_build.jpg" width="300" />
+</p>
 
 
 ### 3 使用强制下载工具烧录固件
@@ -90,7 +95,9 @@ https://doc.zh-jieli.com/Tools/zh-cn/dev_tools/dev_env/index.html
    3. 按下强制下载工具上的按键——绿灯熄灭，红灯常亮。
    4. 此时即可将程序烧录到开发板上。
 
-![firmware_board_connect.jpg](../image/firmware/firmware_board_connect.jpg)
+<p align="center">
+  <img src="../image/firmware/firmware_board_connect.jpg" width="300" />
+</p>
 
 **更多详细信息**，请参考：[**升级与下载说明**](https://doc.zh-jieli.com/Tools/zh-cn/dev_tools/forced_upgrade/upgrade_and_download.html)。
 
@@ -103,10 +110,13 @@ https://doc.zh-jieli.com/Tools/zh-cn/dev_tools/dev_env/index.html
 2. 当终端显示下载完毕生成UFW文件时，表示烧录完成。
 3. 再次按下强制下载工具上的按键，绿灯和红灯会开始闪烁，开发板运行烧录的程序。
 
-![烧录成功](../image/firmware/firmware_flashing.png)
+
+<p align="center">
+  <img src="../image/firmware/firmware_flashing.png" width="300" />
+</p>
 
 
-
+--- 
 
 ## 🚀 入门指南
 
