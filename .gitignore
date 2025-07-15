@@ -1,0 +1,95 @@
+
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# specific to CodeBlocks IDE
+*.layout
+*.depend
+
+# generated directories
+bin/
+obj/
+objs/
+
+# Custom
+.cloudbase/
+.devconfig.json
+
+# Chat history
+chat_history.json
+
+# cpu/br28
+cpu/br28/sdk.ld
+cpu/br28/sdk_used_list.used
+cpu/br28/tools/aac.bin
+cpu/br28/tools/aec.bin
+cpu/br28/tools/app.bin
+cpu/br28/tools/aptx.bin
+cpu/br28/tools/data_code.bin
+cpu/br28/tools/download.bat
+cpu/br28/tools/download/earphone/jl_isd.bin
+cpu/br28/tools/download/earphone/jl_isd.fw
+cpu/br28/tools/download/earphone/ota.bin
+cpu/br28/tools/download/earphone/*.ufw
+cpu/br28/tools/isd_config.ini
+cpu/br28/tools/sdk.elf
+cpu/br28/tools/sdk.elf.0.0.preopt.bc
+cpu/br28/tools/sdk.elf.0.2.internalize.bc
+cpu/br28/tools/sdk.elf.0.4.opt.bc
+cpu/br28/tools/sdk.elf.0.5.precodegen.bc
+cpu/br28/tools/sdk.elf.o
+cpu/br28/tools/sdk.elf.objs.txt
+cpu/br28/tools/sdk.elf.resolution.txt
+cpu/br28/tools/sdk.map
+
+# .vscode
+.vscode/settings.json

@@ -1,0 +1,78 @@
+local rootDir = cfg.rootDir;
+
+local pkgman = rootDir .. "/pkgman.exe";
+
+local req_pkgs = {"pkgman2"};
+local check_prog = {pkgman};
+
+local missing_pkgs = {};
+for k, v in pairs(req_pkgs) do
+	if cfg:utilsGetPkg(v) == nil then
+		table.insert(missing_pkgs, v)
+	end
+end
+
+for k, v in pairs(missing_pkgs) do table.insert(check_prog, v) end
+
+if #missing_pkgs ~= 0 then
+	if (cfg:runProg(check_prog) ~= 0) then
+		cfg:msgBox("warn", "软件包不是最新，可能会出现问题");
+	end
+end
+
+
+local pkgman2 = cfg:utilsGetPkg("pkgman2").run;
+
+local check_ret = cfg:runProg({pkgman2, "-b", rootDir, "--update"});
+
+
+if check_ret == 1 then
+	os.exit(0);
+end
+
+if check_ret ~= 0 then
+	cfg:msgBox("warn", "软件包不是最新，可能会出现问题");
+end
+
+-- params
+local product_name = "-";
+local dest_dir = cfg.dir;
+
+local req_local_pkgs = {
+	"fwadd", "isddownload", "ufwmaker",
+};
+local check_local_prog = {pkgman2, "-b", dest_dir};
+local missing_local_pkgs = {};
+for k, v in pairs(req_local_pkgs) do
+	if cfg:utilsGetPkg(v) == nil then
+		table.insert(missing_local_pkgs, v)
+	end
+end
+
+for k, v in pairs(req_local_pkgs) do table.insert(check_local_prog, v); end
+
+if (cfg:runProg(check_local_prog) ~= 0) then
+	cfg:msgBox("warn", "软件包不是最新，可能会出现问题");
+end
+
+local layout = cfg:vBox{
+	cfg:stButton("查看当前本地软件版本", function ()
+		cfg:runProg{pkgman2, "-b", dest_dir};
+	end),
+	
+	cfg:stButton("检查更新", function ()
+		local check_prog = {pkgman2, "-b", dest_dir};
+		for k, v in pairs(req_local_pkgs) do table.insert(check_prog, v) end
+		if (cfg:runProg(check_prog) ~= 0) then
+			cfg:msgBox("warn", "软件包不是最新，可能会出现问题");
+		else
+			cfg:msgBox("info", "已经是最新");
+		end
+	end),
+}
+
+cfg:addKeyInfo("jlxproj.title", "检查更新");
+cfg:addKeyInfo("jlxproj.width", "300");
+cfg:addKeyInfo("jlxproj.height", "200");
+
+cfg:setLayout(layout)

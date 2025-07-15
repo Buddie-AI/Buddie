@@ -1,0 +1,120 @@
+local lang_en = {
+    ["打开EQ工具"]="Open EQ Tool",
+    ["打开音效配置工具（新EQ工具）"]="Open Audio Effect Config Tool (New EQ)",
+    ["打开下载目录"]="Open Download Directory",
+    ["显示原理图"]="Show Schematic Design",
+    ["编译前配置工具"]="Pre-compiling Config Tool",
+    ["编辑FW文件"]="FW Editing Tools",
+    ["﻿应用信息：AC701N-SDK"]="Application: AC701N-SDK",
+    ["内置触摸调试工具"]="Builtin Touching Debug Tool",
+    ["调音工具"]="Audio Config Tool",
+    ["检查依赖的软件包是否更新"]="Check Update",
+    ["配置工具"]="Config Tool",
+    ["生成配置\n(生成 cfg_tool.bin)"]="Generate Config\n(generate cfg_tool.bin)",
+    ["配置音效\n(生成 eq_cfg_hw.bin)"]="Generate Audio Effect\n(generate eq_cfg_hw.bin)",
+    ["编辑FW/UFW中蓝牙名，替换资源"]="Edit FW/UFW (BT Name, Resources)",
+    ["打开"]="Open",
+    ["路径"]="Path",
+};
+
+cfg:setTranslate("en", lang_en);
+
+local rootDir = cfg.rootDir;
+
+local pkgman = rootDir .. "/pkgman.exe";
+local req_pkgs = {"eq", "efftool", "sdktool", "luaconfig", "3rd", "sdkaudiocvt", "ancdesigner"};
+local check_prog = {pkgman};
+
+local missing_pkgs = {};
+for k, v in pairs(req_pkgs) do
+	if cfg:utilsGetPkg(v) == nil then
+		table.insert(missing_pkgs, v)
+	end
+end
+
+for k, v in pairs(missing_pkgs) do table.insert(check_prog, v) end
+
+if #missing_pkgs ~= 0 then
+	if (cfg:runProg(check_prog) ~= 0) then
+		cfg:msgBox("warn", "软件包不是最新，可能会出现问题");
+	end
+end
+
+
+local sdktool   = rootDir .. '/' .. cfg:utilsGetPkg("sdktool").run;
+local luaconfig = rootDir .. '/' .. cfg:utilsGetPkg("luaconfig").run;
+local projdir  = cfg.dir .. '/download/';
+local efftool = rootDir .. '/' .. cfg:utilsGetPkg("efftool").run;
+local ancdesigner = rootDir .. '/' .. cfg:utilsGetPkg("ancdesigner").run;
+local title = "AC701N-SDK";
+
+local default_bin_path = cfg.dir .. '/cfg_tool.bin';
+local default_tone_path = cfg.dir .. '/tone.cfg';
+
+local cfgtool_entry_view = cfg:stEntry(":/uires/icon_settle.png",
+	"配置工具", "生成配置\n(生成 cfg_tool.bin)", nil,
+	cfg:stButton2("打开", "", "main", function ()
+		cfg:runProgNoWait({luaconfig,
+			'-u', 'earphone-1.2.0', '-e',
+			'-p', cfg.dir,
+			'-r', rootDir,
+			'-b', default_bin_path,
+			'-t', default_tone_path});
+	end));
+
+local efftool_entry_view = cfg:stEntry(":/uires/icon_eq.png",
+	"调音工具", "配置音效\n(生成 eq_cfg_hw.bin)", nil,
+	cfg:stButton2("打开", "", "main", function ()
+		cfg:runProgNoWait({efftool, '--type', 'eq', '--async-serial'});
+	end));
+
+local ancdesigner_entry_view = cfg:stEntry(":/uires/icon_eq.png",
+	"ANC Designer", "ANC 调试工具\n(生成 anc_gains.bin、anc_coeff.bin 等)", nil,
+	cfg:stButton2("打开", "", "main", function ()
+		cfg:runProgNoWait({ancdesigner});
+	end));
+
+local sdktool_entry_view = cfg:stEntry(":/uires/icon_settle.png",
+	"编辑FW文件", "编辑FW/UFW中蓝牙名，替换资源", nil,
+	cfg:stButton2("打开", "", "main", function ()
+		cfg:runProgNoWait({sdktool});
+	end));
+
+local touch_debug_entry_view = cfg:stEntry(":/uires/icon_settle.png",
+	"内置触摸调试工具", "", nil,
+	cfg:stButton2("打开", "", "main", function ()
+		cfg:runProgNoWait({efftool, '--type', 'touch_debug'});
+	end));
+
+local check_allupdate_btn = cfg:stButton2("检查依赖的软件包是否更新", "", "secondary", function ()
+		local check_prog = {pkgman};
+		for k, v in pairs(req_pkgs) do table.insert(check_prog, v) end
+		if (cfg:runProg(check_prog) ~= 0) then
+			if(cfg.lang == "zh") then
+				cfg:msgBox("warn", "软件包不是最新，可能会出现问题");
+			else
+				cfg:msgBox("warn", "software Packages are not up-to-date and may have problems");
+			end
+		else
+			if(cfg.lang == "zh") then
+				cfg:msgBox("info", "已经是最新");
+			else
+				cfg:msgBox("info", "software Packages are up-to-date");
+			end
+		end
+end);
+
+local layout = cfg:vBox{ cfg:stGroup(title, cfg:stHScroll ( cfg:vBox {
+	cfgtool_entry_view,
+	sdktool_entry_view,
+	efftool_entry_view,
+	ancdesigner_entry_view,
+	touch_debug_entry_view,
+	check_allupdate_btn,
+}))};
+
+cfg:addKeyInfo("jlxproj.width", "600");
+cfg:addKeyInfo("jlxproj.height", "700");
+cfg:addKeyInfo("jlxproj.title", title);
+
+cfg:setLayout(layout)
