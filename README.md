@@ -1,4 +1,26 @@
-# Buddie
+# 
+
+
+<div style="text-align: center; margin: 20px 0;">
+  <img src="image/logo.png" alt="BUDDIE.AI Logo" style="max-width: 1200px; height: auto;">
+</div>
+
+<div style="color: #0ABAB5; font-size: 2.5em; font-weight: bold; text-align: center; margin-bottom: 60px;">
+BUDDIE.AI
+
+Build Your AI Voice Interaction Assistant
+
+打造每个人的专属 AI 语音交互伙伴！
+</div>
+
+<div style="text-align: center; margin: 20px 0;">
+  <img src="https://img.shields.io/github/downloads/yourname/yourproject/total?style=for-the-badge&logo=github&color=0ABAB5" alt="GitHub Downloads">
+  <img src="https://img.shields.io/github/release/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5" alt="GitHub Release">
+  <img src="https://img.shields.io/github/stars/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5" alt="GitHub Stars">
+  <img src="https://img.shields.io/github/forks/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5" alt="GitHub Forks">
+</div>
+
+
 
 
 # 项目名称
