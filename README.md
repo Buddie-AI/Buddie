@@ -112,24 +112,27 @@ We welcome contributions from the community! Thank you to all the contributors w
 
 ## Contact
 
-- Author/Maintainer: memx_buddie Team
-- Email: public@memx.life
-- Project homepage or community links (if available)
+## 📬 Contact & Support
 
+### 🏢 **Project Team**
+- **Maintainer**: [MEMX BUDDIE Team](https://github.com/memx-life)
+- **Email**: [public@memx.life](mailto:public@memx.life)
 
-## License
+### 🌐 **Community & Resources**
+- **Project Homepage**: [BUDDIE.AI Official Site](https://buddie.ai)
+- **Documentation**: [docs.buddie.ai](https://docs.buddie.ai)
+- **Community Forum**: [community.buddie.ai](https://community.buddie.ai)
+- **Discord Server**: [Join our Discord](https://discord.gg/buddie-ai)
 
-This project is licensed under the [MIT](LICENSE) license. Please refer to the LICENSE file for details.
+### 🐛 **Report Issues**
+- **Bug Reports**: [Create an Issue](https://github.com/memx-life/buddie/issues/new?template=bug_report.md)
+- **Feature Requests**: [Request a Feature](https://github.com/memx-life/buddie/issues/new?template=feature_request.md)
+- **Security Issues**: [security@memx.life](mailto:security@memx.life)
 
+---
 
+## 📄 License
 
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-
-
-
-
-
-
-
-
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
