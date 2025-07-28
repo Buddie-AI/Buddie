@@ -21,20 +21,31 @@ For the best experience, pair it with our dedicated Buddie AI Earbuds.
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Flutter
+- Flutter 3.32.4 • channel stable • https://github.com/flutter/flutter.git
+  Framework • revision 6fba2447e9 • 2025-06-12 19:03:56 -0700
+  Engine • revision 8cd19e509d • 2025-06-12 16:30:12 -0700
+  Tools • Dart 3.8.1 • DevTools 2.45.1 （Flutter 3.32.*）
+  Please refer to the official Flutter documentation: Set up your Flutter development environment(https://docs.flutter.dev/get-started/install)
 - Android Studio / Xcode
 
 ### Installation
 ```bash
 # Clone repository
-git clone https://github.com/MemX-Workspace/Bud-App.git
+git clone https://github.com/Buddie-AI/Buddie.git
+cd Buddie/APP
 
 # Install dependencies
-cd Bud-App
 flutter pub get
 
 # Release an Android apk
 flutter build apk --release
+For detailed documentation, refer to the Flutter official documentation for building Android apps.(https://docs.flutter.dev/deployment/android)
+
+# Release an ios apk
+flutter build ipa
+Building and releasing an iOS app requires Xcode, so you must have a computer running macOS.
+An Apple Developer account is also required.
+For detailed documentation, refer to the Flutter official guide for building iOS apps.(https://docs.flutter.dev/deployment/ios)
 
 # Launch on Android or an Android emulator
 flutter run
@@ -72,9 +83,6 @@ Here are our upcoming milestones and plans for Buddie:
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for details.
 
-## 📧 Contact
-
-Issue Tracker: https://github.com/MemX-Workspace/Bud-App/issues
 
 ## 💡 Acknowledgements
 
