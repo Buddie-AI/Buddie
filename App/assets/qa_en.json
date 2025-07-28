@@ -1,0 +1,85 @@
+{
+  "Q1": {
+    "question": "Q1: Quick Start",
+    "answer": {
+      "1": "1. Connect the Buddie earbuds to your phone via Bluetooth settings.",
+      "2": "2. Pair the Buddie earbuds with the App via the Bluetooth icon in the top right corner of the App.",
+      "3": "3. Say 'Hello Buddie' to have a conversation with Buddie. Say 'Just Listen' if you want Buddie to be silent but continue transcribing for later reference.",
+      "4": "4. While wearing Buddie earbuds and joining the online meeting/phone call, Buddie will automatically transcribe the conversation for you.",
+      "5": "5. Tap the 'Help me Buddie' button for assistance during the meetings.",
+      "6": "6. Tap the 'journal' icon to the lower-right to review on-line meeting summaries and transcripts. Summaries appear there a minute after the meetings end."
+    }
+  },
+  "Q2": {
+    "question": "Q2: Why do I need to connect Buddie earbuds twice?",
+    "answer": {
+      "1": "Buddie earbuds require a 2-step Bluetooth connection because it talks with your phone and the Buddie App in different ways.",
+      "2": "1. Connect the earbuds to your phone via Bluetooth settings for basic functions like music and calls.",
+      "3": "2. Pair the earbuds with the App through the Bluetooth icon in the App."
+    }
+  },
+  "Q3": {
+    "question": "Q3: How to tell Buddie to have a conversation or be quiet and just listen?",
+    "answer": {
+      "1": "Say 'Hello Buddie' to have a conversation with Buddie. Say 'Just Listen' if you want Buddie to be silent but continue transcribing for later reference."
+    }
+  },
+  "Q4": {
+    "question": "Q4: How to enable online meeting/phone call transcription?",
+    "answer": {
+      "1": "1. Make sure your Buddie earbuds are connected and paired to the App, which is indicated by the Bluetooth icon in the top-right corner being blue.",
+      "2": "2. Join online meetings/phone calls, Buddie will automatically transcribe the conversation for you."
+    }
+  },
+  "Q5": {
+    "question": "Q5: How to get assistance during online meetings/phone calls?",
+    "answer": {
+      "1": "Tap the 'Help me Buddie' button for assistance during the conversation."
+    }
+  },
+  "Q6": {
+    "question": "Q6: How to access the online meeting summaries?",
+    "answer": {
+      "1": "After the online meeting ends, keep your earbuds and the app connected for at least 10 seconds, and the meeting summary will begin generating. You can tap the 'journal' icon in the lower-right corner to review the online meeting summaries and transcripts. The summaries will appear there about a minute after the meeting ends."
+    }
+  },
+  "Q7": {
+    "question": "Q7: How to stop recording?",
+    "answer": {
+      "1": "Tap the microphone button in the bottom left corner of the App's main page to stop recording. Note that Buddie stores transcripts on your phone: they aren't sent to us. However, when you ask Buddie a question, it sends a recent portion of the transcript to the LLM service you are using."
+    }
+  },
+  "Q8": {
+    "question": "Q8: How to set up my own API key?",
+    "answer": {
+      "1": "Tap 'Settings' -> 'Import API Key' option, enter your API key, then click the button on the right side of the 'Import API Key' option to activate it. After restarting the App, you will be able to use your own API key."
+    }
+  },
+  "Q9": {
+    "question": "Q9: What permissions does Buddie App require?",
+    "answer": {
+      "1": "Bluetooth",
+      "steps1": ["The Buddie App needs Bluetooth access to transfer data between the App and the Buddie earbuds. Without this permission, the App may not function properly."],
+      "2": "Wireless Data",
+      "steps2": ["The Buddie App requires internet access to retrieve subscription information. Without this permission, the App may fail to open."],
+      "3": "Local Network",
+      "steps3": ["The App requires this permission to pair with nearby Buddie earbuds."],
+      "4": "Notifications",
+      "steps4": ["The App will send notifications after generating meeting summaries, so this permission is needed."],
+      "5": "Background App Refresh",
+      "steps5": ["This permission ensures the Buddie App runs in the background to enable continuous listening."]
+    }
+  },
+  "Q10": {
+    "question": "Q10: How to report bugs?",
+    "answer": {
+      "1": "If you encounter any issues while using Buddie, you can contact us at help@bud.inc"
+    }
+  },
+  "Q11": {
+    "question": "Q11: How to turn off the sound effects when opening or closing the earbud case?",
+    "answer": {
+      "1": "Press and hold the button on the earbud case for 5 seconds to enable/disable the sound effects."
+    }
+  }
+}

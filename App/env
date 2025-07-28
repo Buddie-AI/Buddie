@@ -1,0 +1,15 @@
+# OpenAI配置
+DEFAULT_LLM_TOKEN=sk-proj-example123
+DEFAULT_LLM_URL=https://api.openai.com/v1/chat/completions
+DEFAULT_LLM_MODEL=gpt-4o
+
+# 阿里云配置
+DEFAULT_ALIBABA_API_KEY=sk-alibaba-example456
+
+# 如果不需要腾讯云ASR，可以留空或删除这些行
+# DEFAULT_TENCENT_SECRET_ID=
+# DEFAULT_TENCENT_SECRET_KEY=
+# DEFAULT_TENCENT_TOKEN=
+
+# TTS配置
+DEFAULT_OPENAI_TTS_BASE_URL=https://api.openai.com/v1/audio/speech

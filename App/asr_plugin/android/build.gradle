@@ -1,0 +1,44 @@
+group 'com.tencent.cloud.asr.plugin.asr_plugin'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.2'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        flatDir {
+            dirs project(':asr_plugin').files('libs')
+        }
+    }
+
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 31
+    namespace "com.tencent.cloud.asr.plugin.asr_plugin"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion 16
+    }
+}
+
+dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
+    implementation(name: 'asr-realtime-release', ext: 'aar')
+}

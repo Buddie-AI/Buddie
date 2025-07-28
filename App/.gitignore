@@ -1,0 +1,65 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+.vscode/
+chat_history.json
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+/android/app/Buddie_AI_CN
+/android/app/build.gradle.kts
+/android/app/.cxx
+
+# Project-specific
+/assets/sherpa-onnx-paraformer*
+/assets/sherpa-onnx-punct-ct-transformer-zh-en-vocab272727-2024-04-12
+/assets/sherpa-onnx-streaming-zipformer-en-2023-06-26-mobile
+/assets/sherpa-onnx-whisper-tiny.en
+/assets/sherpa-onnx-kws-zipformer-gigaspeech-3.3M-2024-01-01
+/assets/sherpa-onnx-vits-zh-ll
+/assets/vits-piper-en_GB-aru-medium
+/assets/vits-piper-en_US-hfc_female-medium
+/assets/*.onnx
+/assets/idct_weight.json
+/assets/ipca_weight.json
+
+# Environment configuration
+.env
