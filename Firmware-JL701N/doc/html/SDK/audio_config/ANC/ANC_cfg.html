@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12.4.1. ANC使用配置 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="12.4.2. ANC扩展功能说明" href="ANC_Ext_cfg.html" />
+    <link rel="prev" title="12.4. ANC配置" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">12. 音频配置</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../DAC_cfg.html">12.1. DAC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ADC_cfg.html">12.2. ADC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Linein_cfg.html">12.3. Linein配置</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">12.4. ANC配置</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">12.4.1. ANC使用配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">12.4.1.1. ANC基本介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">12.4.1.2. ANC配置说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">12.4.1.3. ANC配置文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">12.4.1.4. 多场景滤波器</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ANC_Ext_cfg.html">12.4.2. ANC扩展功能说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ANC_AntiSat_cfg.html">12.4.3. ANC防破音配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ANC_function_cfg.html">12.4.4. ANC软件功能配置</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../General_cfg.html">12.5. 通用音频配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../phone_call_cfg.html">12.6. 通话配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_algo_cfg.html">12.7. 音频算法配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../codec.html">12.8. 编解码配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../music_palyback.html">12.9. 音乐播放配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../production_test.html">12.10. 产测配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kws.html">12.11. 离线语音识别KWS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spatial_audio.html">12.12. 空间音效</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Hi_Res_Audio/index.html">12.13. Hi-Res Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Side_Tone.html">12.14. 通话监听</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_code_size.html">12.15. 音频代码优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_delay.html">12.16. 延时配置（Delay）</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">12. </span>音频配置</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">12.4. </span>ANC配置</a> &raquo;</li>
+      <li><span class="section-number">12.4.1. </span>ANC使用配置</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="anc">
+<h1><span class="section-number">12.4.1. </span>ANC使用配置<a class="headerlink" href="#anc" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2><span class="section-number">12.4.1.1. </span>ANC基本介绍<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>ANC（Active Noise Cancellation）主动降噪，使用耳机内的麦克风采集环境的中低频噪声，经过算法实时运算，并喇叭发射出与噪声相位相反、振幅相同（理想情况）的声波来抵消噪声；</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">12.4.1.2. </span>ANC配置说明<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p><img alt="ANC配置说明" src="../../../_images/ANC-base_cfg.jpg" /></p>
+<section id="id3">
+<h3><span class="section-number">12.4.1.2.1. </span>基本配置<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>ANC类型</strong>：单麦类型（FF/FB），双麦类型（HYBIRD）；ANC降噪效果 HYBIRD = FF + FB；</p></li>
+<li><p><strong>多场景滤波器</strong>: <a href="#mult-coeff"><em>点击跳转到《多场景滤波器说明》</em></a></p></li>
+<li><p><strong>蓝牙调试/产测</strong>：支持ANC_DESIGNER，第三方设备 <code class="docutils literal notranslate"><span class="pre">蓝牙SPP</span></code>调试/产测；</p></li>
+<li><p><strong>串口调试/产测</strong>：支持ANC_DESIGNER，第三方设备 <code class="docutils literal notranslate"><span class="pre">产测串口板</span></code>调试/产测，支持JL自研产测;</p></li>
+<li><p><strong>ANC_ON允许自动关机</strong>：支持ANC_ON模式下蓝牙无连接一段时间（跟随板级配置）自动关机。</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3><span class="section-number">12.4.1.2.2. </span>ANC模式使能<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>降噪</strong>、<strong>通透</strong>、<strong>关闭</strong>：分别为对应ANC 3个模式，可根据实际开启对应模式。</p></li>
+</ul>
+</section>
+<section id="anc-mic">
+<h3><span class="section-number">12.4.1.2.3. </span>ANC MIC通道选择<a class="headerlink" href="#anc-mic" title="Link to this heading"></a></h3>
+<section id="id5">
+<h4><span class="section-number">12.4.1.2.3.1. </span>配置说明<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>左声道FFMIC</strong>、<strong>左声道FBMIC</strong>、<strong>右声道FFMIC</strong>、<strong>右声道FBMIC</strong>：</p>
+<ul>
+<li><p>ANC MIC的通道配置，可根据原理图配合ADC节点的ADC IO通道选择对应的ANC MIC;</p></li>
+<li><p>TWS一般仅需配置 左声道FFMIC、左声道FBMIC；头戴式/挂脖耳机需配置左/右声道，多余的MIC配置选择MIC; NULL</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id6">
+<h4><span class="section-number">12.4.1.2.3.2. </span>注意事项<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>蓝牙通话有 <code class="docutils literal notranslate"><span class="pre">ADC节点</span></code></strong></p>
+<ul>
+<li><p>ANC MIC硬件配置，需在<code class="docutils literal notranslate"><span class="pre">蓝牙通话</span></code>-<code class="docutils literal notranslate"><span class="pre">ADC节点</span></code>里修改，但不需要修改节点内的<code class="docutils literal notranslate"><span class="pre">MIC使能</span></code>配置;
+<img alt="通话有ADC节点" src="../../../_images/ANC-base_cfg-MIC-ADC.jpg" /><br>
+<br></p></li>
+</ul>
+</li>
+<li><p><strong>蓝牙通话没有 <code class="docutils literal notranslate"><span class="pre">ADC节点</span></code></strong>， 比如使用IIS MIC/PDM MIC，则需以下步骤（临时处理方法）：</p>
+<ul>
+<li><ol class="arabic simple">
+<li><p>在其他流程，比如<code class="docutils literal notranslate"><span class="pre">蓝牙音乐</span></code>，添加ADC节点，将节点名字修改为<code class="docutils literal notranslate"><span class="pre">esco_adc</span></code>；</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="2">
+<li><p>勾选<code class="docutils literal notranslate"><span class="pre">MIC使能</span></code>-<code class="docutils literal notranslate"><span class="pre">MIC0</span></code>,在此ADC节点下配置ANC MIC的硬件配置。
+<img alt="通话没有ADC节点" src="../../../_images/ANC-base_cfg-MIC-no_ADC.jpg" /><br></p></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="api">
+<h3><span class="section-number">12.4.1.2.4. </span>基础API定义<a class="headerlink" href="#api" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* ANC 模式定义 */</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ANC_OFF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">			</span><span class="cm">/*关闭模式*/</span>
+<span class="w">    </span><span class="n">ANC_ON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">				</span><span class="cm">/*降噪模式*/</span>
+<span class="w">    </span><span class="n">ANC_TRANSPARENCY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">	</span><span class="cm">/*通透模式*/</span>
+<span class="p">}</span><span class="w"> </span><span class="n">ANC_mode_t</span><span class="p">;</span>
+
+<span class="cm">/* ANC模式切换(下一个模式) */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">anc_mode_next</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">    ANC模式切换(切换到指定模式)，并配置是否播放提示音</span>
+<span class="cm">    param: mode 指定模式ANC_mode_t</span>
+<span class="cm">           tone_play 0： 不播放提示音；1： 播放提示音</span>
+<span class="cm">*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">anc_mode_switch</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">tone_play</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">    ANC状态获取</span>
+<span class="cm">    return 0: idle(初始化/OFF); 1: busy(ANC/通透/训练)</span>
+<span class="cm"> */</span>
+<span class="n">u8</span><span class="w"> </span><span class="nf">anc_status_get</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+<span class="cm">/* </span>
+<span class="cm">    获取当前ANC模式 </span>
+<span class="cm">    return ANC_mode_t</span>
+<span class="cm">*/</span>
+<span class="n">u8</span><span class="w"> </span><span class="nf">anc_mode_get</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+<span class="cm">/* </span>
+<span class="cm">    ANC切模式繁忙标志</span>
+<span class="cm">    return 0：空闲； 1：切模式中</span>
+<span class="cm">*/</span>
+<span class="n">u8</span><span class="w"> </span><span class="nf">anc_mode_switch_lock_get</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">12.4.1.3. </span>ANC配置文件<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<p><img alt="ANC配置文件" src="../../../_images/ANC-cfg_file.jpg" /></p>
+<section id="id8">
+<h3><span class="section-number">12.4.1.3.1. </span>文件说明<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>anc_gains.bin: 存放增益/采样率等其他ANC硬件配置（多场景滤波器，不存放Total gain）；</p></li>
+<li><p>anc_coeff.bin: 存放降噪/通透滤波器（多场景滤波器，存放 Total gain）。</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3><span class="section-number">12.4.1.3.2. </span>配置说明<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>配置文件选择</strong></p>
+<ul>
+<li><p>anc_gains.bin/anc_coeff.bin:(取消勾选:则不更新ANC效果参数，可用于保留样机产测校准结果;勾选:则更新样机参数)。</p></li>
+</ul>
+</li>
+<li><p><strong>配置文件大小</strong></p>
+<ul>
+<li><p>可选<code class="docutils literal notranslate"><span class="pre">4K</span></code>/<code class="docutils literal notranslate"><span class="pre">8K</span></code>, 分配空间应大于(anc coeff.bin+anc gains.bin)的大小；</p></li>
+<li><p>文件空间超过8K，需选择<code class="docutils literal notranslate"><span class="pre">自定义</span></code>，在isd_config_rule.c配置（具体可咨询原厂）。</p></li>
+</ul>
+</li>
+</ul>
+<p><span id="mult-coeff"></span></p>
+</section>
+</section>
+<section id="id10">
+<h2><span class="section-number">12.4.1.4. </span>多场景滤波器<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<section id="id11">
+<h3><span class="section-number">12.4.1.4.1. </span>需求简介<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>简介：支持多组ANC/通透滤波器的使用，应用上可针对某些场景做特殊效果调试，如飞机/地铁等；（调试前，声学工程师需要 沟通每个场景ID对应的产品需求）</p>
+<ul class="simple">
+<li><p>优势：针对不同环境定制化处理</p></li>
+<li><p>关键词：（操作）手动，（输出）调滤波器。</p></li>
+</ul>
+</section>
+<section id="id12">
+<h3><span class="section-number">12.4.1.4.2. </span>软件配置<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//文件路径：audio_anc.h</span>
+<span class="cp">#define ANC_MULT_ORDER_CMP_ONLY_USE_ID1		1	</span><span class="cm">/*ANC多滤波器-CMP音乐补偿仅使用场景ID1的参数*/</span>
+<span class="cp">#define ANC_MULT_ORDER_TRANS_ONLY_USE_ID1	0	</span><span class="cm">/*ANC多滤波器-通透模式仅使用场景ID1的参数*/</span>
+
+<span class="cp">#define ANC_MULT_ORDER_NORMAL_ID			1	</span><span class="cm">/*ANC多滤波器-开机默认场景ID*/</span>
+
+<span class="c1">//ANC多滤波器-耳道自适应ID匹配，选择0则跟随当前场景</span>
+<span class="cp">#define ANC_MULT_ADPTIVE_TRAIN_USE_ID		1	</span><span class="cm">/*耳道自适应-训练使用的场景ID*/</span>
+<span class="cp">#define ANC_MULT_ADPTIVE_MATCH_USE_ID		1	</span><span class="cm">/*耳道自适应-匹配使用的场景ID*/</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>ANC_MULT_ORDER_ENABLE</strong>：ANC多场景滤波器使能配置（不兼容单场景anc_coeff.bin配置文件和产测流程）；</p></li>
+<li><p><strong>ANC_MULT_ORDER_CMP_ONLY_USE_ID1</strong>：ANC多滤波器下，CMP音乐补偿固定复用场景ID 1的参数，（方便用户调试/产测时只测场景ID 1的CMP，节约产测时间）；</p></li>
+<li><p><strong>ANC_MULT_ORDER_TRANS_ONLY_USE_ID1</strong>：ANC多滤波器下，通透滤波器固定复用场景ID 1的参数，（方便用户调试/产测时只测场景ID 1的通透滤波器，节约产测时间）；</p></li>
+<li><p><strong>ANC_MULT_ORDER_NORMAL_ID</strong>：默认场景ID标定，用于标定最稳定/通用的场景滤波器，默认为ID 1,用于ANC耳道自适应匹配。（即开启ANC耳道自适应时，会切换到改默认场景）。</p></li>
+</ul>
+</section>
+<section id="id13">
+<h3><span class="section-number">12.4.1.4.3. </span>API 定义<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* </span>
+<span class="cm">   多滤波器-场景参数切换 </span>
+<span class="cm">    param:  scene       场景ID </span>
+<span class="cm">            update_flag 非ANC_OFF时，即时更新效果: 0 不更新；1 更新 </span>
+<span class="cm">    Note: ID 从1 开始 </span>
+<span class="cm"> */</span><span class="w">  </span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">audio_anc_mult_scene_set</span><span class="p">(</span><span class="n">u16</span><span class="w"> </span><span class="n">scene_id</span><span class="p">);</span><span class="w">  </span>
+<span class="w">  </span>
+<span class="cm">/*多滤波器-获取当前场景的滤波器*/</span><span class="w">  </span>
+<span class="n">u8</span><span class="w"> </span><span class="nf">audio_anc_mult_scene_get</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w">  </span>
+<span class="w">  </span>
+<span class="cm">/*多滤波器-最大场景个数获取*/</span><span class="w">  </span>
+<span class="n">u8</span><span class="w"> </span><span class="nf">audio_anc_mult_scene_max_get</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w">  </span>
+<span class="w">  </span>
+<span class="cm">/*多滤波器-场景循环切换*/</span><span class="w">  </span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">audio_anc_mult_scene_switch</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">tone_flag</span><span class="p">);</span><span class="w">  </span>
+<span class="w">  </span>
+<span class="cm">/* </span>
+<span class="cm">   ANC结构设置, 下一次切模式或复位ANC时生效 </span>
+<span class="cm">    param: enablebit ANC结构配置，如(ANC_FF_EN/ANC_FB_EN/ANC_HYBRID_EN) </span>
+<span class="cm">           update_flag 非ANC_OFF时，即时更新效果: 0 不更新；1 更新 </span>
+<span class="cm"> */</span><span class="w">  </span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">audio_anc_enable_set</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">enablebit</span><span class="p">);</span><span class="w">  </span>
+
+<span class="cm">/*</span>
+<span class="cm">    ANC所有参数复位更新，不支持平滑过渡</span>
+<span class="cm">    param: fade_en 1 启动淡入淡出，时间慢（&lt;150ms）；0 关闭淡入淡出，时间快，会有po声</span>
+<span class="cm">*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">audio_anc_param_reset</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">fade_en</span><span class="p">);</span>
+
+</pre></div>
+</div>
+</section>
+<section id="demo">
+<h3><span class="section-number">12.4.1.4.4. </span>使用demo<a class="headerlink" href="#demo" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//=======================demo=======================</span>
+<span class="cm">/* 多滤波器-场景切换demo（立即更新效果，会有延时） */</span><span class="w"> </span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">audio_anc_mult_scene_set_demo</span><span class="p">(</span><span class="n">u16</span><span class="w"> </span><span class="n">scene_id</span><span class="p">)</span><span class="w"> </span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">audio_anc_mult_scene_set</span><span class="p">(</span><span class="n">scene_id</span><span class="p">);</span><span class="w"> </span><span class="c1">//设置对应场景参数</span>
+<span class="w">    </span><span class="n">audio_anc_param_reset</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">           </span><span class="c1">//更新ANC效果</span>
+<span class="p">}</span>
+
+<span class="cm">/* </span>
+<span class="cm">    以下案例的应用为，有3个场景</span>
+<span class="cm">    场景1: HYBRID </span>
+<span class="cm">    场景2：FF </span>
+<span class="cm">    场景3：FB </span>
+<span class="cm">*/</span><span class="w">  </span>
+<span class="w">  </span>
+<span class="cm">/*方式一：在线更新场景效果*/</span><span class="w">  </span>
+<span class="cm">/* 切场景1 */</span><span class="w">  </span>
+<span class="n">audio_anc_enable_set</span><span class="p">(</span><span class="n">ANC_HYBIRD_EN</span><span class="err">，</span><span class="mi">0</span><span class="p">);</span><span class="w">  </span><span class="c1">//设置为HYBRID  </span>
+<span class="n">audio_anc_mult_scene_set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">             </span><span class="c1">//切换场景1的参数</span>
+<span class="n">audio_anc_param_reset</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">                </span><span class="c1">//淡入淡出的方式 更新ANC效果</span>
+<span class="w">  </span>
+<span class="cm">/* 切场景2 */</span><span class="w">  </span>
+<span class="n">audio_anc_enable_set</span><span class="p">(</span><span class="n">ANC_FF_EN</span><span class="err">，</span><span class="mi">0</span><span class="p">);</span><span class="w">      </span><span class="c1">//设置为FF  </span>
+<span class="n">audio_anc_mult_scene_set</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w">             </span><span class="c1">//切换场景2的参数</span>
+<span class="n">audio_anc_param_reset</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">                </span><span class="c1">//淡入淡出的方式 更新ANC效果  </span>
+<span class="w">  </span>
+<span class="cm">/* 切场景3 */</span><span class="w">  </span>
+<span class="n">audio_anc_enable_set</span><span class="p">(</span><span class="n">ANC_FB_EN</span><span class="err">，</span><span class="mi">0</span><span class="p">);</span><span class="w">      </span><span class="c1">//设置为FB  </span>
+<span class="n">audio_anc_mult_scene_set</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="w">             </span><span class="c1">//切换场景3的参数</span>
+<span class="n">audio_anc_param_reset</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">                </span><span class="c1">//淡入淡出的方式 更新ANC效果   </span>
+<span class="w">  </span>
+<span class="cm">/*方式二：模式切换前更新场景*/</span><span class="w">  </span>
+<span class="cm">/* 通透模式切换场景1*/</span><span class="w">  </span>
+<span class="n">audio_anc_mult_scene_set</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">             </span><span class="c1">//切换场景1  </span>
+<span class="n">anc_mode_switch</span><span class="p">(</span><span class="n">ANC_ON</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">    	         </span><span class="c1">//切换到ANC模式 </span>
+
+</pre></div>
+</div>
+</section>
+<section id="id14">
+<h3><span class="section-number">12.4.1.4.5. </span>注意事项<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>默认场景 ID = 1 为最深降噪；</p></li>
+<li><p>一个场景包含通透模式和降噪模式，即包括FF/FB/通透/CMP滤波器。（通透/CMP滤波器可使用宏控制，是否固定使用场景1）；</p></li>
+<li><p>单/多场景滤波器模式-兼容性差异：</p>
+<ul>
+<li><p>ANC配置文件不兼容：anc_coeff.bin anc_gains.bin 不兼容，需通过ANC_DESIGNER 重新导出；</p></li>
+<li><p>产测不兼容：多场景滤波器产测流程独立，如果使用第三方产测设备，要询问设备厂商是否支持，需使用对应序列/流程（兆华/美格信/指南目前已支持）。</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cpu">
+<h3><span class="section-number">12.4.1.4.6. </span>CPU差异<a class="headerlink" href="#cpu" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>特性</p></th>
+<th class="head"><p>700N</p></th>
+<th class="head"><p>701N</p></th>
+<th class="head"><p>708N</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>多场景滤波器</p></td>
+<td><p>×</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>平滑切换滤波器</p></td>
+<td><p>×</p></td>
+<td><p>×</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="12.4. ANC配置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ANC_Ext_cfg.html" class="btn btn-neutral float-right" title="12.4.2. ANC扩展功能说明" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

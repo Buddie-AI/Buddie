@@ -1,0 +1,35 @@
+# 音效列表（Effects List）
+
+|序号|音效名|节点名|备注|
+|---|---|---|---|
+|1|虚拟低音|[VBass 🔗](./VirtualBass_manual.md)|
+|2|变声|[Voice Changer 🔗](./VoiceChanger_manual.md)|
+|3|分频器|[CrossOver 🔗](./CrossOver_manual.md)|
+|4|动态范围压缩|[DRC 🔗](./DRC_manual.md)|
+|5|动态EQ|[DynEQ 🔗](./Dynamic_EQ_manual.md)|
+|6|回声|[ECHO 🔗](./Echo_manual.md)|
+|7|混响|[Plate Reverb 🔗](./PlateReverb_manual.md)|
+|8|移频|[Frequency Shift 🔗](./HowlingFrequencyShift_manual.md)|
+|9|啸叫抑制|[Howling Suppress 🔗](./HowlingSuppress_manual.md)|
+|10|立体声扩展器|[Stereo Widener 🔗](./StereoWidener_manual.md)|
+|11|3D音效[^1]|[(1) SurroundEffect 🔗](./SurroundEffect_manual.md)<br>[(2) 3D Effect 🔗](./3D_Effect_manual.md)|3D Effect早期叫ThreeD|
+|12|空间音效|[空间音效 🔗](.././audio_config/spatial_audio.md)|
+|13|谐波激励器|[HarmonicExciter 🔗](./HarmonicExciter_manual.md)|
+|14|电音修音|[Autotune 🔗](./Autotune_manual.md)|
+|15|高低音调节|[BassTreble 🔗](./BassTreble_manual.md)|
+|16|能量检测|[EnergyDetect 🔗](./EnergyDetect_manual.md)|
+|17|变速变调|[PitchSpeed 🔗](./PitchSpeed_manual.md)|
+|18|频谱|[Spectrum 🔗](./Spectrum_manual.md)|
+|19|立体声混合|[StereoMix 🔗](./StereoMix_manual.md)|
+|20|人声消除|[Vocal Remover 🔗](./VocalRemover_manual.md)|
+|21|合唱|[Chorus 🔗](./Chorus_manual.md)|
+|22|均衡器|[EQ 🔗](./EQ_manual.md)|
+|23|噪声门|[NoiseGate 🔗](./NoiseGate_manual.md)|
+|24|自动闪避|[AutoDuck 🔗](./AutoDuck_manual.md)|
+|25|空间音效|[SpatialEffects 🔗](./SpatialEffect.md)|
+
+**脚注：**
+
+[^1]:3D音效模块说明，`SurroundEffect`和`3D Effect`，两个在算法实现上不同,使用上可以根据具体效果需求进行对应的模块选择。<br>
+    `SurroundEffect`提供不同的模式可供选择，同时参数可调<br>
+    `3D Effect`只有参数可调<br>

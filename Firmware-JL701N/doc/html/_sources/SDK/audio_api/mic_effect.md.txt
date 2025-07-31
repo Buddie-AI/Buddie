@@ -1,0 +1,168 @@
+# 麦克风音效接口
+## mic_effect_player_open
+打开混响数据流
+原型：
+
+``` javascript
+int mic_effect_player_open();
+```
+
+参数：无
+示例：
+
+``` javascript
+int ret = mic_effect_player_open();
+if(ret){
+//mic_effect_player_open err
+}
+```
+
+## mic_effect_player_runing
+混响数据流是否在运行
+原型：
+
+``` javascript
+bool mic_effect_player_runing();
+```
+参数：无
+示例：
+
+``` javascript
+if(mic_effect_player_runing()){
+	//数据流正在运行
+}
+```
+
+## mic_effect_player_close
+关闭混响数据流
+原型：
+
+``` javascript
+void mic_effect_player_close();
+```
+
+参数：无
+示例：
+
+``` javascript
+if(mic_effect_player_runing()){
+	mic_effect_player_close();
+}
+```
+
+## mic_effect_set_dvol
+设置混响数字音量节点音量
+原型：
+
+``` javascript
+void mic_effect_set_dvol(u8 vol);
+```
+
+参数：
+| 参数名称 |  说明  |
+| :------: | :----: |
+|    vol   | 音量值 |
+
+示例：
+
+``` javascript
+mic_effect_set_dvol(100);
+```
+
+## mic_effect_player_pause
+暂停/恢复混响数据流
+原型：
+
+``` javascript
+void mic_effect_player_pause(u8 mark);
+```
+
+参数：
+| 参数名称 |           说明          |
+| :------: | :---------------------: |
+|   mark   | 暂停标记：1 暂停；0恢复 |
+
+示例：
+
+``` javascript
+mic_effect_player_pause(1);//如果混响在运行，暂停混响
+//……
+mic_effect_player_pause(0);//恢复mic_effect_player_pause(1)前的混响状态
+```
+
+
+## mic_effect_dvol_up
+混响数字音量根据音量表递加
+原型：
+
+``` javascript
+void mic_effect_dvol_up(void);
+```
+
+参数：无
+示例：
+
+``` javascript
+
+mic_effect_dvol_up();
+
+```
+
+## mic_effect_dvol_down
+混响数字音量根据音量表递减
+原型：
+
+``` javascript
+void mic_effect_dvol_down(void);
+```
+
+参数：无
+示例：
+
+``` javascript
+
+mic_effect_dvol_down();
+
+```
+
+
+## mic_effect_set_echo_delay
+设置混响数据流 echo 节点delay参数
+原型：
+
+``` javascript
+void mic_effect_set_echo_delay(u32 delay);
+```
+
+参数：
+| 参数名称 |       说明      |
+| :------: | :-------------: |
+|   delay  | echo 回声延时值 |
+
+示例：
+
+``` javascript
+mic_effect_set_echo_delay(100);
+```
+
+## mic_bass_treble_eq_update
+混响数据流 高低音节点 参数调节
+原型：
+
+``` javascript
+void mic_bass_treble_eq_udpate(char *name, enum bass_treble_eff index, float gain);
+```
+
+参数：
+| 参数名称 |          说明          |
+| :------: | :--------------------: |
+|   name   |        节点名称        |
+|   index  | 0 低音  1 中音  2 高音 |
+|   gain   |    增益 dB (-48~48)    |
+
+示例：
+
+``` javascript
+mic_bass_treble_eq_udpate("BassTreEff",BASS_TREBLE_LOW,20);//低音+20dB
+mic_bass_treble_eq_udpate("BassTreEff",BASS_TREBLE_HIGH,-20);//高音 -20dB
+```

@@ -1,0 +1,224 @@
+1拖2抢占说明
+############
+
+1. 1拖2功能是指支持一对TWS耳机同时可以连接两个设备
+2. 1拖2抢占是指两个设备通话、播歌、铃声之间根据不同情景进行抢占
+
+软件架构
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+   .. figure:: image/总体框架.png
+
+.. note:: 
+    * dual_a2dp_play.c 包含播歌抢占播歌、通话抢占播歌的场景处理代码
+    * dual_phone_call.c 主要是两个设备电话的抢占策略代码
+    * tws_phone_call.c 包含来电铃声叠加相关场景处理代码
+    * bt_slience_detect.c 包含播歌抢占播歌时能量检测代码
+
+流程描述
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. 通话抢占播歌、播歌抢占播歌,是在dual_a2dp_play.c中的a2dp_bt_status_event_handler事件回调函数中,收到设备A的BT_STATUS_XXXX蓝牙事件后,判断设备B的状态实现抢占策略。
+
+2. 通话抢占通话,主要是在dual_phone_call.c中的bt_dual_phone_call_msg_handler中,收到设备A的电话相关的蓝牙事件,判断设备B的电话状态实现抢占策略。
+
+3. 来电铃声叠加,主要是在tws_phone_call.c中的bt_phone_status_event_handler,处理设备A和设备B之间的铃声叠加。
+
+播歌和电话抢占
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`````````````````````````````````````````````````
+功能流程图
+`````````````````````````````````````````````````
+.. figure:: image/通话和播歌抢占.png
+
+`````````````````````````````````````````````````
+相关文件
+`````````````````````````````````````````````````
+
+.. code-block:: c
+
+   apps\earphone\mode\bt\dual_a2dp_play.c
+
+`````````````````````````````````````````````````
+相关函数
+`````````````````````````````````````````````````
+
+.. code-block:: c
+
+
+   
+   (1)int a2dp_bt_status_event_handler(int *event)
+   播歌相关蓝牙事件消息处理函数,判断设备B的状态实现抢占抢占策略
+
+   (2)extern u8 bt_get_call_status_for_addr(u8 *addr);
+   获取指定地址的设备的电话状态
+
+   (3)bool a2dp_player_is_playing(u8 *bt_addr);
+   获取对应地址a2dp_player状态,0:a2dp_player暂停 1:a2dp_player在使用
+
+   (4)int btstack_device_control(void *device, int cmd); 
+   给对应设备下发指令,比如说btstack_device_control(device_b, USER_CTRL_AVCTP_OPID_PAUSE);下发播歌暂停指令
+
+   (5)extern void a2dp_media_mute(u8 *addr);
+   对应地址的设备禁音
+
+   (6)extern bool a2dp_media_unmute(u8 *addr);
+   对应地址的设备解除禁音
+
+   (7)extern bool a2dp_media_is_mute(u8 *addr);
+   判断对应地址的设备是否禁音,1:禁音  0:没有禁音
+
+`````````````````````````````````````````````````
+相关流程
+`````````````````````````````````````````````````
+1. 设备A开始播歌或者点击播歌事件触发,如果设备B电话链路已建立,设备A播歌暂停并静音
+2. 设备A电话链路已建立事件触发,如果设备B播歌中,设备B播歌暂停并静音
+3. 设备B电话链路断开事件触发,如果设备B静音中,设备B解除静音并恢复播歌
+
+播歌和播歌抢占
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`````````````````````````````````````````````````
+功能流程图
+`````````````````````````````````````````````````
+.. figure:: image/播歌和播歌抢占.png
+
+`````````````````````````````````````````````````
+相关文件
+`````````````````````````````````````````````````
+
+.. code-block:: c
+
+   apps\earphone\mode\bt\dual_a2dp_play.c
+   apps\earphone\mode\bt\bt_slience_detect.c
+
+`````````````````````````````````````````````````
+相关函数
+`````````````````````````````````````````````````
+
+.. code-block:: c
+   
+   (1)int a2dp_bt_status_event_handler(int *event)
+   收到设备A的蓝牙事件消息,判断设备B的状态实现抢占策略
+
+   (2)void bt_start_a2dp_slience_detect(u8 *bt_addr, int ingore_packet_num);
+   使能对应地址的设备的能量检测,ingore_packet_num是一开始要忽略的包数
+
+   (3)static int a2dp_app_msg_handler(int *msg)
+   处理播歌相关应用层消息函数
+
+   (4)int bt_slience_detect_get_result(u8 *bt_addr);
+   获取对应地址的设备的能量检测结果 0:没有检测  1:没有能量  2:有能量
+
+`````````````````````````````````````````````````
+相关流程
+`````````````````````````````````````````````````
+
+1. 设备A开始播歌事件触发,如果设备B正在播歌,设备A启动能量检测,如果设备A有能量,设备A播歌、设备B播歌暂停并禁音
+
+通话和通话抢占
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`````````````````````````````````````````````````
+功能流程图
+`````````````````````````````````````````````````
+
+.. figure:: image/通话和通话抢占.png
+
+   优先级：通话中>去掉>来电>播歌
+
+`````````````````````````````````````````````````
+来电铃声叠加流程分解
+`````````````````````````````````````````````````
+
+1. 先后来电:
+
+.. figure:: image/先后来电.png
+
+2. 通话中来电
+
+.. figure:: image/通话中来电.png
+
+3. 先来电再去电
+
+.. figure:: image/先来电再去电.png
+
+4. 来电接听
+
+.. figure:: image/来电接听.png
+
+5. 通话挂断
+
+.. figure:: image/通话挂断.png
+
+
+`````````````````````````````````````````````````
+相关文件
+`````````````````````````````````````````````````
+
+.. code-block:: c
+
+   apps\earphone\mode\bt\dual_phone_call.c
+   apps\earphone\mode\bt\tws_phone_call.c
+
+`````````````````````````````````````````````````
+相关函数
+`````````````````````````````````````````````````
+
+.. code-block:: c
+
+   (1)void bt_dual_phone_call_msg_handler(int *msg);
+   1T2时电话蓝牙消息处理函数,判断B设备状态实现抢占
+
+   (2)int btstack_get_call_esco_status(void *device);
+   获取指定设备的esco状态,0:esco链路已建立 1:esco链路断开
+
+   (3)int btstack_device_control(void *device, int cmd);
+   下发指令到指定设备,比如btstack_device_control(device_a, USER_CTRL_DISCONN_SCO);让设备A断开esco链路
+
+   (4)static int bt_phone_status_event_handler(int *msg)
+   来电、去电、esco连接断开等事件响应处理,然后给tws双耳发送CMD_PHONE_INCOME等命令
+
+   (5)static void tws_esco_play_in_task(u8 *data)
+   tws响应CMD_PHONE_INCOME等命令,播放铃声,打开/关闭esco链路流程
+
+   (6)int bt_phone_income(u8 after_conn, u8 *bt_addr)
+   来电铃声处理流程,由于加了来电铃声叠加,这里只处理第一台手机来电(记录第一台手机的地址,带内还是本地铃声,播放铃声等),第二台手机来电交给bt_phone_outband_ring()做
+
+   (7)int bt_phone_hangup(u8 *bt_addr)
+   挂断处理,如果另一台手机是来电状态,就需要恢复播放来电手机的铃声
+
+   (8)static void second_phone_call_send_cmd_delay(u32 time, u8 *addr, u32 cmd)
+   给第二台手机设超时定时器发送CMD_PHONE_INCOME或CMD_PHONE_OUTBAND_RING命令,设超时是为了等待这段时间内是否有BT_STATUS_SCO_CONNECTION_REQ事件到来播放带内铃声,超时没esco连接就播本地铃声,超时内有esco连接就通过esco播带内铃声。
+
+   (9)static int bt_phone_outband_ring(u8 *bt_addr)
+   叠加播放本地铃声
+
+
+`````````````````````````````````````````````````
+相关流程
+`````````````````````````````````````````````````
+
+1. 先来电 > 后来电
+
+   - 设备A(支持带内铃声)来电,播带内铃声,设备B(支持带内铃声)来电,设备B断开esco,叠加本地铃声；
+   - 设备A(支持带内铃声)来电,播带内铃声,设备B(不支持带内铃声)来电,叠加本地铃声；
+   - 设备A(不支持带内铃声)来电,播本地铃声,设备B(支持带内铃声)来电,叠加带内铃声；
+   - 设备A(不支持带内铃声)来电,播本地铃声,设备B(不支持带内铃声)来电,播本地铃声；
+
+2. 先来电 < 后通话
+
+   - 两个设备都在来电状态,接听其中一个,另一个断开esco,转为本地铃声与通话声音叠加；
+3. 先去电 > 后来电
+
+   -  设备A去电,设备B(支持 or 不支持带内铃声)来电,设备B断开esco,叠加本地铃声；
+4. 先来电 < 后去电
+   
+   - 设备A(支持带内铃声)来电,设备B去电,设备A断开esco,无论设备A来电铃声是带内或是本地,都转为本地铃声,与设备B去电声音叠加；
+5. 先通话 > 后来电
+   
+   - 设备A通话中,设备B(支持带内铃声)来电,设备B断开esco,叠加本地铃声,接听设备B,通话声音用设备输出,不由耳机输出。
+6. 挂断恢复来电铃声
+   
+   - 设备A通话中,设备B来电中(本地铃声),挂断设备A,先停设备B本地铃声,设备A断开esco,再恢复设备B铃声
+

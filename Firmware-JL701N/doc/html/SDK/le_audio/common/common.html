@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>le audio 公共设置 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>le audio 公共设置</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="le-audio">
+<h1>le audio 公共设置<a class="headerlink" href="#le-audio" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>可视化工具<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>可视化工具中的 <strong>LE_AUDIO配置-&gt;公共配置</strong> 主要用于配置bis或cis的公共参数，而其中某些参数的配置需要符合一定的条件。以下是对某些配置的详细描述。</p>
+<dl class="simple">
+<dt><strong>帧持续时间：</strong></dt><dd><p>需要满足发包间隔是其整数倍的要求；例如：发包间隔为10ms，则帧持续时间可配置为2.5ms/5ms/10ms。</p>
+</dd>
+<dt><strong>编解码声道数：</strong></dt><dd><p>目前le audio的编解码支持单声道和双声道的选择。在选择单声道时，音频数据经过编码之后都为单声道数据，不能再做声道分离。而下选择双声道时，编码后的数据可以在发送前做声道分离，也可以在接收端解码器中做声道分离。</p>
+</dd>
+<dt><strong>接收端解码输出：</strong></dt><dd><p>当编解码声道数配置为双声道的时候，接收端可根据需要来选择解码哪个声道的数据，从而实现声道分离。</p>
+</dd>
+<dt><strong>播放延时：</strong></dt><dd><p>播放延时是指接收端从接收到音频数据到播放出来的总时间，该值需要根据实际来调试。当音频处理流程增多，发现接收端播放异常时，需要适当加大改值。另外，加大该值会导致整体延时变大。</p>
+</dd>
+<dt><strong>1T3使能：</strong></dt><dd><p>1T3使能为特殊功能开关。该功能主要应用于RX和DSP合为一颗芯片的K歌音箱场景。</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id2">
+<h2>相关接口<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="get-le-audio-product-name">
+<h3>get_le_audio_product_name<a class="headerlink" href="#get-le-audio-product-name" title="Link to this heading"></a></h3>
+<p>获取产测配对名</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">get_le_audio_product_name</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>返回产测配对名</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//配对模式下 支持厂测模式</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">__this</span><span class="o">-&gt;</span><span class="n">test</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* log_error(&quot;pir_ch_same&quot;); */</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">find_remoter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="c1">//设置产测TX方广播名字</span>
+<span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">tag_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">get_le_audio_product_name</span><span class="p">();</span>
+<span class="n">le_ext_adv_report_evt_t</span><span class="w"> </span><span class="o">*</span><span class="n">evt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">le_ext_adv_report_evt_t</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">report_pt</span><span class="p">;</span>
+
+<span class="n">find_remoter</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">ble_resolve_adv_report</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span><span class="w"> </span><span class="n">evt</span><span class="o">-&gt;</span><span class="n">Data_Length</span><span class="p">,</span><span class="w"> </span><span class="n">evt</span><span class="o">-&gt;</span><span class="n">Data</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">find_remoter</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">__this</span><span class="o">-&gt;</span><span class="n">test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">bigrx_exit_pair_mode</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//正常模式</span>
+<span class="n">bigrx_private_report_ext_adv_data</span><span class="p">(</span><span class="n">evt</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="get-le-audio-pair-name">
+<h3>get_le_audio_pair_name<a class="headerlink" href="#get-le-audio-pair-name" title="Link to this heading"></a></h3>
+<p>获取配对名</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">get_le_audio_pair_name</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>返回配对名</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">tx_params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">big_tx_param</span><span class="p">;</span>
+<span class="n">memcpy</span><span class="p">(</span><span class="n">tx_params</span><span class="o">-&gt;</span><span class="n">pair_name</span><span class="p">,</span><span class="w"> </span><span class="n">get_le_audio_pair_name</span><span class="p">(),</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tx_params</span><span class="o">-&gt;</span><span class="n">pair_name</span><span class="p">));</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tx_params</span><span class="o">-&gt;</span><span class="n">pair_name</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="get-broadcast-audio-sw-ops">
+<h3>get_broadcast_audio_sw_ops<a class="headerlink" href="#get-broadcast-audio-sw-ops" title="Link to this heading"></a></h3>
+<p>获取bis音频和本地音频切换结构体句柄</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">le_audio_mode_ops</span><span class="w"> </span><span class="o">*</span><span class="n">get_broadcast_audio_sw_ops</span><span class="p">();</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>返回le_audio和本地音频切换结构体句柄</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">le_audio_switch_ops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_broadcast_audio_sw_ops</span><span class="p">();</span>
+
+<span class="c1">//关闭本地音频播放</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">le_audio_switch_ops</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">le_audio_switch_ops</span><span class="o">-&gt;</span><span class="n">local_audio_close</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">le_audio_switch_ops</span><span class="o">-&gt;</span><span class="n">local_audio_close</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="get-connected-audio-sw-ops">
+<h3>get_connected_audio_sw_ops<a class="headerlink" href="#get-connected-audio-sw-ops" title="Link to this heading"></a></h3>
+<p>获取cis音频和本地音频切换结构体句柄</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">le_audio_mode_ops</span><span class="w"> </span><span class="o">*</span><span class="n">get_connected_audio_sw_ops</span><span class="p">();</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>返回le_audio和本地音频切换结构体句柄</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">le_audio_switch_ops</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_connected_audio_sw_ops</span><span class="p">();</span>
+
+<span class="c1">//关闭本地音频播放</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">le_audio_switch_ops</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">le_audio_switch_ops</span><span class="o">-&gt;</span><span class="n">local_audio_close</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">le_audio_switch_ops</span><span class="o">-&gt;</span><span class="n">local_audio_close</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="le-audio-ops-register">
+<h3>le_audio_ops_register<a class="headerlink" href="#le-audio-ops-register" title="Link to this heading"></a></h3>
+<p>根据不同的音源模式更新e_audio和本地音频切换结构体句柄</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">le_audio_ops_register</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>mode</p></td>
+<td><p>音源模式</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>暂未使用</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">app_get_current_mode</span><span class="p">();</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mode</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">le_audio_ops_register</span><span class="p">(</span><span class="n">mode</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

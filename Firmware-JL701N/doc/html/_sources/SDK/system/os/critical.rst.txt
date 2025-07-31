@@ -1,0 +1,173 @@
+临界区
+======
+
+某资源不可被多线程访问的特性，为了防止在同步的程序设计中出现多线程访问，
+在访问此资源前，需要进入临界区。
+临界区设计比较简单，成功进入临界区，表示已经获取此资源的访问权限，
+结束后退出临界区，退出成功表示释放此资源的访问权限。
+
+多线程访问主要分为以下集中情况：
+     - 1.同一CPU情况下，任务与中断间的多线程访问。
+     - 2.同一CPU情况下，任务与任务间的多线程访问。
+     - 3.不同CPU情况下，任务与中断间的多线程访问。
+     - 4.不同CPU情况下，任务与任务间的多线程访问。
+
+针对以上情况，临界区保护解决如下：
+     - 1.关闭本核中断。解决情况1、情况2
+     - 2.获取原子锁。解决情况3、情况4
+
+.. warning::
+    
+    获取原子锁原理与TAS(Test and Set)指令同理。
+
+
+临界区进入和退出流程大致如下：
+
+     - 进入
+
+        - 1.关闭本核中断。
+        - 2.获取原子锁A。
+
+     - 退出
+
+        - 1.释放原子锁A。
+        - 2.开启本核中断。
+
+
+local_irq_disable & local_irq_enable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        void local_irq_disable(void);
+        void local_irq_enable(void);
+
+- 功能说明：系统延时，单位Tick(10mS/Tick);
+- 参数说明：
+
+    =========================  ============================================================================================
+      参数                      说明
+        NULL                -
+    =========================  ============================================================================================
+
+- 返回值：无
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+
+        /* 
+        * 以下例子，存在中断及多任务情况下，
+        * 资源通过临界保护接口进行保护
+        */
+
+        interrupt
+        void timer0_isr(void)
+        {
+            local_irq_disable();
+            //TODO : settings
+            local_irq_enable();
+        }
+
+        void task_foo_0(void *priv)
+        {
+            local_irq_disable();
+            //TODO : settings
+            local_irq_enable();
+        }
+
+        void task_foo_1(void *priv)
+        {
+            local_irq_disable();
+            //TODO : settings
+            local_irq_enable();
+        }
+
+
+
+临界区(不可屏蔽中断)
+====================
+
+若某资源在不可屏蔽中断中使用，保护此资源必须使用为不可屏蔽中断设计的API来实现保护。
+
+.. warning::
+        
+    不可屏蔽中断，不受临界区保护接口local_irq_disable、local_irq_enable的关闭中断影响。
+    即使在执行local_irq_disable过程中，仍可以正常发生不可屏蔽中断。
+
+
+.. warning::
+        
+    不可屏蔽中断服务函数必须存放在DATA_CODE，具体原因查看《中断》章节
+
+临界区进入和退出流程大致如下：
+
+     - 进入
+
+        - 1.关闭本核所有中断，包括不可屏蔽中断。
+        - 2.获取原子锁B。
+
+     - 退出
+
+        - 1.释放原子锁B。
+        - 2.开启本核所有中断，包括不可屏蔽中断。
+
+
+unmask_enter_critical & unmask_exit_critical
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        void unmask_enter_critical(void);
+        void unmask_exit_critical(void);
+
+
+- 功能说明：使用不可屏蔽中断的资源，需要使用此临界保护函数实现资源保护。
+- 参数说明：
+
+    =========================  ============================================================================================
+      参数                      说明
+        NULL                    - 
+    =========================  ============================================================================================
+
+- 返回值：无
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+
+        interrupt
+        void timer0_isr(void)
+        {
+            unmask_enter_critical();
+            
+            //TODO: clear pending, GPIO settings, values settings, misc
+
+            unmask_exit_critical();
+        }
+
+
+        static void task_foo(void *priv)
+        {
+            //中断注册
+            request_irq(IRQ_TIME0_IDX, 0, timer0_isr, 0);
+
+            //设置为不可屏蔽中断
+            irq_unmask_set(IRQ_TIME0_IDX, 1, 0);
+
+            unmask_enter_critical();
+
+            //TODO: GPIO settings
+
+            unmask_exit_critical();
+        }
+
+

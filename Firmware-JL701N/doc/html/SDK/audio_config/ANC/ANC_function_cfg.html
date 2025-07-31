@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12.4.4. ANC软件功能配置 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="12.5. 通用音频配置" href="../General_cfg.html" />
+    <link rel="prev" title="12.4.3. ANC防破音配置" href="ANC_AntiSat_cfg.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">12. 音频配置</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../DAC_cfg.html">12.1. DAC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ADC_cfg.html">12.2. ADC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Linein_cfg.html">12.3. Linein配置</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">12.4. ANC配置</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ANC_cfg.html">12.4.1. ANC使用配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ANC_Ext_cfg.html">12.4.2. ANC扩展功能说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ANC_AntiSat_cfg.html">12.4.3. ANC防破音配置</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">12.4.4. ANC软件功能配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">12.4.4.1. ANC场景自适应配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">12.4.4.2. ANC啸叫检测配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">12.4.4.3. ANC降噪/通透模式 增益配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../General_cfg.html">12.5. 通用音频配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../phone_call_cfg.html">12.6. 通话配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_algo_cfg.html">12.7. 音频算法配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../codec.html">12.8. 编解码配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../music_palyback.html">12.9. 音乐播放配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../production_test.html">12.10. 产测配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kws.html">12.11. 离线语音识别KWS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spatial_audio.html">12.12. 空间音效</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Hi_Res_Audio/index.html">12.13. Hi-Res Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Side_Tone.html">12.14. 通话监听</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_code_size.html">12.15. 音频代码优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_delay.html">12.16. 延时配置（Delay）</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">12. </span>音频配置</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">12.4. </span>ANC配置</a> &raquo;</li>
+      <li><span class="section-number">12.4.4. </span>ANC软件功能配置</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="anc">
+<h1><span class="section-number">12.4.4. </span>ANC软件功能配置<a class="headerlink" href="#anc" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2><span class="section-number">12.4.4.1. </span>ANC场景自适应配置<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3><span class="section-number">12.4.4.1.1. </span>需求简介<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>简介：ANC场景自适应（增益），能够根据环境的噪声能量阈值变化实时调整降噪增益，以达到最佳降噪效果体验；
+关键词：（操作）自适应、（输入）噪声能量、（输出）调增益。
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3><span class="section-number">12.4.4.1.2. </span>软件配置<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">   ANC场景增益自适应配置</span>
+<span class="cm">   (场景是变量，与耳道自适应功能相互独立)</span>
+<span class="cm"> */</span>
+<span class="cp">#define ANC_ADAPTIVE_EN	        1                       </span><span class="cm">/*ANC增益自适应使能*/</span>
+<span class="cp">#define ANC_ADAPTIVE_MODE       ANC_ADAPTIVE_GAIN_MODE	</span><span class="cm">/*ANC增益自适应模式*/</span>
+<span class="cp">#define ANC_ADAPTIVE_TONE_EN    0                       </span><span class="cm">/*ANC增益自适应提示音使能*/</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>ANC_ADPTIVE_EN：ANC自适应增益使能开关；</p></li>
+<li><p>ANC_ADAPTIVE_MODE：ANC自适应增益模式，默认为自动切换增益等级；</p></li>
+<li><p>ANC_ADAPTIVE_TONE_EN：ANC自适应提示音使能，自适应等级切换时播放提示音，方便自适应功能测试，不建议作为实际产品功能。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">anc_adap_param_t</span><span class="w"> </span><span class="n">anc_adap_param</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+<span class="w">    </span><span class="c1">//等级0  </span>
+<span class="w">    </span><span class="p">{</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">pow_thr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0XFFFFFFFF</span><span class="p">,</span><span class="w">      </span><span class="c1">//当前等级能量高阈值  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">default_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">          </span><span class="c1">//默认等级标志  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span><span class="p">,</span><span class="w">               </span><span class="c1">//当前等级对应增益 range [0-1024]  </span>
+<span class="w">        </span><span class="c1">//(高-&gt;低)高增益等级 向当前等级淡入时间*100ms, range [1 - 200]*/  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain_decrease_fade_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">      </span>
+<span class="w">        </span><span class="c1">//(低-&gt;高)低增益等级 向当前等级淡入时间*100ms, range [1 - 200]*/  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain_increase_fade_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">  </span>
+<span class="w">        </span><span class="c1">//当前等级能量低阈值，与MIC GAIN相关, 此默认值 MIC_GAIN = 4;     </span>
+<span class="w">        </span><span class="p">.</span><span class="n">pow_lthr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">700</span><span class="p">,</span><span class="w">              </span>
+<span class="w">    </span><span class="p">},</span><span class="w">  </span>
+<span class="w">    </span><span class="c1">//等级1  </span>
+<span class="w">    </span><span class="p">{</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">pow_thr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain_decrease_fade_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain_increase_fade_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">pow_lthr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span>
+<span class="w">    </span><span class="p">},</span><span class="w">  </span>
+<span class="p">};</span><span class="w"> </span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>pow_thr:当前等级能量高阈值，0等级的高阈值固定为0XFFFFFFF；</p></li>
+<li><p>default_flag: 默认等级标志；</p></li>
+<li><p>gain:当前等级对应的增益，range[0-1024]<br>
+gain和dB的转换公式如下(0dB -&gt; gain = 1024):<br>
+gain = 10^(dB/20) * 1024<br></p></li>
+<li><p>gain_decrease_fade_time：(高-&gt;低)高增益等级 向当前等级淡入时间(单位 100ms),如设置10，则淡时间 = 10*100ms; range [1 - 200]；</p></li>
+<li><p>gain_increase_fade_time：(低-&gt;高)低增益等级 向当前等级淡入时间(单位 100ms), 如设置10，则入时间 = 10*100ms;range [1 - 200]；</p></li>
+<li><p>pow_lthr: 当前等级能量低阈值, 最低增益等级的低阈值为0。<br></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    注意：
+    1）pow_lthr表示进入该等级的最低阈值，pow_thr表示进入该等级的最高阈值；此阈值与MIC模拟增益成正比
+    2）前等级的pow_lthr与后等级的pow_thr之间需要有隔离带（参考标准SDK的设置范围），隔离带越大越稳定，否则容易处于临界范围，会频繁切换等级。
+</pre></div>
+</div>
+</section>
+<section id="api">
+<h3><span class="section-number">12.4.4.1.3. </span>API定义<a class="headerlink" href="#api" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//ANC自适应模式</span>
+<span class="cp">#define ANC_ADAPTIVE_MANUAL_MODE	0		</span><span class="c1">//自适应手动模式-手动切换等级</span>
+<span class="cp">#define ANC_ADAPTIVE_GAIN_MODE		1		</span><span class="c1">//自适应增益模式-自动切换等级</span>
+<span class="cm">/*</span>
+<span class="cm">    切换ANC自适应模式</span>
+<span class="cm">    param: mode 自适应模式（手动/自动）</span>
+<span class="cm">           lvl 手动档位等级 (自动模式传0)</span>
+<span class="cm">*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">audio_anc_adaptive_mode_set</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">lvl</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>可调用<code class="docutils literal notranslate"><span class="pre">audio_anc_adaptive_mode_set</span></code>接口，切换自动/手动模式，手动模式需要设置对应的等级，从0 开始。</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">12.4.4.1.4. </span>调试方法<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Step1</span></code>:确定ANC的MIC模拟增益，如后修改MIC增益则需重新测量阈值；<br>
+<code class="docutils literal notranslate"><span class="pre">Step2</span></code>:确定等级个数，以及每个等级的增益，所对应场景/声压要求；<br>
+<code class="docutils literal notranslate"><span class="pre">Step3</span></code>:确定各个等级高/低阈值；<br></p>
+<ul class="simple">
+<li><p>声压（dB）区分：播放噪声源，用分贝仪靠近耳机，调整噪声源音量，直至分贝仪显示目标声压（dB），并记录当前声压的阈值；</p></li>
+<li><p>场景区分：进入到对应场景（地铁/办公室..），记录当前场景的阈值；</p></li>
+<li><p>高/低阈值获取方法如下：</p></li>
+</ul>
+<p><img alt="图" src="../../../_images/ANC-gain_adaptive-way1.png" /><br></p>
+<p>如上图所示，在<code class="docutils literal notranslate"><span class="pre">ANC_DESIGENR</span></code>工具中，先打开ANC模式（步骤①），在能量采集界面选择L_SPK_L_REFMIC（步骤②），点击MIC_POW采集启动（步骤③），右边即可显示当前FF的功率能量谱，通过鼠标滑动，即可知道当前场景对应的功率值范围；</p>
+<p><img alt="图" src="../../../_images/ANC-gain_adaptive-way2.png" /><br></p>
+<p>点击MIC_POW采集停止，会将当次MIC功率谱数据保存成文档, 可离线分析。
+根据当前案例数据分析，对应低阈值为<code class="docutils literal notranslate"><span class="pre">300</span></code>，高阈值为<code class="docutils literal notranslate"><span class="pre">900</span></code>，填写如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">anc_adap_param_t</span><span class="w"> </span><span class="n">anc_adap_param</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+<span class="w">    </span><span class="c1">//等级0  </span>
+<span class="w">    </span><span class="p">{</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">pow_thr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0XFFFFFFFF</span><span class="p">,</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">default_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span><span class="p">,</span><span class="w">   </span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain_decrease_fade_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">      </span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain_increase_fade_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">pow_lthr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">900</span><span class="p">,</span><span class="w">   </span><span class="c1">//针对该案例修改, 高阈值</span>
+<span class="w">    </span><span class="p">},</span><span class="w">  </span>
+<span class="w">    </span><span class="c1">//等级1  </span>
+<span class="w">    </span><span class="p">{</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">pow_thr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">    </span><span class="c1">//针对该案例修改，低阈值</span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain_decrease_fade_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">gain_increase_fade_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">  </span>
+<span class="w">        </span><span class="p">.</span><span class="n">pow_lthr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span>
+<span class="w">    </span><span class="p">},</span><span class="w">  </span>
+<span class="p">};</span><span class="w">  </span>
+</pre></div>
+</div>
+</section>
+<section id="faq">
+<h3><span class="section-number">12.4.4.1.5. </span>FAQ<a class="headerlink" href="#faq" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>默认2档，可支持更多等级：继续添加anc_adap_param结构体数组成员即可，注意阈值需从大到小排列；</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">anc_adap_param_t</span><span class="w"> </span><span class="n">anc_adap_param</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+<span class="w">    </span><span class="c1">//等级0  </span>
+<span class="w">    </span><span class="p">{</span><span class="w">  </span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">    </span><span class="p">},</span><span class="w">  </span>
+<span class="w">    </span><span class="c1">//等级1  </span>
+<span class="w">    </span><span class="p">{</span><span class="w">  </span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">    </span><span class="p">},</span><span class="w">  </span>
+<span class="w">    </span><span class="c1">//等级n...</span>
+<span class="w">    </span><span class="p">{</span><span class="w">  </span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">    </span><span class="p">},</span><span class="w"> </span>
+<span class="p">};</span><span class="w">  </span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>频繁切换，导致体验差的问题：</p>
+<ul>
+<li><p>扩大前等级pow_lthr与后等级的pow_thr隔离带，避免处在临界范围频繁切换；</p></li>
+<li><p>增大从高到低的增益切换时间gain_decrease_fade_time。</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cpu">
+<h3><span class="section-number">12.4.4.1.6. </span>CPU差异<a class="headerlink" href="#cpu" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>特性</p></th>
+<th class="head"><p>700N</p></th>
+<th class="head"><p>701N</p></th>
+<th class="head"><p>708N</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ANC场景自适应（增益）</p></td>
+<td><p>×</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id5">
+<h2><span class="section-number">12.4.4.2. </span>ANC啸叫检测配置<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<section id="id6">
+<h3><span class="section-number">12.4.4.2.1. </span>需求简介<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>简介：啸叫通常发生在声反馈回路中，当扬声器（speaker）的输出信号被麦克风回采时，声通路形成闭合回路，信号在声反馈回路中不断叠加放大形成正反馈，导致单频的啸叫声音；
+    在ANC/通透模式，当环路增益比较大，或者系统不稳定（比如手捂耳机改变声波反射特性）导致啸叫，本功能用于检测到啸叫信号，然后降低环路增益；
+关键词：（触发源）啸叫，（输出）调增益
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3><span class="section-number">12.4.4.2.2. </span>软件配置<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> 	ANC啸叫检测功能配置，检测啸叫时压低增益，定时恢复至正常增益</span>
+<span class="cm">*/</span>
+<span class="cp">#define ANC_HOWLING_DETECT_EN				1		</span><span class="cm">/*啸叫检测使能*/</span>
+<span class="cp">#define ANC_HOWLING_MSG_DEBUG				0		</span><span class="cm">/*啸叫调试流程打印*/</span>
+
+<span class="cp">#define ANC_HOWLING_DETECT_CHANNEL			0		</span><span class="cm">/*啸叫检测通道；0 FF MIC ; 1 FB MIC*/</span>
+<span class="cm">/* 1、检测配置 */</span>
+<span class="cp">#define ANC_HOWLING_DETECT_CORR_THR			200		</span><span class="cm">/*啸叫灵敏度设置, 越小(越灵敏，容易误触发), range [100 - 255]; default 200 */</span>
+<span class="cp">#define ANC_HOWLING_DETECT_PWR_THR			1200	</span><span class="cm">/*啸叫阈值设置, 用于解决小声啸叫不触发的问题，越小(容易误触发),  range [100 - 32767]; default 1200*/</span>
+<span class="cp">#define ANC_HOWLING_DETECT_TIME				100		</span><span class="cm">/*啸叫检测时间(单位ms), 越小(触发时间短，容易误触发) range [10 - 500]; default 100ms*/</span>
+<span class="cm">/*</span>
+<span class="cm">   2、触发配置</span>
+<span class="cm"> 	啸叫触发后，增益直接降低至TARGET_GAIN</span>
+<span class="cm">	持续HOLD_TIME后，再经过RESUME_TIME, 缓慢恢复至正常增益</span>
+<span class="cm">*/</span>
+<span class="cp">#define ANC_HOWLING_TARGET_GAIN				0		</span><span class="cm">/*啸叫时的目标增益, range [0 - 16384]; default 0 */</span>
+<span class="cp">#define ANC_HOWLING_HOLD_TIME				1000	</span><span class="cm">/*啸叫目标增益的持续时间(单位ms), range [0 - 10000]; default 1000 */</span>
+<span class="cp">#define ANC_HOWLING_RESUME_TIME				4000	</span><span class="cm">/*恢复到正常增益的时间(单位ms), range [200 - 10000]; default 4000 */</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>ANC_HOWLING_DETECT_CHANNEL</strong>啸叫检测通道配置说明：</p>
+<ul>
+<li><p>通透模式啸叫 ：必选FF MIC通道检测；</p></li>
+<li><p>ANC模式啸叫：</p>
+<ul>
+<li><p>FF MIC通道(推荐使用)：啸叫检测频率下限更低（实测约1.5k-22k）,相对易受外部激励影响，导致误触发；</p></li>
+<li><p>FB MIC通道：检测频率(2K-22K)，相对易受耳机内部喇叭影响，导致误触发；</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id8">
+<h3><span class="section-number">12.4.4.2.3. </span>调试方法<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Step</span> <span class="pre">1</span></code> : 检测配置</p>
+<ul class="simple">
+<li><p><strong>ANC_HOWLING_MSG_DEBUG</strong> 配置 1, 开启啸叫调试流程打印</p></li>
+<li><p><strong>ANC_HOWLING_TARGET_GAIN</strong> 配置 16384 ，进入测试模式，只检测不修改增益，观察打印，如下</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">18.789</span><span class="p">][</span><span class="n">hd</span><span class="p">]</span><span class="n">corr</span> <span class="p">,</span> <span class="mi">171</span><span class="p">,</span> <span class="mi">159</span><span class="p">,</span> <span class="mi">147</span><span class="p">,</span> <span class="mi">135</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">221</span> <span class="p">,</span> <span class="n">yk</span><span class="p">:</span><span class="mi">9867</span><span class="p">,</span> <span class="mh">0x3f</span>       <span class="o">//</span><span class="n">corr</span> <span class="mi">221</span><span class="p">,</span> <span class="n">yk</span> <span class="mi">9867</span>
+<span class="p">[</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">18.801</span><span class="p">][</span><span class="n">hd</span><span class="p">]</span><span class="n">corr</span> <span class="p">,</span> <span class="mi">171</span><span class="p">,</span> <span class="mi">159</span><span class="p">,</span> <span class="mi">147</span><span class="p">,</span> <span class="mi">135</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">235</span> <span class="p">,</span> <span class="n">yk</span><span class="p">:</span><span class="mi">10312</span><span class="p">,</span> <span class="mh">0x3f</span>      <span class="o">//</span><span class="n">corr</span> <span class="mi">235</span><span class="p">,</span> <span class="n">yk</span> <span class="mi">10312</span>
+<span class="p">[</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">18.812</span><span class="p">][</span><span class="n">hd</span><span class="p">]</span><span class="n">corr</span> <span class="p">,</span> <span class="mi">183</span><span class="p">,</span> <span class="mi">171</span><span class="p">,</span> <span class="mi">159</span><span class="p">,</span> <span class="mi">147</span><span class="p">,</span> <span class="mi">135</span><span class="p">,</span> <span class="mi">233</span> <span class="p">,</span> <span class="n">yk</span><span class="p">:</span><span class="mi">10342</span><span class="p">,</span> <span class="mh">0x3f</span>      <span class="o">//</span><span class="n">corr</span> <span class="mi">233</span><span class="p">,</span> <span class="n">yk</span> <span class="mi">10342</span>
+<span class="p">[</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">18.816</span><span class="p">][</span><span class="n">hd</span><span class="p">]</span><span class="n">corr</span> <span class="p">,</span> <span class="mi">173</span><span class="p">,</span> <span class="mi">161</span><span class="p">,</span> <span class="mi">149</span><span class="p">,</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">125</span><span class="p">,</span> <span class="mi">239</span> <span class="p">,</span> <span class="n">yk</span><span class="p">:</span><span class="mi">10306</span><span class="p">,</span> <span class="mh">0x3f</span>      <span class="o">//</span><span class="n">corr</span> <span class="mi">239</span><span class="p">,</span> <span class="n">yk</span> <span class="mi">10306</span>
+<span class="p">[</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">18.824</span><span class="p">][</span><span class="n">hd</span><span class="p">]</span><span class="n">corr</span> <span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="mi">167</span><span class="p">,</span> <span class="mi">155</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">131</span><span class="p">,</span> <span class="mi">233</span> <span class="p">,</span> <span class="n">yk</span><span class="p">:</span><span class="mi">10998</span><span class="p">,</span> <span class="mh">0x3f</span>      <span class="o">//</span><span class="n">corr</span> <span class="mi">233</span><span class="p">,</span> <span class="n">yk</span> <span class="mi">10998</span>
+<span class="p">[</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">18.827</span><span class="p">][</span><span class="n">hd</span><span class="p">]</span><span class="n">corr</span> <span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="mi">167</span><span class="p">,</span> <span class="mi">155</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">131</span><span class="p">,</span> <span class="mi">211</span> <span class="p">,</span> <span class="n">yk</span><span class="p">:</span><span class="mi">11087</span><span class="p">,</span> <span class="mh">0x3f</span>      <span class="o">//</span><span class="n">corr</span> <span class="mi">211</span><span class="p">,</span> <span class="n">yk</span> <span class="mi">11087</span>
+<span class="p">[</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">18.834</span><span class="p">][</span><span class="n">hd</span><span class="p">]</span><span class="n">corr</span> <span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="mi">167</span><span class="p">,</span> <span class="mi">155</span><span class="p">,</span> <span class="mi">143</span><span class="p">,</span> <span class="mi">131</span><span class="p">,</span> <span class="mi">211</span> <span class="p">,</span> <span class="n">yk</span><span class="p">:</span><span class="mi">11127</span><span class="p">,</span> <span class="mh">0x3f</span>      <span class="o">//</span><span class="n">corr</span> <span class="mi">211</span><span class="p">,</span> <span class="n">yk</span> <span class="mi">11127</span>
+</pre></div>
+</div>
+<p>corr 表示本次啸叫灵敏度（每一行内选取最大值）， yk 表示本次啸叫阈值
+根据啸叫打印信息筛选信息 <code class="docutils literal notranslate"><span class="pre">//corr</span> <span class="pre">**,</span> <span class="pre">yk</span> <span class="pre">**</span></code> ，发现corr 最小值为211， yk 最小值为9867，可配置如下</p>
+<ul class="simple">
+<li><p><strong>ANC_HOWLING_DETECT_CORR_THR</strong> = 200</p></li>
+<li><p><strong>ANC_HOWLING_DETECT_PWR_THR</strong> = 9000</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Step</span> <span class="pre">2</span></code> ： 触发配置（啸叫触发后，增益直接降低至TARGET_GAIN，持续HOLD_TIME后，再经过RESUME_TIME, 缓慢恢复至正常增益）</p>
+<ul class="simple">
+<li><p><strong>ANC_HOWLING_TARGET_GAIN</strong> 配置为0，表示触发啸叫后的目标增益为0；</p></li>
+<li><p>根据恢复时间需求，配置<strong>ANC_HOWLING_HOLD_TIME</strong>、<strong>ANC_HOWLING_RESUME_TIME</strong></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Step</span> <span class="pre">3</span></code> : 误触发调试（如播歌、耳机震动（敲击/佩戴）、外部单频激励）</p>
+<ul class="simple">
+<li><p>可参考<code class="docutils literal notranslate"><span class="pre">Step</span> <span class="pre">1</span></code>, 分析误触发的场景对应corr、yk 打印情况，针对性提高<strong>ANC_HOWLING_DETECT_CORR_THR</strong>、<strong>ANC_HOWLING_DETECT_PWR_THR</strong>，避免在对应场景误检测为啸叫；</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id9">
+<h3><span class="section-number">12.4.4.2.4. </span>注意事项<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>只能等触发了啸叫才能检测到；若提前检测很容易导致误触发；</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3><span class="section-number">12.4.4.2.5. </span>CPU差异<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>特性</p></th>
+<th class="head"><p>700N</p></th>
+<th class="head"><p>701N</p></th>
+<th class="head"><p>708N</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>啸叫检测</p></td>
+<td><p>×</p></td>
+<td><p>√</p></td>
+<td><p>×</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id11">
+<h2><span class="section-number">12.4.4.3. </span>ANC降噪/通透模式 增益配置<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<section id="id12">
+<h3><span class="section-number">12.4.4.3.1. </span>需求简介<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>简介：在产品开发中，用户可根据自身需求和环境条件，手动调整ANC的降噪/通透强度，如常见的 “轻/中/深度降噪”，可通过调增益的方式来完成，配置fade增益的方法如下。
+优势：调试简单，占用资源少；
+关键词： （操作）手动、（输出）调增益
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h3><span class="section-number">12.4.4.3.2. </span>注意事项<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>fade gain统一操作“降噪模式/通透模式”, 不区分 ；如产品需要区分，由开发者自行处理；</p></li>
+<li><p>fade_gain 管理逻辑：SDK会以当前最低fade_gain生效，兼容多方同时操作fade_gain；</p></li>
+<li><p>fade_gain 处于ANC后级增益，不会覆盖ANC原有调试参数/产测参数（anc_gains.bin/anc_coeff.bin）；</p></li>
+<li><p>fade_gain 最大值16384（等价0dB）,转换公式 fade_gain = 16384 * 10 ^ (dB/20) 。</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3><span class="section-number">12.4.4.3.3. </span>软件配置<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>在audio_anc_fade_ctr.h添加自定义模式，如下（ANC_FADE_CUTSOM_TEST）。</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">anc_fade_mode_t</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+<span class="w">    </span><span class="n">ANC_FADE_MODE_RESET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">        </span><span class="c1">//复位  </span>
+<span class="w">    </span><span class="n">ANC_FADE_MODE_SWITCH</span><span class="p">,</span><span class="w">           </span><span class="c1">//ANC模式切换  </span>
+<span class="w">    </span><span class="n">ANC_FADE_MODE_MUSIC_DYNAMIC</span><span class="p">,</span><span class="w">    </span><span class="c1">//音乐动态增益  </span>
+<span class="w">    </span><span class="n">ANC_FADE_MODE_SCENE_ADAPTIVE</span><span class="p">,</span><span class="w">   </span><span class="c1">//ANC场景噪声自适应  </span>
+<span class="w">    </span><span class="n">ANC_FADE_MODE_WIND_NOISE</span><span class="p">,</span><span class="w">       </span><span class="c1">//ANC风噪检测  </span>
+<span class="w">    </span><span class="n">ANC_FADE_MODE_SUSPEND</span><span class="p">,</span><span class="w">          </span><span class="c1">//ANC挂起  </span>
+<span class="w">    </span><span class="c1">//可再此继续添加模式  </span>
+<span class="w">    </span><span class="n">ANC_FADE_CUTSOM_TEST</span><span class="p">,</span><span class="w">           </span><span class="c1">//客户自定义模式  </span>
+<span class="p">};</span><span class="w"> </span>
+</pre></div>
+</div>
+</section>
+<section id="id15">
+<h3><span class="section-number">12.4.4.3.4. </span>API 定义<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// ANC fade gain通道</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">AUDIO_ANC_FADE_CH_LFF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x1</span><span class="p">,</span><span class="w">    </span><span class="c1">//左耳FF</span>
+<span class="w">    </span><span class="n">AUDIO_ANC_FADE_CH_LFB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x2</span><span class="p">,</span><span class="w">    </span><span class="c1">//左耳FB</span>
+<span class="w">    </span><span class="n">AUDIO_ANC_FADE_CH_RFF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x4</span><span class="p">,</span><span class="w">    </span><span class="c1">//右耳FF</span>
+<span class="w">    </span><span class="n">AUDIO_ANC_FADE_CH_RFB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x8</span><span class="p">,</span><span class="w">    </span><span class="c1">//右耳FB</span>
+<span class="p">}</span><span class="w"> </span><span class="n">ANC_fade_ch_t</span><span class="p">;</span>
+
+<span class="c1">//全部通道</span>
+<span class="cp">#define AUDIO_ANC_FADE_CH_ALL   AUDIO_ANC_FADE_CH_LFF|AUDIO_ANC_FADE_CH_LFB|AUDIO_ANC_FADE_CH_RFF|AUDIO_ANC_FADE_CH_RFB</span>
+
+<span class="cm">/* </span>
+<span class="cm">   ANC淡入淡出增益设置 </span>
+<span class="cm">    param:  mode        场景模式 </span>
+<span class="cm">            ch          设置目标通道(支持多通道) </span>
+<span class="cm">            gain 设置增益 </span>
+<span class="cm">    notes: ch 支持配置多个通道，但mode 必须与 ch配置一一对应; </span>
+<span class="cm">            当设置gain = 16384, 会自动删除对应模式 </span>
+<span class="cm"> */</span><span class="w">  </span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">audio_anc_fade_ctr_set</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">anc_fade_mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">ch</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">gain</span><span class="p">);</span><span class="w">  </span>
+<span class="w">  </span>
+<span class="c1">//删除fade mode  </span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">audio_anc_fade_ctr_del</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">anc_fade_mode_t</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span><span class="w">  </span>
+</pre></div>
+</div>
+</section>
+<section id="demo">
+<h3><span class="section-number">12.4.4.3.5. </span>使用demo<a class="headerlink" href="#demo" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">JL701N</span></code>、<code class="docutils literal notranslate"><span class="pre">JL708N</span></code> 系列使用：</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* 16384等价0dB, 转换公式 fade_gain = 16384 * 10 ^ (dB/20) */</span><span class="w">  </span>
+
+<span class="cm">/* 将fade_gain设置为16384 (0dB) */</span><span class="w">  </span>
+<span class="n">audio_anc_fade_ctr_set</span><span class="p">(</span><span class="n">ANC_FADE_CUTSOM_TEST</span><span class="p">,</span><span class="w"> </span><span class="n">AUDIO_ANC_FADE_CH_ALL</span><span class="p">,</span><span class="w"> </span><span class="mi">16384</span><span class="p">);</span><span class="w">   </span>
+<span class="cm">/* 将fade_gain设置为8192 (-6dB) */</span><span class="w"> </span>
+<span class="n">audio_anc_fade_ctr_set</span><span class="p">(</span><span class="n">ANC_FADE_CUTSOM_TEST</span><span class="p">,</span><span class="w"> </span><span class="n">AUDIO_ANC_FADE_CH_ALL</span><span class="p">,</span><span class="w"> </span><span class="mi">8192</span><span class="p">);</span><span class="w"> </span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AC700N</span></code> 系列使用（暂不支持增益通道管理，后续会接入）：</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* </span>
+<span class="cm">    param : gain 设置增益（max 16384）</span>
+<span class="cm">            en 默认传1</span>
+<span class="cm">            step 默认传1</span>
+<span class="cm">*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">audio_anc_fade</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">gain</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">en</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">step</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id16">
+<h3><span class="section-number">12.4.4.3.6. </span>CPU差异<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>特性</p></th>
+<th class="head"><p>700N</p></th>
+<th class="head"><p>701N</p></th>
+<th class="head"><p>708N</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>增益管理</p></td>
+<td><p>×</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+</tr>
+<tr class="row-odd"><td><p>独立通道控制</p></td>
+<td><p>×</p></td>
+<td><p>×</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>AC700系列：</p>
+<ul>
+<li><p>增益管理：<code class="docutils literal notranslate"><span class="pre">不支持</span></code>，目前需使用audio_anc_fade接口；</p></li>
+</ul>
+</li>
+<li><p>JL701系列：</p>
+<ul>
+<li><p>独立通道控制：<code class="docutils literal notranslate"><span class="pre">不支持</span></code>,  增益修改只能设置AUDIO_ANC_FADE_CH_ALL（全部通道）；</p></li>
+</ul>
+</li>
+<li><p>JL708系列：</p>
+<ul>
+<li><p>独立通道控制：<code class="docutils literal notranslate"><span class="pre">支持</span></code>， LFF、LFB、RFF、RFB 独立控制。</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ANC_AntiSat_cfg.html" class="btn btn-neutral float-left" title="12.4.3. ANC防破音配置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../General_cfg.html" class="btn btn-neutral float-right" title="12.5. 通用音频配置" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

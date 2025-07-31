@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.1. PWM LED说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="6. 文件系统" href="../system/file_system/index.html" />
+    <link rel="prev" title="5. LED状态显示" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">5. LED状态显示</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.1. PWM LED说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">5.2. 灯效配置结构体与枚举类型简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">5.3. 灯效配置示例</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">5.4. 灯效状态表配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">5.5. 灯效打断策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">5.6. API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ui">5.7. 参考UI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">5. </span>LED状态显示</a> &raquo;</li>
+      <li><span class="section-number">5.1. </span>PWM LED说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pwm-led">
+<span id="led-api-chapter"></span><h1><span class="section-number">5.1. </span>PWM LED说明<a class="headerlink" href="#pwm-led" title="Link to this heading"></a></h1>
+<ol class="arabic simple">
+<li><p>PWM LED灯效由专用低功耗硬件模块驱动，支持单IO推单灯和单IO推双灯。</p></li>
+<li><p>双IO推双灯是软件分时复用硬件模块来实现的，不支持同时闪灯。</p></li>
+</ol>
+</section>
+<section id="id1">
+<h1><span class="section-number">5.2. </span>灯效配置结构体与枚举类型简介<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">led_platform_data</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">led_board_cfg_t</span><span class="w"> </span><span class="o">*</span><span class="n">board_cfg</span><span class="p">;</span>
+<span class="w">    </span><span class="n">u8</span><span class="w"> </span><span class="n">ctl_option</span><span class="p">;</span><span class="w">                  </span><span class="c1">//参考枚举led_ctl_option</span>
+<span class="w">    </span><span class="n">u8</span><span class="w"> </span><span class="n">ctl_mode</span><span class="p">;</span><span class="w">                    </span><span class="c1">//参考枚举led_ctl_mode</span>
+<span class="w">    </span><span class="n">u8</span><span class="w"> </span><span class="n">ctl_cycle</span><span class="p">;</span><span class="w">                   </span><span class="c1">//控制周期, 单位50ms, 比如每5s闪一次灯，那么5s就是控制周期</span>
+<span class="w">    </span><span class="n">u8</span><span class="w"> </span><span class="n">ctl_cycle_num</span><span class="p">;</span><span class="w">               </span><span class="c1">//控制周期的个数，值为0时，则控制周期无限循环，值为n时，则第n次控制周期之后,灯自动关闭</span>
+<span class="w">    </span><span class="k">union</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span><span class="w">                    </span><span class="c1">//周期单闪, 如灯每5s闪一次，每次亮100ms</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">bright_time</span><span class="p">;</span><span class="w">         </span><span class="c1">//灯亮的时间，单位50ms</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="n">once_bright</span><span class="p">;</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span><span class="w">                    </span><span class="c1">//周期双闪, 如灯每5s闪两次，第一次亮100ms，间隔50ms，再第二次亮100ms</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">first_bright_time</span><span class="p">;</span><span class="w">   </span><span class="c1">//第一次灯亮的时间，单位50ms</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">bright_gap_time</span><span class="p">;</span><span class="w">     </span><span class="c1">//间隔时间，单位50ms</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">second_bright_time</span><span class="p">;</span><span class="w">  </span><span class="c1">//第二次灯亮的时间，单位50ms</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="n">twice_bright</span><span class="p">;</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span><span class="w">                    </span><span class="c1">//周期呼吸，如灯5s呼吸一次，每次呼吸亮2s</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">bright_time</span><span class="p">;</span><span class="w">         </span><span class="c1">//灯亮的时间，单位50ms，等于 占空比自增自减的时间 + 最大占空比保持的时间</span>
+<span class="w">            </span><span class="n">u8</span><span class="w"> </span><span class="n">brightest_keep_time</span><span class="p">;</span><span class="w"> </span><span class="c1">//亮度增到最大的时候，如果需要保持的时间，单位50ms，该时间要小于 bright_time</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="n">breathe_bright</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">cbfunc</span><span class="p">)(</span><span class="n">u32</span><span class="w"> </span><span class="n">cnt</span><span class="p">);</span><span class="w">        </span><span class="c1">//灯效结束回调函数</span>
+<span class="p">}</span><span class="w"> </span><span class="n">led_pdata_t</span><span class="p">;</span>
+
+<span class="k">enum</span><span class="w"> </span><span class="n">led_logic_mode</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">BRIGHT_BY_LOW</span><span class="p">,</span><span class="w">                  </span><span class="c1">//给低电平亮</span>
+<span class="w">    </span><span class="n">BRIGHT_BY_HIGH</span><span class="p">,</span><span class="w">                 </span><span class="c1">//给高电平亮</span>
+<span class="p">};</span>
+<span class="k">enum</span><span class="w"> </span><span class="n">led_ctl_option</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CTL_LED0_ONLY</span><span class="p">,</span><span class="w">                  </span><span class="c1">//只控led0</span>
+<span class="w">    </span><span class="n">CTL_LED1_ONLY</span><span class="p">,</span><span class="w">                  </span><span class="c1">//只控led1</span>
+<span class="w">    </span><span class="n">CTL_LED01_ASYNC</span><span class="p">,</span><span class="w">                </span><span class="c1">//led0&amp;led1异步(交替)</span>
+<span class="w">    </span><span class="n">CTL_LED01_SYNC</span><span class="p">,</span><span class="w">                 </span><span class="c1">//led0&amp;led1同步</span>
+<span class="p">};</span>
+<span class="k">enum</span><span class="w"> </span><span class="n">led_ctl_mode</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CYCLE_ONCE_BRIGHT</span><span class="p">,</span><span class="w">              </span><span class="c1">//周期单闪</span>
+<span class="w">    </span><span class="n">CYCLE_TWICE_BRIGHT</span><span class="p">,</span><span class="w">             </span><span class="c1">//周期双闪</span>
+<span class="w">    </span><span class="n">CYCLE_BREATHE_BRIGHT</span><span class="p">,</span><span class="w">           </span><span class="c1">//周期呼吸</span>
+<span class="w">    </span><span class="n">ALWAYS_BRIGHT</span><span class="p">,</span><span class="w">                  </span><span class="c1">//常亮</span>
+<span class="w">    </span><span class="n">ALWAYS_EXTINGUISH</span><span class="p">,</span><span class="w">              </span><span class="c1">//常灭</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h1><span class="section-number">5.3. </span>灯效配置示例<a class="headerlink" href="#id2" title="Link to this heading"></a></h1>
+<ol class="arabic">
+<li><dl>
+<dt>硬件模块支持灯灯效为: 常亮、常灭、周期性闪1次、周期性闪2次、周期性呼吸、可通过配置struct led_platform_data 结构体实现</dt><dd><ul>
+<li><p>示例:</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//ALL ON</span>
+<span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">led_platform_data</span><span class="w">  </span><span class="n">led_all_on_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CTL_LED01_SYNC</span><span class="p">,</span><span class="w"> </span><span class="c1">// led0&amp;led1同步</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ALWAYS_BRIGHT</span><span class="p">,</span><span class="w"> </span><span class="c1">// 常亮</span>
+<span class="p">};</span>
+
+<span class="c1">//ALL OFF</span>
+<span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">led_platform_data</span><span class="w">  </span><span class="n">led_all_off_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CTL_LED01_SYNC</span><span class="p">,</span><span class="w"> </span><span class="c1">// led0&amp;led1同步</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ALWAYS_EXTINGUISH</span><span class="p">,</span><span class="w"> </span><span class="c1">// 常灭</span>
+<span class="p">};</span>
+
+<span class="c1">//红灯亮1s</span>
+<span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">led_platform_data</span><span class="w">  </span><span class="n">led_red_on_1s_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CTL_LED0_ONLY</span><span class="p">,</span><span class="w"> </span><span class="c1">// 只控led0</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CYCLE_ONCE_BRIGHT</span><span class="p">,</span><span class="w"> </span><span class="c1">// 周期单闪</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_cycle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">21</span><span class="p">,</span><span class="c1">//*50 =1050</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_cycle_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">once_bright</span><span class="p">.</span><span class="n">bright_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="c1">//*50=1000</span>
+<span class="w">    </span><span class="p">.</span><span class="n">cbfunc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pwm_led_hw_cbfunc</span><span class="p">,</span><span class="w"> </span><span class="c1">// 灯效结束回调函数</span>
+<span class="p">};</span>
+
+<span class="c1">// 红灯快闪(每0.5s闪1次0.1s)</span>
+<span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">led_platform_data</span><span class="w"> </span><span class="n">led_red_fast_flash_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="p">.</span><span class="n">ctl_option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CTL_LED0_ONLY</span><span class="p">,</span><span class="w"> </span><span class="c1">// 只控led0</span>
+<span class="w">     </span><span class="p">.</span><span class="n">ctl_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CYCLE_ONCE_BRIGHT</span><span class="p">,</span><span class="w"> </span><span class="c1">// 周期单闪</span>
+<span class="w">     </span><span class="p">.</span><span class="n">ctl_cycle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="c1">//*50 =500</span>
+<span class="w">     </span><span class="p">.</span><span class="n">ctl_cycle_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">     </span><span class="p">.</span><span class="n">once_bright</span><span class="p">.</span><span class="n">bright_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="c1">//*50=100</span>
+<span class="p">};</span>
+
+<span class="c1">//LED0 LED1  5s交替呼吸1次, 时长3s</span>
+<span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">led_platform_data</span><span class="w"> </span><span class="n">led_red_blue_breathe_alternately_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_option</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CTL_LED01_ASYNC</span><span class="p">,</span><span class="w"> </span><span class="c1">// led0&amp;led1异步(交替)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CYCLE_BREATHE_BRIGHT</span><span class="p">,</span><span class="w"> </span><span class="c1">// 周期呼吸</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_cycle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="c1">//*50 =5000</span>
+<span class="w">    </span><span class="p">.</span><span class="n">ctl_cycle_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">breathe_bright</span><span class="p">.</span><span class="n">bright_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="c1">//*50=3000</span>
+<span class="w">    </span><span class="p">.</span><span class="n">breathe_bright</span><span class="p">.</span><span class="n">brightest_keep_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="c1">//*50=1000</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>复杂类型的灯效通过定时器控制亮灭、呼吸的方式实现，配置方式为添加一个struct led_state_item状态表。</dt><dd><ul>
+<li><p>示例:</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 蓝灯周期性1s内快闪3下，每次闪灯亮100ms，灭100ms</span>
+<span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">led_state_item</span><span class="w"> </span><span class="n">blue_led_1s_flashs_3_times</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="cp">#if TCFG_LED_RED_ENABLE</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">LED_RED</span><span class="p">,</span><span class="w">   </span><span class="mi">0</span><span class="p">,</span><span class="w">               </span><span class="n">LED_BRIGHT_OFF</span><span class="p">,</span><span class="w">     </span><span class="n">NON_BREATH_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">LED_ACTION_CONTINUE</span><span class="w"> </span><span class="p">},</span>
+<span class="cp">#endif</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">LED_BLUE</span><span class="p">,</span><span class="w">  </span><span class="mi">2</span><span class="p">,</span><span class="w">               </span><span class="n">LED_BLUE_BRIGHTNESS</span><span class="p">,</span><span class="n">NON_BREATH_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">LED_ACTION_WAIT</span><span class="w">     </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">LED_BLUE</span><span class="p">,</span><span class="w">  </span><span class="mi">2</span><span class="p">,</span><span class="w">               </span><span class="n">LED_BRIGHT_OFF</span><span class="p">,</span><span class="w">     </span><span class="n">NON_BREATH_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">LED_ACTION_WAIT</span><span class="w">     </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">LED_BLUE</span><span class="p">,</span><span class="w">  </span><span class="mi">2</span><span class="p">,</span><span class="w">               </span><span class="n">LED_BLUE_BRIGHTNESS</span><span class="p">,</span><span class="n">NON_BREATH_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">LED_ACTION_WAIT</span><span class="w">     </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">LED_BLUE</span><span class="p">,</span><span class="w">  </span><span class="mi">2</span><span class="p">,</span><span class="w">               </span><span class="n">LED_BRIGHT_OFF</span><span class="p">,</span><span class="w">     </span><span class="n">NON_BREATH_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">LED_ACTION_WAIT</span><span class="w">     </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">LED_BLUE</span><span class="p">,</span><span class="w">  </span><span class="mi">2</span><span class="p">,</span><span class="w">               </span><span class="n">LED_BLUE_BRIGHTNESS</span><span class="p">,</span><span class="n">NON_BREATH_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">LED_ACTION_WAIT</span><span class="w">     </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">LED_BLUE</span><span class="p">,</span><span class="w">  </span><span class="mi">10</span><span class="p">,</span><span class="w">              </span><span class="n">LED_BRIGHT_OFF</span><span class="p">,</span><span class="w">     </span><span class="n">NON_BREATH_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">LED_ACTION_LOOP</span><span class="w">     </span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</section>
+<section id="id3">
+<h1><span class="section-number">5.4. </span>灯效状态表配置<a class="headerlink" href="#id3" title="Link to this heading"></a></h1>
+<ol class="arabic">
+<li><p>led_config.c文件中定义了一个全局的g_led_state_table灯效表，新加的灯效需要填到表中，并分配一个name。 TWS同步灯效时需要通过name找到对应的参数信息，灯效结束的消息中也可以通过name来识别灯效。</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="c1">// 实际没有用到的灯效可以注释掉以节省代码空间</span>
+<span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">led_state_map</span><span class="w"> </span><span class="n">g_led_state_table</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 硬件参数配置的灯效</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">LED_STA_ALL_ON</span><span class="p">,</span><span class="w">                   </span><span class="n">IME_EFFECT_MODE</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">led_all_on_config</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">LED_STA_ALL_OFF</span><span class="p">,</span><span class="w">                  </span><span class="n">TIME_EFFECT_MODE</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">led_all_off_config</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">LED_STA_RED_FLASH_1TIMES</span><span class="p">,</span><span class="w">         </span><span class="n">TIME_EFFECT_MODE</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">led_red_flash_1times_config</span><span class="w"> </span><span class="p">},</span>
+
+<span class="w">    </span><span class="c1">// 软件组合灯效</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="n">LED_STA_BLUE_1S_FLASHS_3_TIMES</span><span class="p">,</span><span class="w">   </span><span class="n">LED_STATE_TABLE</span><span class="p">(</span><span class="n">blue_led_1s_flashs_3_times</span><span class="p">)</span><span class="w"> </span><span class="p">},</span>
+
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// END must end</span>
+<span class="p">};</span>
+
+<span class="c1">// 上述table定义的灯效实际调用参考如下：</span>
+<span class="c1">//ALL ON</span>
+<span class="n">led_ui_set_state</span><span class="p">(</span><span class="n">LED_STA_ALL_ON</span><span class="p">,</span><span class="w"> </span><span class="n">DISP_RECOVERABLE</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="n">os_time_dly</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+<span class="c1">//ALL OFF</span>
+<span class="n">led_ui_set_state</span><span class="p">(</span><span class="n">LED_STA_ALL_OFF</span><span class="p">,</span><span class="w"> </span><span class="n">DISP_RECOVERABLE</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="n">os_time_dly</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="id4">
+<h1><span class="section-number">5.5. </span>灯效打断策略<a class="headerlink" href="#id4" title="Link to this heading"></a></h1>
+<ol class="arabic">
+<li><p>灯效类型:</p>
+<blockquote>
+<div><p>周期性闪灯: 不会结束，只会被其它灯效打断或替换, 优先级低于短时灯效，如果有设置DISP_RECOVERABLE属性被短时灯效打断后可恢复，否则会被新设置的灯效替换。</p>
+<p>短时灯效:   有结束消息，如果有设置DISP_NON_INTR属性，则不会被打断。没有设置DISP_CLEAR_OTHERS属性的情况下，采用排队方式。</p>
+</div></blockquote>
+</li>
+<li><p>属性优先级:</p>
+<blockquote>
+<div><p>DISP_NON_INTR:      最高， 不会被打断，不会被清除，周期性灯效请勿设置</p>
+<p>DISP_CLEAR_OTHERS:  次高， 会清除已存在的其它灯效</p>
+<p>DISP_RECOVERABLE:   一般， 周期性灯效可设置，新加短时灯效没有指定DISP_CLEAR_OTHERS属性情况下，被打断后可恢复。</p>
+</div></blockquote>
+</li>
+<li><p>周期性灯效全局只保留一个，后加入的会替换掉已存在</p></li>
+</ol>
+</section>
+<section id="api">
+<h1><span class="section-number">5.6. </span>API<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
+<ol class="arabic">
+<li><p>led_ui_set_state</p>
+<blockquote>
+<div><ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">led_ui_set_state</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">led_state_name</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">led_disp_mode</span><span class="w"> </span><span class="n">disp_mode</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：设置LED状态</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>灯效的名字, 需要在led_config.c的g_led_state_table中添加对应的配置</p></td>
+</tr>
+<tr class="row-odd"><td><p>disp_mode</p></td>
+<td><p>灯效属性配置:</p>
+<dl class="simple">
+<dt>0:</dt><dd><p>周期灯效: 会删除当前周期性灯效, 等待其它短时灯效运行结束后才会执行
+短时灯效：不打断其它短时灯效，如果只有一个周期性灯效,且没有设置DISP_RECOVERABLE, 则周期性灯效会被删除</p>
+</dd>
+</dl>
+<p>DISP_NON_INTR:     灯效不允许被打断</p>
+<p>DISP_CLEAR_OTHERS: 清除其它灯效, 设置了DISP_NON_INTR属性的不会被清除</p>
+<p>DISP_RECOVERABLE:  周期灯效和短时灯效共存属性, 被短时的灯效打断后不会被删除</p>
+<p>DISP_TWS_SYNC:     需要tws同步的灯效。默认只允许tws主机设置</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：无</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>led_ui_get_state(u8 uuid)</p>
+<blockquote>
+<div><ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">led_state_obj</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">led_ui_get_state</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">uuid</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：短时灯效执行结束后, 驱动会发送LED_MSG_STATE_END消息，消息参数为uuid, 通过此uuid可获取对应的灯效结构体</p></li>
+<li><p>返回值：如果返回值为NULL，表示对应灯效已经被删除</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>led_ui_get_first_state()</p>
+<blockquote>
+<div><ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">led_state_obj</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">led_ui_get_first_state</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：用于获取当前正在显示的LED状态结构体</p></li>
+<li><p>参数说明：无</p></li>
+<li><p>返回值：</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="ui">
+<h1><span class="section-number">5.7. </span>参考UI<a class="headerlink" href="#ui" title="Link to this heading"></a></h1>
+<blockquote>
+<div><p>耳机SDK默认灯效参考代码: apps/earphone/ui/led/led_ui_msg_handler.c</p>
+</div></blockquote>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="5. LED状态显示" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../system/file_system/index.html" class="btn btn-neutral float-right" title="6. 文件系统" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

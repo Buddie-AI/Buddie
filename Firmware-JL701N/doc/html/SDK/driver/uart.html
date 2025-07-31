@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.4. uart &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.5. iic" href="iic.html" />
+    <link rel="prev" title="3.3. gpadc" href="gpadc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. 外设驱动</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpio.html">3.1. gpio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gptimer.html">3.2. gptimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpadc.html">3.3. gpadc</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.4. uart</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#uart-init">3.4.1. uart_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uart-dma-init">3.4.2. uart_dma_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uart-set-baudrate">3.4.3. uart_set_baudrate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uart-send-bytes">3.4.4. uart_send_bytes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uart-wait-tx-idle">3.4.5. uart_wait_tx_idle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uart-send-blocking">3.4.6. uart_send_blocking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uart-recv-bytes">3.4.7. uart_recv_bytes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uart-recv-blocking">3.4.8. uart_recv_blocking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uart-flow-ctrl-init">3.4.9. uart_flow_ctrl_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uart-flow-ctrl-deinit">3.4.10. uart_flow_ctrl_deinit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uart-deinit">3.4.11. uart_deinit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iic.html">3.5. iic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usb.html">3.6. USB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rdec.html">3.7. rdec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mcpwm.html">3.8. mcpwm</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">3. </span>外设驱动</a> &raquo;</li>
+      <li><span class="section-number">3.4. </span>uart</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="uart">
+<h1><span class="section-number">3.4. </span>uart<a class="headerlink" href="#uart" title="Link to this heading"></a></h1>
+<blockquote>
+<div><p>包含三个串口，每个串口都支持奇偶校验，1个起始位，8个数据位，1个停止位。其中串口1支持硬件流控。
+详细的示例代码请参考SDK “cpu/periph_demo/uart_test.c”</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>串口收发的dma buffer 必须使用全局buffer，或者使用dma_malloc申请，不能使用临时变量，或者malloc申请</p>
+</div>
+<section id="uart-init">
+<h2><span class="section-number">3.4.1. </span>uart_init<a class="headerlink" href="#uart-init" title="Link to this heading"></a></h2>
+<p>初始化串口，支持指定串口号，或者自动分配串口</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">uart_init</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">uart_config</span><span class="w"> </span><span class="o">*</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>uart_num</p></td>
+<td><p>串口号0~3，-1表示自动分配空闲的串口</p></td>
+</tr>
+<tr class="row-even"><td><p>config</p></td>
+<td><p>串口配置信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>-1：串口初始化失败，其他值：为串口号</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">uart_config</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">baud_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2000000</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">tx_pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IO_PORTB_15</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rx_pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IO_PORTB_14</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_init</span><span class="p">(</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">config</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">uart_num</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;uart init error&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="k">else</span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;uart%d init succ&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">uart_num</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="uart-dma-init">
+<h2><span class="section-number">3.4.2. </span>uart_dma_init<a class="headerlink" href="#uart-dma-init" title="Link to this heading"></a></h2>
+<p>串口dma初始化，串口收发必须配置dma参数，使用前先调用uart_init</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">uart_dma_init</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">uart_dma_config</span><span class="w"> </span><span class="o">*</span><span class="n">dma_config</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>uart_num</p></td>
+<td><p>串口号</p></td>
+</tr>
+<tr class="row-even"><td><p>dma_config</p></td>
+<td><p>串口配置信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>0：成功，其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">uart_rx_dma_buffer_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">768</span><span class="p">;</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">uart_rx_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dma_malloc</span><span class="p">(</span><span class="n">uart_rx_dma_buffer_size</span><span class="p">);</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">uart_dma_config</span><span class="w"> </span><span class="n">dma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rx_timeout_thresh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">   </span><span class="c1">//接收数据不够frame_size，串口空闲100us就触发中断</span>
+<span class="w">    </span><span class="p">.</span><span class="n">frame_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w">   </span><span class="c1">//接收32字节就触发中断</span>
+<span class="w">    </span><span class="p">.</span><span class="n">event_mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UART_EVENT_RX_DATA</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">UART_EVENT_RX_FIFO_OVF</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">UART_EVENT_TX_DONE</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">irq_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_irq_func</span><span class="p">,</span><span class="c1">//在中断里面调用</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rx_cbuffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_rx_ptr</span><span class="p">,</span><span class="w">   </span><span class="c1">//使用支持dma的内存</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rx_cbuffer_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_rx_dma_buffer_size</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="c1">//frame_size 一般是一个通讯帧的大小，rx_buffer_size一般为frame_size的两倍，内部是一个循环buffer</span>
+
+<span class="n">uart_dma_init</span><span class="p">(</span><span class="n">uart_num</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dma</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="uart-set-baudrate">
+<h2><span class="section-number">3.4.3. </span>uart_set_baudrate<a class="headerlink" href="#uart-set-baudrate" title="Link to this heading"></a></h2>
+<p>设置串口波特率</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">s32</span><span class="w"> </span><span class="nf">uart_set_baudrate</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">baud_rate</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>uart_num</p></td>
+<td><p>串口号</p></td>
+</tr>
+<tr class="row-even"><td><p>baud_rate</p></td>
+<td><p>波特率</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>0：成功，其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="uart-send-bytes">
+<h2><span class="section-number">3.4.4. </span>uart_send_bytes<a class="headerlink" href="#uart-send-bytes" title="Link to this heading"></a></h2>
+<p>启动串口dma，数据指针要求在发送完成之前保持有效</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">s32</span><span class="w"> </span><span class="nf">uart_send_bytes</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">tx_size</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>uart_num</p></td>
+<td><p>串口号</p></td>
+</tr>
+<tr class="row-even"><td><p>buffer</p></td>
+<td><p>需要发送的数据指针，需要使用dma_malloc申请，或者全局变量</p></td>
+</tr>
+<tr class="row-odd"><td><p>tx_size</p></td>
+<td><p>需要发送的数据长度</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>发送的长度</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="uart-wait-tx-idle">
+<h2><span class="section-number">3.4.5. </span>uart_wait_tx_idle<a class="headerlink" href="#uart-wait-tx-idle" title="Link to this heading"></a></h2>
+<p>等待串口发送完成，不允许在中断函数使用</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">s32</span><span class="w"> </span><span class="nf">uart_wait_tx_idle</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">timeout_ms</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>uart_num</p></td>
+<td><p>串口号</p></td>
+</tr>
+<tr class="row-even"><td><p>timeout_ms</p></td>
+<td><p>超时时间，0就一直等，直到发送完成</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>0：成功，其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="uart-send-blocking">
+<h2><span class="section-number">3.4.6. </span>uart_send_blocking<a class="headerlink" href="#uart-send-blocking" title="Link to this heading"></a></h2>
+<p>阻塞式发送数据，不允许在中断函数，或者关闭中断的情况下使用</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">s32</span><span class="w"> </span><span class="nf">uart_send_blocking</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">tx_size</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">timeout_ms</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>uart_num</p></td>
+<td><p>串口号</p></td>
+</tr>
+<tr class="row-even"><td><p>buffer</p></td>
+<td><p>需要发送的数据指针，需要使用dma_malloc申请，或者全局变量</p></td>
+</tr>
+<tr class="row-odd"><td><p>tx_size</p></td>
+<td><p>需要发送的数据长度</p></td>
+</tr>
+<tr class="row-even"><td><p>timeout_ms</p></td>
+<td><p>超时时间，0就一直等，直到发送完成</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>发送的长度</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="uart-recv-bytes">
+<h2><span class="section-number">3.4.7. </span>uart_recv_bytes<a class="headerlink" href="#uart-recv-bytes" title="Link to this heading"></a></h2>
+<p>从缓冲区copy数据</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">s32</span><span class="w"> </span><span class="nf">uart_recv_bytes</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>uart_num</p></td>
+<td><p>串口号</p></td>
+</tr>
+<tr class="row-even"><td><p>buffer</p></td>
+<td><p>读取数据存放的buffer</p></td>
+</tr>
+<tr class="row-odd"><td><p>len</p></td>
+<td><p>需要读取数据长度</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>读取的长度</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="uart-recv-blocking">
+<h2><span class="section-number">3.4.8. </span>uart_recv_blocking<a class="headerlink" href="#uart-recv-blocking" title="Link to this heading"></a></h2>
+<p>阻塞式读取串口数据，不允许在中断函数，或者关闭中断的情况下使用</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">s32</span><span class="w"> </span><span class="nf">uart_recv_blocking</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">timeout_ms</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>uart_num</p></td>
+<td><p>串口号</p></td>
+</tr>
+<tr class="row-even"><td><p>buffer</p></td>
+<td><p>读取数据存放的buffer</p></td>
+</tr>
+<tr class="row-odd"><td><p>len</p></td>
+<td><p>需要读取数据长度</p></td>
+</tr>
+<tr class="row-even"><td><p>timeout_ms</p></td>
+<td><p>超时时间，0就一直等，直到读取完成</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>读取的长度</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="uart-flow-ctrl-init">
+<h2><span class="section-number">3.4.9. </span>uart_flow_ctrl_init<a class="headerlink" href="#uart-flow-ctrl-init" title="Link to this heading"></a></h2>
+<p>流控配置，cts:检测到cts停止发送；rts:设置好阈值后当接收达到阈值会触发rts，当缓存少于阈值会释放rts，对于没有硬件流控的uart，则使用软件实现，会有比较大的滞后，设置的阈值余量要足够</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">s32</span><span class="w"> </span><span class="nf">uart_flow_ctrl_init</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">uart_flow_ctrl</span><span class="w"> </span><span class="o">*</span><span class="n">flow_ctrl</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>uart_num</p></td>
+<td><p>串口号</p></td>
+</tr>
+<tr class="row-even"><td><p>flow_ctrl</p></td>
+<td><p>流控相关参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>0：成功，其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="uart-flow-ctrl-deinit">
+<h2><span class="section-number">3.4.10. </span>uart_flow_ctrl_deinit<a class="headerlink" href="#uart-flow-ctrl-deinit" title="Link to this heading"></a></h2>
+<p>流控配置，uart_deinit关闭串口时会调用该函数关闭硬件流。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">s32</span><span class="w"> </span><span class="nf">uart_flow_ctrl_deinit</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>uart_num</p></td>
+<td><p>串口号</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>0：成功，其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="uart-deinit">
+<h2><span class="section-number">3.4.11. </span>uart_deinit<a class="headerlink" href="#uart-deinit" title="Link to this heading"></a></h2>
+<p>关闭串口，释放TX、RX io为高阻状态</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">s32</span><span class="w"> </span><span class="n">uart_deinit</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>uart_num</p></td>
+<td><p>串口号</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>0：成功，其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">uart_irq_func</span><span class="p">(</span><span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">uart_event</span><span class="w"> </span><span class="n">enent</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">event</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">UART_EVENT_TX_DONE</span><span class="p">){</span>
+<span class="w">        </span><span class="n">uart_send_bytes</span><span class="p">(</span><span class="n">uart_num</span><span class="p">,</span><span class="w"> </span><span class="n">tx_buffer</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">event</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">UART_EVENT_RX_DATA</span><span class="p">){</span>
+<span class="w">       </span><span class="kt">int</span><span class="w"> </span><span class="n">rx_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_recv_bytes</span><span class="p">(</span><span class="n">uart_num</span><span class="p">,</span><span class="n">rx_buffer</span><span class="p">,</span><span class="mi">32</span><span class="p">);</span>
+<span class="w">       </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;recv data_length: %d&quot;</span><span class="p">,</span><span class="n">rx_len</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">event</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">UART_EVENT_RX_FIFO_OVF</span><span class="p">){</span>
+<span class="w">       </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot; rx_buffer too small&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">uart_config</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">baud_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2000000</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">tx_pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IO_PORTB_15</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rx_pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IO_PORTB_14</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="c1">//建议使用自动分配串口号模式打开串口</span>
+<span class="n">uart_dev</span><span class="w"> </span><span class="n">uart_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_init</span><span class="p">(</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">config</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">uart_num</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;uart init error&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="k">else</span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;uart%d init succ&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">uart_num</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">uart_rx_dma_buffer_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">768</span><span class="p">;</span>
+<span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">uart_rx_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dma_malloc</span><span class="p">(</span><span class="n">uart_rx_dma_buffer_size</span><span class="p">);</span>
+
+<span class="k">struct</span><span class="w"> </span><span class="nc">uart_dma_config</span><span class="w"> </span><span class="n">dma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rx_timeout_thresh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">   </span><span class="c1">//接收数据不够frame_size，串口空闲100us就触发中断</span>
+<span class="w">    </span><span class="p">.</span><span class="n">frame_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w">   </span><span class="c1">//接收32字节就触发中断</span>
+<span class="w">    </span><span class="p">.</span><span class="n">event_mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UART_EVENT_RX_DATA</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">UART_EVENT_RX_FIFO_OVF</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">UART_EVENT_TX_DONE</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">irq_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_irq_func</span><span class="p">,</span><span class="c1">//在中断里面调用</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rx_cbuffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_rx_ptr</span><span class="p">,</span><span class="w">   </span><span class="c1">//使用支持dma的内存</span>
+<span class="w">    </span><span class="p">.</span><span class="n">rx_cbuffer_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_rx_dma_buffer_size</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="c1">//frame_size 一般是一个通讯帧的大小，rx_buffer_size一般为frame_size的两倍，内部是一个循环buffer</span>
+<span class="c1">//串口dma初始化，串口收发必须配置dma参数，使用前先调用uart_init</span>
+<span class="n">uart_dma_init</span><span class="p">(</span><span class="n">uart_num</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dma</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gpadc.html" class="btn btn-neutral float-left" title="3.3. gpadc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="iic.html" class="btn btn-neutral float-right" title="3.5. iic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

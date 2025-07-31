@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.3. 在线调音介绍 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.4. 如何将代码放ram" href="../%E5%A6%82%E4%BD%95%E5%B0%86%E4%BB%A3%E7%A0%81%E6%94%BEram/%E5%A6%82%E4%BD%95%E5%B0%86%E4%BB%A3%E7%A0%81%E6%94%BEram.html" />
+    <link rel="prev" title="2.2. 音频流程图介绍" href="../%E9%9F%B3%E9%A2%91%E6%B5%81%E7%A8%8B%E5%9B%BE%E4%BB%8B%E7%BB%8D/%E9%9F%B3%E9%A2%91%E6%B5%81%E7%A8%8B%E5%9B%BE%E4%BB%8B%E7%BB%8D.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速入门</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../jltool/%E9%85%8D%E7%BD%AE%E5%B7%A5%E5%85%B7.html">2.1. 可视化工具使用介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../%E9%9F%B3%E9%A2%91%E6%B5%81%E7%A8%8B%E5%9B%BE%E4%BB%8B%E7%BB%8D/%E9%9F%B3%E9%A2%91%E6%B5%81%E7%A8%8B%E5%9B%BE%E4%BB%8B%E7%BB%8D.html">2.2. 音频流程图介绍</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.3. 在线调音介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.3.1. 功能配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.3.2. 连接样机</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">2.3.3. 调音</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../%E5%A6%82%E4%BD%95%E5%B0%86%E4%BB%A3%E7%A0%81%E6%94%BEram/%E5%A6%82%E4%BD%95%E5%B0%86%E4%BB%A3%E7%A0%81%E6%94%BEram.html">2.4. 如何将代码放ram</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">2. </span>快速入门</a> &raquo;</li>
+      <li><span class="section-number">2.3. </span>在线调音介绍</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">2.3. </span>在线调音介绍<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<blockquote>
+<div><p>在开发的过程中，通常需要在线调试，实时感受音效效果，可视化配置工具能够让开发者更好地完成音效的调试与确认，并且以数据流形式呈现，更加直观，调试方法如下：</p>
+</div></blockquote>
+<section id="id2">
+<h2><span class="section-number">2.3.1. </span>功能配置<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>在开始音效调试之前，需要配置工具对应的配置才能生效，如下：</p>
+<figure class="align-default">
+<img alt="../../_images/%E5%9C%A8%E7%BA%BF%E8%B0%83%E9%9F%B3%E4%BD%BF%E8%83%BD.png" src="../../_images/%E5%9C%A8%E7%BA%BF%E8%B0%83%E9%9F%B3%E4%BD%BF%E8%83%BD.png" />
+</figure>
+<p>（1）如果通讯是通过USB连接，通讯方式选择USB</p>
+<figure class="align-default">
+<img alt="../../_images/USB%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F.png" src="../../_images/USB%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F.png" />
+</figure>
+<p>（2）如果通讯是通过串口线连接，通讯方式选择串口</p>
+<figure class="align-default">
+<img alt="../../_images/%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F.png" src="../../_images/%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E6%96%B9%E5%BC%8F.png" />
+</figure>
+</div></blockquote>
+</section>
+<section id="id3">
+<h2><span class="section-number">2.3.2. </span>连接样机<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>1.如果是通过USB线通讯</p>
+<blockquote>
+<div><p>（1） 将USB线连接到小机，打开配置工具，点击未连接区域，选择USB串行设备</p>
+<figure class="align-default">
+<img alt="../../_images/%E9%80%89%E6%8B%A9USB%E4%B8%B2%E8%A1%8C%E8%AE%BE%E5%A4%87.png" src="../../_images/%E9%80%89%E6%8B%A9USB%E4%B8%B2%E8%A1%8C%E8%AE%BE%E5%A4%87.png" />
+</figure>
+<p>（2）选择通讯波特率，点击连接</p>
+<figure class="align-default">
+<img alt="../../_images/%E7%82%B9%E5%87%BB%E8%BF%9E%E6%8E%A5.png" src="../../_images/%E7%82%B9%E5%87%BB%E8%BF%9E%E6%8E%A5.png" />
+</figure>
+<p>（3）连接成功后，状态显示会变成绿色</p>
+<figure class="align-default">
+<img alt="../../_images/%E7%8A%B6%E6%80%81%E6%98%BE%E7%A4%BA.png" src="../../_images/%E7%8A%B6%E6%80%81%E6%98%BE%E7%A4%BA.png" />
+</figure>
+</div></blockquote>
+<p>2.如果是通过串口线通讯</p>
+<blockquote>
+<div><p>（1）将串口线连接到小机，打开配置工具，点击未连接区域，选择对应的串口设备端口</p>
+<figure class="align-default">
+<img alt="../../_images/%E9%80%89%E6%8B%A9%E4%B8%B2%E5%8F%A3%E8%AE%BE%E5%A4%87.png" src="../../_images/%E9%80%89%E6%8B%A9%E4%B8%B2%E5%8F%A3%E8%AE%BE%E5%A4%87.png" />
+</figure>
+<p>（2）选择通讯波特率，点击连接</p>
+<figure class="align-default">
+<img alt="../../_images/%E7%82%B9%E5%87%BB%E8%BF%9E%E6%8E%A5%E4%B8%B2%E5%8F%A3.png" src="../../_images/%E7%82%B9%E5%87%BB%E8%BF%9E%E6%8E%A5%E4%B8%B2%E5%8F%A3.png" />
+</figure>
+<p>（3）连接成功后，状态显示会变成绿色</p>
+<figure class="align-default">
+<img alt="../../_images/%E7%8A%B6%E6%80%81%E6%98%BE%E7%A4%BA.png" src="../../_images/%E7%8A%B6%E6%80%81%E6%98%BE%E7%A4%BA.png" />
+</figure>
+</div></blockquote>
+</section>
+<section id="id4">
+<h2><span class="section-number">2.3.3. </span>调音<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>通过上面1或者2步骤连接上样机后，就可以进行在线调试</p>
+<p>1.可通过选择需要调音的模块，例如某通路的EQ模块进行调试</p>
+<blockquote>
+<div><blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E9%80%89%E6%8B%A9%E9%9C%80%E8%A6%81%E8%B0%83%E9%9F%B3%E7%9A%84%E6%A8%A1%E5%9D%97.png" src="../../_images/%E9%80%89%E6%8B%A9%E9%9C%80%E8%A6%81%E8%B0%83%E9%9F%B3%E7%9A%84%E6%A8%A1%E5%9D%97.png" />
+</figure>
+</div></blockquote>
+<p>（1）按需调节参数</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E6%8C%89%E9%9C%80%E8%B0%83%E8%AF%95.png" src="../../_images/%E6%8C%89%E9%9C%80%E8%B0%83%E8%AF%95.png" />
+</figure>
+</div></blockquote>
+<p>（2）如果对调音有更高的需求，可以选择节点配置进行配置</p>
+<blockquote>
+<div><blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E9%AB%98%E7%BA%A7%E9%9C%80%E6%B1%82.png" src="../../_images/%E9%AB%98%E7%BA%A7%E9%9C%80%E6%B1%82.png" />
+</figure>
+<figure class="align-default">
+<img alt="../../_images/%E9%AB%98%E7%BA%A7%E9%9C%80%E6%B1%82%E8%B0%83%E6%95%B4.png" src="../../_images/%E9%AB%98%E7%BA%A7%E9%9C%80%E6%B1%82%E8%B0%83%E6%95%B4.png" />
+</figure>
+</div></blockquote>
+<p>（3）设置多个参数组进行确认，提供对应节点的帮助文档，协助调试</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E8%AE%BE%E7%BD%AE%E5%A4%9A%E7%BB%84%E5%8F%82%E6%95%B0.png" src="../../_images/%E8%AE%BE%E7%BD%AE%E5%A4%9A%E7%BB%84%E5%8F%82%E6%95%B0.png" />
+</figure>
+</div></blockquote>
+<p>（4）设置多组参数后，也可以在调试界面切换，方便确认</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E5%8F%82%E6%95%B0%E5%88%87%E6%8D%A2.png" src="../../_images/%E5%8F%82%E6%95%B0%E5%88%87%E6%8D%A2.png" />
+</figure>
+</div></blockquote>
+<p>（5）调试过程的参数可实时更新到样机中</p>
+</div></blockquote>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../%E9%9F%B3%E9%A2%91%E6%B5%81%E7%A8%8B%E5%9B%BE%E4%BB%8B%E7%BB%8D/%E9%9F%B3%E9%A2%91%E6%B5%81%E7%A8%8B%E5%9B%BE%E4%BB%8B%E7%BB%8D.html" class="btn btn-neutral float-left" title="2.2. 音频流程图介绍" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../%E5%A6%82%E4%BD%95%E5%B0%86%E4%BB%A3%E7%A0%81%E6%94%BEram/%E5%A6%82%E4%BD%95%E5%B0%86%E4%BB%A3%E7%A0%81%E6%94%BEram.html" class="btn btn-neutral float-right" title="2.4. 如何将代码放ram" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

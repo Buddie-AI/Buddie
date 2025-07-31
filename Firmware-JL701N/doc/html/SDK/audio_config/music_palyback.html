@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12.9. 音乐播放配置 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="12.10. 产测配置" href="production_test.html" />
+    <link rel="prev" title="12.8. 编解码配置" href="codec.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">12. 音频配置</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DAC_cfg.html">12.1. DAC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ADC_cfg.html">12.2. ADC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Linein_cfg.html">12.3. Linein配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ANC/index.html">12.4. ANC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="General_cfg.html">12.5. 通用音频配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phone_call_cfg.html">12.6. 通话配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_algo_cfg.html">12.7. 音频算法配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codec.html">12.8. 编解码配置</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">12.9. 音乐播放配置</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">12.9.1. ID3信息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">12.9.2. 播放模式</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">12.9.2.1. 无缝循环播放</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">12.9.2.2. 指定时间播放</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ab">12.9.2.3. AB点复读播放</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">12.9.3. 加密播放</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html">12.10. 产测配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kws.html">12.11. 离线语音识别KWS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial_audio.html">12.12. 空间音效</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hi_Res_Audio/index.html">12.13. Hi-Res Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Side_Tone.html">12.14. 通话监听</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_code_size.html">12.15. 音频代码优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_delay.html">12.16. 延时配置（Delay）</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">12. </span>音频配置</a> &raquo;</li>
+      <li><span class="section-number">12.9. </span>音乐播放配置</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">12.9. </span>音乐播放配置<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>音乐播放的配置包括ID3 信息，播放模式和加密播放功能等，所有的配置在工具上的位置如下：
+<img alt="2" src="../../_images/2.png" /></p>
+<section id="id3">
+<h2><span class="section-number">12.9.1. </span>ID3信息<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>ID3，一般是位于一个mp3文件的开头或末尾的若干字节内，附加了关于该mp3的歌手，标题，专辑名称，年代，风格等信息，该信息就被称为ID3信息，ID3信息分为两个版本，v1和v2版。
+开了使能以后，会在播放mp3 文件的时候打印文件对应的信息，代码上打印信息的位置如下图所示
+<img alt="4" src="../../_images/4.png" /></p>
+</section>
+<section id="id2">
+<h2><span class="section-number">12.9.2. </span>播放模式<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>播放模式有<code class="docutils literal notranslate"><span class="pre">无缝循环播放</span></code> ，<code class="docutils literal notranslate"><span class="pre">指定时间播放</span> </code>和 <code class="docutils literal notranslate"><span class="pre">AB点复读播放</span></code></p>
+<section id="id4">
+<h3><span class="section-number">12.9.2.1. </span>无缝循环播放<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>无缝播放是一种特殊的循环播放，是指一首歌曲重复循环播放，但是循环播放中间没有停顿，没有静音的功能，目前仅mp3和 wav 格式支持此功能。如果开了这个功能就可以通过接口file_dec_repeat_set设置每首歌无缝循环播放的次数。如下图所示
+<img alt="7" src="../../_images/7.png" /></p>
+</section>
+<section id="id5">
+<h3><span class="section-number">12.9.2.2. </span>指定时间播放<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>跳到歌曲指定的位置开始播放，常见于拖到歌曲进度条到指定位置播放，代码上提供了指定播放的接口，目前仅mp3 支持此功能。如果开了此功能则 可以通过按键调用file_dec_set_start_play 设置 播放的时间。如下图所示：
+<img alt="6" src="../../_images/6.png" /></p>
+</section>
+<section id="ab">
+<h3><span class="section-number">12.9.2.3. </span>AB点复读播放<a class="headerlink" href="#ab" title="Link to this heading"></a></h3>
+<p>AB点复读功能是指 音乐播放 过程中可以通过按键设置 A点，设置完A点后再按一下按键设置B点，播放器就会重复播放AB点之间的音乐，在设置完B点后再按一下则取消重复播放，继续顺序播放。
+按键设置AB点的位置如下图所示
+<img alt="8" src="../../_images/8.png" /></p>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">12.9.3. </span>加密播放<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<p>加密播放功能是指可以播放经过加密的文件，加密文件的入口如下图所示<br>
+<img alt="9" src="../../_images/9.png" /></p>
+<p>文件加密工具如下图，经过下面工具加密后的歌曲只有通过SDK解密后才能播放.<br>
+<img alt="1" src="../../_images/1.png" /></p>
+<p>提示音加密 目前仅支持 wav 和 mp3 加密，对应的输出格式如下表<br></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>原始格式</p></th>
+<th class="head"><p>加密格式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>wav</p></td>
+<td><p>jl3</p></td>
+</tr>
+<tr class="row-odd"><td><p>mp3</p></td>
+<td><p>jl4</p></td>
+</tr>
+</tbody>
+</table>
+<p>工具如下图，经过下面工具加密后的提示音只有通过SDK解密后才能播放.<br>
+<img alt="3" src="../../_images/3.png" /></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="codec.html" class="btn btn-neutral float-left" title="12.8. 编解码配置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="production_test.html" class="btn btn-neutral float-right" title="12.10. 产测配置" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

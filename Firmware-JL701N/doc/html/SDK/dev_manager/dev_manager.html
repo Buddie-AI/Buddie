@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10.1. dev manager应用说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="11. 通用组件" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html" />
+    <link rel="prev" title="10. 设备管理" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">10. 设备管理</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10.1. dev manager应用说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">10.1.1. 功能概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">10.1.2. 关键结构体、枚举类型及参数说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">10.1.2.1. 设备管理器结构体</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#const">10.1.2.2. 设备节点const信息结构体</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">10.1.2.3. 设备节点结构体</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">10.1.2.4. 设备配置参数</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">10.1.3. 设备管理流程框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">10.1.4. 如何将自定义设备加入到设备链表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api">10.1.5. 详细API说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">10.1.5.1. 设备添加</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">10.1.5.2. 设备删除</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">10.1.5.3. 设备在线检测接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">10.1.5.4. 在线设备总数获取</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">10.1.5.5. 设备获取接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">10.1.5.6. 设备文件扫描</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">10.1.5.7. 设备扫描释放</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">10.1.5.8. 设备有效性标记</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">10.1.5.9. 盘符获取接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">10.1.5.10. 根目录路径获取</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">10. </span>设备管理</a> &raquo;</li>
+      <li><span class="section-number">10.1. </span>dev manager应用说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dev-manager">
+<h1><span class="section-number">10.1. </span>dev manager应用说明<a class="headerlink" href="#dev-manager" title="Link to this heading"></a></h1>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>缩写、术语</p></th>
+<th class="head"><p>解 释</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Dev_manager</p></td>
+<td><p>设备管理器</p></td>
+</tr>
+<tr class="row-odd"><td><p>valid</p></td>
+<td><p>有效设备标志，有效指的是设备中有可播放文件，music_player会查询有效设备进行播放，跳过无效设备。</p></td>
+</tr>
+<tr class="row-even"><td><p>logo</p></td>
+<td><p>设备逻辑盘符，如：sd0/udisk0等</p></td>
+</tr>
+<tr class="row-odd"><td><p>active</p></td>
+<td><p>最后活动活动设备，dev_manager_find_active表示查找最后活动设备，dev_manager_set_active可以将需要指定的设备设置为最后活动设备， 同时注意设备上线的时候默认会将设备设置为最后活动设备。</p></td>
+</tr>
+<tr class="row-even"><td><p>_rec</p></td>
+<td><p>SDK 默认在需要支持录音文件夹区分设备后追加“_rec”(例如：sd0对应的录音文件播放设备为“sdk0_rec”)，并提供dev_manager_get_rec_logo接口获取录音播放设备及dev_manager_get_phy_logo接口获取录音播放设备对应的音乐设备。</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id1">
+<h2><span class="section-number">10.1.1. </span>功能概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>Dev_manager设备接口实现以下功能：</p>
+<ol class="arabic simple">
+<li><p>支持设备上下线</p></li>
+<li><p>支持设备查找</p>
+<ol class="arabic simple">
+<li><p>查找第一个设备
+2)查找最后一个设备
+3)查找当前设备上一个设备
+4)查找当前设备下一个设备
+5)查找最后活动设备
+6)查找指定设备
+7)查找指定序号的设备</p></li>
+</ol>
+</li>
+<li><p>支持设置设备信息</p>
+<ol class="arabic simple">
+<li><p>设置设备有效/无效
+2)设置设备为活动设备</p></li>
+</ol>
+</li>
+<li><p>支持获取设备信息</p>
+<ol class="arabic simple">
+<li><p>获取设备逻辑盘符
+2)获取音乐设备逻辑盘符
+3)获取录音播放设备逻辑盘符
+4)获取设备根目录
+5)获取设备文件浏览根目录</p></li>
+</ol>
+</li>
+<li><p>支持设备在线检查</p></li>
+<li><p>其他</p>
+<ol class="arabic simple">
+<li><p>设备扫盘及扫盘释放</p></li>
+</ol>
+</li>
+</ol>
+</section>
+<section id="id2">
+<h2><span class="section-number">10.1.2. </span>关键结构体、枚举类型及参数说明<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3><span class="section-number">10.1.2.1. </span>设备管理器结构体<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev_manager</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="nx">struct</span><span class="w"> </span><span class="nx">list_head</span><span class="w"> 	</span><span class="nx">list</span><span class="p">;</span>
+<span class="w">	</span><span class="nx">OS_MUTEX</span><span class="w">			</span><span class="nx">mutex</span><span class="p">;</span>
+<span class="w">	</span><span class="nx">OS_SEM</span><span class="w">			    </span><span class="nx">sem</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>说明：
+该结构体主要起到设备链表管理的作用。</p>
+</section>
+<section id="const">
+<h3><span class="section-number">10.1.2.2. </span>设备节点const信息结构体<a class="headerlink" href="#const" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev_reg</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">;</span><span class="c1">//设备选择使用的逻辑盘符</span>
+<span class="w">	</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">name</span><span class="p">;</span><span class="c1">//设备名称，底层匹配设备节点使用</span>
+<span class="w">	</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">storage_path</span><span class="p">;</span><span class="c1">//设备路径，文件系统mount时使用</span>
+<span class="w">	</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">bs_storage_path</span><span class="p">;</span><span class="c1">//设备浏览使用的设备路径，供文件浏览文件系统mount使用</span>
+<span class="w">	</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">root_path</span><span class="p">;</span><span class="c1">//设备文件系统根目录</span>
+<span class="w">	</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">bs_root_path</span><span class="p">;</span><span class="c1">//文件浏览设备文件系统根目录</span>
+<span class="w">	</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">fs_type</span><span class="p">;</span><span class="c1">//文件系统类型,如：fat, sdfile</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>说明：
+设备const信息， 在dev_manager.c中断dev_reg[]中配置。</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">10.1.2.3. </span>设备节点结构体<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="nx">struct</span><span class="w"> </span><span class="nx">list_head</span><span class="w"> 	</span><span class="nx">entry</span><span class="p">;</span>
+<span class="w">	</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev_reg</span><span class="w"> 	</span><span class="o">*</span><span class="nx">parm</span><span class="p">;</span><span class="c1">//设备参数</span>
+<span class="w">	</span><span class="kr">volatile</span><span class="w"> </span><span class="nx">u8</span><span class="w">			</span><span class="nx">valid</span><span class="o">:</span><span class="w">	</span><span class="mf">1</span><span class="p">;</span><span class="c1">//有效设备标记， 这里有效是指是否有可播放文件</span>
+<span class="w">	</span><span class="kr">volatile</span><span class="w"> </span><span class="nx">u32</span><span class="w">		</span><span class="nx">active_stamp</span><span class="p">;</span><span class="c1">///活动设备时间戳，通过时间戳记录当前最后活动设备</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">TCFG_LFN_EN</span><span class="p">)</span>
+<span class="w">	</span><span class="nx">u8</span><span class="w"> 					</span><span class="nx">lfn_buf</span><span class="p">[</span><span class="mf">512</span><span class="p">];</span><span class="c1">///设备长文件名缓存</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3><span class="section-number">10.1.2.4. </span>设备配置参数<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev_reg</span><span class="w"> </span><span class="nx">dev_reg</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">//内置flash</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="nx">SDFILE_DEV</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="nx">SDFILE_MOUNT_PATH</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="nx">SDFILE_RES_ROOT_PATH</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;sdfile&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="c1">//内置录音</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="s2">&quot;rec_sdfile&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="s2">&quot;mnt/rec_sdfile&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="s2">&quot;mnt/rec_sdfile/C/&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;rec_sdfile&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="c1">//sd0</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="s2">&quot;sd0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="s2">&quot;sd0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="s2">&quot;storage/sd0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">SD0_BS_STORAGE_PATH</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="s2">&quot;storage/sd0/C/&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">SD0_BS_ROOT_PATH</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;fat&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="c1">//sd1</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="s2">&quot;sd1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="s2">&quot;sd1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="s2">&quot;storage/sd1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">SD1_BS_STORAGE_PATH</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="s2">&quot;storage/sd1/C/&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">SD1_BS_ROOT_PATH</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;fat&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="c1">//u盘</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="s2">&quot;udisk0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="s2">&quot;udisk0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="s2">&quot;storage/udisk0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">UDISK0_BS_STORAGE_PATH</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="s2">&quot;storage/udisk0/C/&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">UDISK0_BS_ROOT_PATH</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;fat&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="c1">//sd0录音文件夹分区</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="s2">&quot;sd0_rec&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="s2">&quot;sd0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="s2">&quot;storage/sd0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="s2">&quot;storage/sd0/C/&quot;</span><span class="nx">REC_FOLDER_NAME</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;fat&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="c1">//sd1录音文件夹分区</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="s2">&quot;sd1_rec&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="s2">&quot;sd1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="s2">&quot;storage/sd1&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="s2">&quot;storage/sd1/C/&quot;</span><span class="nx">REC_FOLDER_NAME</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;fat&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="c1">//u盘录音文件夹分区</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="s2">&quot;udisk0_rec&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="s2">&quot;udisk0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="s2">&quot;storage/udisk0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="s2">&quot;storage/udisk0/C/&quot;</span><span class="nx">REC_FOLDER_NAME</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;fat&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="c1">//外挂fat分区</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="s2">&quot;fat_nor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="s2">&quot;fat_nor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="s2">&quot;storage/fat_nor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="s2">&quot;storage/fat_nor/C/&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;fat&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="c1">//外挂flash资源分区</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="s2">&quot;res_nor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="s2">&quot;res_nor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="s2">&quot;storage/res_nor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="s2">&quot;storage/res_nor/C/&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;nor_sdfile&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="c1">///外挂录音分区</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="s2">&quot;rec_nor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="s2">&quot;rec_nor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="s2">&quot;storage/rec_nor&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="s2">&quot;storage/rec_nor/C/&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;nor_fs&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="s2">&quot;nor_ui&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="s2">&quot;nor_ui&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="s2">&quot;storage/nor_ui&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="s2">&quot;storage/nor_ui/C/&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="s2">&quot;nor_sdfile&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+
+<span class="w">    </span><span class="c1">//&lt;新加设备参数请在reg end前添加!!</span>
+<span class="w">    </span><span class="c1">//&lt;reg end</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/*logo*/</span><span class="w">			</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*name*/</span><span class="w">			</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*storage_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_storage_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*root_path*/</span><span class="w">		</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*bs_root_path*/</span><span class="w">	</span><span class="nx">NULL</span><span class="p">,</span>
+<span class="w">        </span><span class="cm">/*fs_type*/</span><span class="w">			</span><span class="nx">NULL</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">10.1.3. </span>设备管理流程框架<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<p><img alt="绘图" src="../../_images/1670396694501.drawio.svg" /></p>
+</section>
+<section id="id7">
+<h2><span class="section-number">10.1.4. </span>如何将自定义设备加入到设备链表<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<p>具体操作步骤：</p>
+<ol class="arabic">
+<li><p>配置dev_reg， 加入自定义设备信息项，包括:
+1）设备逻辑盘符logo，设备匹配及查找时使用；
+2）dev_name设备名称，设备上线时，底层内部会匹配设备链表（在对应板卡.c文件中配置设备，如下图），如找不到对应的设备， 上线失败；</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="w">	</span><span class="nx">REGISTER_DEVICES</span><span class="p">(</span><span class="nx">device_table</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="nx">TCFG_SD0_ENABLE</span>
+<span class="w">		</span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;sd0&quot;</span><span class="p">,</span><span class="w"> 	</span><span class="o">&amp;</span><span class="nx">sd_dev_ops</span><span class="p">,</span><span class="w"> 	</span><span class="p">(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">sd0_data</span><span class="p">},</span>
+<span class="w">	</span><span class="err">#</span><span class="nx">endif</span>
+<span class="w">	</span><span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="nx">TCFG_SD1_ENABLE</span>
+<span class="w">		</span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;sd1&quot;</span><span class="p">,</span><span class="w"> 	</span><span class="o">&amp;</span><span class="nx">sd_dev_ops</span><span class="p">,</span><span class="w"> 	</span><span class="p">(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">sd1_data</span><span class="p">},</span>
+<span class="w">	</span><span class="err">#</span><span class="nx">endif</span>
+
+<span class="w">	</span><span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="nx">TCFG_UDISK_ENABLE</span>
+<span class="w">		</span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;udisk0&quot;</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="nx">mass_storage_ops</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nx">NULL</span><span class="p">},</span>
+<span class="w">	</span><span class="err">#</span><span class="nx">endif</span>
+
+<span class="w">	</span><span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="nx">TCFG_NORFLASH_DEV_ENABLE</span>
+<span class="w">	</span><span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="nx">TCFG_NOR_FAT</span>
+<span class="w">		</span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;fat_nor&quot;</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="nx">norflash_dev_ops</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="nx">norflash_fat_dev_data</span><span class="p">},</span>
+<span class="w">	</span><span class="err">#</span><span class="nx">endif</span>
+
+<span class="w">	</span><span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="nx">TCFG_NOR_FS</span>
+<span class="w">		</span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;res_nor&quot;</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="nx">norfs_dev_ops</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="nx">norflash_norfs_dev_data</span><span class="p">},</span>
+<span class="w">	</span><span class="err">#</span><span class="nx">endif</span>
+
+<span class="w">	</span><span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="nx">TCFG_NOR_REC</span>
+<span class="w">		</span><span class="p">{</span><span class="s2">&quot;rec_nor&quot;</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="nx">norfs_dev_ops</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="nx">norflash_norfs_rec_dev_data</span><span class="p">},</span>
+<span class="w">	</span><span class="err">#</span><span class="nx">endif</span>
+<span class="w">	</span><span class="err">#</span><span class="nx">endif</span><span class="w"> </span><span class="cm">/*TCFG_NORFLASH_DEV_ENABLE*/</span>
+
+<span class="w">	</span><span class="p">};</span>
+</pre></div>
+</div>
+<p>3）storage_path、bs_storage_path设备路径，设备mout底层内部使用，其中如果没有文件浏览需求可以将对应设备的bs_storage_path设置为NULL；
+4）root_path、bs_root_path设备扫盘（scan_disk）、文件访问时使用(fopen)及其他文件操作， 如果没有文件浏览bs_root_path可以设置为NULL；
+5）fs_type文件系统类型， 例如：fat/sdfile等；</p>
+</li>
+<li><p>常驻设备不需要检测的， 可以在dev_manager_task函数内直接add到设备链表，如：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="nx">dev_manager_task</span><span class="p">(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="nx">p</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">	</span><span class="kr">int</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span>
+<span class="w">	</span><span class="kr">int</span><span class="w"> </span><span class="nx">msg</span><span class="p">[</span><span class="mf">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mf">0</span><span class="p">};</span>
+<span class="w">	</span><span class="c1">///过滤隐藏 和 .开头名名的字文件</span>
+<span class="w">	</span><span class="nx">hidden_file</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+<span class="w">	</span><span class="c1">///设备初始化，</span>
+<span class="w">	</span><span class="nx">devices_init</span><span class="p">();</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="nx">SDFILE_STORAGE</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">TCFG_CODE_FLASH_ENABLE</span>
+<span class="w">	</span><span class="nx">dev_manager_add</span><span class="p">(</span><span class="nx">SDFILE_DEV</span><span class="p">);</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="w">	</span><span class="err">……</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>需要检测设备上下线事件响应，参考dev_status.c中的dev_status_event_filter处理流程。</p></li>
+<li><p>设备选择， 在指定情景， 通过以下这些接口选择设备：</p>
+<div class="highlight-javascript?linenums notranslate"><div class="highlight"><pre><span></span>//dev_manager查找第一个设备
+struct __dev *dev_manager_find_first(u8 valid);
+//dev_manager查找最后一个设备
+struct __dev *dev_manager_find_last(u8 valid);
+//dev_manager查找参数设备的前一个设备
+struct __dev *dev_manager_find_prev(struct __dev *dev, u8 valid);
+//dev_manager查找参数设备的后一个设备
+struct __dev *dev_manager_find_next(struct __dev *dev, u8 valid);
+//dev_manager查找最后活动设备
+struct __dev *dev_manager_find_active(u8 valid);
+//dev_manager查找指定逻辑盘符对应的设备
+struct __dev *dev_manager_find_spec(char *logo, u8 valid);
+//dev_manager查找指定序号设备
+struct __dev *dev_manager_find_by_index(u32 index, u8 valid);
+</pre></div>
+</div>
+</li>
+<li><p>设置设备信息及获取设备信息。</p></li>
+<li><p>注意：支持上下线的设备， 要时刻留意设备的生命周期， 切记不能在设备从设备链表del之后还继续使用。</p></li>
+</ol>
+</section>
+<section id="api">
+<h2><span class="section-number">10.1.5. </span>详细API说明<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<section id="id8">
+<h3><span class="section-number">10.1.5.1. </span>设备添加<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<section id="dev-manager-add">
+<h4><span class="section-number">10.1.5.1.1. </span>dev_manager_add<a class="headerlink" href="#dev-manager-add" title="Link to this heading"></a></h4>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    设备增加接口</span>
+<span class="cm">	@param	 logo:逻辑盘符，如：sd0/sd1/udisk0等</span>
+<span class="cm">	@return   0:成功，非0是失败</span>
+<span class="cm">	@note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">dev_manager_add</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">dev_manager_add</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id9">
+<h3><span class="section-number">10.1.5.2. </span>设备删除<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<section id="dev-manager-del">
+<h4><span class="section-number">10.1.5.2.1. </span>dev_manager_del<a class="headerlink" href="#dev-manager-del" title="Link to this heading"></a></h4>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    设备删除接口</span>
+<span class="cm">   @param	 logo:逻辑盘符，如：sd0/sd1/udisk0等</span>
+<span class="cm">   @return   0:成功，非0是失败</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">dev_manager_del</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">dev_manager_del</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id10">
+<h3><span class="section-number">10.1.5.3. </span>设备在线检测接口<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<section id="dev-manager-check">
+<h4><span class="section-number">10.1.5.3.1. </span>dev_manager_check<a class="headerlink" href="#dev-manager-check" title="Link to this heading"></a></h4>
+<p>通过设备节点检查设备是否在设备链表
+原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    通过设备节点检查设备是否在线</span>
+<span class="cm">   @param	 dev:设备节点</span>
+<span class="cm">   @return   成功返回设备节点， 失败返回NULL</span>
+<span class="cm">   @note     通过设备节点检查设备是否在设备链表中</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_check</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">cur_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_active</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<span class="c1">//……</span>
+<span class="k">if</span><span class="err">（</span><span class="nx">dev_manager_check</span><span class="p">(</span><span class="nx">cur_dev</span><span class="p">)</span><span class="err">）</span><span class="p">{</span>
+<span class="c1">//……</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-check-by-logo">
+<h4><span class="section-number">10.1.5.3.2. </span>dev_manager_check_by_logo<a class="headerlink" href="#dev-manager-check-by-logo" title="Link to this heading"></a></h4>
+<p>通过盘符检查设备是否在设备链表</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    通过盘符检查设备是否在线</span>
+<span class="cm">   @param	 logo:逻辑盘符，如:sd0/sd1/udisk0</span>
+<span class="cm">   @return   成功返回设备节点， 失败返回NULL</span>
+<span class="cm">   @note     通过设备节点检查设备是否在设备链表中</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_check_by_logo</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_check_by_logo</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">dev</span><span class="p">){</span>
+<span class="w">	</span><span class="c1">//……</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-online-check-by-logo">
+<h4><span class="section-number">10.1.5.3.3. </span>dev_manager_online_check_by_logo<a class="headerlink" href="#dev-manager-online-check-by-logo" title="Link to this heading"></a></h4>
+<p>通过逻辑盘符判断设备是否在线</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief   通过逻辑盘符判断设备是否在线</span>
+<span class="cm">   @param</span>
+<span class="cm">   			logo：逻辑盘符，如：sd0/sd1/udisk0</span>
+<span class="cm">			valid：</span>
+<span class="cm">				1：检查有效可播放设备</span>
+<span class="cm">				0：检查所有设备</span>
+<span class="cm">   @return  1：在线 0：不在线</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">dev_manager_online_check_by_logo</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">,</span><span class="w"> </span><span class="nx">u8</span><span class="w"> </span><span class="nx">valid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>valid</p></td>
+<td class="text-left"><p>是否检测可播放文件</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="nx">dev_manager_online_check_by_logo</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">,</span><span class="mf">1</span><span class="p">)){</span>
+<span class="w">	</span><span class="c1">//……</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-online-check">
+<h4><span class="section-number">10.1.5.3.4. </span>dev_manager_online_check<a class="headerlink" href="#dev-manager-online-check" title="Link to this heading"></a></h4>
+<p>通过设备节点判断设备是否在线</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief   通过设备节点判断设备是否在线</span>
+<span class="cm">   @param</span>
+<span class="cm">   			dev：设备节点</span>
+<span class="cm">			valid：</span>
+<span class="cm">				1：检查有效可播放设备</span>
+<span class="cm">				0：检查所有设备</span>
+<span class="cm">   @return  1：在线 0：不在线</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">dev_manager_online_check</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">,</span><span class="w"> </span><span class="nx">u8</span><span class="w"> </span><span class="nx">valid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>valid</p></td>
+<td class="text-left"><p>是否检测可播放文件</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">first_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_first</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">dev_manager_online_check</span><span class="p">(</span><span class="nx">first_dev</span><span class="p">,</span><span class="mf">1</span><span class="p">)){</span>
+<span class="w">	</span><span class="c1">//……</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id11">
+<h3><span class="section-number">10.1.5.4. </span>在线设备总数获取<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<section id="dev-manager-get-total">
+<h4><span class="section-number">10.1.5.4.1. </span>dev_manager_get_total<a class="headerlink" href="#dev-manager-get-total" title="Link to this heading"></a></h4>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    获取设备总数</span>
+<span class="cm">   @param	 valid:</span>
+<span class="cm">   					1：有效可播放设备, 0;所有设备,包括有可播放设备及无可播放设备</span>
+<span class="cm">   @return   设备总数</span>
+<span class="cm">   @note     根据使用情景决定接口参数</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">u32</span><span class="w"> </span><span class="nx">dev_manager_get_total</span><span class="p">(</span><span class="nx">u8</span><span class="w"> </span><span class="nx">valid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>valid</p></td>
+<td class="text-left"><p>是否检测可播放文件</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="w">	</span><span class="k">if</span><span class="p">(</span><span class="nx">dev_manager_get_total</span><span class="p">(</span><span class="mf">1</span><span class="p">)){</span>
+<span class="w">		</span><span class="c1">//……</span>
+<span class="w">	</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id12">
+<h3><span class="section-number">10.1.5.5. </span>设备获取接口<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<section id="dev-manager-find-first">
+<h4><span class="section-number">10.1.5.5.1. </span>dev_manager_find_first<a class="headerlink" href="#dev-manager-find-first" title="Link to this heading"></a></h4>
+<p>获取设备列表第一个设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    获取设备列表第一个设备</span>
+<span class="cm">   @param	 valid:</span>
+<span class="cm">   					1：有效可播放设备, 0;所有设备,包括有可播放设备及无可播放设备</span>
+<span class="cm">   @return   成功返回设备设备节点,失败返回NULL</span>
+<span class="cm">   @note     根据使用情景决定接口参数</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_find_first</span><span class="p">(</span><span class="nx">u8</span><span class="w"> </span><span class="nx">valid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>valid</p></td>
+<td class="text-left"><p>是否检测可播放文件</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">first_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_first</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-find-last">
+<h4><span class="section-number">10.1.5.5.2. </span>dev_manager_find_last<a class="headerlink" href="#dev-manager-find-last" title="Link to this heading"></a></h4>
+<p>获取设备列表最后一个设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    获取设备列表最后一个设备</span>
+<span class="cm">   @param	 valid:</span>
+<span class="cm">   					1：有效可播放设备中查找</span>
+<span class="cm">					0：所有设备,包括有可播放设备及无可播放设备中查找</span>
+<span class="cm">   @return   成功返回设备设备节点,失败返回NULL</span>
+<span class="cm">   @note     根据使用情景决定接口参数</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_find_last</span><span class="p">(</span><span class="nx">u8</span><span class="w"> </span><span class="nx">valid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>valid</p></td>
+<td class="text-left"><p>是否检测可播放文件</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">last_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_last</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-find-prev">
+<h4><span class="section-number">10.1.5.5.3. </span>dev_manager_find_prev<a class="headerlink" href="#dev-manager-find-prev" title="Link to this heading"></a></h4>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    获取上一个设备节点</span>
+<span class="cm">   @param</span>
+<span class="cm">   			dev:当前设备节点</span>
+<span class="cm">			valid:</span>
+<span class="cm">   					1：有效可播放设备中查找,</span>
+<span class="cm">					0：所有设备,包括有可播放设备及无可播放设备中查找</span>
+<span class="cm">   @return   成功返回设备设备节点,失败返回NULL</span>
+<span class="cm">   @note     根据当前设置的参数设备节点，找链表中的上一个设备</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_find_prev</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">,</span><span class="w"> </span><span class="nx">u8</span><span class="w"> </span><span class="nx">valid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>valid</p></td>
+<td class="text-left"><p>是否检测可播放文件</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">cur_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_active</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">prev_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_prev</span><span class="p">(</span><span class="nx">dev</span><span class="p">,</span><span class="mf">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-find-next">
+<h4><span class="section-number">10.1.5.5.4. </span>dev_manager_find_next<a class="headerlink" href="#dev-manager-find-next" title="Link to this heading"></a></h4>
+<p>获取下一个设备节点</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    获取下一个设备节点</span>
+<span class="cm">   @param</span>
+<span class="cm">   			dev:当前设备节点</span>
+<span class="cm">			valid:</span>
+<span class="cm">   					1：有效可播放设备中查找,</span>
+<span class="cm">					0：所有设备,包括有可播放设备及无可播放设备中查找</span>
+<span class="cm">   @return   成功返回设备设备节点,失败返回NULL</span>
+<span class="cm">   @note     根据当前设置的参数设备节点，找链表中的下一个设备</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_find_next</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">,</span><span class="w"> </span><span class="nx">u8</span><span class="w"> </span><span class="nx">valid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>valid</p></td>
+<td class="text-left"><p>是否检测可播放文件</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">cur_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_active</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">next_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_next</span><span class="p">(</span><span class="nx">dev</span><span class="p">,</span><span class="mf">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-find-active">
+<h4><span class="section-number">10.1.5.5.5. </span>dev_manager_find_active<a class="headerlink" href="#dev-manager-find-active" title="Link to this heading"></a></h4>
+<p>获取当前活动设备节点</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    获取当前活动设备节点</span>
+<span class="cm">   @param</span>
+<span class="cm">			valid:</span>
+<span class="cm">   					1：有效可播放设备中查找,</span>
+<span class="cm">					0：所有设备,包括有可播放设备及无可播放设备中查找</span>
+<span class="cm">   @return   成功返回设备设备节点,失败返回NULL</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_find_active</span><span class="p">(</span><span class="nx">u8</span><span class="w"> </span><span class="nx">valid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>valid</p></td>
+<td class="text-left"><p>是否检测可播放文件</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">cur_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_active</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-find-spec">
+<h4><span class="section-number">10.1.5.5.6. </span>dev_manager_find_spec<a class="headerlink" href="#dev-manager-find-spec" title="Link to this heading"></a></h4>
+<p>获取指定设备节点</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    获取指定设备节点</span>
+<span class="cm">   @param</span>
+<span class="cm">   			logo：指定逻辑盘符，如：sd0/sd1/udisk0</span>
+<span class="cm">			valid:</span>
+<span class="cm">   					1：有效可播放设备中查找,</span>
+<span class="cm">					0：所有设备,包括有可播放设备及无可播放设备中查找</span>
+<span class="cm">   @return   成功返回设备设备节点,失败返回NULL</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_find_spec</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">,</span><span class="w"> </span><span class="nx">u8</span><span class="w"> </span><span class="nx">valid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>valid</p></td>
+<td class="text-left"><p>是否检测可播放文件</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_spec</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">,</span><span class="mf">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-find-by-index">
+<h4><span class="section-number">10.1.5.5.7. </span>dev_manager_find_by_index<a class="headerlink" href="#dev-manager-find-by-index" title="Link to this heading"></a></h4>
+<p>获取指定序号设备节点</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    获取指定序号设备节点</span>
+<span class="cm">   @param</span>
+<span class="cm">   			index：指定序号，指的是在设备链表中的顺序</span>
+<span class="cm">			valid:</span>
+<span class="cm">   					1：有效可播放设备中查找,</span>
+<span class="cm">					0：所有设备,包括有可播放设备及无可播放设备中查找</span>
+<span class="cm">   @return   成功返回设备设备节点,失败返回NULL</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_find_by_index</span><span class="p">(</span><span class="nx">u32</span><span class="w"> </span><span class="nx">index</span><span class="p">,</span><span class="w"> </span><span class="nx">u8</span><span class="w"> </span><span class="nx">valid</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>valid</p></td>
+<td class="text-left"><p>是否检测可播放文件</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_by_index</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span><span class="mf">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id13">
+<h3><span class="section-number">10.1.5.6. </span>设备文件扫描<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<section id="dev-manager-scan-disk">
+<h4><span class="section-number">10.1.5.6.1. </span>dev_manager_scan_disk<a class="headerlink" href="#dev-manager-scan-disk" title="Link to this heading"></a></h4>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief   设备扫盘</span>
+<span class="cm">   @param</span>
+<span class="cm">   			dev：设备节点</span>
+<span class="cm">   			path：指定扫描目录</span>
+<span class="cm">   			parm：扫描参数，包括文件后缀等</span>
+<span class="cm">   			cycle_mode：播放循环模式</span>
+<span class="cm">			callback：扫描打断回调</span>
+<span class="cm">   @return  成功返回扫描控制句柄，失败返回NULL</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">vfscan</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_scan_disk</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">,</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">path</span><span class="p">,</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">parm</span><span class="p">,</span><span class="w"> </span><span class="nx">u8</span><span class="w"> </span><span class="nx">cycle_mode</span><span class="p">,</span><span class="w"> </span><span class="kr">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">callback</span><span class="p">)(</span><span class="ow">void</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>path</p></td>
+<td class="text-left"><p>指定扫描目录</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>parm</p></td>
+<td class="text-left"><p>扫描参数，包括文件后缀等</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>cycle_mode</p></td>
+<td class="text-left"><p>播放循环模式</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>callback</p></td>
+<td class="text-left"><p>扫描打断回调</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">__struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">;</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">vfscan</span><span class="w"> </span><span class="o">*</span><span class="nx">fsn</span><span class="p">;</span>
+<span class="nx">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_active</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+
+<span class="nx">fsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_scan_disk</span><span class="p">(</span><span class="nx">dev</span><span class="p">,</span><span class="nx">NULL</span><span class="p">,</span><span class="s2">&quot;-tMP3 -sn -r&quot;</span><span class="p">,</span><span class="nx">FCYCLE_LIST</span><span class="p">,</span><span class="nx">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id14">
+<h3><span class="section-number">10.1.5.7. </span>设备扫描释放<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<section id="dev-manager-scan-disk-release">
+<h4><span class="section-number">10.1.5.7.1. </span>dev_manager_scan_disk_release<a class="headerlink" href="#dev-manager-scan-disk-release" title="Link to this heading"></a></h4>
+<p>设备扫盘释放</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief   设备扫盘释放</span>
+<span class="cm">   @param</span>
+<span class="cm">   			fsn：扫描句柄</span>
+<span class="cm">   @return  无</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="ow">void</span><span class="w"> </span><span class="nx">dev_manager_scan_disk_release</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">vfscan</span><span class="w"> </span><span class="o">*</span><span class="nx">fsn</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>fsn</p></td>
+<td class="text-left"><p>文件扫描句柄</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">__struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">;</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">vfscan</span><span class="w"> </span><span class="o">*</span><span class="nx">fsn</span><span class="p">;</span>
+<span class="nx">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_active</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<span class="nx">fsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_scan_disk</span><span class="p">(</span><span class="nx">dev</span><span class="p">,</span><span class="nx">NULL</span><span class="p">,</span><span class="s2">&quot;-tMP3 -sn -r&quot;</span><span class="p">,</span><span class="nx">FCYCLE_LIST</span><span class="p">,</span><span class="nx">NULL</span><span class="p">);</span>
+<span class="c1">//……</span>
+<span class="nx">dev_manager_scan_disk_release</span><span class="p">(</span><span class="nx">fsn</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id15">
+<h3><span class="section-number">10.1.5.8. </span>设备有效性标记<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<section id="dev-manager-set-valid">
+<h4><span class="section-number">10.1.5.8.1. </span>dev_manager_set_valid<a class="headerlink" href="#dev-manager-set-valid" title="Link to this heading"></a></h4>
+<p>通过设备节点标记指定设备是否有效</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief   通过设备节点标记指定设备是否有效</span>
+<span class="cm">   @param</span>
+<span class="cm">   			dev：设备节点</span>
+<span class="cm">			flag:</span>
+<span class="cm">   					1：设备有效,</span>
+<span class="cm">					0：设备无效</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note    这里有无效是指是否有可播放文件</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="ow">void</span><span class="w"> </span><span class="nx">dev_manager_set_valid</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">,</span><span class="w"> </span><span class="nx">u8</span><span class="w"> </span><span class="nx">flag</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>flag</p></td>
+<td class="text-left"><p>是否有效</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">__struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">;</span>
+<span class="nx">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_active</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<span class="nx">dev_manager_set_valid</span><span class="err">（</span><span class="nx">dev</span><span class="p">,</span><span class="mf">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-set-valid-by-logo">
+<h4><span class="section-number">10.1.5.8.2. </span>dev_manager_set_valid_by_logo<a class="headerlink" href="#dev-manager-set-valid-by-logo" title="Link to this heading"></a></h4>
+<p>通过逻辑盘符标记指定设备是否有效</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief   通过逻辑盘符标记指定设备是否有效</span>
+<span class="cm">   @param</span>
+<span class="cm">   			logo：逻辑盘符，如：sd0/sd1/udisk0</span>
+<span class="cm">			flag:</span>
+<span class="cm">   					1：设备有效,</span>
+<span class="cm">					0：设备无效</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note    这里有无效是指是否有可播放文件</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="ow">void</span><span class="w"> </span><span class="nx">dev_manager_set_valid_by_logo</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">,</span><span class="w"> </span><span class="nx">u8</span><span class="w"> </span><span class="nx">flag</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>flag</p></td>
+<td class="text-left"><p>是否有效</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">dev_manager_set_valid_by_logo</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">,</span><span class="mf">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id16">
+<h3><span class="section-number">10.1.5.9. </span>盘符获取接口<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<section id="dev-manager-get-logo">
+<h4><span class="section-number">10.1.5.9.1. </span>dev_manager_get_logo<a class="headerlink" href="#dev-manager-get-logo" title="Link to this heading"></a></h4>
+<p>获取设备节点的逻辑盘符</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief   获取设备节点的逻辑盘符</span>
+<span class="cm">   @param</span>
+<span class="cm">   			dev：设备节点</span>
+<span class="cm">   @return  成功返回逻辑盘符，如：sd0/sd1/udisk0，失败返回NULL</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_get_logo</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">__struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">;</span>
+<span class="nx">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_active</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">dev</span><span class="p">){</span>
+<span class="w">	</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_get_logo</span><span class="p">(</span><span class="nx">dev</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-get-phy-logo">
+<h4><span class="section-number">10.1.5.9.2. </span>dev_manager_get_phy_logo<a class="headerlink" href="#dev-manager-get-phy-logo" title="Link to this heading"></a></h4>
+<p>获取物理设备节点的逻辑盘符(去掉_rec后缀)</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief   获取物理设备节点的逻辑盘符(去掉_rec后缀)</span>
+<span class="cm">   @param</span>
+<span class="cm">   			dev：设备节点</span>
+<span class="cm">   @return  成功返回逻辑盘符，如：sd0/sd1/udisk0，失败返回NULL</span>
+<span class="cm">   @note    物理逻辑盘符是指非录音文件夹设备盘符(录音文件夹设备如：sd0_rec)</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_get_phy_logo</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">__struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">;</span>
+<span class="nx">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_active</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">dev</span><span class="p">){</span>
+<span class="w">	</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_get_phy_logo</span><span class="p">(</span><span class="nx">dev</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-get-rec-logo">
+<h4><span class="section-number">10.1.5.9.3. </span>dev_manager_get_rec_logo<a class="headerlink" href="#dev-manager-get-rec-logo" title="Link to this heading"></a></h4>
+<p>获取录音文件夹设备节点的逻辑盘符(追加_rec后缀)</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief   获取录音文件夹设备节点的逻辑盘符(追加_rec后缀)</span>
+<span class="cm">   @param</span>
+<span class="cm">   			dev：设备节点</span>
+<span class="cm">   @return  成功返回逻辑盘符，如：sd0_rec/sd1_rec/udisk0_rec，失败返回NULL</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_get_rec_logo</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">__struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">;</span>
+<span class="nx">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_active</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">dev</span><span class="p">){</span>
+<span class="w">	</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_get_rec_logo</span><span class="p">(</span><span class="nx">dev</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id17">
+<h3><span class="section-number">10.1.5.10. </span>根目录路径获取<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<section id="dev-manager-get-root-path">
+<h4><span class="section-number">10.1.5.10.1. </span>dev_manager_get_root_path<a class="headerlink" href="#dev-manager-get-root-path" title="Link to this heading"></a></h4>
+<p>通过设备节点获取设备文件系统根目录</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief   通过设备节点获取设备文件系统根目录</span>
+<span class="cm">   @param</span>
+<span class="cm">   			dev：设备节点</span>
+<span class="cm">   @return  成功返回根目录，失败返回NULL</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_get_root_path</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>dev</p></td>
+<td class="text-left"><p>设备节点</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">__struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> </span><span class="o">*</span><span class="nx">dev</span><span class="p">;</span>
+<span class="nx">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_space</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">,</span><span class="mf">1</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">dev</span><span class="p">){</span>
+<span class="w">	</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">root_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_get_root_path</span><span class="p">(</span><span class="nx">dev</span><span class="p">);</span>
+<span class="w">	</span><span class="c1">//……</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="dev-manager-get-root-path-by-logo">
+<h4><span class="section-number">10.1.5.10.2. </span>dev_manager_get_root_path_by_logo<a class="headerlink" href="#dev-manager-get-root-path-by-logo" title="Link to this heading"></a></h4>
+<p>通过逻辑盘符获取设备文件系统根目录</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief   通过逻辑盘符获取设备文件系统根目录</span>
+<span class="cm">   @param</span>
+<span class="cm">   			logo：逻辑盘符，如：sd0/sd1/udisk0</span>
+<span class="cm">   @return  成功返回根目录，失败返回NULL</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">dev_manager_get_root_path_by_logo</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">root_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_get_root_path_by_logo</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="10. 设备管理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html" class="btn btn-neutral float-right" title="11. 通用组件" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

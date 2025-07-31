@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.8. muisc player应用说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2. 蓝牙协议栈" href="../btstack/index.html" />
+    <link rel="prev" title="1.7. 音乐播放" href="music_player_api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. 音频播放</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tone_api.html">1.1. 提示音</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_api.html">1.2. 铃声</a></li>
+<li class="toctree-l2"><a class="reference internal" href="key_tone_api.html">1.3. 按键音</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tws_tone_api.html">1.4. 提示音(TWS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tone_language.html">1.5. 多语言支持</a></li>
+<li class="toctree-l2"><a class="reference internal" href="a2dp_api.html">1.6. A2DP播放接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="music_player_api.html">1.7. 音乐播放</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.8. muisc player应用说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">1.8.1. 功能概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">1.8.2. 关键结构体、枚举类型及参数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">1.8.2.1. 回调接口结构体</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">1.8.2.2. 参数设置结构体</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player">1.8.2.3. music player总控制句柄</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">1.8.2.4. 文件扫描参数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">1.8.2.5. 播放器错误码表</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">1.8.3. 播放类接口内部流程设计</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">1.8.3.1. 基础流程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">1.8.3.2. 流程说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">1.8.3.3. 接口举例说明</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">1.8.4. 详细接口说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-creat">1.8.4.1. music_player_creat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-destroy">1.8.4.2. music_player_destroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-decode-start">1.8.4.3. music_player_decode_start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-playing-breakpoint">1.8.4.4. music_player_get_playing_breakpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-file-total">1.8.4.5. music_player_get_file_total</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-file-cur">1.8.4.6. music_player_get_file_cur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-play-get-fileindir-number">1.8.4.7. music_play_get_fileindir_number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-play-get-dir-cur">1.8.4.8. music_play_get_dir_cur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-play-get-dir-total">1.8.4.9. music_play_get_dir_total</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-file-hdl">1.8.4.10. music_player_get_file_hdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-file-sclust">1.8.4.11. music_player_get_file_sclust</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-dev-cur">1.8.4.12. music_player_get_dev_cur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-dev-next">1.8.4.13. music_player_get_dev_next</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-dev-prev">1.8.4.14. music_player_get_dev_prev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-play-status">1.8.4.15. music_player_get_play_status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-dec-cur-time">1.8.4.16. music_player_get_dec_cur_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-dec-total-time">1.8.4.17. music_player_get_dec_total_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-repeat-mode">1.8.4.18. music_player_get_repeat_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-cur-music-dev">1.8.4.19. music_player_get_cur_music_dev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-record-play-status">1.8.4.20. music_player_get_record_play_status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-get-dev-flit">1.8.4.21. music_player_get_dev_flit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-pp">1.8.4.22. music_player_pp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-stop">1.8.4.23. music_player_stop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-ff">1.8.4.24. music_player_ff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-fr">1.8.4.25. music_player_fr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-set-repeat-mode">1.8.4.26. music_player_set_repeat_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-change-repeat-mode">1.8.4.27. music_player_change_repeat_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-delete-playing-file">1.8.4.28. music_player_delete_playing_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-prev">1.8.4.29. music_player_play_prev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-next">1.8.4.30. music_player_play_next</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-first-file">1.8.4.31. music_player_play_first_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-last-file">1.8.4.32. music_player_play_last_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-auto-next">1.8.4.33. music_player_play_auto_next</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-folder-prev">1.8.4.34. music_player_play_folder_prev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-folder-next">1.8.4.35. music_player_play_folder_next</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-devcie-prev">1.8.4.36. music_player_play_devcie_prev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-devcie-next">1.8.4.37. music_player_play_devcie_next</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-by-breakpoint">1.8.4.38. music_player_play_by_breakpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-by-number">1.8.4.39. music_player_play_by_number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-by-sclust">1.8.4.40. music_player_play_by_sclust</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-by-path">1.8.4.41. music_player_play_by_path</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#music-player-play-record-folder">1.8.4.42. music_player_play_record_folder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">1. </span>音频播放</a> &raquo;</li>
+      <li><span class="section-number">1.8. </span>muisc player应用说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="muisc-player">
+<h1><span class="section-number">1.8. </span>muisc player应用说明<a class="headerlink" href="#muisc-player" title="Link to this heading"></a></h1>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>缩写、术语</p></th>
+<th class="head"><p>解 释</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Music_player</p></td>
+<td><p>播放器</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dev_manager</p></td>
+<td><p>设备管理器</p></td>
+</tr>
+<tr class="row-even"><td><p>file_manager</p></td>
+<td><p>文件管理器</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id1">
+<h2><span class="section-number">1.8.1. </span>功能概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>music player播放器模块接口实现以下功能：
+(1)支持播放器启动及退出
+(2)提供播放类接口
+1. 播放上一曲
+2)播放下一曲
+3)播放第一曲
+4)播放最后一曲
+5)自动播放下一曲
+6)播放上一个文件夹
+7)播放下一个文件夹
+8)播放上一设备
+9)播放下一设备
+10)断点播放
+11)序号播放
+12)簇号播放
+13)路径播放
+14)一键切换录音文件夹播放
+(3)操作类接口
+1)播放/暂停
+2)快进/快退
+3)设置播放循环模式
+4)停止播放</p>
+<p>(4)状态获取类接口、
+1)获取播放断点
+2)获取文件总数
+3)获取当前播放文件号
+4)获取当前播放文件所在文件夹下的文件总数
+5)获取当前播放文件所在文件夹
+6)获取文件夹总数
+7)获取当前播放文件的文件句柄
+8)获取当前播放文件的文件簇号
+9)获取当前播放设备
+10)获取当前播放的音乐设备（如果当前播放的是录音设备，返回对应的音乐设备）
+11)获取当前播放的下一个设备
+12)获取当前播放的上一个设备
+13)获取播放状态
+14)获取当前播放歌曲时间
+15)获取当前播放歌曲总时间
+16)获取当前播放循环模式
+17)获取当前是否是录音设备播放状态
+(5)其他
+删除当前正在播放的设备</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">1.8.2. </span>关键结构体、枚举类型及参数<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3><span class="section-number">1.8.2.1. </span>回调接口结构体<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__player_cb</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">///解码成功回调</span>
+<span class="w">    </span><span class="ow">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">start</span><span class="p">)(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="nx">priv</span><span class="p">,</span><span class="w"> </span><span class="kr">int</span><span class="w"> </span><span class="nx">parm</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">///解码结束回调</span>
+<span class="w">    </span><span class="ow">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">end</span><span class="p">)(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="nx">priv</span><span class="p">,</span><span class="w"> </span><span class="kr">int</span><span class="w"> </span><span class="nx">parm</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">///扫盘打断回调</span>
+<span class="w">    </span><span class="kr">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">fsn_break</span><span class="p">)(</span><span class="ow">void</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>说明：
+播放器回调有应用层在调用music_player_creat启动播放器时传入。
+解码成功回调：应用层可以在这里做一些解码状态获取，如：歌曲序号、文件名，及显示等。
+解码结束回调：可以根据方案需求引导不同的流程走向。
+扫盘打断回调：扫盘打断回调为长时间扫描设备（主要是针对文件特别多的设备）提供打断机制，具体实现方式， 请参考文档【music应用详细设计说明】，打断原理如下流程（流程结合了music应用，即music.c中实现）：</p>
+<p><img alt="绘图" src="../../_images/1670403964902.drawio.svg" /></p>
+</section>
+<section id="id4">
+<h3><span class="section-number">1.8.2.2. </span>参数设置结构体<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__player_parm</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__player_cb</span><span class="w"> </span><span class="o">*</span><span class="nx">cb</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">///其他扩展</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player">
+<h3><span class="section-number">1.8.2.3. </span>music player总控制句柄<a class="headerlink" href="#music-player" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">struct</span><span class="w"> </span><span class="nx">__music_player</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__dev</span><span class="w"> 			</span><span class="o">*</span><span class="nx">dev</span><span class="p">;</span><span class="c1">//当前播放设备节点</span>
+<span class="w">    </span><span class="nx">struct</span><span class="w"> </span><span class="nx">vfscan</span><span class="w">			</span><span class="o">*</span><span class="nx">fsn</span><span class="p">;</span><span class="c1">//设备扫描句柄</span>
+<span class="w">    </span><span class="nx">FILE</span><span class="w">		 			</span><span class="o">*</span><span class="nx">file</span><span class="p">;</span><span class="c1">//当前播放文件句柄</span>
+<span class="w">    </span><span class="ow">void</span><span class="w"> 					</span><span class="o">*</span><span class="nx">priv</span><span class="p">;</span><span class="c1">//music回调函数，私有参数</span>
+<span class="w">    </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__player_parm</span><span class="w"> 	</span><span class="nx">parm</span><span class="p">;</span><span class="c1">//回调及参数配置</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3><span class="section-number">1.8.2.4. </span>文件扫描参数<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">///播放参数，文件扫描时用，文件后缀等</span>
+<span class="k">static</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="kr">char</span><span class="w"> </span><span class="nx">scan_parm</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-t&quot;</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">TCFG_DEC_MP3_ENABLE</span><span class="p">)</span>
+<span class="w">                                </span><span class="s2">&quot;MP1MP2MP3&quot;</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">TCFG_DEC_WMA_ENABLE</span><span class="p">)</span>
+<span class="w">                                </span><span class="s2">&quot;WMA&quot;</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="nx">TCFG_DEC_WAV_ENABLE</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">TCFG_DEC_DTS_ENABLE</span><span class="p">)</span>
+<span class="w">                                </span><span class="s2">&quot;WAVDTS&quot;</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">TCFG_DEC_FLAC_ENABLE</span><span class="p">)</span>
+<span class="w">                                </span><span class="s2">&quot;FLA&quot;</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">TCFG_DEC_APE_ENABLE</span><span class="p">)</span>
+<span class="w">                                </span><span class="s2">&quot;APE&quot;</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">TCFG_DEC_M4A_ENABLE</span><span class="p">)</span>
+<span class="w">                                </span><span class="s2">&quot;M4AAAC&quot;</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">TCFG_DEC_M4A_ENABLE</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">TCFG_DEC_ALAC_ENABLE</span><span class="p">)</span>
+<span class="w">                                </span><span class="s2">&quot;MP4&quot;</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">TCFG_DEC_AMR_ENABLE</span><span class="p">)</span>
+<span class="w">                                </span><span class="s2">&quot;AMR&quot;</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">TCFG_DEC_DECRYPT_ENABLE</span><span class="p">)</span>
+<span class="w">                                </span><span class="s2">&quot;SMP&quot;</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">TCFG_DEC_MIDI_ENABLE</span><span class="p">)</span>
+<span class="w">                                </span><span class="s2">&quot;MID&quot;</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="w">                                </span><span class="s2">&quot; -sn -r&quot;</span>
+<span class="err">#</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">TCFG_RECORD_FOLDER_DEV_ENABLE</span><span class="p">)</span>
+<span class="w">                                </span><span class="s2">&quot; -m&quot;</span>
+<span class="w">                                </span><span class="nx">REC_FOLDER_NAME</span>
+<span class="err">#</span><span class="nx">endif</span>
+<span class="w">                                </span><span class="p">;</span>
+</pre></div>
+</div>
+<p>说明：
+scan_parm在扫盘dev_manager_scan_disk调用是使用， 参数设置了文件后缀如：MP3/WAV/WMA等后缀的歌曲将在设备扫盘时将被扫描到， 没有的后缀， 将被过滤（被过滤的歌曲是不会被播放的）。同时该参数也设置了一些特殊的内容，如录音文件夹内容过滤等。</p>
+</section>
+<section id="id6">
+<h3><span class="section-number">1.8.2.5. </span>播放器错误码表<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_NULL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0</span><span class="p">,</span><span class="w">		</span><span class="c1">///没有错误， 不需要做任何</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_SUCC</span><span class="w">	  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x1</span><span class="p">,</span><span class="w">		</span><span class="c1">///播放成功， 可以做相关显示、断点记忆等处理</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_PARM</span><span class="p">,</span><span class="w">	    		</span><span class="c1">///参数错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_POINT</span><span class="p">,</span><span class="w">	    		</span><span class="c1">///参数指针错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_NO_RAM</span><span class="p">,</span><span class="w">			</span><span class="c1">///没有ram空间错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_DECODE_FAIL</span><span class="p">,</span><span class="w">		</span><span class="c1">///解码器启动失败错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_DEV_NOFOUND</span><span class="p">,</span><span class="w">		</span><span class="c1">///没有找到指定设备</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_DEV_OFFLINE</span><span class="p">,</span><span class="w">		</span><span class="c1">///设备不在线错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_DEV_READ</span><span class="p">,</span><span class="w">			</span><span class="c1">///设备读错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_FSCAN</span><span class="p">,</span><span class="w">				</span><span class="c1">///设备扫描失败</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_FILE_NOFOUND</span><span class="p">,</span><span class="w">		</span><span class="c1">///没有找到文件</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>说明：
+具体错误处理统一外抛到应用层根据实际需求引导不同流程的走向，SDK默认在music.c集中处理。</p>
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">1.8.3. </span>播放类接口内部流程设计<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<section id="id8">
+<h3><span class="section-number">1.8.3.1. </span>基础流程<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p><img alt="绘图" src="../../_images/1670403964902.drawio.svg" /></p>
+</section>
+<section id="id9">
+<h3><span class="section-number">1.8.3.2. </span>流程说明<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p>(1)解码停止music_player_stop的时候要判断接下来的播放是否需要重新扫盘决定参数是传1还是0
+(2)选择设备建议判断是否是当前正在使用的设备，如果是不需要重新选择，只需要通过dev_manager_online_check判断设备是否还在线
+(3)如果需要重新选择设备或者有特殊需求就需要重新扫盘，如果要重新扫盘(1)中描述的stop参数必须要是1
+(4)选择文件file_manager_select，根据不同的需求通过设置不同的参数进行文件选择
+(5)启动解码器，需要提供的参数为文件控制句柄及断点信息， 如果没有断点填NULL，如果有指定断点，播放的时候会从指定的断点位置开始播放
+(6)所有错误返回值由上层应用层处理（sdk 默认在music.c中处理），具体提含义情况music_player错误码表</p>
+</section>
+<section id="id10">
+<h3><span class="section-number">1.8.3.3. </span>接口举例说明<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>此处以指定设备断点播放作为特例说明展开式事例说明：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_by_breakpoint</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">,</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__breakpoint</span><span class="w"> </span><span class="o">*</span><span class="nx">bp</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="c1">//判断参数是否有效</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">bp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">MUSIC_PLAYER_ERR_PARM</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">logo</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="c1">//设备没有指定</span>
+<span class="w">        </span><span class="nx">music_player_stop</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span><span class="c1">///停止解码，注意参数</span>
+<span class="c1">//检查当前设备是否在线</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">dev_manager_online_check</span><span class="p">(</span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">dev</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">MUSIC_PLAYER_ERR_DEV_OFFLINE</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="c1">//使用当前设备，不需要找设备， 不需要扫描</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">music_player_stop</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span><span class="c1">///停止解码，注意参数</span>
+<span class="c1">//查找指定设备</span>
+<span class="w">        </span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_find_spec</span><span class="p">(</span><span class="nx">logo</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="cm">/*1表示有效设备*/</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">dev</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">MUSIC_PLAYER_ERR_DEV_NOFOUND</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="c1">//找到了设备，下面开始扫盘</span>
+<span class="w">        </span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">fsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dev_manager_scan_disk</span><span class="p">(</span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">dev</span><span class="p">,</span><span class="w"> </span><span class="nx">NULL</span><span class="p">,</span><span class="w"> </span><span class="nx">scan_parm</span><span class="p">,</span><span class="w"> </span><span class="nx">cycle_mode</span><span class="p">,</span><span class="w"> </span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">parm</span><span class="p">.</span><span class="nx">cb</span><span class="o">-&gt;</span><span class="nx">fsn_break</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">fsn</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">MUSIC_PLAYER_ERR_FSCAN</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">//扫盘成功后，下面就是文件选择了</span>
+<span class="w">    </span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">file_manager_select</span><span class="p">(</span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">fsn</span><span class="p">,</span><span class="w"> </span><span class="nx">FSEL_BY_SCLUST</span><span class="p">,</span><span class="w"> </span><span class="nx">bp</span><span class="o">-&gt;</span><span class="nx">sclust</span><span class="p">);</span><span class="c1">//根据文件簇号查找断点文件</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">file</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">MUSIC_PLAYER_ERR_FILE_NOFOUND</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">//文件选择好，接下来就是启动解码器</span>
+<span class="w">    </span><span class="kr">int</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_decode_start</span><span class="p">(</span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="nx">bp</span><span class="o">-&gt;</span><span class="nx">dbp</span><span class="p">));</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">MUSIC_PLAYER_SUCC</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">//播放成功，将当前设备激活， 下次查找活动设备，就是当前激活的设备了</span>
+<span class="w">        </span><span class="nx">dev_manager_set_active</span><span class="p">(</span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">dev</span><span class="p">);</span>
+<span class="w">        </span><span class="nx">log_i</span><span class="p">(</span><span class="s2">&quot;[%s %d] ok\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">__FUNCTION__</span><span class="p">,</span><span class="w"> </span><span class="nx">__LINE__</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="c1">//此处断点播放执行完毕，所有的返回值，请根据错误码表进行处理</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id11">
+<h2><span class="section-number">1.8.4. </span>详细接口说明<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<section id="music-player-creat">
+<h3><span class="section-number">1.8.4.1. </span>music_player_creat<a class="headerlink" href="#music-player-creat" title="Link to this heading"></a></h3>
+<p>music_player创建接口</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">bool</span><span class="w"> </span><span class="nx">music_player_creat</span><span class="p">(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="nx">priv</span><span class="p">,</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__player_parm</span><span class="w"> </span><span class="o">*</span><span class="nx">parm</span><span class="p">)</span>
+<span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player播放结束创建</span>
+<span class="cm">   @param	 priv: 传递给cb回调函数的参数</span>
+<span class="cm">   			 parm：播放器回调，包含扫盘回调和播放回调</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>priv</p></td>
+<td><p>传递给cb回调函数的参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>parm</p></td>
+<td><p>播放器回调，包含扫盘回调和播放回调</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__scan_callback</span><span class="w"> </span><span class="nx">scan_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">enter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">scan_enter</span><span class="p">,</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">exit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">scan_exit</span><span class="p">,</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">scan_break</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_scandisk_break</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__player_cb</span><span class="w"> </span><span class="nx">music_player_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">start</span><span class="w"> 	</span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_success</span><span class="p">,</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">end</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_end</span><span class="p">,</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">err</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_decode_err</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="c1">///播放器初始化</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__player_parm</span><span class="w"> </span><span class="nx">parm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mf">0</span><span class="p">};</span>
+<span class="nx">parm</span><span class="p">.</span><span class="nx">cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">music_player_callback</span><span class="p">;</span>
+<span class="nx">parm</span><span class="p">.</span><span class="nx">scan_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">scan_cb</span><span class="p">;</span>
+<span class="w">	</span>
+<span class="nx">music_player_creat</span><span class="p">(</span><span class="nx">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">parm</span><span class="p">);</span><span class="w"> </span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-destroy">
+<h3><span class="section-number">1.8.4.2. </span>music_player_destroy<a class="headerlink" href="#music-player-destroy" title="Link to this heading"></a></h3>
+<p>music_player释放接口</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player释放接口</span>
+<span class="cm">   @param	 NULL</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="ow">void</span><span class="w"> </span><span class="nx">music_player_destroy</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：
+无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_creat</span><span class="p">(</span><span class="nx">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">parm</span><span class="p">);</span><span class="w"> </span>
+<span class="err">……</span>
+<span class="nx">music_player_destroy</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-decode-start">
+<h3><span class="section-number">1.8.4.3. </span>music_player_decode_start<a class="headerlink" href="#music-player-decode-start" title="Link to this heading"></a></h3>
+<p>music_player解码器启动接口</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player解码器启动接口</span>
+<span class="cm">   @param</span>
+<span class="cm">			 file：</span>
+<span class="cm">			 	文件句柄</span>
+<span class="cm">			 dbp：</span>
+<span class="cm">			 	断点信息</span>
+<span class="cm">   @return   music_player 错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_decode_start</span><span class="p">(</span><span class="nx">FILE</span><span class="w"> </span><span class="o">*</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">audio_dec_breakpoint</span><span class="w"> </span><span class="o">*</span><span class="nx">dbp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-odd"><td><p>dbp</p></td>
+<td><p>断点信息</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">int</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_decode_start</span><span class="p">(</span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">file</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="nx">bp</span><span class="o">-&gt;</span><span class="nx">dbp</span><span class="p">));</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-playing-breakpoint">
+<h3><span class="section-number">1.8.4.4. </span>music_player_get_playing_breakpoint<a class="headerlink" href="#music-player-get-playing-breakpoint" title="Link to this heading"></a></h3>
+<p>music_player获取当前播放设备断点信息</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放设备断点信息</span>
+<span class="cm">   @param</span>
+<span class="cm">			 bp：</span>
+<span class="cm">			 	断点缓存，外部调用提供</span>
+<span class="cm">			 flag：</span>
+<span class="cm">			 	1：需要获取歌曲断点信息及文件信息， 0：只获取文件信息</span>
+<span class="cm">   @return   成功与否</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">bool</span><span class="w"> </span><span class="nx">music_player_get_playing_breakpoint</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__breakpoint</span><span class="w"> </span><span class="o">*</span><span class="nx">bp</span><span class="p">,</span><span class="w"> </span><span class="nx">u8</span><span class="w"> </span><span class="nx">flag</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>bp</p></td>
+<td><p>断点缓存，外部调用提供</p></td>
+</tr>
+<tr class="row-odd"><td><p>flag</p></td>
+<td><p>1：需要获取歌曲断点信息及文件信息， 0：只获取文件信息</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">music_player_get_playing_breakpoint</span><span class="p">(</span><span class="nx">__this</span><span class="o">-&gt;</span><span class="nx">breakpoint</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="err">……</span>
+<span class="w">   </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-file-total">
+<h3><span class="section-number">1.8.4.5. </span>music_player_get_file_total<a class="headerlink" href="#music-player-get-file-total" title="Link to this heading"></a></h3>
+<p>music_player获取当前播放设备文件总数</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放设备文件总数</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   文件总数</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">u16</span><span class="w"> </span><span class="nx">music_player_get_file_total</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：
+无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">u32</span><span class="w"> </span><span class="nx">file_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_file_total</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-file-cur">
+<h3><span class="section-number">1.8.4.6. </span>music_player_get_file_cur<a class="headerlink" href="#music-player-get-file-cur" title="Link to this heading"></a></h3>
+<p>music_player获取当前播放文件序号</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放文件序号</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   当前文件序号</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">u16</span><span class="w"> </span><span class="nx">music_player_get_file_cur</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">u16</span><span class="w"> </span><span class="nx">cur_file_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_file_cur</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-play-get-fileindir-number">
+<h3><span class="section-number">1.8.4.7. </span>music_play_get_fileindir_number<a class="headerlink" href="#music-play-get-fileindir-number" title="Link to this heading"></a></h3>
+<p>music_player获取当前播放文件所在文件夹的文件总数</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放文件所在文件夹的文件总数</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   文件总数</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">u16</span><span class="w"> </span><span class="nx">music_play_get_fileindir_number</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：
+无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">u16</span><span class="w"> </span><span class="nx">file_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_play_get_fileindir_number</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-play-get-dir-cur">
+<h3><span class="section-number">1.8.4.8. </span>music_play_get_dir_cur<a class="headerlink" href="#music-play-get-dir-cur" title="Link to this heading"></a></h3>
+<p>music_player获取当前播放文件所在文件夹</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放文件所在文件夹</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   当前文件夹序号</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">u16</span><span class="w"> </span><span class="nx">music_play_get_dir_cur</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">u16</span><span class="w"> </span><span class="nx">cur_dir_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_play_get_dir_cur</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-play-get-dir-total">
+<h3><span class="section-number">1.8.4.9. </span>music_play_get_dir_total<a class="headerlink" href="#music-play-get-dir-total" title="Link to this heading"></a></h3>
+<p>music_player获取文件夹总数</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取文件夹总数</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   文件夹总数</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">u16</span><span class="w"> </span><span class="nx">music_play_get_dir_total</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">u16</span><span class="w"> </span><span class="nx">dir_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_play_get_dir_total</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-file-hdl">
+<h3><span class="section-number">1.8.4.10. </span>music_player_get_file_hdl<a class="headerlink" href="#music-player-get-file-hdl" title="Link to this heading"></a></h3>
+<p>music_player获取当前播放文件句柄</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取文件句柄</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   文件句柄</span>
+<span class="cm">   @note	 需要注意文件句柄的生命周期</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">FILE</span><span class="w"> </span><span class="o">*</span><span class="nx">music_player_get_file_hdl</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">FILE</span><span class="w"> </span><span class="o">*</span><span class="nx">file_hd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_file_hdl</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-file-sclust">
+<h3><span class="section-number">1.8.4.11. </span>music_player_get_file_sclust<a class="headerlink" href="#music-player-get-file-sclust" title="Link to this heading"></a></h3>
+<p>music_player获取当前播放文件簇号</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取文件簇号</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   文件簇号, -1:无效</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">u32</span><span class="w"> </span><span class="nx">music_player_get_file_sclust</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">u32</span><span class="w"> </span><span class="nx">sclust_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_file_sclust</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-dev-cur">
+<h3><span class="section-number">1.8.4.12. </span>music_player_get_dev_cur<a class="headerlink" href="#music-player-get-dev-cur" title="Link to this heading"></a></h3>
+<p>music_player获取当前播放设备盘符</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放设备盘符</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   设备盘符</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">music_player_get_dev_cur</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">cur_dev</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_dev_cur</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-dev-next">
+<h3><span class="section-number">1.8.4.13. </span>music_player_get_dev_next<a class="headerlink" href="#music-player-get-dev-next" title="Link to this heading"></a></h3>
+<p>获取当前播放设备下一个设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放设备下一个设备</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   设备盘符</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">music_player_get_dev_next</span><span class="p">(</span><span class="nx">u8</span><span class="w"> </span><span class="nx">auto_next</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>auto_next</p></td>
+<td><p>0：跳过录音设备  1：自动下一设备</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">next_logo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_dev_next</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-dev-prev">
+<h3><span class="section-number">1.8.4.14. </span>music_player_get_dev_prev<a class="headerlink" href="#music-player-get-dev-prev" title="Link to this heading"></a></h3>
+<p>获取当前播放设备上一个设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放设备上一个设备</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   设备盘符</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">music_player_get_dev_prev</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">prev_logo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_dev_prev</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-play-status">
+<h3><span class="section-number">1.8.4.15. </span>music_player_get_play_status<a class="headerlink" href="#music-player-get-play-status" title="Link to this heading"></a></h3>
+<p>获取当前播放状态</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放状态</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   返回值如：</span>
+<span class="cm">  				 FILE_DEC_STATUS_STOP,//解码停止</span>
+<span class="cm">  				 FILE_DEC_STATUS_PLAY,//正在解码</span>
+<span class="cm">  				 FILE_DEC_STATUS_PAUSE,//解码暂停</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_get_play_status</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="nx">music_player_get_play_status</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">FILE_DEC_STATUS_PLAY</span><span class="p">){</span>
+<span class="c1">//……</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-dec-cur-time">
+<h3><span class="section-number">1.8.4.16. </span>music_player_get_dec_cur_time<a class="headerlink" href="#music-player-get-dec-cur-time" title="Link to this heading"></a></h3>
+<p>获取当前播放歌曲时间
+原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放歌曲时间</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   当前播放时间</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_get_dec_cur_time</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">u32</span><span class="w"> </span><span class="nx">cur_second</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_dec_cur_time</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-dec-total-time">
+<h3><span class="section-number">1.8.4.17. </span>music_player_get_dec_total_time<a class="headerlink" href="#music-player-get-dec-total-time" title="Link to this heading"></a></h3>
+<p>获取当前播放歌曲总时间</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放歌曲总时间</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   当前播放总时间</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_get_dec_total_time</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数： 无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">u32</span><span class="w"> </span><span class="nx">total_second</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_dec_total_time</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-repeat-mode">
+<h3><span class="section-number">1.8.4.18. </span>music_player_get_repeat_mode<a class="headerlink" href="#music-player-get-repeat-mode" title="Link to this heading"></a></h3>
+<p>music_player获取当前播放循环模式</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放循环模式</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   当前播放循环模式</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">u8</span><span class="w"> </span><span class="nx">music_player_get_repeat_mode</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">u8</span><span class="w"> </span><span class="nx">mode</span><span class="w"> </span><span class="o">=</span><span class="nx">music_player_get_repeat_mode</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-cur-music-dev">
+<h3><span class="section-number">1.8.4.19. </span>music_player_get_cur_music_dev<a class="headerlink" href="#music-player-get-cur-music-dev" title="Link to this heading"></a></h3>
+<p>music_player获取当前播放对应的music设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前播放对应的music设备</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   设备盘符</span>
+<span class="cm">   @note	 播放录音区分时，可以通过该接口判断当前播放的音乐设备是什么以便做录音区分判断</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">music_player_get_cur_music_dev</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_cur_music_dev</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-record-play-status">
+<h3><span class="section-number">1.8.4.20. </span>music_player_get_record_play_status<a class="headerlink" href="#music-player-get-record-play-status" title="Link to this heading"></a></h3>
+<p>music_player获取当前录音区分播放状态</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player获取当前录音区分播放状态</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   true：录音文件夹播放, false：非录音文件夹播放</span>
+<span class="cm">   @note	 播放录音区分时，可以通过该接口判断当前播放的是录音文件夹还是非录音文件夹</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="nx">bool</span><span class="w"> </span><span class="nx">music_player_get_record_play_status</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="nx">music_player_get_record_play_status</span><span class="p">()){</span>
+<span class="w">	</span><span class="c1">//……</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-get-dev-flit">
+<h3><span class="section-number">1.8.4.21. </span>music_player_get_dev_flit<a class="headerlink" href="#music-player-get-dev-flit" title="Link to this heading"></a></h3>
+<p>music_player从设备列表找设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player从设备列表里面往前或往后找设备，并且过滤掉指定字符串的设备</span>
+<span class="cm">   @param</span>
+<span class="cm">   			flit:过滤字符串， 查找设备时发现设备logo包含这个字符串的会被过滤</span>
+<span class="cm">			direct：查找方向， 1:往后， 0：往前</span>
+<span class="cm">   @return   查找到符合条件的设备逻辑盘符， 找不到返回NULL</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">music_player_get_dev_flit</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">flit</span><span class="p">,</span><span class="w"> </span><span class="nx">u8</span><span class="w"> </span><span class="nx">direct</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>flit</p></td>
+<td><p>过滤字符串， 查找设备时发现设备logo包含这个字符串的会被过滤</p></td>
+</tr>
+<tr class="row-odd"><td><p>direct</p></td>
+<td><p>查找方向， 1:往后， 0：往前</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_dev_flit</span><span class="p">(</span><span class="s2">&quot;_rec&quot;</span><span class="p">,</span><span class="mf">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-pp">
+<h3><span class="section-number">1.8.4.22. </span>music_player_pp<a class="headerlink" href="#music-player-pp" title="Link to this heading"></a></h3>
+<p>music_player播放/暂停</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player播放/暂停</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_pp</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_pp</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-stop">
+<h3><span class="section-number">1.8.4.23. </span>music_player_stop<a class="headerlink" href="#music-player-stop" title="Link to this heading"></a></h3>
+<p>music_player解码停止</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player解码停止</span>
+<span class="cm">   @param</span>
+<span class="cm">			 fsn_release：</span>
+<span class="cm">				1：释放扫盘句柄</span>
+<span class="cm">				0：不释放扫盘句柄</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note	 如果释放了扫盘句柄，需要重新扫盘，否则播放失败</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="ow">void</span><span class="w"> </span><span class="nx">music_player_stop</span><span class="p">(</span><span class="nx">u8</span><span class="w"> </span><span class="nx">fsn_release</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>fsn_release</p></td>
+<td><p>是否释放扫盘句柄，1：释放扫盘句柄   0：不释放扫盘句柄</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_stop</span><span class="p">(</span><span class="mf">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-ff">
+<h3><span class="section-number">1.8.4.24. </span>music_player_ff<a class="headerlink" href="#music-player-ff" title="Link to this heading"></a></h3>
+<p>music_player快进</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player快进</span>
+<span class="cm">   @param	 step：快进步进</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="ow">void</span><span class="w"> </span><span class="nx">music_player_ff</span><span class="p">(</span><span class="kr">int</span><span class="w"> </span><span class="nx">step</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>step</p></td>
+<td><p>快进步进(秒)</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_ff</span><span class="p">(</span><span class="mf">3</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-fr">
+<h3><span class="section-number">1.8.4.25. </span>music_player_fr<a class="headerlink" href="#music-player-fr" title="Link to this heading"></a></h3>
+<p>music_player快退</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player快退</span>
+<span class="cm">   @param	 step：快退步进</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="ow">void</span><span class="w"> </span><span class="nx">music_player_fr</span><span class="p">(</span><span class="kr">int</span><span class="w"> </span><span class="nx">step</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>step</p></td>
+<td><p>快退步进(秒)</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_fr</span><span class="p">(</span><span class="mf">3</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-set-repeat-mode">
+<h3><span class="section-number">1.8.4.26. </span>music_player_set_repeat_mode<a class="headerlink" href="#music-player-set-repeat-mode" title="Link to this heading"></a></h3>
+<p>music_player设置播放循环模式</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player设置播放循环模式</span>
+<span class="cm">   @param	 mode：循环模式</span>
+<span class="cm">				FCYCLE_ALL</span>
+<span class="cm">				FCYCLE_ONE</span>
+<span class="cm">				FCYCLE_FOLDER</span>
+<span class="cm">				FCYCLE_RANDOM</span>
+<span class="cm">   @return  循环模式</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_set_repeat_mode</span><span class="p">(</span><span class="nx">u8</span><span class="w"> </span><span class="nx">mode</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>mode</p></td>
+<td><p>循环模式</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_set_repeat_mode</span><span class="p">(</span><span class="nx">FCYCLE_ONE</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-change-repeat-mode">
+<h3><span class="section-number">1.8.4.27. </span>music_player_change_repeat_mode<a class="headerlink" href="#music-player-change-repeat-mode" title="Link to this heading"></a></h3>
+<p>music_player切换循环模式</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player切换循环模式</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   循环模式</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_change_repeat_mode</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_change_repeat_mode</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-delete-playing-file">
+<h3><span class="section-number">1.8.4.28. </span>music_player_delete_playing_file<a class="headerlink" href="#music-player-delete-playing-file" title="Link to this heading"></a></h3>
+<p>music_player删除当前播放文件,并播放下一曲</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player删除当前播放文件,并播放下一曲</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_delete_playing_file</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_delete_playing_file</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-prev">
+<h3><span class="section-number">1.8.4.29. </span>music_player_play_prev<a class="headerlink" href="#music-player-play-prev" title="Link to this heading"></a></h3>
+<p>music_player播放上一曲</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player播放上一曲</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_prev</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：
+无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_prev</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-next">
+<h3><span class="section-number">1.8.4.30. </span>music_player_play_next<a class="headerlink" href="#music-player-play-next" title="Link to this heading"></a></h3>
+<p>music_player播放下一曲</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player播放下一曲</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_next</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_next</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-first-file">
+<h3><span class="section-number">1.8.4.31. </span>music_player_play_first_file<a class="headerlink" href="#music-player-play-first-file" title="Link to this heading"></a></h3>
+<p>music_player播放第一曲</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player播放第一曲</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_first_file</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>logo</p></td>
+<td><p>逻辑盘符</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例；</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_first_file</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-last-file">
+<h3><span class="section-number">1.8.4.32. </span>music_player_play_last_file<a class="headerlink" href="#music-player-play-last-file" title="Link to this heading"></a></h3>
+<p>music_player播放最后一曲</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player播放最后一曲</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_last_file</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_last_file</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-auto-next">
+<h3><span class="section-number">1.8.4.33. </span>music_player_play_auto_next<a class="headerlink" href="#music-player-play-auto-next" title="Link to this heading"></a></h3>
+<p>music_player自动播放下一曲
+原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player自动播放下一曲</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_auto_next</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_auto_next</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-folder-prev">
+<h3><span class="section-number">1.8.4.34. </span>music_player_play_folder_prev<a class="headerlink" href="#music-player-play-folder-prev" title="Link to this heading"></a></h3>
+<p>music_player切换上一个文件夹</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player上一个文件夹</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_folder_prev</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_folder_prev</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-folder-next">
+<h3><span class="section-number">1.8.4.35. </span>music_player_play_folder_next<a class="headerlink" href="#music-player-play-folder-next" title="Link to this heading"></a></h3>
+<p>music_player 切换下一个文件夹</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player下一个文件夹</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_folder_next</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：无</p>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_folder_next</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-devcie-prev">
+<h3><span class="section-number">1.8.4.36. </span>music_player_play_devcie_prev<a class="headerlink" href="#music-player-play-devcie-prev" title="Link to this heading"></a></h3>
+<p>music_player 切换上一个设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player上一个设备</span>
+<span class="cm">   @param	 bp：断点信息</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_devcie_prev</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__breakpoint</span><span class="w"> </span><span class="o">*</span><span class="nx">bp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>bp</p></td>
+<td class="text-left"><p>断点信息</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_devcie_prev</span><span class="p">(</span><span class="nx">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-devcie-next">
+<h3><span class="section-number">1.8.4.37. </span>music_player_play_devcie_next<a class="headerlink" href="#music-player-play-devcie-next" title="Link to this heading"></a></h3>
+<p>music_player 切换下一个设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player下一个设备</span>
+<span class="cm">   @param	 bp：断点信息</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_devcie_next</span><span class="p">(</span><span class="nx">struct</span><span class="w"> </span><span class="nx">__breakpoint</span><span class="w"> </span><span class="o">*</span><span class="nx">bp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>bp</p></td>
+<td class="text-left"><p>断点信息</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_devcie_next</span><span class="p">(</span><span class="nx">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-by-breakpoint">
+<h3><span class="section-number">1.8.4.38. </span>music_player_play_by_breakpoint<a class="headerlink" href="#music-player-play-by-breakpoint" title="Link to this heading"></a></h3>
+<p>music_player断点播放指定设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player断点播放指定设备</span>
+<span class="cm">   @param</span>
+<span class="cm">   			 logo：逻辑盘符，如：sd0/sd1/udisk0</span>
+<span class="cm">   			 bp：断点信息</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_by_breakpoint</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">,</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__breakpoint</span><span class="w"> </span><span class="o">*</span><span class="nx">bp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>bp</p></td>
+<td class="text-left"><p>断点信息</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_by_breakpoint</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">,</span><span class="nx">bp</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-by-number">
+<h3><span class="section-number">1.8.4.39. </span>music_player_play_by_number<a class="headerlink" href="#music-player-play-by-number" title="Link to this heading"></a></h3>
+<p>music_playe序号播放指定设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player序号播放指定设备</span>
+<span class="cm">   @param</span>
+<span class="cm">   			 logo：逻辑盘符，如：sd0/sd1/udisk0</span>
+<span class="cm">   			 number：指定播放序号</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_by_number</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">,</span><span class="w"> </span><span class="nx">u32</span><span class="w"> </span><span class="nx">number</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>number</p></td>
+<td class="text-left"><p>指定播放序号</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_by_number</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">,</span><span class="mf">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-by-sclust">
+<h3><span class="section-number">1.8.4.40. </span>music_player_play_by_sclust<a class="headerlink" href="#music-player-play-by-sclust" title="Link to this heading"></a></h3>
+<p>music_player簇号播放指定设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player簇号播放指定设备</span>
+<span class="cm">   @param</span>
+<span class="cm">   			 logo：逻辑盘符，如：sd0/sd1/udisk0</span>
+<span class="cm">   			 sclust：指定播放簇号</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_by_sclust</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">,</span><span class="w"> </span><span class="nx">u32</span><span class="w"> </span><span class="nx">sclust</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>sclust</p></td>
+<td class="text-left"><p>指定播放簇号</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">u32</span><span class="w"> </span><span class="nx">sclust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_get_file_sclust</span><span class="p">();</span>
+<span class="nx">music_player_play_by_sclust</span><span class="p">(</span><span class="s2">&quot;sd0&quot;</span><span class="p">,</span><span class="nx">sclust</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-by-path">
+<h3><span class="section-number">1.8.4.41. </span>music_player_play_by_path<a class="headerlink" href="#music-player-play-by-path" title="Link to this heading"></a></h3>
+<p>music_player路径播放指定设备</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player路径播放指定设备</span>
+<span class="cm">   @param</span>
+<span class="cm">   			 logo：逻辑盘符，如：sd0/sd1/udisk0, 设置为NULL，为默认当前播放设备</span>
+<span class="cm">   			 path：指定播放路径</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_by_path</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">,</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>path</p></td>
+<td class="text-left"><p>指定播放路径</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">int</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_by_path</span><span class="p">(</span><span class="s2">&quot;udisk0&quot;</span><span class="p">,</span><span class="s2">&quot;/test.wav&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-record-folder">
+<h3><span class="section-number">1.8.4.42. </span>music_player_play_record_folder<a class="headerlink" href="#music-player-play-record-folder" title="Link to this heading"></a></h3>
+<p>music_player录音区分切换播放</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music_player录音区分切换播放</span>
+<span class="cm">   @param</span>
+<span class="cm">   			 logo：逻辑盘符，如：sd0/sd1/udisk0, 设置为NULL，为默认当前播放设备</span>
+<span class="cm">   			 bp：断点信息</span>
+<span class="cm">   @return   播放错误码</span>
+<span class="cm">   @note	 通过指定设备盘符，接口内部通过解析盘符是否&quot;_rec&quot;</span>
+<span class="cm">   			 来确定是切换到录音播放设备还是非录音播放设备</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="kr">int</span><span class="w"> </span><span class="nx">music_player_play_record_folder</span><span class="p">(</span><span class="kr">char</span><span class="w"> </span><span class="o">*</span><span class="nx">logo</span><span class="p">,</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__breakpoint</span><span class="w"> </span><span class="o">*</span><span class="nx">bp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>logo</p></td>
+<td class="text-left"><p>逻辑盘符</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>bp</p></td>
+<td class="text-left"><p>断点信息</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">music_player_play_record_folder</span><span class="p">(</span><span class="nx">NULL</span><span class="p">,</span><span class="nx">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="music_player_api.html" class="btn btn-neutral float-left" title="1.7. 音乐播放" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../btstack/index.html" class="btn btn-neutral float-right" title="2. 蓝牙协议栈" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

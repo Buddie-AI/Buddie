@@ -1,0 +1,36 @@
+# 声场扩宽器
+
+## 功能介绍
+
+- 该模块可依据不同参数组合进行拓宽数据声场宽度，提供声音受众者的临场感。
+- 只支持立体声
+
+## 参数简述
+
+- **PreLimiter Threshold** ：       数据预处理限幅器阈值，限制输入数据最大赋值。
+- **PreLimiter ReleaseTime** ：     数据预处理限幅器释放时间，越大，数据从被限制到恢复时间越久。
+- **PreLimiter DectectTime** ：     数据预处理限幅器对输入信号提前检测时间，越大，该模块产生的数据时延越长。
+---
+- **Diffuse Depth** ： 声场弥散深度调节，越大声场弥散越强。
+- **Widen Width** ： 声场宽度调节，越大越宽。
+- **Widen Processing Frequency Low** ： 最低声场宽度处理频率，用于选择所需扩宽声场频率范围的低频点。
+- **Widen  Processing Frequency High** ： 最高声场宽度处理频率，用于选择所需扩宽声场频率范围的高频点。
+- **LR Limiter Release Time**： LR部分限幅器释放时间，越大，数据从被限制到恢复时间越久。
+- **LR Limiter Threshold**： LR部分限幅器阈值，限制输入数据最大赋值。
+- **Center Highpass Frequency**： 中置高通滤波截止频率，用于滤除非目标处理频率成分。
+- **Center Lowpass Frequency**： 中置低通滤波截止频率，用于滤除非目标处理频率成分。
+- **Center Boost Threshold**： 中置成分提升阈值，用于提升该阈值附近频率成分响度。
+- **Center Boost Gain**： 中置成分提升增益，用于设置响度提升程度。
+- **Center Limiter Release Time**： 中置限幅器释放时间，越大，数据从被限制到恢复时间越久。
+- **Center Limiter Threshold**： 中置限幅器阈值，限制输入数据最大赋值。
+- **Surround NoiseGate Threshold**： 环绕声噪声门限阈值，用于滤除环绕声中低于该阈值成分。
+- **Surround Boost Threshold**： 环绕声成分提升阈值，用于提升能量在该阈值附近成分的响度。
+- **Surround Boost Gain**： 环绕声成分提升增益，用于设置响度提升程度。
+- **Surround Highpass Frequency**： 环绕声高通滤波截止频率，用于滤除非目标处理低频成分。
+- **Surround Lowpass Frequency**： 环绕声低通滤波截止频率，用于滤除非目标处理高频成分。
+- **Surround Limiter Release Time**： 环绕声限幅器释放时间，越大，数据从被限制到恢复时间越久。
+- **Surround Limiter Threshold**： 环绕声限幅器阈值，限制输入数据最大赋值。
+---
+- **LR Gain**：LR声音增益值，越大，LR声音占比越强，声场宽度越宽。
+- **Center Gain**：中置声音增益值，越大，中置占比越强，声场宽度会相应降低。
+- **Surround Gain**：环绕声音增益值，越大，环绕声占比越强，空间弥散度越好，但对白场景人声会相应变得模糊。

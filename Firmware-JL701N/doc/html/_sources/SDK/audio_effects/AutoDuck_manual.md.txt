@@ -1,0 +1,36 @@
+# 自动闪避（AutoDuck）
+
+## 功能介绍
+
+自动闪避功能是指根据当前前台音频（闪避目标）的音量幅值，自动降低后台音频（背景音乐）的音量幅值，突出当前音频。
+
+## 参数介绍
+
+- **AutoDuck**
+    * **闪避值 &emsp;&emsp; &emsp;&emsp;[Duck amount]**：背景音乐闪避的音量值（dB）
+    * **启动时间 &emsp;&emsp;&emsp; [Attack]**：淡出至目标音量的启动时间（ms）
+    * **释放时间 &emsp;&emsp;&emsp; [Release]**：淡入至原音量的释放时间（ms）
+    * **保持时间 &emsp;&emsp;&emsp; [Hold time]**：闪避后音量的保持时间，防止音乐音量的频繁变化（ms）
+
+- **AutoDuck Trigger**
+    * **检测阈值 &emsp;&emsp;&emsp; [Threshold]**：检测前台音频的阈值，音量大于该值，背景音乐闪避（dB）
+
+## 使用示例
+
+- 在音乐播放通路串入`AutoDuck`（响应器），在叠加提示音通路串入`AutoDuck Trigger`（触发器），当提示音音量值超过设定的阈值时，音乐通路进行闪避处理。
+- 支持多个触发源如mic、提示音（触发器数量无上限）均可触发音乐闪避。
+
+## 音量联动调节
+
+- 支持根据不同音量，配置不同的闪避幅度。
+- 使用此功能需要在`audio_config_def.h`中使能`AUDIO_AUTODUCK_LINK_VOLUME`
+- 根据需求在节点中添加多个配置项，根据不同音量切换切换不同配置项。
+注：节点名称需要与接口中的node_name对应。
+![AutoDuck](./assets/autoduck_link_volume.png)
+```c
+/*
+ * 1、需要在每一个数据流callback里的start事件内调用该函数初始化一次。
+ * 2、需要在app_audio_set_volume中调用。
+ * */
+int autoduck_link_volume()
+```

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.7. 音乐播放 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1.8. muisc player应用说明" href="music_player.html" />
+    <link rel="prev" title="1.6. A2DP播放接口" href="a2dp_api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. 音频播放</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tone_api.html">1.1. 提示音</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_api.html">1.2. 铃声</a></li>
+<li class="toctree-l2"><a class="reference internal" href="key_tone_api.html">1.3. 按键音</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tws_tone_api.html">1.4. 提示音(TWS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tone_language.html">1.5. 多语言支持</a></li>
+<li class="toctree-l2"><a class="reference internal" href="a2dp_api.html">1.6. A2DP播放接口</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.7. 音乐播放</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-play">1.7.1. music_file_play</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-play-callback">1.7.2. music_file_play_callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-music-file-player">1.7.3. get_music_file_player</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-player-pp">1.7.4. music_file_player_pp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-player-fr">1.7.5. music_file_player_fr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-player-ff">1.7.6. music_file_player_ff</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-get-cur-time">1.7.7. music_file_get_cur_time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-get-total-time">1.7.8. music_file_get_total_time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-set-speed">1.7.9. music_file_set_speed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-speed-up">1.7.10. music_file_speed_up</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-speed-down">1.7.11. music_file_speed_down</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-ab-repeat-set">1.7.12. music_file_ab_repeat_set</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-ab-repeat-switch">1.7.13. music_file_ab_repeat_switch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-get-breakpoints">1.7.14. music_file_get_breakpoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#music-file-get-player-status">1.7.15. music_file_get_player_status</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="music_player.html">1.8. muisc player应用说明</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">1. </span>音频播放</a> &raquo;</li>
+      <li><span class="section-number">1.7. </span>音乐播放</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">1.7. </span>音乐播放<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>音乐文件播放API是系统提供的用于播放 U盘或SD卡 的文件的接口。</p>
+<section id="music-file-play">
+<h2><span class="section-number">1.7.1. </span>music_file_play<a class="headerlink" href="#music-file-play" title="Link to this heading"></a></h2>
+<p>播放单个音乐文件，返回对应的操作句柄</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_file_play</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">audio_dec_breakpoint</span><span class="w"> </span><span class="o">*</span><span class="n">dbp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>dbp</p></td>
+<td><p>断点信息</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">file</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;&gt;&gt;&gt;[test]:err open folder</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">music_file_play</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">dbp</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-play-callback">
+<h2><span class="section-number">1.7.2. </span>music_file_play_callback<a class="headerlink" href="#music-file-play-callback" title="Link to this heading"></a></h2>
+<p>播放单个音乐文件,支持播放事件回调并返回对应操作句柄。可用于播放完提示音后执行其它操作</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_file_play_callback</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">priv</span><span class="p">,</span><span class="w"> </span><span class="n">music_player_cb_t</span><span class="w"> </span><span class="n">callback</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">audio_dec_breakpoint</span><span class="w"> </span><span class="o">*</span><span class="n">dbp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>priv</p></td>
+<td><p>回调callback函数传递的私有参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>callback</p></td>
+<td><p>回调函数</p></td>
+</tr>
+<tr class="row-even"><td><p>dbp</p></td>
+<td><p>断点信息</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">play_poweron_callback</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">priv</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">stream_event</span><span class="w"> </span><span class="n">event</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">event</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">STREAM_EVENT_STOP</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 音乐播放结束，do something</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">music_file_play_callback</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">play_poweron_callback</span><span class="err">，</span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="get-music-file-player">
+<h2><span class="section-number">1.7.3. </span>get_music_file_player<a class="headerlink" href="#get-music-file-player" title="Link to this heading"></a></h2>
+<p>返回打开的第一个音乐播放句柄</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">get_music_file_player</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="c1">//返回第一个打开的音乐播放器指针</span>
+</pre></div>
+</div>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-player-pp">
+<h2><span class="section-number">1.7.4. </span>music_file_player_pp<a class="headerlink" href="#music-file-player-pp" title="Link to this heading"></a></h2>
+<p>音乐播放暂停重开，播放中调用则暂停播放，再次调用则恢复播放，返回0代表暂停成功，-1表示暂停失败</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_player_pp</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>music_player</p></td>
+<td><p>打开文件播放时返回的句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="w"> </span><span class="n">music_file_player_pp</span><span class="p">(</span><span class="n">file_player</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-player-fr">
+<h2><span class="section-number">1.7.5. </span>music_file_player_fr<a class="headerlink" href="#music-file-player-fr" title="Link to this heading"></a></h2>
+<p>音乐快退,返回0代表成功，-1表示失败</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_player_fr</span><span class="p">(</span><span class="n">u16</span><span class="w"> </span><span class="n">step_s</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>step_s</p></td>
+<td><p>快退秒数</p></td>
+</tr>
+<tr class="row-even"><td><p>music_player</p></td>
+<td><p>对应的文件播放句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="n">music_file_player_fr</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">file_player</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-player-ff">
+<h2><span class="section-number">1.7.6. </span>music_file_player_ff<a class="headerlink" href="#music-file-player-ff" title="Link to this heading"></a></h2>
+<p>音乐快进,返回0代表成功，-1表示失败</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_player_ff</span><span class="p">(</span><span class="n">u16</span><span class="w"> </span><span class="n">step_s</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>step_s</p></td>
+<td><p>快进秒数</p></td>
+</tr>
+<tr class="row-even"><td><p>music_player</p></td>
+<td><p>对应的文件播放句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="n">music_file_player_ff</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">file_player</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-get-cur-time">
+<h2><span class="section-number">1.7.7. </span>music_file_get_cur_time<a class="headerlink" href="#music-file-get-cur-time" title="Link to this heading"></a></h2>
+<p>获取音乐文件当前播放时间,返回当前播放到多少s</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_get_cur_time</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>music_player</p></td>
+<td><p>打开文件播放时返回的句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">cur_time</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">music_file_get_cur_time</span><span class="p">(</span><span class="n">file_player</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-get-total-time">
+<h2><span class="section-number">1.7.8. </span>music_file_get_total_time<a class="headerlink" href="#music-file-get-total-time" title="Link to this heading"></a></h2>
+<p>获取音乐文件总共的播放时长，返回总共可以播多少s</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_get_total_time</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>music_player</p></td>
+<td><p>打开文件播放时返回的句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">total_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">local_music_get_total_time</span><span class="p">(</span><span class="n">file_player</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-set-speed">
+<h2><span class="section-number">1.7.9. </span>music_file_set_speed<a class="headerlink" href="#music-file-set-speed" title="Link to this heading"></a></h2>
+<p>设置音乐播放的速度，返回1代表成功，0,-1代表失败</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_set_speed</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">_speed_level</span><span class="w"> </span><span class="n">speed_mode</span><span class="p">)</span><span class="w"> </span><span class="c1">//设置播放速度</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>music_player</p></td>
+<td><p>文件播放句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>speed_mode</p></td>
+<td><p>设置档位, 值 0,1,2 …依次对应0.5,0.75,1,1.25,1.5,2,3,4倍速</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="n">music_file_set_speed</span><span class="p">(</span><span class="n">file_player</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="c1">//1倍速播放</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-speed-up">
+<h2><span class="section-number">1.7.10. </span>music_file_speed_up<a class="headerlink" href="#music-file-speed-up" title="Link to this heading"></a></h2>
+<p>增加音乐播放的速度，每调用一次，音乐播放的速度都会增加一档，增加到最大档 4 倍速后再调用就不再增加播放速度,返回1代表成功，0,-1代表失败
+总有7个档位的播放速度：</p>
+<blockquote>
+<div><p>0.5  倍数
+0.75 倍数
+1    倍数
+1.25 倍数
+1.5  倍数
+2    倍数
+3    倍数
+4    倍数</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_speed_up</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">)</span><span class="w"> </span><span class="c1">//倍速播放接口</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>music_player</p></td>
+<td><p>打开文件播放时返回的句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="n">music_file_speed_up</span><span class="p">(</span><span class="n">file_player</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-speed-down">
+<h2><span class="section-number">1.7.11. </span>music_file_speed_down<a class="headerlink" href="#music-file-speed-down" title="Link to this heading"></a></h2>
+<p>降低音乐播放的速度，每调用一次，音乐播放的速度都会减小一档，减小到最小档 0.5 倍速后再调用就不再减小播放速度,返回1代表成功，0,-1代表失败
+总有7个档位的播放速度：</p>
+<blockquote>
+<div><p>0.5  倍数
+0.75 倍数
+1    倍数
+1.25 倍数
+1.5  倍数
+2    倍数
+3    倍数
+4    倍数</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_speed_down</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">)</span><span class="w"> </span><span class="c1">//慢速播放接口</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>music_player</p></td>
+<td><p>打开文件播放时返回的句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">local_music_speed_down</span><span class="p">();</span>
+
+<span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="w"> </span><span class="n">music_file_speed_down</span><span class="p">(</span><span class="n">file_player</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-ab-repeat-set">
+<h2><span class="section-number">1.7.12. </span>music_file_ab_repeat_set<a class="headerlink" href="#music-file-ab-repeat-set" title="Link to this heading"></a></h2>
+<p>设置AB点复读功能,根据参数设置断点A，断点B,还是取消断点,返回0代表失败，1代表成功</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_ab_repeat_set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">ab_cmd</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ab_mode</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>ab_cmd</p></td>
+<td><p>命令，包括设置断点A,设置断点B，取消
+断点，可配置值如下
+AUDIO_IOCTRL_CMD_SET_BREAKPOINT_A
+AUDIO_IOCTRL_CMD_SET_BREAKPOINT_B
+AUDIO_IOCTRL_CMD_SET_BREAKPOINT_MODE</p></td>
+</tr>
+<tr class="row-even"><td><p>ab_mode</p></td>
+<td><p>参数，没有的时候传0</p></td>
+</tr>
+<tr class="row-odd"><td><p>music_player</p></td>
+<td><p>打开文件播放时返回的句柄</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="w">       </span><span class="n">music_file_ab_repeat_set</span><span class="p">(</span><span class="n">AUDIO_IOCTRL_CMD_SET_BREAKPOINT_B</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">_player</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-ab-repeat-switch">
+<h2><span class="section-number">1.7.13. </span>music_file_ab_repeat_switch<a class="headerlink" href="#music-file-ab-repeat-switch" title="Link to this heading"></a></h2>
+<p>设置AB点复读功能，每调用一次 会依次切换状态： 设置断点A，设置断点B，取消AB断点重复播放，返回0代表失败，1代表成功</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_ab_repeat_switch</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">)</span>
+
+<span class="nl">参数</span><span class="p">:</span>
+
+<span class="w">  </span><span class="o">============</span><span class="w">   </span><span class="o">===================================</span>
+<span class="w">  </span><span class="n">music_player</span><span class="w">    </span><span class="n">打开文件播放时返回的句柄</span>
+<span class="w">  </span><span class="o">============</span><span class="w">   </span><span class="o">===================================</span>
+</pre></div>
+</div>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="n">music_file_ab_repeat_switch</span><span class="p">(</span><span class="n">file_player</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-get-breakpoints">
+<h2><span class="section-number">1.7.14. </span>music_file_get_breakpoints<a class="headerlink" href="#music-file-get-breakpoints" title="Link to this heading"></a></h2>
+<p>获取当前播放文件的断点信息，返回0代表成功，-1代表失败</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_get_breakpoints</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">audio_dec_breakpoint</span><span class="w"> </span><span class="o">*</span><span class="n">bp</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>bp</p></td>
+<td><p>用于保存断点信息的变量指针</p></td>
+</tr>
+<tr class="row-even"><td><p>music_player</p></td>
+<td><p>打开文件播放时返回的句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">music_file_get_breakpoints</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bp</span><span class="o">-&gt;</span><span class="n">dbp</span><span class="p">,</span><span class="n">file_player</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="music-file-get-player-status">
+<h2><span class="section-number">1.7.15. </span>music_file_get_player_status<a class="headerlink" href="#music-file-get-player-status" title="Link to this heading"></a></h2>
+<p>获取当前播放状态，返回状态值包括播放，暂停，结束</p>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">music_file_get_player_status</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">music_player</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>music_player</p></td>
+<td><p>打开文件播放时返回的句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">file_player</span><span class="w"> </span><span class="o">*</span><span class="n">file_player</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_music_file_player</span><span class="p">();</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">music_file_get_player_status</span><span class="p">(</span><span class="n">file_player</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="a2dp_api.html" class="btn btn-neutral float-left" title="1.6. A2DP播放接口" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="music_player.html" class="btn btn-neutral float-right" title="1.8. muisc player应用说明" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UI 配置说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>UI 配置说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ui">
+<h1>UI 配置说明<a class="headerlink" href="#ui" title="Link to this heading"></a></h1>
+<p>UI的设置在可视化配置工具的UI配置页面，如下图所示，在UI配置页面对UI进行使能，用户可以选择对应的UI</p>
+<blockquote id="ui-image">
+<div><figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../../../_images/UI配置.png"><img alt="../../../_images/UI%E9%85%8D%E7%BD%AE.png" src="../../../_images/UI%E9%85%8D%E7%BD%AE.png" style="width: 1112.8px; height: 700.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">UI配置</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<section id="led7">
+<h2>LED7(数码管)配置<a class="headerlink" href="#led7" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>UI类型配置选择：LED数码管屏，如下图所示：</p>
+</div></blockquote>
+<blockquote id="nixie-image">
+<div><figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../../_images/选择数码管.png"><img alt="../../../_images/%E9%80%89%E6%8B%A9%E6%95%B0%E7%A0%81%E7%AE%A1.png" src="../../../_images/%E9%80%89%E6%8B%A9%E6%95%B0%E7%A0%81%E7%AE%A1.png" style="width: 941.6px; height: 60.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">选择数码管</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>选择了LED数码管后，可根据实际情况进行设置，以下为配置参数及参数说明：</p>
+</div></blockquote>
+<blockquote id="nixie-default-image">
+<div><figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../../../_images/数码管默认配置.png"><img alt="../../../_images/%E6%95%B0%E7%A0%81%E7%AE%A1%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE.png" src="../../../_images/%E6%95%B0%E7%A0%81%E7%AE%A1%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE.png" style="width: 923.2px; height: 75.2px;" /></a>
+<figcaption>
+<p><span class="caption-text">数码管默认配置</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>LED屏驱动跑RAM</strong> ：占用ram约35K，led7_scan调用到的全部代码会存放在ram中，且扫描中断设置为 <strong>不可屏蔽中断</strong>，不使用不可屏蔽中断有可能出现闪屏的风险。</p>
+<p><strong>LED7脚数码管屏</strong> ：使能led7脚屏</p>
+</div></blockquote>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>关于不可屏蔽中断使用方法及注意事项请阅读： <code class="docutils literal notranslate"><span class="pre">操作系统</span></code> 的 <code class="docutils literal notranslate"><span class="pre">临界区（不可屏蔽中断）</span></code> 及 <code class="docutils literal notranslate"><span class="pre">不可屏蔽中断</span></code> 。</p>
+</div>
+<blockquote id="nixie-io-image">
+<div><figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../../../_images/数码管IO配置.png"><img alt="../../../_images/%E6%95%B0%E7%A0%81%E7%AE%A1IO%E9%85%8D%E7%BD%AE.png" src="../../../_images/%E6%95%B0%E7%A0%81%E7%AE%A1IO%E9%85%8D%E7%BD%AE.png" style="width: 920.0px; height: 277.6px;" /></a>
+<figcaption>
+<p><span class="caption-text">数码管引脚配置</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>LED屏引脚配置</strong> ：选择对应的IO。</p>
+</div></blockquote>
+</section>
+<section id="lcd">
+<h2>LCD配置<a class="headerlink" href="#lcd" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>UI类型选择：LCD点阵屏（soundbar），如下图所示。</p>
+</div></blockquote>
+<blockquote id="lcd-image">
+<div><figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../../../_images/选择LCD屏.png"><img alt="../../../_images/%E9%80%89%E6%8B%A9LCD%E5%B1%8F.png" src="../../../_images/%E9%80%89%E6%8B%A9LCD%E5%B1%8F.png" style="width: 940.0px; height: 60.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">选择LCD屏</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>选择了LCD后，可根据实际情况进行设置，以下为配置参数以及说明：</p>
+</div></blockquote>
+<blockquote id="lcd-cfg-image">
+<div><figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../../../_images/LCD配置.png"><img alt="../../../_images/LCD%E9%85%8D%E7%BD%AE.png" src="../../../_images/LCD%E9%85%8D%E7%BD%AE.png" style="width: 924.0px; height: 336.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">LCD屏配置</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>LCD SPI口选择</strong> ：选择对应的spi（SPI需在板级配置页里的&lt;硬件SPI1&gt;或&lt;硬件SPI2&gt;进行配置）。</p>
+<p><strong>歌词显示</strong> ：暂不支持。</p>
+<p><strong>保存歌词的时间标签到flash</strong> :暂不支持。</p>
+<p><strong>OLED屏使能</strong> ：使能OLED屏。</p>
+<p><strong>SSD1306</strong> :选择SSD1306驱动。</p>
+</div></blockquote>
+<blockquote id="lcd-io-image">
+<div><figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../../../_images/LCD引脚配置.png"><img alt="../../../_images/LCD%E5%BC%95%E8%84%9A%E9%85%8D%E7%BD%AE.png" src="../../../_images/LCD%E5%BC%95%E8%84%9A%E9%85%8D%E7%BD%AE.png" style="width: 923.2px; height: 176.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">LCD引脚配置</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>LCD屏引脚配置</strong> ：选择对应的IO。</p>
+</div></blockquote>
+</section>
+<section id="lcd-ui">
+<h2>LCD UI 资源下载 说明<a class="headerlink" href="#lcd-ui" title="Link to this heading"></a></h2>
+<p>在 <strong>UI工具说明</strong> 文档中，通过工具生成UI资源后，我们需要将其下载进flash
+在我们提供的UI工程，点击生成UI资源后，如下图 UI 资源生成；生成后的资源会根据copy_file.bat被放到和UI工程文件夹同级目录的
+ui_resource文件夹下,如下图 UI资源存放位置</p>
+<blockquote id="lcd-res0-image">
+<div><figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../../../_images/ui_resource_00.png"><img alt="../../../_images/ui_resource_00.png" src="../../../_images/ui_resource_00.png" style="width: 564.8000000000001px; height: 169.60000000000002px;" /></a>
+<figcaption>
+<p><span class="caption-text">UI 资源生成</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<blockquote id="lcd-res1-image">
+<div><figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="../../../_images/ui_resource_01.png"><img alt="../../../_images/ui_resource_01.png" src="../../../_images/ui_resource_01.png" style="width: 550.4px; height: 182.4px;" /></a>
+<figcaption>
+<p><span class="caption-text">UI 资源存放位置</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<p>在下载目录中新建两个文件夹，分别命名为 JL、font，并将ui_resource文件夹下的文件拷贝到JL、font文件夹中，如图 UI文件命名，分别用来存放图片、控件属性；字库文件</p>
+<blockquote id="lcd-res2-image">
+<div><figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="../../../_images/ui_resource_02.png"><img alt="../../../_images/ui_resource_02.png" src="../../../_images/ui_resource_02.png" style="width: 748.0px; height: 304.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">UI 文件命名</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<p>最后在download.bat中将JL、font连个文件夹一起下进flash的res区，如图 UI 文件下载</p>
+<blockquote id="lcd-res3-image">
+<div><figure class="align-center" id="id11">
+<a class="reference internal image-reference" href="../../../_images/ui_resource_03.png"><img alt="../../../_images/ui_resource_03.png" src="../../../_images/ui_resource_03.png" style="width: 556.4px; height: 349.6px;" /></a>
+<figcaption>
+<p><span class="caption-text">UI 文件下载</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<p>按照以上步骤执行，保证程序正常下载，可接入LCD屏查看效果</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.2. 常用蓝牙库接口函数 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.3. rcsp开发说明" href="rcsp.html" />
+    <link rel="prev" title="2.1. 协议栈事件说明" href="event.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. 蓝牙协议栈</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="event.html">2.1. 协议栈事件说明</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.2. 常用蓝牙库接口函数</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.2.1. 蓝牙库变量型参数配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">2.2.1.1. 蓝牙协议库的打印</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">2.2.1.2. 功能开关，值是0关 1开</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">2.2.1.3. 其它参数配置</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">2.2.2. 蓝牙库函数型参数配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bt-set-super-timeout-value">2.2.2.1. bt_set_super_timeout_value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-set-page-timeout-value">2.2.2.2. bt_set_page_timeout_value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-set-update-battery-time">2.2.2.3. bt_set_update_battery_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-set-simple-pair-param">2.2.2.4. bt_set_simple_pair_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-change-hci-class-type">2.2.2.5. bt_change_hci_class_type</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">2.2.3. 蓝牙库注册接口的函数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bt-music-info-handle-register">2.2.3.1. bt_music_info_handle_register</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-spp-data-deal-handle-register">2.2.3.2. bt_spp_data_deal_handle_register</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-read-remote-name-handle-register">2.2.3.3. bt_read_remote_name_handle_register</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-music-vol-change-handle-register">2.2.3.4. bt_music_vol_change_handle_register</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-get-battery-value-register">2.2.3.5. bt_get_battery_value_register</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#weak">2.2.4. 蓝牙weak函数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bt-phone-date-and-time-feedback">2.2.4.1. bt_phone_date_and_time_feedback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-phonebook-packet-handler">2.2.4.2. bt_phonebook_packet_handler</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">2.2.5. 蓝牙状态获取接口</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bt-get-music-volume">2.2.5.1. bt_get_music_volume</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-check-conn-is-handup-for-addr">2.2.5.2. bt_check_conn_is_handup_for_addr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-get-current-remote-addr">2.2.5.3. bt_get_current_remote_addr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-get-esco-coder-busy-flag">2.2.5.4. bt_get_esco_coder_busy_flag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-get-curr-channel-state-bt-get-curr-channel-state-for-addr">2.2.5.5. bt_get_curr_channel_state/bt_get_curr_channel_state_for_addr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-get-connect-status">2.2.5.6. bt_get_connect_status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-get-total-connect-dev">2.2.5.7. bt_get_total_connect_dev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-a2dp-get-status">2.2.5.8. bt_a2dp_get_status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-get-call-status-bt-get-call-status-for-addr">2.2.5.9. bt_get_call_status/bt_get_call_status_for_addr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-remote-dev-company-ioctrl">2.2.5.10. bt_remote_dev_company_ioctrl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-check-esco-state-via-addr">2.2.5.11. bt_check_esco_state_via_addr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-restore-remote-device-info-opt">2.2.5.12. bt_restore_remote_device_info_opt</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">2.2.6. 蓝牙功能类函数接口</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bt-cmd-prepare-bt-cmd-prepare-for-addr">2.2.6.1. bt_cmd_prepare/bt_cmd_prepare_for_addr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt-make-ble-address">2.2.6.2. bt_make_ble_address</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rcsp.html">2.3. rcsp开发说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcsp%E6%8C%89%E9%94%AE%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E.html">2.4. rscp按键配置说明</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">2. </span>蓝牙协议栈</a> &raquo;</li>
+      <li><span class="section-number">2.2. </span>常用蓝牙库接口函数</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">2.2. </span>常用蓝牙库接口函数<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="id2">
+<h2><span class="section-number">2.2.1. </span>蓝牙库变量型参数配置<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>蓝牙协议栈的库会定义一些weak常量去做功能开关或者参数配置。
+不使用const目的主要是为了直接做向旧SDK兼容,如果用const客户替换后需要自行添加对应的const,否则编译不过.
+这些weak常量在用户层重新定义值,便可以实现开启或关闭功能,修改参数的目的,也是很方便的。
+下面介绍一些用户可能用到的参数</p>
+</div>
+<section id="id3">
+<h3><span class="section-number">2.2.1.1. </span>蓝牙协议库的打印<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>u8 l2cap_debug_enable = 0;       每bit代表一个类型的打印，代码空间够直接配置为0xff</p></li>
+<li><p>u8 rfcomm_debug_enable = 0;      每bit代表一个类型的打印，代码空间够直接配置为0xff</p></li>
+<li><p>u8 profile_debug_enable = 0;     每bit代表一个类型的打印，代码空间够直接配置为0xff</p></li>
+<li><p>u8 ble_debug_enable    = 0;      每bit代表一个类型的打印，代码空间够直接配置为0xff</p></li>
+<li><p>u8 btstack_tws_debug_enable = 0; 每bit代表一个类型的打印，代码空间够直接配置为0xff</p></li>
+</ol>
+</section>
+<section id="id4">
+<h3><span class="section-number">2.2.1.2. </span>功能开关，值是0关 1开<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>u8 a2dp_source_bqb_support = 0;     做发射器时去做BQB profile测试，有些项需要配置一下才能测试通过</p></li>
+<li><p>u8 user_at_cmd_send_support = 0;    支持收发自定义AT命令的流程</p></li>
+<li><p>u8 emitter_hfp_hf_support = 0;      置1时作为发射器时不允许A2DP连接</p></li>
+<li><p>u8 hfp_ag_profile_support = 0;      hfp ag协议流程支持开关</p></li>
+<li><p>u8 hsp_profile_support = 0;         HSP协议流程支持开关（支持设备很少，被HFP替代的）</p></li>
+<li><p>u8 hfp_profile_support = 0;         HFP电话协议流程支持开关</p></li>
+<li><p>u8 acp_profile_support = 0;         AVCTP音乐控制协议流程支持开关</p></li>
+<li><p>u8 a2dp_profile_support = 0;        A2DP高级音频协议流程支持开关</p></li>
+<li><p>u8 spp_profile_support = 0;         SPP协议流程支持开关</p></li>
+<li><p>u8 spp_up_profile_support = 0;      扩展spp协议流程支持开关，比如需要支持连7路</p></li>
+<li><p>u8 hid_profile_support = 0;         HID协议流程支持开关（默认仅支持音量加减）</p></li>
+<li><p>u8 pbap_profile_support = 0;        PBAP电话本协议流程支持开关</p></li>
+<li><p>u8 a2dp_support_delay_report = 0;   蓝牙库配置要不要支持delay report流程</p></li>
+<li><p>u8 sync_default_volume_every_time = 1;  配置是每次连上都给手机发本地音量还是只有配对的时候发</p></li>
+</ol>
+</section>
+<section id="id5">
+<h3><span class="section-number">2.2.1.3. </span>其它参数配置<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>u8 need_default_volume=0;(0-127,非0启动功能),配置要不要把本地的音量发给远端,注意有兼容问题,有些手机不在音乐状态可能是不接受的</p></li>
+</ol>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">2.2.2. </span>蓝牙库函数型参数配置<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>这类接口用于配置蓝牙库的全局变量，一般是初始化的时候配置有效，大部分不支持连接过程中配置。</p>
+</div>
+<section id="bt-set-super-timeout-value">
+<h3><span class="section-number">2.2.2.1. </span>bt_set_super_timeout_value<a class="headerlink" href="#bt-set-super-timeout-value" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能: 配置连接超时断开的检测时间，做主机才有效</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">bt_set_super_timeout_value</span><span class="p">(</span><span class="n">u16</span><span class="w"> </span><span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>time</p></td>
+<td><p>连接超时检测时间，单位毫秒</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bt-set-page-timeout-value">
+<h3><span class="section-number">2.2.2.2. </span>bt_set_page_timeout_value<a class="headerlink" href="#bt-set-page-timeout-value" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能: 配置单次回连page最大停止时间</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">bt_set_page_timeout_value</span><span class="p">(</span><span class="n">u16</span><span class="w"> </span><span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>time</p></td>
+<td><p>回连时间，单位毫秒</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bt-set-update-battery-time">
+<h3><span class="section-number">2.2.2.3. </span>bt_set_update_battery_time<a class="headerlink" href="#bt-set-update-battery-time" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能: 设置电量显示发送更新的周期时间，为0表示关闭电量显示功能</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">bt_set_update_battery_time</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>time</p></td>
+<td><p>0关闭电量显示功能，非0开启电量显示</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bt-set-simple-pair-param">
+<h3><span class="section-number">2.2.2.4. </span>bt_set_simple_pair_param<a class="headerlink" href="#bt-set-simple-pair-param" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能: 设置简易配对参数</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">bt_set_simple_pair_param</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">io_cap</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">oob_data</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">mitm</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>io_cap</p></td>
+<td><p>0: Display only 设置只有输出显示的能力</p></td>
+</tr>
+<tr class="row-even"><td><p>.</p></td>
+<td><p>1: Display YesNo 设置只有输入 YES和NO的能力，能够显示</p></td>
+</tr>
+<tr class="row-odd"><td><p>.</p></td>
+<td><p>2: KeyboardOnly 设备可以输入0-9,确认键 和YES/NO的能力,没有显示的能力</p></td>
+</tr>
+<tr class="row-even"><td><p>.</p></td>
+<td><p>3: NoInputNoOutput 设备没有输入和输出的能力</p></td>
+</tr>
+<tr class="row-odd"><td><p>oob_data</p></td>
+<td><p>0 : 不存在OOB身份验证数据</p></td>
+</tr>
+<tr class="row-even"><td><p>mitm</p></td>
+<td><p>0 : not protect 身份验证不需要保护“中间人”攻击。</p></td>
+</tr>
+<tr class="row-odd"><td><p>.</p></td>
+<td><p>1 :protect 身份验证需要防止“中间人”攻击。</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bt-change-hci-class-type">
+<h3><span class="section-number">2.2.2.5. </span>bt_change_hci_class_type<a class="headerlink" href="#bt-change-hci-class-type" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能: 提供接口修改设备类型信息，修改什么的类型，会影响到手机显示的图标或者搜索兼容性</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">bt_change_hci_class_type</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">class</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>class</p></td>
+<td><p>部分参考值见下方举例</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define BD_CLASS_WEARABLE_HEADSET   0x240404</span><span class="cm">/*ios10.2 display headset icon*/</span>
+<span class="cp">#define BD_CLASS_HANDS_FREE         0x240408</span><span class="cm">/*ios10.2 display bluetooth icon*/</span>
+<span class="cp">#define BD_CLASS_MICROPHONE         0x240410</span>
+<span class="cp">#define BD_CLASS_LOUDSPEAKER        0x240414</span>
+<span class="cp">#define BD_CLASS_HEADPHONES         0x240418</span>
+<span class="cp">#define BD_CLASS_CAR_AUDIO          0x240420</span>
+<span class="cp">#define BD_CLASS_HIFI_AUDIO         0x240428</span>
+<span class="cp">#define BD_CLASS_PHONEBOOK          0x340404</span>
+<span class="cp">#define BD_CLASS_PAN_DEV            0X020118</span>
+<span class="cp">#define BD_CLASS_MOUSE              0x002580</span>
+<span class="cp">#define BD_CLASS_KEYBOARD           0x002540</span>
+<span class="cp">#define BD_CLASS_KEYBOARD_MOUSE     0x0025C0</span>
+<span class="cp">#define BD_CLASS_REMOTE_CONTROL     0x00254C</span>
+<span class="cp">#define BD_CLASS_TRANSFER_HEALTH    0x10091C</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">2.2.3. </span>蓝牙库注册接口的函数<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>这类函数的参数一般是一个或多个函数指针，当蓝牙异步获取到消息的时候会及时的回调信息给用户层。</p>
+</div>
+<section id="bt-music-info-handle-register">
+<h3><span class="section-number">2.2.3.1. </span>bt_music_info_handle_register<a class="headerlink" href="#bt-music-info-handle-register" title="Link to this heading"></a></h3>
+<p>功能: 该注册的函数接口可以在蓝牙获取到音乐ID3数据的时候，传递数据给用户层使用。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">bt_music_info_handle_register</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">handler</span><span class="p">)(</span><span class="n">u8</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">info</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">len</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>handler</p></td>
+<td><p>传递函数名</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">user_get_bt_music_info</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">info</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">len</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+<span class="n">bt_music_info_handle_register</span><span class="p">(</span><span class="n">user_get_bt_music_info</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-spp-data-deal-handle-register">
+<h3><span class="section-number">2.2.3.2. </span>bt_spp_data_deal_handle_register<a class="headerlink" href="#bt-spp-data-deal-handle-register" title="Link to this heading"></a></h3>
+<p>功能: 该注册的函数接口可以在收到串口数据的时候及时传递到用户层进行处理</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">bt_spp_data_deal_handle_register</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">handler</span><span class="p">)(</span><span class="n">u8</span><span class="w"> </span><span class="n">packet_type</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">channel</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">packet</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">size</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>handler</p></td>
+<td><p>获取到数据或者状态后的回调函数</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+<p>注册函数的参数说明：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>packet_type</p></td>
+<td><p>数据类型</p></td>
+</tr>
+<tr class="row-even"><td><p>channel</p></td>
+<td><p>连接通道号</p></td>
+</tr>
+<tr class="row-odd"><td><p>packet</p></td>
+<td><p>接收的数据指针</p></td>
+</tr>
+<tr class="row-even"><td><p>size</p></td>
+<td><p>接收到的数据长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">spp_data_handler</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">packet_type</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">ch</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">packet</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">packet_type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+<span class="w">      </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;---spp connect:%x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ch</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">   </span><span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span>
+<span class="w">      </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;---spp disconnect:%x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ch</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">   </span><span class="k">case</span><span class="w"> </span><span class="mi">7</span><span class="p">:</span>
+<span class="w">      </span><span class="n">puts</span><span class="p">(</span><span class="s">&quot;spp_rx:&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">put_buf</span><span class="p">(</span><span class="n">packet</span><span class="p">,</span><span class="n">size</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">bt_spp_data_deal_handle_register</span><span class="p">(</span><span class="n">spp_data_handler</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-read-remote-name-handle-register">
+<h3><span class="section-number">2.2.3.3. </span>bt_read_remote_name_handle_register<a class="headerlink" href="#bt-read-remote-name-handle-register" title="Link to this heading"></a></h3>
+<p>功能: 该注册的函数接口可以在蓝牙获取到远端设备的名字是更新信息到用户层</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">bt_read_remote_name_handle_register</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">handle</span><span class="p">)(</span><span class="n">u8</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>handler</p></td>
+<td><p>获取到名字后的回调函数</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+<p>注册函数的参数说明：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>status</p></td>
+<td><p>1-获取失败   0-获取成功</p></td>
+</tr>
+<tr class="row-even"><td><p>addr</p></td>
+<td><p>配对设备地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p>配对设备名字</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">bt_read_remote_name</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;remote_name fail </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;remote_name : %s </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w">   </span><span class="n">put_buf</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">bt_read_remote_name_handle_register</span><span class="p">(</span><span class="n">bt_read_remote_name</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-music-vol-change-handle-register">
+<h3><span class="section-number">2.2.3.4. </span>bt_music_vol_change_handle_register<a class="headerlink" href="#bt-music-vol-change-handle-register" title="Link to this heading"></a></h3>
+<p>功能: 该注册的函数接口可以将手机与设备音乐模式的音量进行同步，将手机下发的音量值更新到用户层和获取用户层的音量发给手机</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">bt_music_vol_change_handle_register</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">handle</span><span class="p">)(</span><span class="kt">int</span><span class="w"> </span><span class="n">vol</span><span class="p">),</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">handle2</span><span class="p">)(</span><span class="kt">void</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>handler</p></td>
+<td><p>手机下发的音量传递到用户层回调接口</p></td>
+</tr>
+<tr class="row-even"><td><p>handle2</p></td>
+<td><p>调用同步音量命令时获取用户层的音量值发给手机</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">set_music_device_volume</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">volume</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">phone_get_device_vol</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+<span class="n">bt_music_vol_change_handle_register</span><span class="p">(</span><span class="n">set_music_device_volume</span><span class="p">,</span><span class="w"> </span><span class="n">phone_get_device_vol</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-get-battery-value-register">
+<h3><span class="section-number">2.2.3.5. </span>bt_get_battery_value_register<a class="headerlink" href="#bt-get-battery-value-register" title="Link to this heading"></a></h3>
+<p>功能: 协议栈会调用该函数注册的函数接口获取当前设备的电量，这个返回值是要转换成等级 0-9</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">bt_get_battery_value_register</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">handle</span><span class="p">)(</span><span class="kt">void</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>handler</p></td>
+<td><p>提供函数给协议栈获取电量等级</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>void</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">bt_get_battery_value</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="c1">//取消默认蓝牙定时发送电量给手机，需要更新电量给手机使用USER_CTRL_HFP_CMD_UPDATE_BATTARY命令</span>
+<span class="w">   </span><span class="cm">/*电量协议的是0-9个等级，请比例换算*/</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="n">get_cur_battery_level</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="n">bt_get_battery_value_register</span><span class="p">(</span><span class="n">bt_get_battery_value</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="weak">
+<h2><span class="section-number">2.2.4. </span>蓝牙weak函数<a class="headerlink" href="#weak" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>除了部分通过注册函数的形式回调状态给上层用户之外,蓝牙库还定义了一些weak函数,在用户层重新定义可以获取到蓝牙库的一些信息更新</p>
+</div>
+<section id="bt-phone-date-and-time-feedback">
+<h3><span class="section-number">2.2.4.1. </span>bt_phone_date_and_time_feedback<a class="headerlink" href="#bt-phone-date-and-time-feedback" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：该接口可以返回连接手机的系统时间,安卓手机通过MAP实现,需要开MAP协议.苹果手机通过令USER_CTRL_HFP_GET_PHONE_DATE_TIME获取</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">bt_phone_date_and_time_feedback</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">len</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>data</p></td>
+<td><p>手机返回数据包的数据指针</p></td>
+</tr>
+<tr class="row-even"><td><p>len</p></td>
+<td><p>数据包的长度</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">bt_phone_date_and_time_feedback</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">len</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="n">put_buf</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+<span class="w">   </span><span class="n">puts</span><span class="p">((</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-phonebook-packet-handler">
+<h3><span class="section-number">2.2.4.2. </span>bt_phonebook_packet_handler<a class="headerlink" href="#bt-phonebook-packet-handler" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：该接口可以返回连接手机的通讯录数据</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">bt_phonebook_packet_handler</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">date</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p>区分数据类型的标识，0-通讯录，1-来电，2-拨出，3-未接，0xff-准备断开</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>电话信息对应的名字</p></td>
+</tr>
+<tr class="row-odd"><td><p>number</p></td>
+<td><p>电话号码信息</p></td>
+</tr>
+<tr class="row-even"><td><p>date</p></td>
+<td><p>通话记录的时间</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">bt_phonebook_packet_handler</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">date</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="k">static</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">number_cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">   </span><span class="n">log_debug</span><span class="p">(</span><span class="s">&quot;NO.%d:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">number_cnt</span><span class="p">);</span>
+<span class="w">   </span><span class="n">number_cnt</span><span class="o">++</span><span class="p">;</span>
+<span class="w">   </span><span class="n">log_debug</span><span class="p">(</span><span class="s">&quot;type:%d &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0xff</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">number_cnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">log_debug</span><span class="p">(</span><span class="s">&quot; NAME:%s  &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">number</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">log_debug</span><span class="p">(</span><span class="s">&quot;number:%s  &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">number</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">date</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">log_debug</span><span class="p">(</span><span class="s">&quot;date:%s &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">date</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h2><span class="section-number">2.2.5. </span>蓝牙状态获取接口<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>此类函数用于或许对应设备的一些状态信息或者连接信息。</p>
+</div>
+<section id="bt-get-music-volume">
+<h3><span class="section-number">2.2.5.1. </span>bt_get_music_volume<a class="headerlink" href="#bt-get-music-volume" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：该接口可以跟进地址获取对应设备的音量信息。这个音量是定义在avrcp的协议中</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">bt_get_music_volume</span><span class="p">(</span><span class="n">bd_addr_t</span><span class="w"> </span><span class="n">addr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>addr</p></td>
+<td><p>对应设备的地址信息</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>返回对应设备的avrcp的音量值</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">a2dp_play</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">bt_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">tx_do_action</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="n">u8</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span>
+<span class="w">   </span><span class="n">memcpy</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">bt_addr</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
+<span class="w">   </span><span class="c1">//播放前获取对应设备的音量信息进行配置</span>
+<span class="w">   </span><span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bt_get_music_volume</span><span class="p">(</span><span class="n">bt_addr</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">127</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">app_audio_bt_volume_update</span><span class="p">(</span><span class="n">bt_addr</span><span class="p">,</span><span class="w"> </span><span class="n">APP_AUDIO_STATE_MUSIC</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w">   </span><span class="n">a2dp_play_send_cmd</span><span class="p">(</span><span class="n">CMD_A2DP_PLAY</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="n">tx_do_action</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-check-conn-is-handup-for-addr">
+<h3><span class="section-number">2.2.5.2. </span>bt_check_conn_is_handup_for_addr<a class="headerlink" href="#bt-check-conn-is-handup-for-addr" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：该接口可以查询设备是否在挂断状态</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="n">bt_check_conn_is_handup_for_addr</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>addr</p></td>
+<td><p>对应设备的地址信息</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>返回true表示该地址设备处于挂断状态</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bt-get-current-remote-addr">
+<h3><span class="section-number">2.2.5.3. </span>bt_get_current_remote_addr<a class="headerlink" href="#bt-get-current-remote-addr" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：该接口可以查询当前设备的地址接口，一般连接一个设备的时候，提供参数给需要地址的接口</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">bt_get_current_receiver_addr</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>返回的是地址的指针,获取不到会返回NULL.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bt-get-esco-coder-busy-flag">
+<h3><span class="section-number">2.2.5.4. </span>bt_get_esco_coder_busy_flag<a class="headerlink" href="#bt-get-esco-coder-busy-flag" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：判断SCO/esco有没有正在使用</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="n">bt_get_esco_coder_busy_flag</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>1为正在使用， 0为空闲</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bt-get-curr-channel-state-bt-get-curr-channel-state-for-addr">
+<h3><span class="section-number">2.2.5.5. </span>bt_get_curr_channel_state/bt_get_curr_channel_state_for_addr<a class="headerlink" href="#bt-get-curr-channel-state-bt-get-curr-channel-state-for-addr" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：用于获取当前设备的连接链路状态，可以用来判断有哪些链路连接上</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u16</span><span class="w"> </span><span class="n">bt_get_curr_channel_state</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="n">u16</span><span class="w"> </span><span class="n">bt_get_curr_channel_state_for_addr</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>addr</p></td>
+<td><p>设备的地址</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>当前连接的channel号。每一个bit代表一个链路，具体见下面定义</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define    SPP_CH       0x01 </span><span class="c1">//串口链路</span>
+<span class="cp">#define    HFP_CH       0x02 </span><span class="c1">//通话链路</span>
+<span class="cp">#define    A2DP_CH      0x04 </span><span class="c1">//音频数据链路</span>
+<span class="cp">#define    AVCTP_CH     0x08 </span><span class="c1">//音频控制链路</span>
+<span class="cp">#define    HID_CH       0x10 </span><span class="c1">//HID控制链路</span>
+<span class="cp">#define    AVDTP_CH     0x20 </span><span class="c1">//音频命令链路</span>
+<span class="cp">#define    PBAP_CH      0x40 </span><span class="c1">//电话本链路</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-get-connect-status">
+<h3><span class="section-number">2.2.5.6. </span>bt_get_connect_status<a class="headerlink" href="#bt-get-connect-status" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：主动获取当前连接的source设备的连接状态</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="n">bt_get_connect_status</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>当前连接状态，可能返回的几个状态如下：</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="p">.......</span>
+<span class="w">   </span><span class="n">BT_STATUS_INITING</span><span class="p">,</span><span class="w"> </span><span class="cm">/*正在初始化*/</span>
+<span class="w">   </span><span class="n">BT_STATUS_WAITINT_CONN</span><span class="p">,</span><span class="w"> </span><span class="cm">/*等待连接*/</span>
+<span class="w">   </span><span class="n">BT_STATUS_AUTO_CONNECTINT</span><span class="p">,</span><span class="w"> </span><span class="cm">/*正在回连*/</span>
+<span class="w">   </span><span class="n">BT_STATUS_CONNECTING</span><span class="p">,</span><span class="w"> </span><span class="cm">/*已连接，没有电话和音乐在活动*/</span>
+<span class="w">   </span><span class="n">BT_STATUS_TAKEING_PHONE</span><span class="p">,</span><span class="w"> </span><span class="cm">/*正在电话*/</span>
+<span class="w">   </span><span class="n">BT_STATUS_PLAYING_MUSIC</span><span class="p">,</span><span class="w"> </span><span class="cm">/*正在音乐*/</span>
+<span class="w">   </span><span class="n">BT_STATUS_A2DP_MEDIA_START</span><span class="p">,</span>
+<span class="w">   </span><span class="n">BT_STATUS_A2DP_MEDIA_STOP</span><span class="p">,</span>
+<span class="w">   </span><span class="p">.......</span>
+<span class="p">}</span><span class="w"> </span><span class="n">STATUS_FOR_USER</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-get-total-connect-dev">
+<h3><span class="section-number">2.2.5.7. </span>bt_get_total_connect_dev<a class="headerlink" href="#bt-get-total-connect-dev" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：主动获取当前连接的总设备数，不包含page状态的计数</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="n">get_total_connect_dev</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>返回当前连接的总设备数</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bt-a2dp-get-status">
+<h3><span class="section-number">2.2.5.8. </span>bt_a2dp_get_status<a class="headerlink" href="#bt-a2dp-get-status" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：主动获取当前连接的source设备的音频播放状态</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="n">a2dp_get_status</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>a2dp状态，返回值参考下面定义</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">BT_MUSIC_STATUS_IDLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="n">BT_MUSIC_STATUS_STARTING</span><span class="p">,</span>
+<span class="w">   </span><span class="n">BT_MUSIC_STATUS_SUSPENDING</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">BT_MUSIC_STATE</span><span class="p">;</span><span class="w">  </span><span class="c1">//音乐状态</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-get-call-status-bt-get-call-status-for-addr">
+<h3><span class="section-number">2.2.5.9. </span>bt_get_call_status/bt_get_call_status_for_addr<a class="headerlink" href="#bt-get-call-status-bt-get-call-status-for-addr" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：主动获取当前连接的source设备的通话状态</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="nf">get_call_status</span><span class="p">();</span>
+<span class="n">u8</span><span class="w"> </span><span class="nf">bt_get_call_status_for_addr</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>没有 或者 设备地址</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>当前连接的source设备的通话状态，返回值参考下面定义</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">BT_CALL_BATTERY_CHG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">//电池电量改变</span>
+<span class="w">   </span><span class="n">BT_CALL_SIGNAL_CHG</span><span class="p">,</span><span class="w">      </span><span class="c1">//网络信号改变</span>
+<span class="w">   </span><span class="n">BT_CALL_INCOMING</span><span class="p">,</span><span class="w">   </span><span class="c1">//电话打入    ----可能返回值</span>
+<span class="w">   </span><span class="n">BT_CALL_OUTGOING</span><span class="p">,</span><span class="w">   </span><span class="c1">//电话打出    ----可能返回值</span>
+<span class="w">   </span><span class="n">BT_CALL_ACTIVE</span><span class="p">,</span><span class="w">     </span><span class="c1">//接通电话    ----可能返回值</span>
+<span class="w">   </span><span class="n">BT_CALL_HANGUP</span><span class="p">,</span><span class="w">      </span><span class="c1">//电话挂断   ----可能返回值</span>
+<span class="w">   </span><span class="n">BT_CALL_ALERT</span><span class="p">,</span><span class="w">       </span><span class="c1">//远端reach</span>
+<span class="w">   </span><span class="n">BT_SIRI_STATE</span><span class="p">,</span><span class="w">       </span><span class="c1">//SIRI状态</span>
+<span class="w">   </span><span class="n">BT_CALL_VOL_CHANGED</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="n">BT_CALL_IND_STA</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-remote-dev-company-ioctrl">
+<h3><span class="section-number">2.2.5.10. </span>bt_remote_dev_company_ioctrl<a class="headerlink" href="#bt-remote-dev-company-ioctrl" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：这个接口会直接访问VM，根据地址获取已经记录好的设备厂商读操作时op_flag和value参数都传0。</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="nf">bt_remote_dev_company_ioctrl</span><span class="p">(</span><span class="n">bd_addr_t</span><span class="w"> </span><span class="n">dev_addr</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">op_flag</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>dev_addr</p></td>
+<td><p>查询的设备地址</p></td>
+</tr>
+<tr class="row-even"><td><p>op_flag</p></td>
+<td><p>读操作固定0</p></td>
+</tr>
+<tr class="row-odd"><td><p>value</p></td>
+<td><p>读操作无效，可固定0</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>设备类型，返回值参考下面定义</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">REMOTE_DEV_UNKNOWN</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">   </span><span class="n">REMOTE_DEV_ANDROID</span><span class="p">,</span>
+<span class="w">   </span><span class="n">REMOTE_DEV_IOS</span><span class="w">    </span><span class="p">,</span>
+<span class="w">   </span><span class="n">REMOTE_DEV_XIAOMI</span><span class="p">,</span>
+<span class="w">   </span><span class="n">REMOTE_DEV_DONGLE_SPEAK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xfa</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-check-esco-state-via-addr">
+<h3><span class="section-number">2.2.5.11. </span>bt_check_esco_state_via_addr<a class="headerlink" href="#bt-check-esco-state-via-addr" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：根据地址获取连接设备的ESCO状态，实现一些一拖二的功能控制</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="nf">bt_check_esco_state_via_addr</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>设备地址</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>返回查询的一些状态，参考值看下面枚举</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="n">BD_ESCO_IDLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">       </span><span class="cm">/*当前没有设备通话中*/</span>
+<span class="w">   </span><span class="n">BD_ESCO_BUSY_CURRENT</span><span class="p">,</span><span class="w">   </span><span class="cm">/*当前地址对应的设备通话中*/</span>
+<span class="w">   </span><span class="n">BD_ESCO_BUSY_OTHER</span><span class="p">,</span><span class="w">     </span><span class="cm">/*通话中的设备非当前地址*/</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-restore-remote-device-info-opt">
+<h3><span class="section-number">2.2.5.12. </span>bt_restore_remote_device_info_opt<a class="headerlink" href="#bt-restore-remote-device-info-opt" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：该接口会直接操作VM，可以读取蓝牙记录列表中的蓝牙地址信息</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="nf">bt_restore_remote_device_info_opt</span><span class="p">(</span><span class="n">bd_addr_t</span><span class="w"> </span><span class="o">*</span><span class="n">mac_addr</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">conn_device_num</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">id</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>mac_addr</p></td>
+<td><p>是用来保存多个地址信息的buffer</p></td>
+</tr>
+<tr class="row-even"><td><p>conn_device_num</p></td>
+<td><p>是期望读取最大个数（支持1-9）</p></td>
+</tr>
+<tr class="row-odd"><td><p>id</p></td>
+<td><p>一般情况是0。作为发射器和独立的HID模式是1</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>实际获取到的个数，比期望少的时候说明只记录了这几个地址</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id9">
+<h2><span class="section-number">2.2.6. </span>蓝牙功能类函数接口<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<section id="bt-cmd-prepare-bt-cmd-prepare-for-addr">
+<h3><span class="section-number">2.2.6.1. </span>bt_cmd_prepare/bt_cmd_prepare_for_addr<a class="headerlink" href="#bt-cmd-prepare-bt-cmd-prepare-for-addr" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：原来user_send_cmd_prepare改名之后的函数，总的蓝牙命令发送接口</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">bt_cmd_prepare</span><span class="p">(</span><span class="n">USER_CMD_TYPE</span><span class="w"> </span><span class="n">cmd</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">param_len</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">param</span><span class="p">)</span>
+<span class="n">u32</span><span class="w"> </span><span class="n">bt_cmd_prepare_for_addr</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">USER_CMD_TYPE</span><span class="w"> </span><span class="n">cmd</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">param_len</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">param</span><span class="p">);</span><span class="w">  </span><span class="c1">//可以指定地址发命令</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>addr</p></td>
+<td><p>需要指定设备的地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>cmd</p></td>
+<td><p>avctp_user.h中USER_CMD_TYPE枚举的值</p></td>
+</tr>
+<tr class="row-even"><td><p>param_len</p></td>
+<td><p>param参数的长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>param</p></td>
+<td><p>参数的地址</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//例子A、USER_CTRL_HFP_CALL_SET_VOLUME命令需要1个参数的使用例子：</span>
+<span class="n">u8</span><span class="w"> </span><span class="n">vol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+<span class="n">user_send_cmd_prepare</span><span class="p">(</span><span class="n">USER_CTRL_HFP_CALL_SET_VOLUME</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vol</span><span class="p">);</span>
+<span class="c1">//例子B、USER_CTRL_DIAL_NUMBER 参数要用数组先存起来，param_len是号码长度，param可传参数数组指针，</span>
+<span class="n">user_val</span><span class="o">-&gt;</span><span class="n">income_phone_num</span><span class="w">  </span><span class="c1">//已经存好号码</span>
+<span class="n">user_send_cmd_prepare</span><span class="p">(</span><span class="n">USER_CTRL_DIAL_NUMBER</span><span class="p">,</span><span class="n">user_val</span><span class="o">-&gt;</span><span class="n">phone_num_len</span><span class="p">,</span><span class="n">user_val</span><span class="o">-&gt;</span><span class="n">income_phone_num</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="bt-make-ble-address">
+<h3><span class="section-number">2.2.6.2. </span>bt_make_ble_address<a class="headerlink" href="#bt-make-ble-address" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>功能：根据规则生产BLE的随机地址</p>
+</div></blockquote>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">bt_make_ble_address</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">ble_address</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">edr_address</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>ble_address</p></td>
+<td><p>存放生成返回ble地址的指针</p></td>
+</tr>
+<tr class="row-even"><td><p>edr_address</p></td>
+<td><p>edr地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//根据EDR的地址生成BLE的地址，并配置</span>
+<span class="n">u8</span><span class="w"> </span><span class="n">tmp_ble_addr</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
+<span class="n">bt_make_ble_address</span><span class="p">(</span><span class="n">tmp_ble_addr</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">bt_get_mac_addr</span><span class="p">());</span>
+<span class="n">le_controller_set_mac</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">tmp_ble_addr</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="event.html" class="btn btn-neutral float-left" title="2.1. 协议栈事件说明" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rcsp.html" class="btn btn-neutral float-right" title="2.3. rcsp开发说明" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

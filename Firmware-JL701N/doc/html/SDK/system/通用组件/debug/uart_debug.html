@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>11.5.1. 串口调试 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="11.5.2. JTAG调试" href="jtag_debug.html" />
+    <link rel="prev" title="11.5. 软件调试" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">11. 通用组件</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../heap/index.html">11.1. 动态内存申请</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../update/index.html">11.2. 固件升级</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buf_manage/index.html">11.3. Buffer管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cfg_user/index.html">11.4. 配置项管理</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">11.5. 软件调试</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">11.5.1. 串口调试</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">11.5.1.1. 常规调试信息</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">11.5.1.2. 系统异常信息</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="jtag_debug.html">11.5.2. JTAG调试</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">11. </span>通用组件</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">11.5. </span>软件调试</a> &raquo;</li>
+      <li><span class="section-number">11.5.1. </span>串口调试</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">11.5.1. </span>串口调试<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>在嵌入式平台开发中， <strong>串口调试</strong> 以其依赖硬件结构简单和稳定可靠的优点，被誉为硬件状态和软件运行结果的 <code class="docutils literal notranslate"><span class="pre">听诊器</span></code> ，成为调试软件的重要手段。SDK中串口可以输出的信息有：</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ol class="arabic simple">
+<li><p>常规调试信息</p></li>
+<li><p>系统异常信息</p></li>
+</ol>
+</div>
+<p>以下章节分别进行说明。</p>
+<section id="id2">
+<h2><span class="section-number">11.5.1.1. </span>常规调试信息<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>SDK发布时会附带一些基本的调试信息，比如输出上电流程的各个模块的基本信息和状态。</p>
+<section id="debug-module-switch">
+<span id="id3"></span><h3><span class="section-number">11.5.1.1.1. </span>调试信息使能配置<a class="headerlink" href="#debug-module-switch" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>打开lib库总开关</p>
+<p>修改文件位置： <code class="file docutils literal notranslate"><span class="pre">apps/xxx/include/app_config.h</span></code></p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#ifndef APP_CONFIG_H</span>
+<span class="linenos"> 2</span><span class="cp">#define APP_CONFIG_H</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="cm">/*</span>
+<span class="linenos"> 5</span><span class="cm">* 系统打印总开关</span>
+<span class="linenos"> 6</span><span class="cm">*/</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="cp">#ifdef CONFIG_RELEASE_ENABLE</span>
+<span class="linenos">10</span><span class="cp">#define LIB_DEBUG    1</span>
+<span class="linenos">11</span><span class="cp">#else</span>
+<span class="linenos">12</span><span class="cp">#define LIB_DEBUG    1</span>
+<span class="linenos">13</span><span class="cp">#endif</span>
+<span class="linenos">14</span><span class="cp">#define CONFIG_DEBUG_LIB(x)         (x &amp; LIB_DEBUG)</span>
+<span class="linenos">15</span><span class="cp">#define CONFIG_DEBUG_ENABLE</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>需要修改点:</p>
+<ol class="arabic simple">
+<li><p>宏LIB_DEBUG配置为1.</p></li>
+<li><p>宏CONFIG_DEBUG_ENABLE需要被定义.</p></li>
+</ol>
+</div>
+</div></blockquote>
+</li>
+<li><p>某些模块的的调试信息可能还有自己的单独开关</p>
+<p>相关文件路径: <code class="file docutils literal notranslate"><span class="pre">sdk/apps/xxx/config/lib_xxx_config.c</span></code>, 不同模块存放于不同问题中。举例文件 <code class="file docutils literal notranslate"><span class="pre">sdk/apps/hid/config/lib_system_config.c</span></code>, 该文件存放与系统相关的打印开关, 比如sys_timer模块:</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">log_tag_const_v_SYS_TMR</span><span class="w"> </span><span class="nf">AT</span><span class="p">(.</span><span class="n">LOG_TAG_CONST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CONFIG_DEBUG_LIB</span><span class="p">(</span><span class="n">FALSE</span><span class="p">);</span>
+<span class="linenos">2</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">log_tag_const_i_SYS_TMR</span><span class="w"> </span><span class="nf">AT</span><span class="p">(.</span><span class="n">LOG_TAG_CONST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CONFIG_DEBUG_LIB</span><span class="p">(</span><span class="n">FALSE</span><span class="p">);</span>
+<span class="linenos">3</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">log_tag_const_d_SYS_TMR</span><span class="w"> </span><span class="nf">AT</span><span class="p">(.</span><span class="n">LOG_TAG_CONST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CONFIG_DEBUG_LIB</span><span class="p">(</span><span class="n">FALSE</span><span class="p">);</span>
+<span class="linenos">4</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">log_tag_const_w_SYS_TMR</span><span class="w"> </span><span class="nf">AT</span><span class="p">(.</span><span class="n">LOG_TAG_CONST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CONFIG_DEBUG_LIB</span><span class="p">(</span><span class="n">TRUE</span><span class="p">);</span>
+<span class="linenos">5</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">log_tag_const_e_SYS_TMR</span><span class="w"> </span><span class="nf">AT</span><span class="p">(.</span><span class="n">LOG_TAG_CONST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CONFIG_DEBUG_LIB</span><span class="p">(</span><span class="n">TRUE</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>每个模块有4个调试级别的开关:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ol class="arabic simple">
+<li><p>log_tag_const_v_xxx: verbose, 模块中比较冗余的信息。</p></li>
+<li><p>log_tag_const_i_xxx: info, 模块中一些基本的状态信息。</p></li>
+<li><p>log_tag_const_d_xxx: debug, 模块中用于定位问题的基本信息。</p></li>
+<li><p>log_tag_const_w_xxx: warning, 模块中用于定位问题的警告信息。</p></li>
+<li><p>log_tag_const_e_xxx: error, 模块中用于定位问题的错误信息。</p></li>
+</ol>
+</div>
+<p>用户可以将需要看调试信息的模块对应的开关置位 <strong>TURE</strong> 。</p>
+</div></blockquote>
+</li>
+<li><p>使能硬件驱动开关</p>
+<p>除了上述的逻辑开关外，还需要确认对应硬件配置，举例文件 <code class="file docutils literal notranslate"><span class="pre">apps/hid/board/br25/board_ac636n_demo_cfg.h</span></code> ，相关配置如下：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">//*********************************************************************************//</span>
+<span class="linenos">2</span><span class="c1">//                                 UART配置                                        //</span>
+<span class="linenos">3</span><span class="c1">//*********************************************************************************//</span>
+<span class="linenos">4</span><span class="cp">#define TCFG_UART0_ENABLE       ENABLE_THIS_MOUDLE       </span><span class="c1">//串口打印模块使能</span>
+<span class="linenos">5</span><span class="cp">#define TCFG_UART0_RX_PORT      NO_CONFIG_PORT           </span><span class="c1">//串口接收脚配置（用于打印可以选择NO_CONFIG_PORT）</span>
+<span class="linenos">6</span><span class="cp">#define TCFG_UART0_TX_PORT      IO_PORTC_04              </span><span class="c1">//串口发送脚配置</span>
+<span class="linenos">7</span><span class="cp">#define TCFG_UART0_BAUDRATE     1000000                  </span><span class="c1">//串口波特率配置</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>用户根据实际硬件平台可灵活配置 <strong>TX</strong> 和 <strong>BAUD</strong> 参数。</p>
+</li>
+</ol>
+</section>
+<section id="id4">
+<h3><span class="section-number">11.5.1.1.2. </span>添加自己的调试信息<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>用户在开发自己软件流程时, 经常需要添加自己的调试信息，SDK中支持的输出调试信息的接口有</p>
+<ol class="arabic">
+<li><p>printf</p>
+<p><strong>printf</strong> 是计算机行业内通用的终端打印信息的标准接口, 在开发环境中添加如下头文件后即可使用</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;generic/printf.h&quot;</span>
+</pre></div>
+</div>
+<p>相应的，如果有需要打印一块内存的十六进制数据，可使用put_buf接口，使用示例如下；</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;generic/printf.h&quot;</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="kt">void</span><span class="w"> </span><span class="nf">printf_foo</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 4</span><span class="p">{</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tmp</span><span class="p">[</span><span class="mi">50</span><span class="p">];</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Test Demo: %s:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">__func__</span><span class="p">,</span><span class="w"> </span><span class="n">__LINE__</span><span class="p">);</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5A</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tmp</span><span class="p">));</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">put_buf</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tmp</span><span class="p">));</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="linenos">12</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>log_xxx族接口</p>
+<blockquote>
+<div><p>log_xxx族接口与printf的区别是该接口可以分模块控制，以及输出信息可以带模块名前缀，可以快速定位到对应模块输出的信息。举例文件举例文件 <code class="file docutils literal notranslate"><span class="pre">sdk/apps/hid/app_main.c</span></code>, 使用步骤如下：</p>
+<ol class="arabic">
+<li><p>在模块对应C文件开头增加如下修改</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="cp">#define LOG_TAG_CONST       APP</span>
+<span class="linenos">2</span><span class="cp">#define LOG_TAG             &quot;[APP]&quot;</span>
+<span class="linenos">3</span><span class="cp">#define LOG_ERROR_ENABLE</span>
+<span class="linenos">4</span><span class="cp">#define LOG_DEBUG_ENABLE</span>
+<span class="linenos">5</span><span class="cp">#define LOG_INFO_ENABLE</span>
+<span class="linenos">6</span><span class="cm">/* #define LOG_DUMP_ENABLE */</span>
+<span class="linenos">7</span><span class="cp">#define LOG_CLI_ENABLE</span>
+<span class="linenos">8</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;debug.h&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>修改注意点:</p>
+<ol class="arabic simple">
+<li><p>定义LOG_TAG_CONST宏的命令与模块Debug名相同。</p></li>
+<li><p><code class="file docutils literal notranslate"><span class="pre">debug.h</span></code> 文件被include的位置必须位于这些宏定义之后。</p></li>
+</ol>
+</div>
+</div></blockquote>
+</li>
+<li><p>增加模块打印开关控制变量, 文件夹路径 <code class="file docutils literal notranslate"><span class="pre">apps/xxx/config/</span></code> 用户应根据自己模块的属性放到合适的文件, 举例将app模块的控制开关放在 :file:<a href="#id5"><span class="problematic" id="id6">`</span></a>apps/hid/config/log_config.c`文件, 增加变量声明如下：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">log_tag_const_v_APP</span><span class="w"> </span><span class="nf">AT</span><span class="p">(.</span><span class="n">LOG_TAG_CONST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">2</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">log_tag_const_i_APP</span><span class="w"> </span><span class="nf">AT</span><span class="p">(.</span><span class="n">LOG_TAG_CONST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos">3</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">log_tag_const_d_APP</span><span class="w"> </span><span class="nf">AT</span><span class="p">(.</span><span class="n">LOG_TAG_CONST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos">4</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">log_tag_const_w_APP</span><span class="w"> </span><span class="nf">AT</span><span class="p">(.</span><span class="n">LOG_TAG_CONST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos">5</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">log_tag_const_e_APP</span><span class="w"> </span><span class="nf">AT</span><span class="p">(.</span><span class="n">LOG_TAG_CONST</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>在对应模块添加调试信息，可用接口示例如下：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span><span class="w"> </span><span class="nf">log_foo</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tmp</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="w">    </span><span class="n">log_info</span><span class="p">(</span><span class="s">&quot;I am info Message.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="n">log_debug</span><span class="p">(</span><span class="s">&quot;I am debug Message.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="n">log_error</span><span class="p">(</span><span class="s">&quot;I am error Message.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5A</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tmp</span><span class="p">));</span>
+<span class="linenos">10</span><span class="w">    </span><span class="n">log_info_hexdump</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tmp</span><span class="p">));</span><span class="w"> </span><span class="c1">//输出十六进制数据</span>
+<span class="linenos">11</span><span class="w">    </span><span class="n">log_error_hexdump</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">tmp</span><span class="p">));</span><span class="w"> </span><span class="c1">//输出十六进制数据</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="linenos">14</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>上述示例输出信息如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.246</span><span class="p">][</span><span class="n">Info</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="n">APP</span><span class="p">]</span><span class="n">I</span><span class="w"> </span><span class="n">am</span><span class="w"> </span><span class="n">info</span><span class="w"> </span><span class="n">Message</span><span class="p">.</span>
+
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.246</span><span class="p">][</span><span class="n">Debug</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="n">APP</span><span class="p">]</span><span class="n">I</span><span class="w"> </span><span class="n">am</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">Message</span><span class="p">.</span>
+
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.247</span><span class="p">](</span><span class="n">error</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="n">Error</span><span class="o">&gt;:</span><span class="w"> </span><span class="p">[</span><span class="n">APP</span><span class="p">]</span><span class="n">I</span><span class="w"> </span><span class="n">am</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">Message</span><span class="p">.</span>
+
+<span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span>
+<span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span>
+<span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span>
+
+<span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span>
+<span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span>
+<span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span><span class="w"> </span><span class="mi">5</span><span class="n">A</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>系统时间戳</p>
+<blockquote>
+<div><p>在输出的log中存在系统时间戳，该时间戳代表输出该log时距离系统的上电时间，如果用户不需要输出该时间戳，可以通过修改文件 <code class="file docutils literal notranslate"><span class="pre">sdk/apps/xxx/config/lib_system_config.c</span></code></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">///打印是否时间打印信息</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">config_printf_time</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>将config_printf_time变量修改为0，可以关闭log打印中输出时间戳。</p>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">11.5.1.2. </span>系统异常信息<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<p>系统异常指芯片在运行的代码时，由于软件/硬件状态出错，当该错误状态未在硬件/软件程序设计覆盖的容错范围，就会引起的系统处于未知状态的 <strong>异常</strong> ，异常的结果是触发 <code class="docutils literal notranslate"><span class="pre">系统复位</span></code> 或者进入 <code class="docutils literal notranslate"><span class="pre">系统异常中断函数</span></code> ，常见的异常原因主要有：</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>CPU内部触发的异常：</dt><dd><ul class="simple">
+<li><p><strong>程序跑飞</strong> ： CPU运行到程序员非指定地址软件流程，该异常通常由一些没有正确初始化的 <strong>函数指针变量</strong> 引起。</p></li>
+<li><p><strong>除0异常</strong> ： CPU在除法运算中除数为0，就会触发除0异常。</p></li>
+<li><p><strong>非对齐内存访问</strong> ：CPU运行word内存访问指令时，寻址寄存器不是4对齐的值，或者运行half-word内存访问指令时，寻址寄存器不是2对齐的值，就会触发非对齐内存访问异常。</p></li>
+<li><p><strong>堆栈溢出</strong> ：但CPU的堆栈超出所设定的限制范围时，就会出现堆栈溢出异常，该异常通常与任务用到的堆栈大于配置的堆栈大小引起。</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>与内存相关触发的异常：</dt><dd><ul class="simple">
+<li><p><strong>读写非法内存地址</strong> ： 当CPU读写到非法的内存地址，非法内存地址主要包括：空白地址，只读地址、程序员使用MPU保护的内存地址，当CPU读写到没有权限的内存地址时，就会触发异常异常，该异常主要由于buf野指针引起，或者动态申请中在free buf后，还在访问buf的数据。</p></li>
+<li><p><strong>外设DMA读写非法地址</strong> ： 与CPU读写非法内存地址类似，当外设DMA读写到了没有读写权限的非法地址，就会触发外设的读写非法地址异常。</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>与外设相关触发的异常：</dt><dd><ul class="simple">
+<li><p><strong>看门狗超时</strong> ： 系统由于长时间没有清看门狗导致的系统异常，该问题常见原因是CPU负载过高，长时间没有进idle任务，或者在某个软件流程死循环，导致系统没有清看门狗。</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>详细异常原因：</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#exception-table"><span class="std std-ref">异常信息列表</span></a></p></li>
+</ul>
+</div>
+<section id="id8">
+<h3><span class="section-number">11.5.1.2.1. </span>异常信息输出使能配置<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>用户在软件调试过程中，当出现一些错误级别的的打印，或者打印到某个地方之后就出现了 <em>系统复位</em> ，<strong>复位情况</strong> 打印举例如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.238</span><span class="p">][</span><span class="n">Info</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="n">BOARD</span><span class="p">]</span><span class="n">board_init</span>
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.239</span><span class="p">][</span><span class="n">Info</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="n">TEST</span><span class="o">-</span><span class="n">UPDATE</span><span class="p">]</span><span class="n">testbox</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="n">handle</span><span class="w"> </span><span class="n">reg</span><span class="o">:</span><span class="mf">1e125</span><span class="n">b8</span>
+
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.240</span><span class="p">]</span><span class="n">app_update_cfg</span><span class="o">:</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span>
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.242</span><span class="p">][</span><span class="n">Info</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="n">APP</span><span class="o">-</span><span class="n">UPDATE</span><span class="p">]</span><span class="o">&lt;--------</span><span class="n">update_result_deal</span><span class="o">=</span><span class="mh">0x5a00</span><span class="w"> </span><span class="mi">0</span><span class="o">---------&gt;</span>
+
+<span class="hll"><span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.243</span><span class="p">]</span><span class="o">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><span class="n">app_main</span><span class="p">...</span>
+</span><span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.100</span><span class="p">]</span><span class="o">--</span><span class="n">P3</span><span class="w"> </span><span class="n">Reset</span><span class="w"> </span><span class="n">Source</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x40</span>
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.100</span><span class="p">]</span><span class="n">SOFT</span><span class="w"> </span><span class="n">RESET</span>
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.102</span><span class="p">]</span><span class="o">=================</span><span class="n">Version</span><span class="o">===============</span>
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.102</span><span class="p">]</span><span class="n">BTCTRLER</span><span class="o">-</span><span class="err">@</span><span class="mi">20221123</span><span class="o">-</span><span class="n">$c284473</span>
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.103</span><span class="p">]</span><span class="n">UPDATE</span><span class="o">-</span><span class="err">@</span><span class="mi">20221123</span><span class="o">-</span><span class="n">$330d72d</span>
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.104</span><span class="p">]</span><span class="o">=======================================</span>
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.106</span><span class="p">][</span><span class="n">Info</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="n">SDFILE</span><span class="p">]</span><span class="n">VM</span><span class="w"> </span><span class="n">size</span><span class="o">:</span><span class="w"> </span><span class="mh">0x40000</span><span class="w"> </span><span class="err">@</span><span class="w"> </span><span class="mh">0x3e000</span>
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.108</span><span class="p">][</span><span class="n">Info</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="n">SDFILE</span><span class="p">]</span><span class="n">disk</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="mi">2048</span><span class="w"> </span><span class="n">KB</span>
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.109</span><span class="p">]</span><span class="n">last</span><span class="w"> </span><span class="n">file_addr</span><span class="o">:</span><span class="mi">35780</span><span class="w"> </span><span class="mi">8520</span>
+<span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.110</span><span class="p">]</span><span class="n">end_addr</span><span class="o">:</span><span class="mf">3e000</span>
+</pre></div>
+</div>
+<p>从打印可以看出，打印到</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.243</span><span class="p">]</span><span class="o">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span><span class="n">app_main</span><span class="p">...</span>
+</pre></div>
+</div>
+<p>这一行后就出现了系统复位，复位源显示是 <code class="docutils literal notranslate"><span class="pre">SOFT</span> <span class="pre">RESET</span></code> ， 遇到这种情况说明系统在运行代码过程中遇到了一些 <strong>异常</strong> ，SDK在发布时，默认会设置为所有异常都会触发 <strong>系统复位</strong> ，从这个信息还不能确认系统遇到什么异常，这时需要把系统的异常复位模式配置为异常中断模式，相关配置位于文件 <code class="file docutils literal notranslate"><span class="pre">apps/xxx/config/lib_system_config.c</span></code></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">///异常中断，asser打印开启</span>
+<span class="linenos">2</span><span class="cp">#ifdef CONFIG_RELEASE_ENABLE</span>
+<span class="linenos">3</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">config_asser</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos">4</span><span class="cp">#else</span>
+<span class="linenos">5</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">config_asser</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos">6</span><span class="cp">#endif</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>config_asser变量配置定义如下：</p>
+<ol class="arabic simple">
+<li><p>配置为0：系统异常触发复位</p></li>
+<li><p>配置为1：系统异常输出异常信息</p></li>
+</ol>
+</div>
+<p>在将config_asser变量修改为1后，上述的异常情况的打印会变成如下输出信息：</p>
+<div class="literal-block-wrapper docutils container" id="id9">
+<span id="exception-demo-log"></span><div class="code-block-caption"><span class="caption-text">异常信息示例</span><a class="headerlink" href="#id9" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
+<span class="n">Exception</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">CPU0</span><span class="p">,</span><span class="w"> </span><span class="n">info</span><span class="o">:</span>
+<span class="n">CPU0</span><span class="w"> </span><span class="n">EMU_CON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xe018001f</span>
+<span class="n">CPU0</span><span class="w"> </span><span class="n">EMU_MSG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x80000000</span>
+
+<span class="n">Exception</span><span class="w"> </span><span class="n">In</span><span class="w"> </span><span class="n">Irq</span><span class="w"> </span><span class="n">Mode</span>
+
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="n">CPU</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">excption</span>
+
+<span class="n">JL_CEMU</span><span class="o">-&gt;</span><span class="n">MSG0</span><span class="o">:</span><span class="w"> </span><span class="mh">0x00200000</span>
+<span class="n">JL_CEMU</span><span class="o">-&gt;</span><span class="n">MSG1</span><span class="o">:</span><span class="w"> </span><span class="mh">0x00000000</span>
+<span class="n">JL_CEMU</span><span class="o">-&gt;</span><span class="n">MSG2</span><span class="o">:</span><span class="w"> </span><span class="mh">0x00000000</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="n">HCORE</span><span class="p">]</span><span class="w"> </span><span class="n">hmem</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="n">cpu1</span><span class="w"> </span><span class="n">write</span><span class="w">   </span><span class="n">hmem</span><span class="w"> </span><span class="n">excption</span>
+
+<span class="nl">CPU0</span><span class="p">:</span><span class="w"> </span><span class="n">Trace</span><span class="o">:</span><span class="w"> </span><span class="mh">0x001149da</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="mh">0x00114a10</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="mh">0x00114a22</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="mh">0x00114a20</span>
+
+<span class="nl">USP</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mh">0x004015f0</span>
+<span class="nl">SSP</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mh">0x00102c40</span>
+<span class="nl">SP</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="mh">0x00102b80</span>
+<span class="nl">SSP_LIMIT</span><span class="p">:</span><span class="w"> </span><span class="mh">0x00101c40</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="mh">0x00102c40</span>
+<span class="nl">USP_LIMIT</span><span class="p">:</span><span class="w"> </span><span class="mh">0x00400e00</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="mh">0x00401600</span>
+
+<span class="nl">RETS</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mh">0x001149be</span>
+<span class="nl">RETI</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mh">0x00114a20</span>
+<span class="nl">RETX</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mh">0x00000000</span>
+<span class="nl">RETE</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mh">0x00000000</span>
+<span class="nl">PSR</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="mh">0x00000000</span>
+<span class="nl">ICFG</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mh">0x070100c0</span>
+
+<span class="n">R0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00104969</span>
+<span class="n">R1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00ffe000</span>
+<span class="n">R2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00000005</span>
+<span class="n">R3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00104dec</span>
+<span class="n">R4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00000055</span>
+<span class="n">R5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00104968</span>
+<span class="n">R6</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00000000</span>
+<span class="n">R7</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00ffe000</span>
+<span class="n">R8</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xa15108c8</span>
+<span class="n">R9</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xff09ff35</span>
+<span class="n">R10</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xcbddba79</span>
+<span class="n">R11</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x51036050</span>
+<span class="n">R12</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x82249852</span>
+<span class="n">R13</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x3fcc5b5b</span>
+<span class="n">R14</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xdaad6dea</span>
+<span class="n">R15</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x5a08d604</span>
+</pre></div>
+</div>
+</div>
+<p>当系统异常被触发之后，会进入系统异常函数，在异常异常函数会输出系统异常信息，用户可以根据上述信息进行分析，可在 <a class="reference internal" href="#chip-exception-table"><span class="std std-ref">各系列异常信息列表</span></a> 查询相关异常原因。</p>
+</section>
+<section id="chip-exception-table">
+<span id="id10"></span><h3><span class="section-number">11.5.1.2.2. </span>各系列异常信息列表<a class="headerlink" href="#chip-exception-table" title="Link to this heading"></a></h3>
+<span id="exception-table"></span><table class="docutils align-center" id="id27">
+<caption><span class="caption-text">异常信息列表</span><a class="headerlink" href="#id27" title="Link to this table"></a></caption>
+<tbody>
+<tr class="row-odd"><td><p><strong>异常信息</strong></p></td>
+<td><p><strong>异常描述</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#misalign-err-case"><span class="std std-ref">misalign_err</span></a></p></td>
+<td><p>内存非对齐异常访问</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#illegal-err-case"><span class="std std-ref">illegal_err</span></a></p></td>
+<td><p>非法指令异常</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#div0-err-case"><span class="std std-ref">div0_err</span></a></p></td>
+<td><p>除0异常</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#stack-ov-err-case"><span class="std std-ref">stack overflow err</span></a></p></td>
+<td><p>堆栈溢出异常</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pc-limit-err-case"><span class="std std-ref">pc_limit</span></a></p></td>
+<td><p>程序跑飞异常</p></td>
+</tr>
+<tr class="row-odd"><td><p>fpu_ine_err</p></td>
+<td><p>浮点不精确异常</p></td>
+</tr>
+<tr class="row-even"><td><p>fpu_huge_err</p></td>
+<td><p>浮点上溢出异常</p></td>
+</tr>
+<tr class="row-odd"><td><p>fpu_tiny</p></td>
+<td><p>浮点下溢出异常</p></td>
+</tr>
+<tr class="row-even"><td><p>fpu_inf_err</p></td>
+<td><p>浮点无穷大异常</p></td>
+</tr>
+<tr class="row-odd"><td><p>fpu_inv_err</p></td>
+<td><p>浮点NaN异常</p></td>
+</tr>
+<tr class="row-even"><td><p>icache excption</p></td>
+<td><p>icache异常</p></td>
+</tr>
+<tr class="row-odd"><td><p>dcache excption</p></td>
+<td><p>dcache异常</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hmem-err-case"><span class="std std-ref">xxx access hmem excption</span></a> &lt;at dev: xxx&gt;</p></td>
+<td><p>xxx设备访问了 <a class="reference internal" href="#term-0"><span class="xref std std-term">空白地址</span></a> 或者mmu tlb保护空间(具体设备请看 <a class="reference internal" href="#prp-table"><span class="std std-ref">PRP设备列表</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mmu-err-case"><span class="std std-ref">xxx mmu excption</span></a> &lt;at dev: xxx&gt;</p></td>
+<td><p>xxx设备访问了没有被映射的mmu虚拟空间(具体设备请看 <a class="reference internal" href="#prp-table"><span class="std std-ref">PRP设备列表</span></a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hmem-err-case"><span class="std std-ref">csfr_write invalid</span></a> &lt;at dev: xxx&gt;</p></td>
+<td><p>xxx设备写到csfr <a class="reference internal" href="#term-0"><span class="xref std std-term">空白地址</span></a> (具体设备请看 <a class="reference internal" href="#prp-table"><span class="std std-ref">PRP设备列表</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hmem-err-case"><span class="std std-ref">csfr_read invalid</span></a> &lt;at dev: xxx&gt;</p></td>
+<td><p>xxx某个设备读到csfr <a class="reference internal" href="#term-0"><span class="xref std std-term">空白地址</span></a> (具体设备请看 <a class="reference internal" href="#prp-table"><span class="std std-ref">PRP设备列表</span></a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#mpu-err-case"><span class="std std-ref">mpu_err</span></a> &lt;at dev: xxx&gt;</p></td>
+<td><p>某个设备访问到mpu保护区</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hmem-err-case"><span class="std std-ref">cpu write hsb sfr reserved memory</span></a></p></td>
+<td><p>CPU写到高速设备sfr <a class="reference internal" href="#term-0"><span class="xref std std-term">空白地址</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hmem-err-case"><span class="std std-ref">cpu read hsb sfr reserved memory</span></a></p></td>
+<td><p>CPU读到高速设备sfr <a class="reference internal" href="#term-0"><span class="xref std std-term">空白地址</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hmem-err-case"><span class="std std-ref">cpu write axi reserved memory</span></a></p></td>
+<td><p>CPU写到axi <a class="reference internal" href="#term-0"><span class="xref std std-term">空白地址</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hmem-err-case"><span class="std std-ref">cpu read axi reserved memory</span></a></p></td>
+<td><p>CPU读到axi <a class="reference internal" href="#term-0"><span class="xref std std-term">空白地址</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#watchdog-err-case"><span class="std std-ref">watchdog time out</span></a></p></td>
+<td><p>看门狗超时异常</p></td>
+</tr>
+<tr class="row-even"><td><p>sbc ram access error &lt;at dev: xxx&gt;</p></td>
+<td><p>sbc设备内部ram被其他设备访问异常 (具体设备请看 <a class="reference internal" href="#prp-table"><span class="std std-ref">PRP设备列表</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#hmem-err-case"><span class="std std-ref">cpu write lsb sfr reserved memory</span></a></p></td>
+<td><p>CPU写到低速设备sfr <a class="reference internal" href="#term-0"><span class="xref std std-term">空白地址</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#hmem-err-case"><span class="std std-ref">cpu read lsb sfr reserved memory</span></a></p></td>
+<td><p>CPU读到低速设备sfr <a class="reference internal" href="#term-0"><span class="xref std std-term">空白地址</span></a></p></td>
+</tr>
+</tbody>
+</table>
+<span id="prp-table"></span><table class="docutils align-center" id="id28">
+<caption><span class="caption-text">异常信息列表</span><a class="headerlink" href="#id28" title="Link to this table"></a></caption>
+<tbody>
+<tr class="row-odd"><td><p><strong>设备名称</strong></p></td>
+<td><p><strong>设备描述</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>sdtap access/DBG_SDTAP</p></td>
+<td><p>SDTAP设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>lg0 access</p></td>
+<td><p>/</p></td>
+</tr>
+<tr class="row-even"><td><p>axi read</p></td>
+<td><p>AXI总线读设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>axi write</p></td>
+<td><p>AXI总线写设备</p></td>
+</tr>
+<tr class="row-even"><td><p>bt access/DBG_BT</p></td>
+<td><p>蓝牙设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>fft access/DBG_FFT</p></td>
+<td><p>FFT设备</p></td>
+</tr>
+<tr class="row-even"><td><p>eq access/DBG_EQ</p></td>
+<td><p>EQ设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>fir access/DBG_FIR</p></td>
+<td><p>FIR(SRC)设备</p></td>
+</tr>
+<tr class="row-even"><td><p>cpu0 write/DBG_CPU0_WR</p></td>
+<td><p>CPU0写设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>cpu0 read/DBG_CPU0_RD</p></td>
+<td><p>CPU0读设备</p></td>
+</tr>
+<tr class="row-even"><td><p>cpu0 instruction fetch/DBG_CPU0_IF</p></td>
+<td><p>CPU0取指令设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>DBG_USB</p></td>
+<td><p>USB设备</p></td>
+</tr>
+<tr class="row-even"><td><p>DBG_FM</p></td>
+<td><p>FM设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>DBG_CTM</p></td>
+<td><p>CTM设备</p></td>
+</tr>
+<tr class="row-even"><td><p>DBG_UART0/1/2R</p></td>
+<td><p>UART0/1/2读设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>DBG_UART0/1/2W</p></td>
+<td><p>UART0/1/2写设备</p></td>
+</tr>
+<tr class="row-even"><td><p>DBG_SPI0/1/2</p></td>
+<td><p>SPI0/1/2设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>DBG_SD0/1</p></td>
+<td><p>SD0/1设备</p></td>
+</tr>
+<tr class="row-even"><td><p>DBG_AES</p></td>
+<td><p>AES设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>DBG_AAC</p></td>
+<td><p>AAC设备</p></td>
+</tr>
+<tr class="row-even"><td><p>DBG_SBC</p></td>
+<td><p>SBC设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>DBG_PLNK</p></td>
+<td><p>PDM LNK设备</p></td>
+</tr>
+<tr class="row-even"><td><p>DBG_PAP</p></td>
+<td><p>PAP设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>DBG_ISP</p></td>
+<td><p>ISP设备</p></td>
+</tr>
+<tr class="row-even"><td><p>DBG_SPIIF_D</p></td>
+<td><p>SPIIF_D设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>DBG_SPIIF_I</p></td>
+<td><p>SPIIF_I设备</p></td>
+</tr>
+<tr class="row-even"><td><p>DBG_AUDIO</p></td>
+<td><p>AUDIO设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>DBG_ALIN0/1</p></td>
+<td><p>Audio LINK0/1设备</p></td>
+</tr>
+<tr class="row-even"><td><p>DBG_AXI_M0-MF</p></td>
+<td><p>AXI总线设备0~F</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id11">
+<h3><span class="section-number">11.5.1.2.3. </span>常见异常信息案例分析<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<ol class="arabic" id="pc-limit-err-case">
+<li><p><strong>程序跑飞案例分析</strong></p>
+<p>当程序跑飞，指CPU的PC跑到一个错误的地址，问题原因通常表现为代码中函数存在隐式调用，且函数指针 <strong>没有被初始化</strong> 或者初始化为 <strong>非法值</strong> ，错误的示例代码如下：</p>
+<blockquote>
+<div><div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">程序跑飞异常代码示例</span><a class="headerlink" href="#id12" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">FUN</span><span class="p">)(</span><span class="kt">void</span><span class="p">);</span>
+<span class="linenos"> 2</span><span class="kt">int</span><span class="w"> </span><span class="n">msg</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="kt">void</span><span class="w"> </span><span class="nf">pc_limit_foo</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="p">{</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="n">FUN</span><span class="w"> </span><span class="n">err_fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">FUN</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">msg</span><span class="p">;</span><span class="w"> </span><span class="c1">//错误赋值</span>
+<span class="linenos"> 8</span><span class="w">   </span><span class="n">err_fun</span><span class="p">();</span><span class="w"> </span><span class="c1">//隐式调用错误函数，将触发异常</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="w">   </span><span class="k">return</span><span class="p">;</span>
+<span class="linenos">11</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>执行上述代码会出现异常信息：</p>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text">程序跑飞异常打印信息</span><a class="headerlink" href="#id13" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">debug</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cpu_execute_over_limit</span>
+<span class="n">或者</span>
+<span class="n">cpu_instruction_fetch_from_reserved_address</span>
+<span class="n">或者</span>
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="n">CPU</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">pc_limit</span>
+</pre></div>
+</div>
+</div>
+</div></blockquote>
+</li>
+<li id="div0-err-case"><p><strong>除0异常案例分析</strong></p>
+<blockquote>
+<div><p>在除法运算中当除数为0时，就会触发除0异常，错误的示例代码如下：</p>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text">除0异常代码示例</span><a class="headerlink" href="#id14" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">void</span><span class="w"> </span><span class="nf">div0_foo</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">zalloc</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span><span class="w"> </span><span class="c1">//申请之后ptr buf数据为0</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1234</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"> </span><span class="c1">//该数据为0</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">   </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;c = 0x%x&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"> </span><span class="c1">//该行不会打印，因为执行上一行已经触发了异常</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="w">   </span><span class="k">return</span><span class="p">;</span>
+<span class="linenos">12</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>执行上述代码会出现异常信息：</p>
+<div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text">程序跑飞异常打印信息</span><a class="headerlink" href="#id15" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">div0_err</span>
+<span class="n">或者</span>
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="n">CPU</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">div0_err</span>
+</pre></div>
+</div>
+</div>
+</div></blockquote>
+</li>
+<li id="illegal-err-case"><p><strong>非法指令异常案例分析</strong></p>
+<blockquote>
+<div><p>当CPU遇到不在指令编码范围的指令时就会触发非法指令异常，该异常通常与程序跑飞有关，错误的示例代码如下：</p>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">非法指令异常代码示例</span><a class="headerlink" href="#id16" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">err_code</span><span class="p">[]</span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mh">0x01e101e1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01e101e1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01e101e1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01e101e1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01e101e1</span><span class="p">};</span><span class="w"> </span><span class="c1">//错误的指令</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">FUN</span><span class="p">)(</span><span class="kt">void</span><span class="p">);</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="kt">void</span><span class="w"> </span><span class="nf">illegal_err_foo</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="p">{</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="n">FUN</span><span class="w"> </span><span class="o">*</span><span class="n">fun</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">FUN</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">err_code</span><span class="p">;</span><span class="w"> </span><span class="c1">//错误的赋值</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">fun</span><span class="p">();</span><span class="w"> </span><span class="c1">//触发异常</span>
+<span class="linenos">10</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text">非法指令异常打印信息</span><a class="headerlink" href="#id17" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">illeg_err</span>
+<span class="n">或者</span>
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="n">CPU</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">illegal_err</span>
+</pre></div>
+</div>
+</div>
+<p>实际上，执行上述代码时，可能会触发程序跑飞异常 <a class="reference internal" href="#pc-limit-err-case"><span class="std std-ref">程序跑飞异常</span></a> 。</p>
+</div></blockquote>
+</li>
+<li id="stack-ov-err-case"><p><strong>堆栈溢出案例分析</strong></p>
+<p>当用户在任务中调用函数时，所用到的堆栈最大值大于该任务配置的堆栈深度时，就会触发堆栈溢出问题，该问题通常是用户在函数用到的临时变量较大或者嵌套的函数深度较深有关，错误的示例代码如下：</p>
+<blockquote>
+<div><div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text">堆栈溢出异常代码示例</span><a class="headerlink" href="#id18" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">stack_ov_err_foo</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">cnt</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span><span class="w"> </span><span class="c1">//临时变量占用堆栈</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;cnt: %d, buf @ %x&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cnt</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="o">&amp;</span><span class="n">buf</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">stack_ov_err_foo</span><span class="p">(</span><span class="n">cnt</span><span class="p">);</span><span class="w"> </span><span class="c1">//嵌套调用</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">test_foo</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">stack_ov_err_foo</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span><span class="w"> </span><span class="c1">//嵌套1000层，触发堆栈溢出异常</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text">堆栈溢出异常打印信息</span><a class="headerlink" href="#id19" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">stack_overflow_err</span>
+<span class="n">或者</span>
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="n">CPU</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">stack</span><span class="w"> </span><span class="n">overflow</span><span class="w"> </span><span class="n">err</span>
+</pre></div>
+</div>
+</div>
+</div></blockquote>
+</li>
+<li id="misalign-err-case"><p><strong>非对齐访问案例分析</strong></p>
+<p>当CPU读word或者half-word内存数据时，寻址指针需要满足如下约束：</p>
+<ul class="simple">
+<li><p>Word(4byte)访问：地址4对齐</p></li>
+<li><p>Half-Word(2byte)访问：地址2对齐</p></li>
+</ul>
+<p>如果上述条件不满足，将会触发非对齐异常，错误示例代码如下：</p>
+<blockquote>
+<div><div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text">非对齐访问异常代码示例</span><a class="headerlink" href="#id20" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">misalign_err_foo</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="o">*</span><span class="p">)(</span><span class="n">malloc</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">//malloc得到的地址是4对齐, +1后ptr的值不是4对齐</span>
+
+<span class="w">    </span><span class="n">ptr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1234</span><span class="p">;</span><span class="w"> </span><span class="c1">//ptr非4对齐地址，使用32bit访问会触发非对齐异常</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id21">
+<div class="code-block-caption"><span class="caption-text">非对齐访问异常打印信息</span><a class="headerlink" href="#id21" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">misalign_err</span>
+<span class="n">或者</span>
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="n">CPU</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">misalign_err</span>
+</pre></div>
+</div>
+</div>
+</div></blockquote>
+</li>
+<li id="mmu-err-case"><p><strong>读写MMU非法内存地址</strong></p>
+<p>SDK中是使用malloc函数族接口动态申请的内存，被free后仍在访问，就会触发MMU异常，触发该异常的访问可以是 <strong>CPU</strong> ，也可以是 <strong>外设的DMA</strong> ，错误的示例代码如下：</p>
+<blockquote>
+<div><div class="literal-block-wrapper docutils container" id="mmu">
+<div class="code-block-caption"><span class="caption-text">读写MMU非法内存地址异常代码示例</span><a class="headerlink" href="#mmu" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">mmu_err_foo</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="mi">512</span><span class="p">);</span><span class="w"> </span><span class="c1">//malloc申请内存</span>
+
+<span class="w">    </span><span class="c1">//memset(ptr, 0x5A, 256); //访问没问题</span>
+
+<span class="w">    </span><span class="n">ptr</span><span class="p">[</span><span class="mi">66</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x5A</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">free</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span><span class="w"> </span><span class="c1">//释放内存</span>
+
+<span class="w">    </span><span class="n">ptr</span><span class="p">[</span><span class="mi">67</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xA5</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ptr = 0x%x&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="n">ptr</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="mmu1">
+<div class="code-block-caption"><span class="caption-text">读写MMU非法内存地址异常打印信息1</span><a class="headerlink" href="#mmu1" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">debug</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cpu_access_mmu_error</span>
+<span class="n">debug</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">peripheral_access_mmu_error</span>
+<span class="n">prp</span><span class="w"> </span><span class="n">wr</span><span class="w"> </span><span class="n">mmu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">CPU_WR</span>
+<span class="n">或者</span>
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="n">CPU</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">sys</span><span class="w"> </span><span class="n">excption</span>
+<span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="n">HCORE</span><span class="p">]</span><span class="w"> </span><span class="n">mmu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cpu0</span><span class="w"> </span><span class="n">write</span><span class="w">   </span><span class="n">mmu</span><span class="w"> </span><span class="n">excption</span>
+</pre></div>
+</div>
+</div>
+<p>上述举的例子是CPU触发的MMU异常，如果将ptr只给赋值给某个外设（比如SPI/UART）的DMA地址寄存器，当ptr被free后，外设仍在读写ptr所在buf时，就会触发异常，异常信息可能就会变成：</p>
+<div class="literal-block-wrapper docutils container" id="mmu2">
+<div class="code-block-caption"><span class="caption-text">读写MMU非法内存地址异常打印信息2</span><a class="headerlink" href="#mmu2" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">debug</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">peripheral_access_mmu_error</span>
+<span class="n">prp</span><span class="w"> </span><span class="n">wr</span><span class="w"> </span><span class="n">mmu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">UART0_WR</span>
+<span class="n">或者</span>
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="n">CPU</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">sys</span><span class="w"> </span><span class="n">excption</span>
+<span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="n">HCORE</span><span class="p">]</span><span class="w"> </span><span class="n">mmu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">lg0</span><span class="w"> </span><span class="n">write</span><span class="w">   </span><span class="n">mmu</span><span class="w"> </span><span class="n">excption</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">dev</span><span class="o">:</span><span class="w"> </span><span class="n">DBG_SPI1</span>
+</pre></div>
+</div>
+</div>
+</div></blockquote>
+</li>
+<li id="hmem-err-case"><p><strong>读写内存空白地址</strong></p>
+<blockquote>
+<div><p>当指向buf地址的野指针访问时，由于野指针就像随机数一样，有概率会指向 <a class="reference internal" href="#term-0"><span class="xref std std-term">空白地址</span></a> ，访问该buf时就会触发读写内存空白地址异常，错误的示例代码如下：</p>
+<div class="literal-block-wrapper docutils container" id="id22">
+<div class="code-block-caption"><span class="caption-text">读写内存空白地址异常代码示例</span><a class="headerlink" href="#id22" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">reserved_err_foo</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">rand32</span><span class="p">();</span><span class="w"> </span><span class="c1">//模拟野指针产生</span>
+
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5A</span><span class="p">,</span><span class="w"> </span><span class="mi">256</span><span class="p">);</span><span class="w"> </span><span class="c1">//野指针访问，有概率会写到空白地址</span>
+
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id23">
+<div class="code-block-caption"><span class="caption-text">读写内存空白地址异常打印信息</span><a class="headerlink" href="#id23" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">debug</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cpu_write_reserved_address</span>
+<span class="n">或者</span>
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="n">CPU</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">sys</span><span class="w"> </span><span class="n">excption</span>
+<span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="n">HCORE</span><span class="p">]</span><span class="w"> </span><span class="n">hmem</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cpu0</span><span class="w"> </span><span class="n">write</span><span class="w">   </span><span class="n">hmem</span><span class="w"> </span><span class="n">excption</span>
+</pre></div>
+</div>
+</div>
+</div></blockquote>
+</li>
+<li id="mpu-err-case"><p><strong>内存保护异常(内存/变量被未知程序修改)</strong></p>
+<p>当某些存在bug的代码产生野指针在合法范围之内，就不会触发 <a class="reference internal" href="#hmem-err-case"><span class="std std-ref">空白地址</span></a> 或者 <a class="reference internal" href="#mmu-err-case"><span class="std std-ref">MMU非法地址</span></a> 异常，但是会改掉其他模块的全局变量，就会给令开发者感到疑惑，某些全局变量被不明原因的修改了，当发生这种情况时，可以使用SDK提供的MPU内存保护接口将意外被修改的变量保护起来，保护后被意外修改时将会触发异常，SDK默认会使用相关MPU接口保护系统内部一些内存范围，如果用户流程写到该保护范围，将会触发异常。</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>AC632N, AC637N, AC638N MPU使用示例接口</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/* ---------------------------------------------------------------------------- */</span>
+<span class="linenos"> 2</span><span class="cm">/**</span>
+<span class="linenos"> 3</span><span class="cm"> * @brief Memory权限保护设置</span>
+<span class="linenos"> 4</span><span class="cm"> *</span>
+<span class="linenos"> 5</span><span class="cm"> * @param idx: 保护框索引, 范围: 0 ~ 3, 目前系统默认使用0和3, 用户可用1和2</span>
+<span class="linenos"> 6</span><span class="cm"> * @param begin: Memory开始地址</span>
+<span class="linenos"> 7</span><span class="cm"> * @param end: Memory结束地址</span>
+<span class="linenos"> 8</span><span class="cm"> * @param inv: 0: 保护框内, 1: 保护框外</span>
+<span class="linenos"> 9</span><span class="cm"> * @param format: &quot;Cxwr0rw1rw2rw3rw&quot;, CPU:外设0:外设1:外设2:外设3,</span>
+<span class="linenos">10</span><span class="cm"> * @param ...: 外设ID号索引, 如: DBG_EQ, 见debug.h</span>
+<span class="linenos">11</span><span class="cm"> */</span>
+<span class="linenos">12</span><span class="cm">/* ---------------------------------------------------------------------------- */</span>
+<span class="linenos">13</span><span class="kt">void</span><span class="w"> </span><span class="nf">mpu_set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">inv</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="kt">int</span><span class="w"> </span><span class="n">test_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="linenos">17</span><span class="kt">void</span><span class="w"> </span><span class="nf">mpu_protect</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">18</span><span class="p">{</span>
+<span class="linenos">19</span><span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="n">test_buf</span><span class="p">;</span>
+<span class="linenos">20</span><span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">begin</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">test_buf</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos">21</span><span class="w">    </span><span class="n">mpu_set</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Cr&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">//只给CPU读，写会触发异常</span>
+<span class="linenos">22</span><span class="w">    </span><span class="c1">//mpu_set(2, begin, end, 0, &quot;0r&quot;, get_dev_id(&quot;DBG_USB&quot;)); //CPU不能读写，USB设备可读</span>
+<span class="linenos">23</span><span class="w">    </span><span class="c1">//mpu_set(2, begin, end, 0, &quot;Crw0rw&quot;, get_dev_id(&quot;DBG_USB&quot;)); //CPU能读写，USB设备可读写</span>
+<span class="linenos">24</span><span class="w">    </span><span class="c1">//CPU能读写, USB设备可读写, BT设备可读, EQ设备可写, FFT设备可读，最多支持配置4个设备</span>
+<span class="linenos">25</span><span class="w">    </span><span class="c1">//mpu_set(2, begin, end, 0, &quot;Crw0rw1r2w3r&quot;, get_dev_id(&quot;DBG_USB&quot;), get_dev_id(&quot;DBG_BT&quot;), get_dev_id(&quot;DBG_EQ&quot;), get_dev_id(&quot;DBG_FFT&quot;));</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="w">    </span><span class="n">test_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x5A</span><span class="p">;</span><span class="w"> </span><span class="c1">//写buf触发异常</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;test_buf @ 0x%x, 0x%x&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="n">test_buf</span><span class="p">,</span><span class="w"> </span><span class="n">test_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="linenos">32</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>上述代码运行后会在写bug位置触发异常，开发者可以利用CPU Trace和reti位置在sdk.lst用找到对应被修改的位置。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">CPU</span><span class="w"> </span><span class="n">trace</span><span class="o">:</span><span class="w"> </span><span class="mh">0x01E02158</span><span class="w"> </span><span class="o">--&gt;</span><span class="mh">0x01E05C82</span><span class="w"> </span><span class="o">--&gt;</span><span class="mh">0x01E165F6</span><span class="w"> </span><span class="o">--&gt;</span><span class="mh">0x01E133F0</span>
+
+<span class="nl">reti</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mh">0x01E133F0</span>
+
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="n">CPU</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">sys</span><span class="w"> </span><span class="n">excption</span>
+<span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="n">HCORE</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">mpu_err</span>
+<span class="w"> </span><span class="n">mpu</span><span class="w"> </span><span class="n">limit</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">frame</span><span class="w"> </span><span class="mh">0x00000002</span>
+<span class="n">at</span><span class="w"> </span><span class="n">dev</span><span class="w"> </span><span class="n">id</span><span class="o">:</span><span class="w"> </span><span class="mh">0x000000F0</span><span class="w"> </span><span class="n">DBG_CPU0_WR</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>AC635N, AC636N MPU使用示例接口</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">//CPU写(store)超出设定范围; mode = 1:框内; mode = 0:框外</span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">dsp_store_rang_limit_set</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">low_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">high_addr</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c1">//外设写(store)超出设定范围; mode = 1:框内; mode = 0:框外</span>
+<span class="linenos"> 5</span><span class="kt">void</span><span class="w"> </span><span class="nf">prp_store_rang_limit_set</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">low_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">high_addr</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="kt">int</span><span class="w"> </span><span class="n">test_buf</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="linenos"> 9</span><span class="kt">void</span><span class="w"> </span><span class="nf">mpu_protect</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">10</span><span class="p">{</span>
+<span class="linenos">11</span><span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">begin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="n">test_buf</span><span class="p">;</span>
+<span class="linenos">12</span><span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">begin</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">test_buf</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="w">    </span><span class="n">dsp_store_rang_limit_set</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">//cpu不能写</span>
+<span class="linenos">15</span><span class="w">    </span><span class="n">prp_store_rang_limit_set</span><span class="p">((</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">begin</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">//所有外设不能写</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="w">    </span><span class="n">test_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x5A</span><span class="p">;</span><span class="w"> </span><span class="c1">//写buf触发异常</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;test_buf @ 0x%x, 0x%x&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">u32</span><span class="p">)</span><span class="n">test_buf</span><span class="p">,</span><span class="w"> </span><span class="n">test_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="linenos">22</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>上述代码运行后会在写bug位置触发异常，开发者可以利用CPU Trace和reti位置在sdk.lst用找到对应被修改的位置。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="nl">reti</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mh">0x01E0C05C</span>
+
+<span class="n">CPU</span><span class="w"> </span><span class="n">trace</span><span class="o">:</span><span class="w"> </span><span class="mh">0x01E1301E</span><span class="w"> </span><span class="o">--&gt;</span><span class="mh">0x01E1301A</span><span class="w"> </span><span class="o">--&gt;</span><span class="mh">0x01E0F242</span><span class="w"> </span><span class="o">--&gt;</span><span class="mh">0x01E0C05C</span>
+<span class="n">debug</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cpu_write_data_over_limit</span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>AC630N，AC631N不具备MPU功能</p>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</li>
+<li id="watchdog-err-case"><dl>
+<dt><strong>看门狗超时异常</strong></dt><dd><p>系统由于长时间没有清看门狗导致的系统异常，该问题常见原因是CPU负载过高，长时间没有进idle任务（清看门狗），或者在某个软件流程死循环，导致系统没有清看门狗，错误的示例代码如下：</p>
+<div class="literal-block-wrapper docutils container" id="id24">
+<div class="code-block-caption"><span class="caption-text">看门狗超时异常代码示例</span><a class="headerlink" href="#id24" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">watchdog_err_foo</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+<span class="w">        </span><span class="c1">//TODO: NO block Code，非阻塞死循环，看门狗超时会触发异常</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id25">
+<div class="code-block-caption"><span class="caption-text">看门狗超时异常异常打印信息</span><a class="headerlink" href="#id25" title="Link to this code"></a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">debug</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">debug</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">watchdog</span>
+<span class="n">或者</span>
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="n">CPU</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">sys</span><span class="w"> </span><span class="n">excption</span>
+<span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="n">HCORE</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">hsb</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span>
+<span class="p">[</span><span class="mi">2</span><span class="o">-</span><span class="n">HSB</span><span class="p">]</span><span class="w"> </span><span class="n">emu</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">watchdog</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</dd>
+</dl>
+</li>
+</ol>
+</section>
+<section id="id26">
+<h3><span class="section-number">11.5.1.2.4. </span>异常信息相关术语与缩写词<a class="headerlink" href="#id26" title="Link to this heading"></a></h3>
+<dl class="simple glossary">
+<dt id="term-reserved">reserved<a class="headerlink" href="#term-reserved" title="Link to this term"></a></dt><dd><p>空白区，也叫保留区，指CPU寻址范围内保留的区域，不可访问(invalid)，访问会触发异常。</p>
+</dd>
+<dt id="term-0">空白地址<a class="headerlink" href="#term-0" title="Link to this term"></a></dt><dd><p>同 <a class="reference internal" href="#term-reserved"><span class="xref std std-term">reserved</span></a></p>
+</dd>
+<dt id="term-MMU">MMU<a class="headerlink" href="#term-MMU" title="Link to this term"></a></dt><dd><p>Memory Management Unit，虚拟内存管理单元。</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="11.5. 软件调试" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="jtag_debug.html" class="btn btn-neutral float-right" title="11.5.2. JTAG调试" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+# 能量检测（EnergyDetect）
+
+## 功能介绍
+
+能量检测模块，添加模块后，还需要在sdk内配置执行的回调函数，否则创建失败
+
+## 参数介绍
+*  **mute_energy**：mute阈值
+*  **unmute_energy**：unmute阈值
+*  **mute_time_ms**：能量低于mute阈值进入mute状态的时间
+*  **unmute_time_ms**：能量高于unmute阈值进入unmute状态的时间
+*  **count_cycle_ms**：能量计算周期
+*  **dcc**：去直流开关
+
+## 使用场景
+
+- **获取能量值**<br>
+
+```c
+//path:audio/effect/demo/energy_detect_demo.c
+void user_energy_detect_get_parm_demo()
+{
+    struct audio_get_energy energy = {0};
+    memcpy(energy.name, "enerydet_name", strlen("enerydet_name"));//节点名称（节点内的第一参数，用户自定义,长度小于等于15byte）
+    energy.tar_ch = BIT(0);//目标通道,(BIT(0)对应通道0，如此类推
+    int ret = jlstream_get_node_param(NODE_UUID_ENERGY_DETECT, energy.name, &energy, sizeof(energy));
+    if (ret == sizeof(energy)) {
+        printf("energy %d\n", energy.energy);
+    }
+}
+```
+`注意` 以上demo中的**enerydet_name**需要根据实际节点名字进行修改，比如：<br>
+![EnergyDetectName](../assets/../audio_effects/assets/energy_detect.png)
+
+则需要修改**enerydet_name**为**EnergyDetect411**
+
+- **AutoMute**<br>
+通过检测音频通路的音频信号能量值，配合mute阈值（threshold）,实时更新`mute`和`umute`状态
+
+```c
+//path:audio/effect/effects_default_param.c
+static void audio_energy_det_handler(void *prive, u8 event, u8 ch, u8 ch_total)
+{
+    char name[16];
+    memcpy(name, prive, strlen(prive));
+    //name 模块名称，唯一标识
+    // ch < ch_total 时：表示通道(ch)触发的事件
+    // ch = ch_total 时：表示全部通道都触发的事件
+
+    if (ch < ch_total) {
+        /*
+         *针对独立通道，比如立体声场景，这里就分别显示ch0和ch1的能量
+         *适用于独立控制声道mute的场景
+         */
+        printf(">>>>name:%s ch:%d %s\n", name, ch, event ? ("MUTE") : ("UNMUTE"));
+    }
+
+    if (ch == ch_total) {
+        /*
+         *针对所有通道，比如立体声场景，只有ch0和ch1都是mute，all_ch才是mute
+         *适用于控制整体
+         */
+        printf(">>>>name:%s ch_total %s\n", name,  event ? ("MUTE") : ("UNMUTE"));
+    }
+}
+```

@@ -1,0 +1,7 @@
+## DistortionEXP
+
+### 参数说明：
+* drygain  干声增益
+* wetgain  湿声增益
+* distortBlend  影响谐波成分
+* distortDrive  影响失真程度

@@ -1,0 +1,10 @@
+# 3D音效(3D Effect)
+
+## 功能介绍
+3D音效增强
+
+## 参数说明
+*  Dry Gain         干声增益
+*  Wet Gain         湿声增益
+*  Wet HighPass Freq  湿声的起始频率
+*  Wet LowPass Freq   湿声的截止频率

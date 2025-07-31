@@ -1,0 +1,882 @@
+串口调试
+##############
+
+在嵌入式平台开发中， **串口调试** 以其依赖硬件结构简单和稳定可靠的优点，被誉为硬件状态和软件运行结果的 ``听诊器`` ，成为调试软件的重要手段。SDK中串口可以输出的信息有：
+
+.. note::
+
+    1. 常规调试信息
+    #. 系统异常信息
+
+以下章节分别进行说明。
+
+常规调试信息
+--------------
+
+SDK发布时会附带一些基本的调试信息，比如输出上电流程的各个模块的基本信息和状态。
+
+.. _debug_module_switch:
+
+调试信息使能配置
+~~~~~~~~~~~~~~~~~~
+
+1. 打开lib库总开关
+
+   修改文件位置： :file:`apps/xxx/include/app_config.h`
+
+    .. code-block:: c
+        :linenos:
+
+        #ifndef APP_CONFIG_H
+        #define APP_CONFIG_H
+
+        /*
+        * 系统打印总开关
+        */
+
+
+        #ifdef CONFIG_RELEASE_ENABLE
+        #define LIB_DEBUG    1
+        #else
+        #define LIB_DEBUG    1
+        #endif
+        #define CONFIG_DEBUG_LIB(x)         (x & LIB_DEBUG)	
+        #define CONFIG_DEBUG_ENABLE
+
+    .. note::
+
+        需要修改点:
+
+        1. 宏LIB_DEBUG配置为1.
+        #. 宏CONFIG_DEBUG_ENABLE需要被定义.
+
+#. 某些模块的的调试信息可能还有自己的单独开关 
+
+   相关文件路径: :file:`sdk/apps/xxx/config/lib_xxx_config.c`, 不同模块存放于不同问题中。举例文件 :file:`sdk/apps/hid/config/lib_system_config.c`, 该文件存放与系统相关的打印开关, 比如sys_timer模块:
+
+    .. code-block:: c
+        :linenos:
+
+        const char log_tag_const_v_SYS_TMR AT(.LOG_TAG_CONST) = CONFIG_DEBUG_LIB(FALSE);
+        const char log_tag_const_i_SYS_TMR AT(.LOG_TAG_CONST) = CONFIG_DEBUG_LIB(FALSE);
+        const char log_tag_const_d_SYS_TMR AT(.LOG_TAG_CONST) = CONFIG_DEBUG_LIB(FALSE);
+        const char log_tag_const_w_SYS_TMR AT(.LOG_TAG_CONST) = CONFIG_DEBUG_LIB(TRUE);
+        const char log_tag_const_e_SYS_TMR AT(.LOG_TAG_CONST) = CONFIG_DEBUG_LIB(TRUE);
+
+    每个模块有4个调试级别的开关:
+
+    .. note::
+
+        1. log_tag_const_v_xxx: verbose, 模块中比较冗余的信息。
+        #. log_tag_const_i_xxx: info, 模块中一些基本的状态信息。
+        #. log_tag_const_d_xxx: debug, 模块中用于定位问题的基本信息。
+        #. log_tag_const_w_xxx: warning, 模块中用于定位问题的警告信息。
+        #. log_tag_const_e_xxx: error, 模块中用于定位问题的错误信息。
+
+    用户可以将需要看调试信息的模块对应的开关置位 **TURE** 。
+
+#. 使能硬件驱动开关
+
+   除了上述的逻辑开关外，还需要确认对应硬件配置，举例文件 :file:`apps/hid/board/br25/board_ac636n_demo_cfg.h` ，相关配置如下：
+
+    .. code-block:: c
+        :linenos:
+
+        //*********************************************************************************//
+        //                                 UART配置                                        //
+        //*********************************************************************************//
+        #define TCFG_UART0_ENABLE       ENABLE_THIS_MOUDLE       //串口打印模块使能
+        #define TCFG_UART0_RX_PORT      NO_CONFIG_PORT           //串口接收脚配置（用于打印可以选择NO_CONFIG_PORT）
+        #define TCFG_UART0_TX_PORT      IO_PORTC_04              //串口发送脚配置
+        #define TCFG_UART0_BAUDRATE     1000000                  //串口波特率配置
+
+   用户根据实际硬件平台可灵活配置 **TX** 和 **BAUD** 参数。
+
+
+
+添加自己的调试信息
+~~~~~~~~~~~~~~~~~~
+
+用户在开发自己软件流程时, 经常需要添加自己的调试信息，SDK中支持的输出调试信息的接口有
+
+1. printf
+
+   **printf** 是计算机行业内通用的终端打印信息的标准接口, 在开发环境中添加如下头文件后即可使用
+
+    .. code-block:: c
+        :linenos:
+
+        #include "generic/printf.h"
+
+    相应的，如果有需要打印一块内存的十六进制数据，可使用put_buf接口，使用示例如下；
+
+    .. code-block:: c
+        :linenos:
+
+        #include "generic/printf.h"
+
+        void printf_foo(void)
+        {
+            int tmp[50];
+            printf("Test Demo: %s:%d\n", __func__, __LINE__);
+
+            memset(tmp, 0x5A, sizeof(tmp));
+            put_buf(tmp, sizeof(tmp));
+
+            return;
+        }
+
+
+#. log_xxx族接口
+
+    log_xxx族接口与printf的区别是该接口可以分模块控制，以及输出信息可以带模块名前缀，可以快速定位到对应模块输出的信息。举例文件举例文件 :file:`sdk/apps/hid/app_main.c`, 使用步骤如下：
+
+    1. 在模块对应C文件开头增加如下修改
+
+        .. code-block:: c
+            :linenos:
+
+            #define LOG_TAG_CONST       APP
+            #define LOG_TAG             "[APP]"
+            #define LOG_ERROR_ENABLE
+            #define LOG_DEBUG_ENABLE
+            #define LOG_INFO_ENABLE
+            /* #define LOG_DUMP_ENABLE */
+            #define LOG_CLI_ENABLE
+            #include "debug.h"
+
+        .. note:: 
+
+            修改注意点:
+
+            1. 定义LOG_TAG_CONST宏的命令与模块Debug名相同。
+            #. :file:`debug.h` 文件被include的位置必须位于这些宏定义之后。
+
+    #. 增加模块打印开关控制变量, 文件夹路径 :file:`apps/xxx/config/` 用户应根据自己模块的属性放到合适的文件, 举例将app模块的控制开关放在 :file:`apps/hid/config/log_config.c`文件, 增加变量声明如下：
+
+        .. code-block:: c
+            :linenos:
+
+            const char log_tag_const_v_APP AT(.LOG_TAG_CONST) = 0;
+            const char log_tag_const_i_APP AT(.LOG_TAG_CONST) = 1;
+            const char log_tag_const_d_APP AT(.LOG_TAG_CONST) = 1;
+            const char log_tag_const_w_APP AT(.LOG_TAG_CONST) = 1;
+            const char log_tag_const_e_APP AT(.LOG_TAG_CONST) = 1;
+
+    #. 在对应模块添加调试信息，可用接口示例如下：
+
+        .. code-block:: c
+            :linenos:
+
+            void log_foo(void)
+             {
+                int tmp[10];
+
+                log_info("I am info Message.\n");
+                log_debug("I am debug Message.\n");
+                log_error("I am error Message.\n");
+
+                memset(tmp, 0x5A, sizeof(tmp));
+                log_info_hexdump(tmp, sizeof(tmp)); //输出十六进制数据
+                log_error_hexdump(tmp, sizeof(tmp)); //输出十六进制数据
+
+                return;
+             }
+
+        上述示例输出信息如下：
+
+        .. code-block:: c
+
+            [00:00:00.246][Info]: [APP]I am info Message.
+
+            [00:00:00.246][Debug]: [APP]I am debug Message.
+
+            [00:00:00.247](error): <Error>: [APP]I am error Message.
+
+            5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 
+            5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 
+            5A 5A 5A 5A 5A 5A 5A 5A 
+
+            5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 
+            5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 5A 
+            5A 5A 5A 5A 5A 5A 5A 5A 
+
+
+    #. 系统时间戳
+
+        在输出的log中存在系统时间戳，该时间戳代表输出该log时距离系统的上电时间，如果用户不需要输出该时间戳，可以通过修改文件 :file:`sdk/apps/xxx/config/lib_system_config.c`
+
+        .. code-block:: c
+
+	        ///打印是否时间打印信息
+	        const int config_printf_time         = 1;
+        
+        将config_printf_time变量修改为0，可以关闭log打印中输出时间戳。
+
+
+系统异常信息
+--------------
+
+系统异常指芯片在运行的代码时，由于软件/硬件状态出错，当该错误状态未在硬件/软件程序设计覆盖的容错范围，就会引起的系统处于未知状态的 **异常** ，异常的结果是触发 ``系统复位`` 或者进入 ``系统异常中断函数`` ，常见的异常原因主要有：
+
+1. CPU内部触发的异常：
+    - **程序跑飞** ： CPU运行到程序员非指定地址软件流程，该异常通常由一些没有正确初始化的 **函数指针变量** 引起。
+    - **除0异常** ： CPU在除法运算中除数为0，就会触发除0异常。
+    - **非对齐内存访问** ：CPU运行word内存访问指令时，寻址寄存器不是4对齐的值，或者运行half-word内存访问指令时，寻址寄存器不是2对齐的值，就会触发非对齐内存访问异常。
+    - **堆栈溢出** ：但CPU的堆栈超出所设定的限制范围时，就会出现堆栈溢出异常，该异常通常与任务用到的堆栈大于配置的堆栈大小引起。
+
+#. 与内存相关触发的异常：
+    - **读写非法内存地址** ： 当CPU读写到非法的内存地址，非法内存地址主要包括：空白地址，只读地址、程序员使用MPU保护的内存地址，当CPU读写到没有权限的内存地址时，就会触发异常异常，该异常主要由于buf野指针引起，或者动态申请中在free buf后，还在访问buf的数据。
+    - **外设DMA读写非法地址** ： 与CPU读写非法内存地址类似，当外设DMA读写到了没有读写权限的非法地址，就会触发外设的读写非法地址异常。
+
+#. 与外设相关触发的异常：
+    - **看门狗超时** ： 系统由于长时间没有清看门狗导致的系统异常，该问题常见原因是CPU负载过高，长时间没有进idle任务，或者在某个软件流程死循环，导致系统没有清看门狗。
+
+.. important::
+
+    详细异常原因：
+
+    - :ref:`异常信息列表<exception_table>`
+
+异常信息输出使能配置
+~~~~~~~~~~~~~~~~~~~~~
+
+用户在软件调试过程中，当出现一些错误级别的的打印，或者打印到某个地方之后就出现了 *系统复位* ，**复位情况** 打印举例如下：
+
+.. code-block:: c
+    :emphasize-lines: 7
+
+    [00:00:00.238][Info]: [BOARD]board_init
+    [00:00:00.239][Info]: [TEST-UPDATE]testbox msg handle reg:1e125b8
+
+    [00:00:00.240]app_update_cfg:0,0,1
+    [00:00:00.242][Info]: [APP-UPDATE]<--------update_result_deal=0x5a00 0--------->
+
+    [00:00:00.243]>>>>>>>>>>>>>>>>>app_main... 
+    [00:00:00.100]--P3 Reset Source : 0x40
+    [00:00:00.100]SOFT RESET
+    [00:00:00.102]=================Version===============
+    [00:00:00.102]BTCTRLER-@20221123-$c284473
+    [00:00:00.103]UPDATE-@20221123-$330d72d
+    [00:00:00.104]=======================================
+    [00:00:00.106][Info]: [SDFILE]VM size: 0x40000 @ 0x3e000
+    [00:00:00.108][Info]: [SDFILE]disk capacity 2048 KB
+    [00:00:00.109]last file_addr:35780 8520
+    [00:00:00.110]end_addr:3e000
+
+从打印可以看出，打印到
+
+.. code-block:: c
+
+    [00:00:00.243]>>>>>>>>>>>>>>>>>app_main... 
+
+这一行后就出现了系统复位，复位源显示是 ``SOFT RESET`` ， 遇到这种情况说明系统在运行代码过程中遇到了一些 **异常** ，SDK在发布时，默认会设置为所有异常都会触发 **系统复位** ，从这个信息还不能确认系统遇到什么异常，这时需要把系统的异常复位模式配置为异常中断模式，相关配置位于文件 :file:`apps/xxx/config/lib_system_config.c`
+
+.. code-block:: c
+    :linenos:
+
+    ///异常中断，asser打印开启
+    #ifdef CONFIG_RELEASE_ENABLE
+    const int config_asser         = 1;
+    #else
+    const int config_asser         = 1;
+    #endif
+
+.. note::
+
+    config_asser变量配置定义如下：
+
+    1. 配置为0：系统异常触发复位
+    #. 配置为1：系统异常输出异常信息
+
+
+在将config_asser变量修改为1后，上述的异常情况的打印会变成如下输出信息：
+
+
+.. _exception_demo_log:
+
+.. code-block:: c
+    :caption: 异常信息示例
+    :name: 异常信息示例
+
+    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    Exception at CPU0, info:
+    CPU0 EMU_CON = 0xe018001f
+    CPU0 EMU_MSG = 0x80000000
+
+    Exception In Irq Mode
+
+    [0-CPU] emu err msg : system excption
+
+    JL_CEMU->MSG0: 0x00200000
+    JL_CEMU->MSG1: 0x00000000
+    JL_CEMU->MSG2: 0x00000000
+
+    [1-HCORE] hmem err msg :cpu1 write   hmem excption
+
+    CPU0: Trace: 0x001149da --> 0x00114a10 --> 0x00114a22 --> 0x00114a20
+
+    USP : 0x004015f0
+    SSP : 0x00102c40
+    SP  : 0x00102b80
+    SSP_LIMIT: 0x00101c40 ~ 0x00102c40
+    USP_LIMIT: 0x00400e00 ~ 0x00401600
+
+    RETS : 0x001149be
+    RETI : 0x00114a20
+    RETX : 0x00000000
+    RETE : 0x00000000
+    PSR  : 0x00000000
+    ICFG : 0x070100c0
+
+    R0 = 0x00104969
+    R1 = 0x00ffe000
+    R2 = 0x00000005
+    R3 = 0x00104dec
+    R4 = 0x00000055
+    R5 = 0x00104968
+    R6 = 0x00000000
+    R7 = 0x00ffe000
+    R8 = 0xa15108c8
+    R9 = 0xff09ff35
+    R10 = 0xcbddba79
+    R11 = 0x51036050
+    R12 = 0x82249852
+    R13 = 0x3fcc5b5b
+    R14 = 0xdaad6dea
+    R15 = 0x5a08d604 
+
+当系统异常被触发之后，会进入系统异常函数，在异常异常函数会输出系统异常信息，用户可以根据上述信息进行分析，可在 :ref:`chip_exception_table` 查询相关异常原因。
+
+
+.. _chip_exception_table:
+
+各系列异常信息列表
+~~~~~~~~~~~~~~~~~~~
+
+.. _exception_table:
+
+.. table:: 异常信息列表
+    :align: center
+
+    ==================================================================    ============================================================================================================
+       **异常信息**                                                         **异常描述**                           
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+      :ref:`misalign_err<misalign_err_case>`                                内存非对齐异常访问                     
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+      :ref:`illegal_err<illegal_err_case>`                                  非法指令异常   
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`div0_err<div0_err_case>`                                         除0异常 
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`stack overflow err<stack_ov_err_case>`                            堆栈溢出异常    
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`pc_limit<pc_limit_err_case>`                                     程序跑飞异常
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+      fpu_ine_err                                                           浮点不精确异常
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+      fpu_huge_err                                                          浮点上溢出异常
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+      fpu_tiny                                                              浮点下溢出异常
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+      fpu_inf_err                                                           浮点无穷大异常
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+      fpu_inv_err                                                           浮点NaN异常
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+      icache excption                                                       icache异常
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+      dcache excption                                                       dcache异常
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`xxx access hmem excption<hmem_err_case>` <at dev: xxx>          xxx设备访问了 :term:`空白地址` 或者mmu tlb保护空间(具体设备请看 :ref:`PRP设备列表<prp_table>`)
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`xxx mmu excption<mmu_err_case>` <at dev: xxx>                   xxx设备访问了没有被映射的mmu虚拟空间(具体设备请看 :ref:`PRP设备列表<prp_table>`)
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`csfr_write invalid<hmem_err_case>` <at dev: xxx>                 xxx设备写到csfr :term:`空白地址` (具体设备请看 :ref:`PRP设备列表<prp_table>`)
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`csfr_read invalid<hmem_err_case>` <at dev: xxx>                  xxx某个设备读到csfr :term:`空白地址` (具体设备请看 :ref:`PRP设备列表<prp_table>`)
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`mpu_err <mpu_err_case>` <at dev: xxx>                            某个设备访问到mpu保护区 
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`cpu write hsb sfr reserved memory<hmem_err_case>`               CPU写到高速设备sfr :term:`空白地址`
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`cpu read hsb sfr reserved memory<hmem_err_case>`                CPU读到高速设备sfr :term:`空白地址`
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`cpu write axi reserved memory<hmem_err_case>`                    CPU写到axi :term:`空白地址`
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`cpu read axi reserved memory<hmem_err_case>`                     CPU读到axi :term:`空白地址`
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`watchdog time out<watchdog_err_case>`                            看门狗超时异常 
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+      sbc ram access error <at dev: xxx>                                    sbc设备内部ram被其他设备访问异常 (具体设备请看 :ref:`PRP设备列表<prp_table>`)
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`cpu write lsb sfr reserved memory<hmem_err_case>`               CPU写到低速设备sfr :term:`空白地址`
+    ------------------------------------------------------------------    ------------------------------------------------------------------------------------------------------------
+     :ref:`cpu read lsb sfr reserved memory<hmem_err_case>`                CPU读到低速设备sfr :term:`空白地址`
+    ==================================================================    ============================================================================================================
+
+.. _prp_table:
+
+.. table:: 异常信息列表
+    :align: center
+
+    ========================================    ==============================================
+       **设备名称**                                **设备描述**
+    ----------------------------------------    ----------------------------------------------
+     sdtap access/DBG_SDTAP                        SDTAP设备
+    ----------------------------------------    ----------------------------------------------
+     lg0 access                                     /
+    ----------------------------------------    ----------------------------------------------
+     axi read                                       AXI总线读设备
+    ----------------------------------------    ----------------------------------------------
+     axi write                                      AXI总线写设备
+    ----------------------------------------    ----------------------------------------------
+     bt access/DBG_BT                              蓝牙设备
+    ----------------------------------------    ----------------------------------------------
+     fft access/DBG_FFT                          FFT设备
+    ----------------------------------------    ----------------------------------------------
+     eq access/DBG_EQ                             EQ设备
+    ----------------------------------------    ----------------------------------------------
+     fir access/DBG_FIR                           FIR(SRC)设备
+    ----------------------------------------    ----------------------------------------------
+     cpu0 write/DBG_CPU0_WR                       CPU0写设备
+    ----------------------------------------    ----------------------------------------------
+     cpu0 read/DBG_CPU0_RD                       CPU0读设备
+    ----------------------------------------    ----------------------------------------------
+     cpu0 instruction fetch/DBG_CPU0_IF           CPU0取指令设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_USB                                      USB设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_FM                                       FM设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_CTM                                      CTM设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_UART0/1/2R                                UART0/1/2读设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_UART0/1/2W                                UART0/1/2写设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_SPI0/1/2                                 SPI0/1/2设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_SD0/1                                   SD0/1设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_AES                                     AES设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_AAC                                     AAC设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_SBC                                     SBC设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_PLNK                                     PDM LNK设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_PAP                                     PAP设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_ISP                                     ISP设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_SPIIF_D                                  SPIIF_D设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_SPIIF_I                                  SPIIF_I设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_AUDIO                                   AUDIO设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_ALIN0/1                                 Audio LINK0/1设备
+    ----------------------------------------    ----------------------------------------------
+     DBG_AXI_M0-MF                               AXI总线设备0~F
+    ========================================    ==============================================
+
+
+常见异常信息案例分析
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. _pc_limit_err_case:
+
+1. **程序跑飞案例分析**
+
+   当程序跑飞，指CPU的PC跑到一个错误的地址，问题原因通常表现为代码中函数存在隐式调用，且函数指针 **没有被初始化** 或者初始化为 **非法值** ，错误的示例代码如下：
+
+    .. code-block:: c
+        :linenos:
+        :caption: 程序跑飞异常代码示例
+        :name: 程序跑飞异常代码示例
+
+        typedef void (*FUN)(void);
+        int msg[4];
+
+        void pc_limit_foo(void)
+        {
+
+           FUN err_fun = (FUN *)msg; //错误赋值
+           err_fun(); //隐式调用错误函数，将触发异常
+
+           return;
+        }
+
+
+    执行上述代码会出现异常信息：
+
+    .. code-block:: c
+        :caption: 程序跑飞异常打印信息
+        :name: 程序跑飞异常打印信息
+
+        debug err msg : cpu_execute_over_limit
+        或者
+        cpu_instruction_fetch_from_reserved_address
+        或者
+        [0-CPU] emu err msg : pc_limit
+
+    .. _div0_err_case:
+#. **除0异常案例分析**
+
+    在除法运算中当除数为0时，就会触发除0异常，错误的示例代码如下：
+
+    .. code-block:: c
+        :linenos:
+        :caption: 除0异常代码示例
+        :name: 除0异常代码示例
+
+        void div0_foo(void)
+        {
+           int *ptr = (int *)zalloc(20); //申请之后ptr buf数据为0
+
+           int a = 1234;
+           int b = ptr[0]; //该数据为0
+           int c = a / b;
+
+           printf("c = 0x%x", c); //该行不会打印，因为执行上一行已经触发了异常
+
+           return;
+        }
+
+    执行上述代码会出现异常信息：
+
+    .. code-block:: c
+        :caption: 程序跑飞异常打印信息
+        :name: 程序跑飞异常打印信息
+
+        emu err msg : div0_err
+        或者
+        [0-CPU] emu err msg : div0_err
+
+    .. _illegal_err_case:
+#. **非法指令异常案例分析**
+
+    当CPU遇到不在指令编码范围的指令时就会触发非法指令异常，该异常通常与程序跑飞有关，错误的示例代码如下：
+
+    .. code-block:: c
+        :linenos:
+        :caption: 非法指令异常代码示例
+        :name: 非法指令异常代码示例
+
+        const int err_code[]= {0x01e101e1, 0x01e101e1, 0x01e101e1, 0x01e101e1, 0x01e101e1}; //错误的指令
+
+        typedef void (*FUN)(void);
+
+        void illegal_err_foo(void)
+        {
+            FUN *fun = (FUN *)err_code; //错误的赋值
+
+            fun(); //触发异常
+        }
+
+
+    .. code-block:: c
+        :caption: 非法指令异常打印信息
+        :name: 非法指令异常打印信息
+
+        emu err msg : illeg_err
+        或者
+        [0-CPU] emu err msg : illegal_err
+
+    实际上，执行上述代码时，可能会触发程序跑飞异常 :ref:`程序跑飞异常<pc_limit_err_case>` 。
+
+
+    .. _stack_ov_err_case:
+#. **堆栈溢出案例分析**
+
+   当用户在任务中调用函数时，所用到的堆栈最大值大于该任务配置的堆栈深度时，就会触发堆栈溢出问题，该问题通常是用户在函数用到的临时变量较大或者嵌套的函数深度较深有关，错误的示例代码如下：
+
+    .. code-block:: c
+        :caption: 堆栈溢出异常代码示例
+        :name: 堆栈溢出异常代码示例
+
+        static void stack_ov_err_foo(int cnt)
+        {
+            int buf[100]; //临时变量占用堆栈
+            printf("cnt: %d, buf @ %x", cnt, (u32)&buf);
+
+            if (cnt--) {
+                stack_ov_err_foo(cnt); //嵌套调用
+            }
+        }
+
+        void test_foo(void)
+        {
+            stack_ov_err_foo(1000); //嵌套1000层，触发堆栈溢出异常
+        }
+
+    .. code-block:: c
+        :caption: 堆栈溢出异常打印信息
+        :name: 堆栈溢出异常打印信息
+
+        emu err msg : stack_overflow_err
+        或者
+        [0-CPU] emu err msg : stack overflow err
+
+
+    .. _misalign_err_case:
+
+#. **非对齐访问案例分析**
+    
+   当CPU读word或者half-word内存数据时，寻址指针需要满足如下约束：
+
+   - Word(4byte)访问：地址4对齐
+   - Half-Word(2byte)访问：地址2对齐
+
+   如果上述条件不满足，将会触发非对齐异常，错误示例代码如下：
+
+    .. code-block:: c
+        :caption: 非对齐访问异常代码示例
+        :name: 非对齐访问异常代码示例
+
+        static void misalign_err_foo(void)
+        {
+
+            u32 *ptr = (u32 *)(malloc(8) + 1); //malloc得到的地址是4对齐, +1后ptr的值不是4对齐
+
+            ptr[1] = 1234; //ptr非4对齐地址，使用32bit访问会触发非对齐异常
+        }
+
+    .. code-block:: c
+        :caption: 非对齐访问异常打印信息
+        :name: 非对齐访问异常打印信息
+
+        emu err msg : misalign_err
+        或者
+        [0-CPU] emu err msg : misalign_err
+
+
+    .. _mmu_err_case:
+
+#. **读写MMU非法内存地址**
+
+   SDK中是使用malloc函数族接口动态申请的内存，被free后仍在访问，就会触发MMU异常，触发该异常的访问可以是 **CPU** ，也可以是 **外设的DMA** ，错误的示例代码如下：
+
+    .. code-block:: c
+        :caption: 读写MMU非法内存地址异常代码示例
+        :name: 读写MMU非法内存地址异常代码示例
+
+        static void mmu_err_foo(void)
+        {
+
+            u32 *ptr = malloc(512); //malloc申请内存
+
+            //memset(ptr, 0x5A, 256); //访问没问题
+            
+            ptr[66] = 0x5A;
+
+            free(ptr); //释放内存
+
+            ptr[67] = 0xA5;
+
+            printf("ptr = 0x%x", (u32)ptr);
+
+            return;
+        }
+
+    .. code-block:: c
+        :caption: 读写MMU非法内存地址异常打印信息1
+        :name: 读写MMU非法内存地址异常打印信息1
+
+        debug err msg : cpu_access_mmu_error
+        debug err msg : peripheral_access_mmu_error
+        prp wr mmu err msg : CPU_WR
+        或者
+        [0-CPU] emu err msg : sys excption
+        [1-HCORE] mmu err msg : cpu0 write   mmu excption 
+
+    上述举的例子是CPU触发的MMU异常，如果将ptr只给赋值给某个外设（比如SPI/UART）的DMA地址寄存器，当ptr被free后，外设仍在读写ptr所在buf时，就会触发异常，异常信息可能就会变成：
+
+    .. code-block:: c
+        :caption: 读写MMU非法内存地址异常打印信息2
+        :name: 读写MMU非法内存地址异常打印信息2
+
+        debug err msg : peripheral_access_mmu_error
+        prp wr mmu err msg : UART0_WR
+        或者
+        [0-CPU] emu err msg : sys excption
+        [1-HCORE] mmu err msg : lg0 write   mmu excption at dev: DBG_SPI1
+
+    .. _hmem_err_case:
+#. **读写内存空白地址**
+
+    当指向buf地址的野指针访问时，由于野指针就像随机数一样，有概率会指向 :term:`空白地址` ，访问该buf时就会触发读写内存空白地址异常，错误的示例代码如下：
+
+    .. code-block:: c
+        :caption: 读写内存空白地址异常代码示例
+        :name: 读写内存空白地址异常代码示例
+
+        static void reserved_err_foo(void)
+        {
+
+            u32 *ptr = (u32 *)rand32(); //模拟野指针产生
+
+            memset(ptr, 0x5A, 256); //野指针访问，有概率会写到空白地址
+
+            return;
+        }
+
+    .. code-block:: c
+        :caption: 读写内存空白地址异常打印信息
+        :name: 读写内存空白地址异常打印信息
+
+        debug err msg : cpu_write_reserved_address
+        或者
+        [0-CPU] emu err msg : sys excption
+        [1-HCORE] hmem err msg : cpu0 write   hmem excption 
+
+
+    .. _mpu_err_case:
+#. **内存保护异常(内存/变量被未知程序修改)**
+
+   当某些存在bug的代码产生野指针在合法范围之内，就不会触发 :ref:`空白地址<hmem_err_case>` 或者 :ref:`MMU非法地址<mmu_err_case>` 异常，但是会改掉其他模块的全局变量，就会给令开发者感到疑惑，某些全局变量被不明原因的修改了，当发生这种情况时，可以使用SDK提供的MPU内存保护接口将意外被修改的变量保护起来，保护后被意外修改时将会触发异常，SDK默认会使用相关MPU接口保护系统内部一些内存范围，如果用户流程写到该保护范围，将会触发异常。
+
+    1. AC632N, AC637N, AC638N MPU使用示例接口
+
+        .. code-block:: c
+            :linenos:
+
+            /* ---------------------------------------------------------------------------- */
+            /**
+             * @brief Memory权限保护设置
+             *
+             * @param idx: 保护框索引, 范围: 0 ~ 3, 目前系统默认使用0和3, 用户可用1和2
+             * @param begin: Memory开始地址
+             * @param end: Memory结束地址
+             * @param inv: 0: 保护框内, 1: 保护框外
+             * @param format: "Cxwr0rw1rw2rw3rw", CPU:外设0:外设1:外设2:外设3,
+             * @param ...: 外设ID号索引, 如: DBG_EQ, 见debug.h
+             */
+            /* ---------------------------------------------------------------------------- */
+            void mpu_set(int idx, u32 begin, u32 end, u32 inv, const char *format, ...);
+
+
+            int test_buf[2];
+            void mpu_protect(void)
+            {
+                u32 begin = (u32)test_buf;
+                u32 end = begin + sizeof(test_buf) - 1;
+                mpu_set(2, begin, end, 0, "Cr"); //只给CPU读，写会触发异常
+                //mpu_set(2, begin, end, 0, "0r", get_dev_id("DBG_USB")); //CPU不能读写，USB设备可读
+                //mpu_set(2, begin, end, 0, "Crw0rw", get_dev_id("DBG_USB")); //CPU能读写，USB设备可读写
+                //CPU能读写, USB设备可读写, BT设备可读, EQ设备可写, FFT设备可读，最多支持配置4个设备
+                //mpu_set(2, begin, end, 0, "Crw0rw1r2w3r", get_dev_id("DBG_USB"), get_dev_id("DBG_BT"), get_dev_id("DBG_EQ"), get_dev_id("DBG_FFT")); 
+
+                test_buf[1] = 0x5A; //写buf触发异常
+
+                printf("test_buf @ 0x%x, 0x%x", (u32)test_buf, test_buf[0]);
+
+                return;
+            }
+
+        上述代码运行后会在写bug位置触发异常，开发者可以利用CPU Trace和reti位置在sdk.lst用找到对应被修改的位置。
+
+        .. code-block:: c
+
+            CPU trace: 0x01E02158 -->0x01E05C82 -->0x01E165F6 -->0x01E133F0 
+
+            reti : 0x01E133F0 
+             
+            [0-CPU] emu err msg : sys excption
+            [1-HCORE] emu err msg : mpu_err
+             mpu limit : at frame 0x00000002 
+            at dev id: 0x000000F0 DBG_CPU0_WR
+
+
+
+    #. AC635N, AC636N MPU使用示例接口
+
+        .. code-block:: c
+            :linenos:
+
+            //CPU写(store)超出设定范围; mode = 1:框内; mode = 0:框外
+            void dsp_store_rang_limit_set(void *low_addr, void *high_addr, u8 mode);
+
+            //外设写(store)超出设定范围; mode = 1:框内; mode = 0:框外
+            void prp_store_rang_limit_set(void *low_addr, void *high_addr, u8 mode);
+
+
+            int test_buf[2];
+            void mpu_protect(void)
+            {
+                u32 begin = (u32)test_buf;
+                u32 end = begin + sizeof(test_buf) - 1;
+
+                dsp_store_rang_limit_set((void *)begin, (void *)end, 1); //cpu不能写
+                prp_store_rang_limit_set((void *)begin, (void *)end, 1); //所有外设不能写
+
+                test_buf[1] = 0x5A; //写buf触发异常
+
+                printf("test_buf @ 0x%x, 0x%x", (u32)test_buf, test_buf[0]);
+
+                return;
+            }
+
+        上述代码运行后会在写bug位置触发异常，开发者可以利用CPU Trace和reti位置在sdk.lst用找到对应被修改的位置。
+
+        .. code-block:: c
+
+            reti : 0x01E0C05C 
+
+            CPU trace: 0x01E1301E -->0x01E1301A -->0x01E0F242 -->0x01E0C05C
+            debug err msg : cpu_write_data_over_limit
+ 
+
+        .. caution::
+
+            AC630N，AC631N不具备MPU功能
+   
+
+    .. _watchdog_err_case:
+#. **看门狗超时异常**
+    系统由于长时间没有清看门狗导致的系统异常，该问题常见原因是CPU负载过高，长时间没有进idle任务（清看门狗），或者在某个软件流程死循环，导致系统没有清看门狗，错误的示例代码如下：
+
+    .. code-block:: c
+        :caption: 看门狗超时异常代码示例
+        :name: 看门狗超时异常代码示例
+
+        void watchdog_err_foo(void)
+        {
+            while(1){
+                //TODO: NO block Code，非阻塞死循环，看门狗超时会触发异常
+            }
+
+            return;
+        }
+
+    .. code-block:: c
+        :caption: 看门狗超时异常异常打印信息
+        :name: 看门狗超时异常打印信息
+
+        debug err msg : debug err msg : watchdog
+        或者
+        [0-CPU] emu err msg : sys excption
+        [1-HCORE] emu err msg : hsb emu err 
+        [2-HSB] emu err msg : watchdog time out
+
+
+
+异常信息相关术语与缩写词
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. glossary::
+
+    reserved
+       空白区，也叫保留区，指CPU寻址范围内保留的区域，不可访问(invalid)，访问会触发异常。
+
+    空白地址
+        同 :term:`reserved`
+
+    MMU
+       Memory Management Unit，虚拟内存管理单元。
+
+
+
+
+
+

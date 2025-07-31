@@ -1,0 +1,51 @@
+# StereoMtapsEcho
+
+多抽头立体声echo模型。 属于一种 空间类的声音效果
+
+
+## 参数说明
+
+#### 左右声道的公共参数
+ * **maxpredelay_ms**   预延时100 对应的最大延时        
+* **maxdelay_ms**       delay设为100的时候 对应的最大延时
+* **delay**             左右声道的抽头delay 为100的时候，对应的延时是 maxdelay_ms *(delay/100)
+* **feedback**          反馈系数，范围0到100
+* **wetgain**           湿声增益，范围0到300
+* **drygain**           干声增益，范围0到100
+* **lowpass_freq**      湿声低通滤波器频率，范围50到22000
+* **highpass_freq**     湿声高通滤波器频率，范围0到22000
+* **commonbuf**         左右声道的delay  buf是否共用，勾选项，0或1
+* **repeatTime**        重复次数，有效范围0到13，fir模式有效
+
+#### 左右声道独立参数
+* **delayn0_L** 左声道抽头0对应延时，范围0到100
+* **gain0_L**   左声道抽头0对应增益，范围0到100
+* **delayn1_L** 左声道抽头1对应延时，范围0到100
+* **gain1_L**   左声道抽头1对应增益，范围0到100
+* **delayn2_L** 左声道抽头2对应延时，范围0到100
+* **gain2_L**   左声道抽头2对应增益，范围0到100
+####
+* **delayn0_R** 右声道抽头0对应延时，范围0到100
+* **gain0_R**   右声道抽头0对应增益，范围0到100
+* **delayn1_R** 右声道抽头1对应延时，范围0到100
+* **gain1_R**   右声道抽头1对应增益，范围0到100
+* **delayn2_R** 右声道抽头2对应延时，范围0到100
+* **gain2_R**   右声道抽头2对应增益，范围0到100
+
+####
+* **predelay_L**  左声道预延时参数，范围0到100
+* **predelay_R**  右声道预延时参数，范围0到100
+
+## 注意事项
+#### 修改后需要重新open的参数，这些影响buf大些
+* **maxpredelay_ms**    ：  delay 100对应它
+* **maxdelay_ms**       ： predelay 100对应它
+* **commonbuf**         ：  0或1，fir模式，如果是单声道输入，这个参数是无效的。其他模式都影响buf大小
+* **repeatTime**        ：最大repeat次数,fir模式有效，iir模式这个无效
+ 
+#### buf大小估算： 
+##### iir
+maxpredelay_ms * 声道个数 +maxdelay_ms *声道个数（commonbuf影响这个，单声道也有效的） 这么多数据点缓存（大头），再加上 运算结构体；
+##### fir
+ maxpredelay_ms * 声道个数 +maxdelay_ms *声道个数*repeattime（commonbuf影响这个，单声道无效） 这么多数据点缓存（大头），再加上 运算结构体；
+所以fir buf会比iir大比较多，运算量也会比iir大。

@@ -1,0 +1,276 @@
+.. vim: syntax=rst
+
+蓝牙主循环函数介绍
+======================
+
+1、app_enter_bt_mode
+~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙模式运行主循环函数，函数里面主要有蓝牙初始化、消息处理、蓝牙退出等
+      @param   arg : 模式切换信息
+      @return  下一个任务信息
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   struct app_mode *app_enter_bt_mode(int arg)
+ 
+参数：
+
++------+--------------+
+| 名称 |     说明     |
++======+==============+
+| arg  | 模式切换信息 |
++------+--------------+
+
+.. image:: media/蓝牙主循环函002.png
+   :alt: 蓝牙主循环函数流程.drawio
+   :width: 6.61528in
+   :height: 4.34931in
+
+示例：
+
+系统app_core任务创建后进入蓝牙模式
+
+.. code-block:: c
+   
+   static void app_task_loop(void *p)
+   {
+      struct app_mode *mode;
+
+      mode = app_task_init();
+
+      while (1) {
+         app_set_current_mode(mode);
+
+         switch (mode->name) {
+         case APP_MODE_IDLE:
+               mode = app_enter_idle_mode(g_mode_switch_arg);
+               break;
+         case APP_MODE_POWERON:
+               mode = app_enter_poweron_mode(g_mode_switch_arg);
+               break;
+         case APP_MODE_BT:
+               mode = app_enter_bt_mode(g_mode_switch_arg);
+               break;
+
+2、bt_app_msg_handler
+~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙模式应用消息处理
+      @param   msg ：收到的消息
+      @return  默认0
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   int bt_app_msg_handler(int *msg)
+
+参数：
+
++------+------------+
+| 名称 |    说明    |
++======+============+
+| msg  | 收到的消息 |
++------+------------+
+
+示例：
+
+在蓝牙模式中处理应用消息
+
+.. code-block:: c
+
+   struct app_mode *app_enter_bt_mode(int arg)
+   {
+      int msg[16];
+      struct bt_event *event;
+      struct app_mode *next_mode;
+
+      app_bt_init();
+
+      while (1) {
+
+         if (!app_get_message(msg, ARRAY_SIZE(msg), bt_mode_key_table)) {
+               continue;
+         }
+         next_mode = app_mode_switch_handler(msg);
+         if (next_mode) {
+               break;
+         }
+
+         event = (struct bt_event *)(msg + 1);
+
+         switch (msg[0]) {
+   #if TCFG_USER_TWS_ENABLE
+         case MSG_FROM_TWS:
+               bt_tws_connction_status_event_handler(msg + 1);
+               break;
+   #endif
+         case MSG_FROM_BT_STACK:
+               bt_connction_status_event_handler(event);
+               break;
+         case MSG_FROM_BT_HCI:
+               bt_hci_event_handler(event);
+               break;
+         case MSG_FROM_APP:
+               bt_app_msg_handler(msg + 1);
+               break;
+         }
+
+         app_default_msg_handler(msg);
+      }
+
+      app_bt_exit();
+
+      return next_mode;
+   }
+
+3、bt_connction_status_event_handler
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙模式链接状态处理，开发者可以根据各种状态来实现自定义应用功能
+      @param   bt ：蓝牙连接状态事件
+      @return  默认 0
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   int bt_connction_status_event_handler(struct bt_event *bt)
+
+参数：
+
++------+------------------+
+| 名称 |       说明       |
++======+==================+
+| bt   | 蓝牙连接状态事件 |
++------+------------------+
+
+示例：
+
+参考bt_app_msg_handler函数示例
+
+在蓝牙模式中处理连接事件，该函数传入的蓝牙连接状态事件参考SDK中avctp_user.h文件的STATUS_FOR_USER
+
+4、bt_hci_event_handler
+~~~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙模式协议栈事件回调处理，开发者可以根据各种状态来实现自定义应用功能
+      @param   bt ：蓝牙hci事件
+      @return  默认 0
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   int bt_hci_event_handler(struct bt_event *bt)
+
+参数：
+
++------+-------------+
+| 名称 |    说明     |
++======+=============+
+| bt   | 蓝牙hci事件 |
++------+-------------+
+
+示例：
+
+在蓝牙模式中处理蓝牙hci消息，参考bt_app_msg_handler函数示例
+
+5、bredr_handle_register
+~~~~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙模式协议栈回调函数注册
+      @param   
+      @return  
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   void bredr_handle_register()
+
+参数:
+
+无
+
+示例：
+
+在app_bt_init蓝牙初始化函数中调用，用于注册蓝牙相关回调函数如：spp数据处理函数，HFP电量获取接口等
+
+6、bt_function_select_init
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙模式协议栈功能配置
+      @param   
+      @return  
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   void bt_function_select_init()
+
+参数:
+
+无
+
+示例：
+
+在app_bt_init蓝牙初始化函数中调用，用于设置一些蓝牙相关参数如：回连超时时间，电量更新周期等
+
+7、user_send_cmd_prepare
+~~~~~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙bredr功能控制
+      @param   cmd：命令
+               param_len：参数长度
+               param：参数
+      @return  执行成功 0 ,其他-执行失败
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   u32 user_send_cmd_prepare(USER_CMD_TYPE cmd, u16 param_len, u8 *param)
+
+参数:
+
++-----------+----------+
+|   名称    |   说明   |
++===========+==========+
+| cmd       | 命令     |
++-----------+----------+
+| param_len | 参数长度 |
++-----------+----------+
+| param     | 参数     |
++-----------+----------+
+
+示例：
+
+该函数支持的命令及补充说明参考SDK中avctp_user.h文件的 USER_CMD_TYPE
+
+.. code-block:: c
+
+   //拨号
+   u8 call_num[5] = {'1', '0', '0', '8', '6'};
+   printf("--------------call: 10086\n");
+   user_send_cmd_prepare(USER_CTRL_DIAL_NUMBER, 5, call_num);
+
+   //断开蓝牙连接
+   user_send_cmd_prepare(USER_CTRL_DISCONNECTION_HCI, 0, NULL);

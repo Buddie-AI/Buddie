@@ -1,0 +1,10 @@
+# 噪声抑制（NoiseFloor Suppressor）
+
+## 功能介绍
+对数据进行降噪处理，优化底噪。
+
+## 参数介绍
+
+- **FFT Size**：算法FFT帧长配置（256、512可配）。帧长越小，延时越低，同时所需算力越高。<br><font color=#FF0000 size=2 >*注：delay = FFT_Size / 2 / sample_rate*</font><br>
+
+- **Suppress Level**：降噪强度配置（-18~18dB）。配置过大时，可能会出现灵敏度过高导致误检测。

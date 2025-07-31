@@ -1,0 +1,243 @@
+
+.. _led_api_chapter:
+
+PWM LED说明
+#############
+
+1. PWM LED灯效由专用低功耗硬件模块驱动，支持单IO推单灯和单IO推双灯。
+2. 双IO推双灯是软件分时复用硬件模块来实现的，不支持同时闪灯。
+
+灯效配置结构体与枚举类型简介
+#############
+
+.. code-block:: c
+
+    typedef struct led_platform_data {
+        const led_board_cfg_t *board_cfg;
+        u8 ctl_option;                  //参考枚举led_ctl_option
+        u8 ctl_mode;                    //参考枚举led_ctl_mode
+        u8 ctl_cycle;                   //控制周期, 单位50ms, 比如每5s闪一次灯，那么5s就是控制周期
+        u8 ctl_cycle_num;               //控制周期的个数，值为0时，则控制周期无限循环，值为n时，则第n次控制周期之后,灯自动关闭
+        union {
+            struct {                    //周期单闪, 如灯每5s闪一次，每次亮100ms
+                u8 bright_time;         //灯亮的时间，单位50ms
+            } once_bright;
+            struct {                    //周期双闪, 如灯每5s闪两次，第一次亮100ms，间隔50ms，再第二次亮100ms
+                u8 first_bright_time;   //第一次灯亮的时间，单位50ms
+                u8 bright_gap_time;     //间隔时间，单位50ms
+                u8 second_bright_time;  //第二次灯亮的时间，单位50ms
+            } twice_bright;
+            struct {                    //周期呼吸，如灯5s呼吸一次，每次呼吸亮2s
+                u8 bright_time;         //灯亮的时间，单位50ms，等于 占空比自增自减的时间 + 最大占空比保持的时间
+                u8 brightest_keep_time; //亮度增到最大的时候，如果需要保持的时间，单位50ms，该时间要小于 bright_time
+            } breathe_bright;
+        };
+        void (*cbfunc)(u32 cnt);        //灯效结束回调函数
+    } led_pdata_t;
+
+    enum led_logic_mode {
+        BRIGHT_BY_LOW,                  //给低电平亮
+        BRIGHT_BY_HIGH,                 //给高电平亮
+    };
+    enum led_ctl_option {
+        CTL_LED0_ONLY,                  //只控led0
+        CTL_LED1_ONLY,                  //只控led1
+        CTL_LED01_ASYNC,                //led0&led1异步(交替)
+        CTL_LED01_SYNC,                 //led0&led1同步
+    };
+    enum led_ctl_mode {
+        CYCLE_ONCE_BRIGHT,              //周期单闪
+        CYCLE_TWICE_BRIGHT,             //周期双闪
+        CYCLE_BREATHE_BRIGHT,           //周期呼吸
+        ALWAYS_BRIGHT,                  //常亮
+        ALWAYS_EXTINGUISH,              //常灭
+    };
+
+
+
+
+
+灯效配置示例
+#############
+
+1. 硬件模块支持灯灯效为: 常亮、常灭、周期性闪1次、周期性闪2次、周期性呼吸、可通过配置struct led_platform_data 结构体实现
+    - 示例:
+
+        .. code-block:: c
+
+            //ALL ON
+            const struct led_platform_data  led_all_on_config = {
+                .ctl_option = CTL_LED01_SYNC, // led0&led1同步
+                .ctl_mode = ALWAYS_BRIGHT, // 常亮
+            };
+
+            //ALL OFF
+            const struct led_platform_data  led_all_off_config = {
+                .ctl_option = CTL_LED01_SYNC, // led0&led1同步
+                .ctl_mode = ALWAYS_EXTINGUISH, // 常灭
+            };
+
+            //红灯亮1s
+            const struct led_platform_data  led_red_on_1s_config = { 
+                .ctl_option = CTL_LED0_ONLY, // 只控led0
+                .ctl_mode = CYCLE_ONCE_BRIGHT, // 周期单闪
+                .ctl_cycle = 21,//*50 =1050
+                .ctl_cycle_num = 1,
+                .once_bright.bright_time = 20,//*50=1000
+                .cbfunc = pwm_led_hw_cbfunc, // 灯效结束回调函数
+            };
+
+            // 红灯快闪(每0.5s闪1次0.1s)
+            const struct led_platform_data led_red_fast_flash_config = { 
+                 .ctl_option = CTL_LED0_ONLY, // 只控led0
+                 .ctl_mode = CYCLE_ONCE_BRIGHT, // 周期单闪
+                 .ctl_cycle = 10,//*50 =500
+                 .ctl_cycle_num = 0,
+                 .once_bright.bright_time = 2,//*50=100
+            };
+
+            //LED0 LED1  5s交替呼吸1次, 时长3s
+            const struct led_platform_data led_red_blue_breathe_alternately_config = {
+                .ctl_option = CTL_LED01_ASYNC, // led0&led1异步(交替)
+                .ctl_mode = CYCLE_BREATHE_BRIGHT, // 周期呼吸
+                .ctl_cycle = 100,//*50 =5000
+                .ctl_cycle_num = 0,
+                .breathe_bright.bright_time = 40,//*50=3000
+                .breathe_bright.brightest_keep_time = 20,//*50=1000
+            };
+
+
+2. 复杂类型的灯效通过定时器控制亮灭、呼吸的方式实现，配置方式为添加一个struct led_state_item状态表。
+    - 示例:
+
+         .. code-block:: c
+
+            // 蓝灯周期性1s内快闪3下，每次闪灯亮100ms，灭100ms
+            const struct led_state_item blue_led_1s_flashs_3_times[] = {
+            #if TCFG_LED_RED_ENABLE
+                { LED_RED,   0,               LED_BRIGHT_OFF,     NON_BREATH_MODE, LED_ACTION_CONTINUE },
+            #endif
+                { LED_BLUE,  2,               LED_BLUE_BRIGHTNESS,NON_BREATH_MODE, LED_ACTION_WAIT     },
+                { LED_BLUE,  2,               LED_BRIGHT_OFF,     NON_BREATH_MODE, LED_ACTION_WAIT     },
+                { LED_BLUE,  2,               LED_BLUE_BRIGHTNESS,NON_BREATH_MODE, LED_ACTION_WAIT     },
+                { LED_BLUE,  2,               LED_BRIGHT_OFF,     NON_BREATH_MODE, LED_ACTION_WAIT     },
+                { LED_BLUE,  2,               LED_BLUE_BRIGHTNESS,NON_BREATH_MODE, LED_ACTION_WAIT     },
+                { LED_BLUE,  10,              LED_BRIGHT_OFF,     NON_BREATH_MODE, LED_ACTION_LOOP     },
+            };
+
+灯效状态表配置
+#############
+1. led_config.c文件中定义了一个全局的g_led_state_table灯效表，新加的灯效需要填到表中，并分配一个name。 TWS同步灯效时需要通过name找到对应的参数信息，灯效结束的消息中也可以通过name来识别灯效。
+
+    .. code-block:: c
+
+         // 实际没有用到的灯效可以注释掉以节省代码空间
+        const struct led_state_map g_led_state_table[] = {
+            // 硬件参数配置的灯效
+            { LED_STA_ALL_ON,                   IME_EFFECT_MODE,  &led_all_on_config },
+            { LED_STA_ALL_OFF,                  TIME_EFFECT_MODE, &led_all_off_config },
+            { LED_STA_RED_FLASH_1TIMES,         TIME_EFFECT_MODE, &led_red_flash_1times_config },
+
+            // 软件组合灯效
+            { LED_STA_BLUE_1S_FLASHS_3_TIMES,   LED_STATE_TABLE(blue_led_1s_flashs_3_times) },
+
+            { 0, 0, 0 } // END must end
+        };
+
+        // 上述table定义的灯效实际调用参考如下：
+        //ALL ON
+        led_ui_set_state(LED_STA_ALL_ON, DISP_RECOVERABLE, 0);
+        os_time_dly(200);
+        //ALL OFF
+        led_ui_set_state(LED_STA_ALL_OFF, DISP_RECOVERABLE, 0);
+        os_time_dly(200);
+
+
+
+灯效打断策略
+#############
+1. 灯效类型:  
+
+    周期性闪灯: 不会结束，只会被其它灯效打断或替换, 优先级低于短时灯效，如果有设置DISP_RECOVERABLE属性被短时灯效打断后可恢复，否则会被新设置的灯效替换。
+
+    短时灯效:   有结束消息，如果有设置DISP_NON_INTR属性，则不会被打断。没有设置DISP_CLEAR_OTHERS属性的情况下，采用排队方式。
+
+2. 属性优先级:
+
+    DISP_NON_INTR:      最高， 不会被打断，不会被清除，周期性灯效请勿设置
+
+    DISP_CLEAR_OTHERS:  次高， 会清除已存在的其它灯效
+
+    DISP_RECOVERABLE:   一般， 周期性灯效可设置，新加短时灯效没有指定DISP_CLEAR_OTHERS属性情况下，被打断后可恢复。
+
+
+3. 周期性灯效全局只保留一个，后加入的会替换掉已存在
+
+
+API
+#############
+
+1. led_ui_set_state
+
+    - 函数原型：
+
+        .. code-block:: c
+
+            void led_ui_set_state(enum led_state_name name, enum led_disp_mode disp_mode);
+
+    - 功能说明：设置LED状态
+
+    - 参数说明： 
+
+        =========================  ========================================================================================
+                 参数                     说明
+         name                        灯效的名字, 需要在led_config.c的g_led_state_table中添加对应的配置
+
+
+         disp_mode                   灯效属性配置:
+
+                                     0:                                                        
+                                         周期灯效: 会删除当前周期性灯效, 等待其它短时灯效运行结束后才会执行
+                                         短时灯效：不打断其它短时灯效，如果只有一个周期性灯效,且没有设置DISP_RECOVERABLE, 则周期性灯效会被删除
+
+                                     DISP_NON_INTR:     灯效不允许被打断
+
+                                     DISP_CLEAR_OTHERS: 清除其它灯效, 设置了DISP_NON_INTR属性的不会被清除
+
+                                     DISP_RECOVERABLE:  周期灯效和短时灯效共存属性, 被短时的灯效打断后不会被删除
+
+                                     DISP_TWS_SYNC:     需要tws同步的灯效。默认只允许tws主机设置 
+        =========================  ========================================================================================
+
+    - 返回值：无
+
+#. led_ui_get_state(u8 uuid)
+
+    - 函数原型：
+
+        .. code-block:: c
+
+             struct led_state_obj * led_ui_get_state(u8 uuid);
+
+    - 功能说明：短时灯效执行结束后, 驱动会发送LED_MSG_STATE_END消息，消息参数为uuid, 通过此uuid可获取对应的灯效结构体
+
+    - 返回值：如果返回值为NULL，表示对应灯效已经被删除
+
+#. led_ui_get_first_state()
+
+    - 函数原型：
+
+        .. code-block:: c
+
+            struct led_state_obj * led_ui_get_first_state(void);
+
+
+    - 功能说明：用于获取当前正在显示的LED状态结构体
+    - 参数说明：无
+    - 返回值： 
+
+
+参考UI
+#############
+
+    耳机SDK默认灯效参考代码: apps/earphone/ui/led/led_ui_msg_handler.c

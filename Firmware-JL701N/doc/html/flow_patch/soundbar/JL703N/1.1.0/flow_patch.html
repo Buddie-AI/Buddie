@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>V1.1.0 音频流程补丁修改说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../SDK/report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>V1.1.0  音频流程补丁修改说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="v1-1-0">
+<h1>V1.1.0  音频流程补丁修改说明<a class="headerlink" href="#v1-1-0" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>目前工具支持音频流程图打补丁，如果有需手动修改的情况或者提示错误的情况，请按补丁版本自行修改</p>
+</div></blockquote>
+<section id="patch-2">
+<h3>patch_2 音频流程修改说明<a class="headerlink" href="#patch-2" title="Link to this heading"></a></h3>
+<p>此版本主要对音频通路精度进行优化，支持16bit、24bit精度可选，默认可自动合并，如出现错误，请对比发布的补丁音频流程图自行手动修改</p>
+<p>一、系统模式主要修改介绍</p>
+<ol class="arabic">
+<li><p>按键通路增加SRC处理</p></li>
+<li><p>增加铃声处理通路</p>
+<figure class="align-default">
+<img alt="../../../../_images/%E7%B3%BB%E7%BB%9F%E5%85%AC%E5%85%B1.png" src="../../../../_images/%E7%B3%BB%E7%BB%9F%E5%85%AC%E5%85%B1.png" />
+</figure>
+</li>
+<li><p>立体声、立体声pro、1.1_channel mixer后增加channel expander处理</p>
+<figure class="align-default">
+<img alt="../../../../_images/%E7%B3%BB%E7%BB%9F%E7%8B%AC%E7%AB%8B.png" src="../../../../_images/%E7%B3%BB%E7%BB%9F%E7%8B%AC%E7%AB%8B.png" />
+</figure>
+</li>
+</ol>
+<p>二、媒体主要修改介绍</p>
+<ol class="arabic">
+<li><p>删除提示音、按键音处理通路</p></li>
+<li><p>MIXER节点替换成BitWidth Convert节点</p>
+<figure class="align-default">
+<img alt="../../../../_images/%E5%AA%92%E4%BD%93%E5%85%AC%E5%85%B1.png" src="../../../../_images/%E5%AA%92%E4%BD%93%E5%85%AC%E5%85%B1.png" />
+</figure>
+</li>
+<li><p>媒体1.1_channel 删除channel merge 节点</p>
+<figure class="align-default">
+<img alt="../../../../_images/%E5%AA%92%E4%BD%931.1%E5%88%A0%E9%99%A4.png" src="../../../../_images/%E5%AA%92%E4%BD%931.1%E5%88%A0%E9%99%A4.png" />
+</figure>
+</li>
+<li><p>媒体1.1_channel 音频分流器节点替换成声道拆分节点，插入steromix节点</p>
+<figure class="align-default">
+<img alt="../../../../_images/%E5%AA%92%E4%BD%931.1%E6%9B%BF%E6%8D%A2.png" src="../../../../_images/%E5%AA%92%E4%BD%931.1%E6%9B%BF%E6%8D%A2.png" />
+</figure>
+</li>
+</ol>
+<p>三、蓝牙通话主要修改介绍</p>
+<ol class="arabic">
+<li><p>删除提示音、按键音处理通路</p></li>
+<li><p>mixer节点替换成BitWidth Convert节点</p>
+<figure class="align-default">
+<img alt="../../../../_images/%E9%80%9A%E8%AF%9D%E5%85%B1%E5%90%8C.png" src="../../../../_images/%E9%80%9A%E8%AF%9D%E5%85%B1%E5%90%8C.png" />
+</figure>
+</li>
+<li><p>插入NoiseGate节点</p>
+<figure class="align-default">
+<img alt="../../../../_images/%E9%80%9A%E8%AF%9D%E6%8F%92%E5%85%A5.png" src="../../../../_images/%E9%80%9A%E8%AF%9D%E6%8F%92%E5%85%A5.png" />
+</figure>
+</li>
+<li><p>立体声、立体声pro、1.1_channel加入channel expander节点</p>
+<figure class="align-default">
+<img alt="../../../../_images/%E9%80%9A%E8%AF%9D%E6%96%B0%E5%A2%9E.png" src="../../../../_images/%E9%80%9A%E8%AF%9D%E6%96%B0%E5%A2%9E.png" />
+</figure>
+</li>
+</ol>
+<p>四、混响主要修改介绍</p>
+<ol class="arabic">
+<li><p>DAC前插入BitWidth Convert节点</p>
+<figure class="align-default">
+<img alt="../../../../_images/%E6%B7%B7%E5%93%8D%E6%8F%92%E5%85%A5.png" src="../../../../_images/%E6%B7%B7%E5%93%8D%E6%8F%92%E5%85%A5.png" />
+</figure>
+</li>
+<li><p>新增1.1_channel分组</p>
+<figure class="align-default">
+<img alt="../../../../_images/%E6%B7%B7%E5%93%8D%E6%96%B0%E5%A2%9E.png" src="../../../../_images/%E6%B7%B7%E5%93%8D%E6%96%B0%E5%A2%9E.png" />
+</figure>
+</li>
+<li><p>将混响框图改成麦克风音效框图</p>
+<figure class="align-default">
+<img alt="../../../../_images/%E9%BA%A6%E5%85%8B%E9%A3%8E%E9%9F%B3%E6%95%88.png" src="../../../../_images/%E9%BA%A6%E5%85%8B%E9%A3%8E%E9%9F%B3%E6%95%88.png" />
+</figure>
+</li>
+</ol>
+</section>
+<section id="patch-1">
+<h3>patch_1 音频流程修改说明<a class="headerlink" href="#patch-1" title="Link to this heading"></a></h3>
+<p>媒体流程图外部输入添加解码节点、mixer后添加人声消除节点等修改，默认可自动合并，如出现错误，请对比发布的补丁音频流程图自行手动修改</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

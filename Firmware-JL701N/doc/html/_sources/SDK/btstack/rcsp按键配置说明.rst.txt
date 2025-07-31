@@ -1,0 +1,279 @@
+rscp按键配置说明
+############
+
+编写目的
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+为方便后续新项目对手机APP的添加支持，该章节主要说明项目开发中是如何通过xxx_json.txt文件来配置显示杰理手机APP中的按键功能。固件已经开发完成全部按键配置的功能，除非有新客户需求原本RCSP协议无法满足的，需要与杰理移动端/固件工程师协商后改动固件代码，否则只需与服务器部门同事协商当前固件的PID-VID，并通过杰理服务器部门同事上传xxx_json.txt（该文件由杰理手机APP读取并根据文件内容显示界面）即可完成手机APP的按键配置功能。
+
+该文档暂时只支持杰理之家APP的（音箱、耳机（tws、挂脖）、声卡）配置说明。
+
+常见按键配置功能如下图所示：单击、双击、设置蓝牙名、工作模式（正常/游戏模式）、mic设置、ota升级、ANC功能（降噪模式、通透模式）。具体功能根据固件类型、客户需求来改变。
+
+    .. figure:: rcsp_imgs/1658729772626.png
+
+
+业务流程图
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    .. figure:: rcsp_imgs/1658729006541.png
+
+xxx_json.txt文件设置杰理手机APP界面的功能显示
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+如果有客户自定义的按键配置，可以具体参考当前目录下的若干xxx_json.txt来新写一份，然后上传到服务器。如果客户没有要求，则不设置PID和VID，杰理手机APP会有默认的文件，如杰理手机app默认是使用当前目录下的文件。
+
+    .. figure:: rcsp_imgs/1658734501238.png
+
+默认manifest_headset_json.txt内容如下：
+
+.. code-block:: c
+
+  {
+    "chip": {
+      "series": "manifest",
+      "name": "manifest_headset",
+      "type": "bluetooth"
+    },
+    "device": {
+      "type": "headset",
+      "has_tws": 1,
+      "has_charging_bin": 1,
+      "has_ai": 0,
+      "has_ota":0,
+      "key_settings": {
+        "key_num": [
+          {
+            "value": 1,
+            "title": {
+              "zh": "左",
+              "en": "Left"
+            }
+          },
+          {
+            "value": 2,
+            "title": {
+              "zh": "右",
+              "en": "Right"
+            }
+          }
+        ],
+        "key_action": [
+          {
+            "value": 1,
+            "title": {
+              "zh": "短按耳机",
+              "en": "Single Tap Setting"
+            }
+          },
+          {
+            "value": 2,
+            "title": {
+              "zh": "轻点两下耳机",
+              "en": "Double Tap Setting"
+            }
+          }
+        ],
+        "key_function": [
+          {
+            "value": 0,
+            "title": {
+              "zh": "无作用",
+              "en": "None"
+            }
+          },
+          {
+            "value": 3,
+            "title": {
+              "zh": "上一曲",
+              "en": "Previous Track"
+            }
+          },
+          {
+            "value": 4,
+            "title": {
+              "zh": "下一曲",
+              "en": "Next Track"
+            }
+          },
+          {
+            "value": 5,
+            "title": {
+              "zh": "播放/暂停",
+              "en": "Play/Pause"
+            }
+          },
+          {
+            "value": 6,
+            "title": {
+              "zh": "接听电话",
+              "en": "Answer Call"
+            }
+          },
+          {
+            "value": 7,
+            "title": {
+              "zh": "挂断电话",
+              "en": "Hang Up"
+            }
+          },
+          {
+            "value": 8,
+            "title": {
+              "zh": "回拨电话",
+              "en": "Call Back"
+            }
+          },
+          {
+            "value": 9,
+            "title": {
+              "zh": "音量加",
+              "en": "Volume Up"
+            }
+          },
+          {
+            "value": 10,
+            "title": {
+              "zh": "音量减",
+              "en": "Volume Down"
+            }
+          },
+          {
+            "value": 11,
+            "title": {
+              "zh": "拍照",
+              "en": "Take Photo"
+            }
+          }
+        ]
+      },
+      "led_settings": {
+        "scene": [
+          {
+            "value": 1,
+            "title": {
+              "zh": "未配对",
+              "en": "Unpaired"
+            }
+          },
+          {
+            "value": 2,
+            "title": {
+              "zh": "未连接",
+              "en": "Disconnected"
+            }
+          },
+          {
+            "value": 3,
+            "title": {
+              "zh": "已连接",
+              "en": "Connected"
+            }
+          }
+        ],
+        "effect": [
+          {
+            "value": 0,
+            "title": {
+              "zh": "全灭",
+              "en": "All Off"
+            }
+          },
+          {
+            "value": 1,
+            "title": {
+              "zh": "红灯常亮",
+              "en": "Solid Red Light"
+            }
+          },
+          {
+            "value": 2,
+            "title": {
+              "zh": "蓝灯常亮",
+              "en": "Solid Blue Light"
+            }
+          },
+          {
+            "value": 3,
+            "title": {
+              "zh": "红灯呼吸",
+              "en": "Red Light Flashing"
+            }
+          },
+          {
+            "value": 4,
+            "title": {
+              "zh": "蓝灯呼吸",
+              "en": "Blue Light Flashing"
+            }
+          },
+          {
+            "value": 5,
+            "title": {
+              "zh": "红蓝交替快闪",
+              "en": "Alternate Fast Flash of Red and Blue Lights"
+            }
+          },
+          {
+            "value": 6,
+            "title": {
+              "zh": "红蓝交替慢闪",
+              "en": "Alternate Slow Flash of Red and Blue Lights"
+            }
+          }
+        ]
+      },
+      "work_mode": [
+        {
+          "value": 1,
+          "title": {
+            "zh": "普通模式",
+            "en": "Normal Mode"
+          }
+        },
+        {
+          "value": 2,
+          "title": {
+            "zh": "游戏模式",
+            "en": "Gaming Mode"
+          }
+        }
+      ],
+      "mic_channel": [
+        {
+          "value": 1,
+          "title": {
+            "zh": "自动切换",
+            "en": "Automatic"
+          }
+        },
+        {
+          "value": 2,
+          "title": {
+            "zh": "始终左耳",
+            "en": "Always Left Ear"
+          }
+        },
+        {
+          "value": 3,
+          "title": {
+            "zh": "始终右耳",
+            "en": "Always Right Ear"
+          }
+        }
+      ]
+    }
+  }
+
+
+json.txt文件设置固件的PID/VID
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+设置完成xxx_json.txt文件后，需要上传到服务器。与服务器同事讨论VID、PID后，在固件download文件夹下的json.txt中设置完成，并在download.bat中的isd_download.exe操作前添加json_to_res.exe json.txt，并在isd_download.exe操作的-res后面添加config.dat，APP通过读取这里的配置，就可以从服务器拉到改配置文件。
+
+    .. figure:: rcsp_imgs/1662447225615.png
+
+    .. figure:: rcsp_imgs/1658730496016.png
+
+
+

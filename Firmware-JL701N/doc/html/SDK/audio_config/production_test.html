@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12.10. 产测配置 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="12.11. 离线语音识别KWS" href="kws.html" />
+    <link rel="prev" title="12.9. 音乐播放配置" href="music_palyback.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">12. 音频配置</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DAC_cfg.html">12.1. DAC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ADC_cfg.html">12.2. ADC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Linein_cfg.html">12.3. Linein配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ANC/index.html">12.4. ANC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="General_cfg.html">12.5. 通用音频配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phone_call_cfg.html">12.6. 通话配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_algo_cfg.html">12.7. 音频算法配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codec.html">12.8. 编解码配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="music_palyback.html">12.9. 音乐播放配置</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">12.10. 产测配置</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">12.10.1. 通用产测配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">12.10.1.1. 音频/通话 产测</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#speaker-eq">12.10.1.2. Speaker EQ 校准</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#anc">12.10.1.3. ANC 调试/产测</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">12.10.2. 自研产测配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">12.10.2.1. 自研产测必选配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enc">12.10.2.2. ENC产测</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">12.10.2.3. ANC产测</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">12.10.2.4. 按键产测</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kws.html">12.11. 离线语音识别KWS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatial_audio.html">12.12. 空间音效</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hi_Res_Audio/index.html">12.13. Hi-Res Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Side_Tone.html">12.14. 通话监听</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_code_size.html">12.15. 音频代码优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_delay.html">12.16. 延时配置（Delay）</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">12. </span>音频配置</a> &raquo;</li>
+      <li><span class="section-number">12.10. </span>产测配置</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">12.10. </span>产测配置<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>配合产测设备，在生产过程中对产品进行相关质量检测，以确保产品符合预期的性能和标准。</p>
+<p><img alt="pt_cfg" src="../../_images/pro_test_config.png" /></p>
+<section id="id2">
+<h2><span class="section-number">12.10.1. </span>通用产测配置<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>支持市面主流第三方设备生产测试<br></p>
+<ul class="simple">
+<li><p>兆华</p></li>
+<li><p>美格信</p></li>
+<li><p>指南测控</p></li>
+</ul>
+<section id="id3">
+<h3><span class="section-number">12.10.1.1. </span>音频/通话 产测<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p><strong>音频/通话产测</strong> ：<code class="docutils literal notranslate"><span class="pre">音频配置</span> <span class="pre">-&gt;</span> <span class="pre">产测配置-&gt;音频/通话产测</span></code> <br></p>
+<ul class="simple">
+<li><p>支持通话产测：如测试MIC频响，算法输出频响等，支持第三方设备<code class="docutils literal notranslate"><span class="pre">蓝牙SPP</span></code>产测，<code class="docutils literal notranslate"><span class="pre">需要产测设备支持对应指令</span></code>；</p></li>
+<li><p>支持音频bypass模式：bypass<code class="docutils literal notranslate"><span class="pre">蓝牙音乐</span></code> 各类音效处理，目前用于SpeakerEQ校准，<code class="docutils literal notranslate"><span class="pre">需要产测设备支持对应指令</span></code>；</p></li>
+</ul>
+<p><strong>麦克风阵列校准</strong>：<code class="docutils literal notranslate"><span class="pre">音频配置</span> <span class="pre">-&gt;</span> <span class="pre">产测配置-&gt;麦克风阵列校准</span></code></p>
+<ul class="simple">
+<li><p>用于校准双麦ENC MIC幅度一致性，需配合<code class="docutils literal notranslate"><span class="pre">音频/通话产测</span></code>配置使用，<code class="docutils literal notranslate"><span class="pre">需要产测设备支持对应指令</span></code>；</p></li>
+</ul>
+</section>
+<section id="speaker-eq">
+<h3><span class="section-number">12.10.1.2. </span>Speaker EQ 校准<a class="headerlink" href="#speaker-eq" title="Link to this heading"></a></h3>
+<p><img alt="speaker_eq" src="../../_images/pro_test_spkeq.png" /></p>
+<p>用于校准喇叭频响，可在音频流程-&gt;<strong>蓝牙音乐</strong>，在 <code class="docutils literal notranslate"><span class="pre">DAC节点</span></code> 之前, 添加<code class="docutils literal notranslate"><span class="pre">SpeakerEQ节点</span></code>。</p>
+</section>
+<section id="anc">
+<h3><span class="section-number">12.10.1.3. </span>ANC 调试/产测<a class="headerlink" href="#anc" title="Link to this heading"></a></h3>
+<p><img alt="ANC_general_pt" src="../../_images/pro_test_ANC_general.jpg" /></p>
+<p><strong>蓝牙调试/产测</strong>：<code class="docutils literal notranslate"><span class="pre">音频配置</span> <span class="pre">-&gt;</span> <span class="pre">ANC配置</span> <span class="pre">-&gt;</span> <span class="pre">蓝牙调试/产测</span></code></p>
+<ul class="simple">
+<li><p>支持ANC_DESIGNER，第三方设备 <code class="docutils literal notranslate"><span class="pre">蓝牙SPP</span></code>调试/产测；</p></li>
+</ul>
+<p><strong>串口调试/产测</strong>：<code class="docutils literal notranslate"><span class="pre">音频配置</span> <span class="pre">-&gt;</span> <span class="pre">ANC配置</span> <span class="pre">-&gt;</span> <span class="pre">串口调试/产测</span></code></p>
+<ul class="simple">
+<li><p>支持ANC_DESIGNER，第三方设备 <code class="docutils literal notranslate"><span class="pre">产测串口板</span></code>调试/产测；</p></li>
+</ul>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">12.10.2. </span>自研产测配置<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>JL自主研发的产测流程，需配合JL产测串口板以及<code class="docutils literal notranslate"><span class="pre">JL</span> <span class="pre">π-HAT</span></code> 上位机。已支持功能如下</p>
+<ul class="simple">
+<li><p>SPK测试及校准（Speaker EQ）</p></li>
+<li><p>ANC测试及校准</p></li>
+<li><p>ENC测试及校准(麦克风阵列校准)</p></li>
+<li><p>按键产测</p></li>
+</ul>
+<section id="id5">
+<h3><span class="section-number">12.10.2.1. </span>自研产测必选配置<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>音频配置 -&gt; ANC配置 -&gt; <strong>串口调试/产测</strong>：用于基础通讯；</p></li>
+<li><p>音频配置 -&gt; 产测配置 -&gt; <strong>音频/通话产测</strong>：用于部分命令交互；</p></li>
+</ol>
+<p><img alt="test_box_update" src="../../_images/pro_test_box_update.jpg" /></p>
+<ol class="arabic simple" start="3">
+<li><p>升级配置 -&gt; 升级选择 -&gt; <strong>测试盒串口升级</strong>：复用测试盒相关命令交互；</p></li>
+<li><p>蓝牙配置 -&gt; 经典蓝牙 -&gt; <strong>音量同步</strong>：用于控制小机音量；</p></li>
+</ol>
+<p><img alt="vol_sync" src="../../_images/pro_test_vol_sync.png" /></p>
+<p><code class="docutils literal notranslate"><span class="pre">注意当前自研产测仅支持有ANC功能的方案，后续更新会解除该绑定</span></code></p>
+</section>
+<section id="enc">
+<h3><span class="section-number">12.10.2.2. </span>ENC产测<a class="headerlink" href="#enc" title="Link to this heading"></a></h3>
+<p><strong>JL自研ENC产测</strong> ：<code class="docutils literal notranslate"><span class="pre">音频配置</span> <span class="pre">-&gt;</span> <span class="pre">产测配置</span> <span class="pre">-&gt;</span> <span class="pre">JL自研ENC产测</span></code></p>
+<ul class="simple">
+<li><p>ANC MIC：支持MIC频响测试；</p></li>
+<li><p>双/三麦通话：支持测试MIC频响，以及通话算法输出；</p></li>
+<li><p>单麦通话：仅支持测MIC频响，<strong>暂不支持测试通话算法</strong>；</p></li>
+</ul>
+<p><strong>麦克风阵列校准</strong>：<code class="docutils literal notranslate"><span class="pre">音频配置</span> <span class="pre">-&gt;</span> <span class="pre">产测配置</span> <span class="pre">-&gt;</span> <span class="pre">麦克风阵列校准</span></code></p>
+<ul class="simple">
+<li><p>用于校准麦克风与金机的幅度差，支持单/双/三麦校准</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3><span class="section-number">12.10.2.3. </span>ANC产测<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p><strong>JL自研ANC产测</strong> ：<code class="docutils literal notranslate"><span class="pre">音频配置</span> <span class="pre">-&gt;</span> <span class="pre">产测配置</span> <span class="pre">-&gt;</span> <span class="pre">JL自研ANC产测</span></code></p>
+<ul class="simple">
+<li><p>支持FF/FB/HYBRID ANC性能测试及校准，目前与<strong>Speaker EQ</strong>绑定测试；</p></li>
+<li><p>HYBIRD/FB方案需要开启此功能，FF方案配置<strong>自研产测必选配置</strong>即可。<br>
+<code class="docutils literal notranslate"><span class="pre">AC700N</span></code> 仅支持FF方案；<br>
+<code class="docutils literal notranslate"><span class="pre">JL701N</span></code> 支持FF、FB、HYBRID方案；<br></p></li>
+</ul>
+</section>
+<section id="id7">
+<h3><span class="section-number">12.10.2.4. </span>按键产测<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p><strong>按键产测</strong> ：<code class="docutils literal notranslate"><span class="pre">音频配置</span> <span class="pre">-&gt;</span> <span class="pre">产测配置</span> <span class="pre">-&gt;</span> <span class="pre">按键产测</span></code></p>
+<ul class="simple">
+<li><p>检测逻辑：通过获取小机的按键表，获取产品按键信息。其次检测待测样机的按键事件响应来判断，按键功能是否正常；</p></li>
+</ul>
+<section id="id8">
+<h4><span class="section-number">12.10.2.4.1. </span>程序自定义产测按键值和按键表方法<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>配置文件路径：apps/earphone/tools/app_key_dut.c</p></li>
+</ul>
+<p>1、在按键表里面定义产测的按键值<br></p>
+<ul class="simple">
+<li><p>常规方案</p>
+<ul>
+<li><p>用户针对产品的按键事件配置按键表（可增加 or 删除）</p></li>
+<li><p>注意：按键名字字符串不能超过14个字符</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//按键表 </span>
+<span class="k">const</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">key_mpt_self_list_t</span><span class="w"> </span><span class="n">key_event_list</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;music_pp&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;music_prev&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;music_next&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;call_answer&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;call_hangup&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x05</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;InLowLatency&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;OutLowLatency&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x07</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;open_siri&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;close_siri&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x09</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;vol_up&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x0A</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;vol_down&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x0B</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;anc_on&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x0C</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;anc_off&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x0D</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;anc_trans&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x0E</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;anc_next&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x0F</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;mic_open&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x10</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;mic_close&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x11</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ChangerUncle&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x12</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ChangerGoddess&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x13</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;spatial_eff&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x14</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;spk_char&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x15</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wat_click&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x16</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wind_det&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="p">{</span><span class="mh">0x17</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;anc_adap&quot;</span><span class="p">},</span><span class="w"> </span>
+<span class="w">    </span><span class="c1">//用户可在此继续扩展其他按键 （添加产测按键值和按键名字）</span>
+<span class="p">};</span><span class="w"> </span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>TWS左右耳独立按键表</p>
+<ul>
+<li><p>需使能 KEY_DUT_TWS_SEPARATE_LEFT_AND_RIGHT 宏定义，并且按照<strong>常规方案</strong>的规则完善右耳的按键表。</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//左右按键表使能：用于TWS左右耳UI不同的情况</span>
+<span class="cp">#define KEY_DUT_TWS_SEPARATE_LEFT_AND_RIGHT     1</span>
+<span class="c1">//按键表-TWS左耳</span>
+<span class="k">const</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">key_mpt_self_list_t</span><span class="w"> </span><span class="n">key_event_list</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">}</span>
+<span class="c1">//按键表-TWS右耳</span>
+<span class="k">const</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">key_mpt_self_list_t</span><span class="w"> </span><span class="n">key_event_list_R</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* {0x00, &quot;music_pp&quot;}, */</span>
+<span class="w">    </span><span class="c1">//用户需完善右耳按键表</span>
+<span class="p">};</span><span class="w">   </span>
+</pre></div>
+</div>
+<p>2、在对应的按键事件响应的地方发送按键值的名字字符串<br></p>
+<ul class="simple">
+<li><p>函数接口</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*                                       </span>
+<span class="cm">*********************************************************************</span>
+<span class="cm">*                  app_key_dut_send</span>
+<span class="cm">* Description: (SDK标准情景配置流程)发送按键事件到key dut</span>
+<span class="cm">* Arguments  : msg  判断是否为按键触发;</span>
+<span class="cm">*                   传param-&gt;msg, 可参考audio_ability.c调用方式</span>
+<span class="cm">               key_name  按键事件名称，需与key_event_list 一一对应</span>
+<span class="cm">* Return     : 0 成功 其他 失败</span>
+<span class="cm">*********************************************************************</span>
+<span class="cm">*/</span><span class="w">                                       </span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">app_key_dut_send</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">key_name</span><span class="p">);</span><span class="w">                                                                                                                                                                 </span>
+<span class="w">                                         </span>
+<span class="cm">/*                                       </span>
+<span class="cm">*********************************************************************</span>
+<span class="cm">*                  user_app_key_dut_send</span>
+<span class="cm">* Description: (用户自定义)发送按键事件到key dut</span>
+<span class="cm">               key_name  按键事件名称，需与key_event_list 一一对应</span>
+<span class="cm">* Return     : 0 成功 其他 失败</span>
+<span class="cm">* Note       : 需确保是按键触发才调用此API !!!</span>
+<span class="cm">*********************************************************************</span>
+<span class="cm">*/</span><span class="w">                                       </span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">app_key_dut_user_send</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">key_name</span><span class="p">);</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>使用方法</p>
+<ul>
+<li><p>标准SDK情景配置流程
+<img alt="send_key" src="../../_images/key_dut_name_send.png" /><br>
+注意：发送的按键字符串需要和按键表里面的字符串保持一致，按键名字字符串不能超过14个字符</p></li>
+<li><p>用户自定义<br>
+在<strong>按键触发</strong>的事件中，调用<code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">app_key_dut_user_send(char</span> <span class="pre">*key_name)</span> </code>接口</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="music_palyback.html" class="btn btn-neutral float-left" title="12.9. 音乐播放配置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="kws.html" class="btn btn-neutral float-right" title="12.11. 离线语音识别KWS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

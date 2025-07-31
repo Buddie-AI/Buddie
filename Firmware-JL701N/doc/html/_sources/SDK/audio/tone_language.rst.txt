@@ -1,0 +1,69 @@
+多语言支持
+=============
+
+SDK和配置工具默认支持2组语言的提示音文件,通过目录tone_zh/和tone_en/来做区分,
+在 tone_table.c 文件中有定义2组提示音文件列表, 并提供函数 get_tone_files() 来返回
+指定提示音文件的路径。
+
+get_tone_files
+----------------
+返回提示音文件列表指针。
+
+原型: 
+
+.. code-block:: c
+
+    const struct tone_files *get_tone_files()
+
+示例:
+
+.. code-block:: c
+
+    play_tone_file(get_tone_files()->power_on)
+
+tone_language_get
+-------------------
+返回当前使用的提示音语言类型。
+
+原型: 
+
+.. code-block:: c
+
+    enum tone_language tone_language_get()
+
+示例:
+
+.. code-block:: c
+
+    if (tone_language_get() == TONE_ENGLISH) {
+        tone_language_set(TONE_CHINESE);
+    } else {
+        tone_language_set(TONE_ENGLISH);
+    }
+
+tone_language_set
+-------------------
+设置当前使用的提示音语言类型。
+
+原型: 
+
+.. code-block:: c
+
+    void tone_language_set(enum tone_language lang)
+
+参数:
+
+    ============   ===================================
+    lang            TONE_ENGLISH: 英文提示音
+                    TONE_CHINESE: 中文提示音
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    if (tone_language_get() == TONE_ENGLISH) {
+        tone_language_set(TONE_CHINESE);
+    } else {
+        tone_language_set(TONE_ENGLISH);
+    }

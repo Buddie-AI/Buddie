@@ -1,0 +1,32 @@
+# 媒体
+
+## 单声道
+`单声道`需要将DAC配置为单左声道（DAC_OUTPUT_MONO_L），JL703N系列的DAC单声道输出目前仅支持左声道。
+- **单声道**<br>
+![MONO_L](./assets/MONO_L.png)
+- **单声道pro**<br>
+![MONO_L_pro](./assets/MONO_L_pro.png)
+## 立体声
+`立体声`需要将DAC配置为双声道（DAC_OUTPUT_LR）
+- **立体声**<br>
+提供一个`EQ`，一个`DRC`作基础的音效调节。
+![LR](./assets/LR.png)
+- **立体声pro**<br>
+添加`vbass`虚拟低音，对于某些低频缺失的喇叭/腔体，能够显著地提升低频表现力。将drc更换为`多带drc`，数据经过分频器的分频，可对数据的不同频段做不同的处理，实现低、中、高音分别对应不同的drc，并且在三路drc处理的数据合并后再经过一个全带drc，调试时具有更高的灵活性以及更好的效果，但相应的资源消耗也会更大。
+![LR_pro](./assets/LR_pro.png)
+
+## 1.1声道
+`1.1声道`需要将DAC配置为双声道（DAC_OUTPUT_LR），左声道（L）作为全频喇叭，右声道（R）作为低音喇叭。
+- **1.1_channel**<br>
+![1.1_channel](./assets/1.1_channel.png)
+
+## 2.1声道
+`2.1声道`需要将DAC配置为四声道（FRONT_LR_REAR_LR），FL/FR组成LR通路（全频音箱），RL/RR组成SW通路（低音音箱）。<br>
+`蓝牙音乐`、`LINEIN模式`、`本地音乐`、`FM模式`、`SPDIF模式`均内置了2.1声道流程。可通过场景切换功能切换不同音乐风格。<br>
+流程中串入三个`音量控制器`，分别控制总音量，LR通路音量，SW通路音量；可通过`EQ`、`DRC`、`StereoMix`等模块调试音效。<br>
+- **2.1_channel**<br>
+![2.1_channel](./assets/2.1_channel.png)
+- **2.1_channel_pro**<br>
+添加`高低音`（可通过旋钮调节高/中/低频段增益）、`环绕声`模块，将drc更换为`多带drc`。
+![2.1_channel_pro](./assets/2.1_channel_pro.png)
+

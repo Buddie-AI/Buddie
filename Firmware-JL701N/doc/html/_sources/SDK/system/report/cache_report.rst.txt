@@ -1,0 +1,58 @@
+Cache报告
+=================
+
+cache统计以下信息：
+    - 1.统计icache效率
+    - 2.统计dcache效率
+
+
+.. code-block:: c
+
+    输出示例：
+    core[0] - icache, efficiency: 73%
+    core[1] - icache, efficiency: 60%
+    dcache, efficiency: 98%
+
+    说明：
+    core[0] - icache, efficiency: 核0的指令cache效率为73%
+    core[1] - icache, efficiency: 核1的指令cache效率为60%
+    dcache, efficiency: 数据cache的效率为98%
+    效率越高，表示cache的命中越高
+
+
+CacheReport
+------------------------------
+
+功能:
+
+    CacheReport函数主要完成以下几点工作：
+        -1.启动Cache效率统计功能
+        -2.输出Cache效率统计结果
+        -3.清理Cache效率统计数据
+        -以上三点集合在同一个函数内，便于调试使用。
+
+
+.. code-block:: c
+
+    void CacheReport(void);
+
+参数:
+
+    ==========     ====================
+    -
+    返回值
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+        //普通调用
+        CacheReport();
+
+        //添加5秒定时器，输出cache报告
+        sys_timer_add(NULL, CacheReport, 5 * 1000);
+
+
+

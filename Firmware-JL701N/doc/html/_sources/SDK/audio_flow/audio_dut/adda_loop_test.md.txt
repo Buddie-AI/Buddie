@@ -1,0 +1,20 @@
+# ADDA闭环测试
+
+##一，功能介绍
+- 选择某个MIC 的 数据 直通DAC，用于MIC 产测 
+- 流程图如下,ADC节点的数据经过 Channel Merge节点选通后直达DAC：
+  ![mic_effect_LR](./assets/ADDA.png)
+
+
+##二，主要接口
+```c
+//用于打开MIC 闭环测试的数据流
+int adda_loop_player_open(void);
+//用于切换DAC 当前播放的产测MIC数据
+int adda_loop_dut_switch_channel(void);
+```
+
+##三，参数配置
+- ADC 采样率配置：目前采样率是通过修改adc_file.c 里面的格式检查返回值，如下图，默认采样率是44100
+- ![mic_effect_LR](./assets/SR.png)
+  

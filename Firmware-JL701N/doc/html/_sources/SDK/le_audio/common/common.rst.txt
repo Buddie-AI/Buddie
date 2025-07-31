@@ -1,0 +1,172 @@
+le audio 公共设置
+########################
+
+可视化工具
+**********
+    可视化工具中的 **LE_AUDIO配置->公共配置** 主要用于配置bis或cis的公共参数，而其中某些参数的配置需要符合一定的条件。以下是对某些配置的详细描述。
+    
+    **帧持续时间：**
+        需要满足发包间隔是其整数倍的要求；例如：发包间隔为10ms，则帧持续时间可配置为2.5ms/5ms/10ms。
+
+    **编解码声道数：**
+        目前le audio的编解码支持单声道和双声道的选择。在选择单声道时，音频数据经过编码之后都为单声道数据，不能再做声道分离。而下选择双声道时，编码后的数据可以在发送前做声道分离，也可以在接收端解码器中做声道分离。
+
+    **接收端解码输出：**
+        当编解码声道数配置为双声道的时候，接收端可根据需要来选择解码哪个声道的数据，从而实现声道分离。
+
+    **播放延时：**
+        播放延时是指接收端从接收到音频数据到播放出来的总时间，该值需要根据实际来调试。当音频处理流程增多，发现接收端播放异常时，需要适当加大改值。另外，加大该值会导致整体延时变大。
+
+    **1T3使能：**
+        1T3使能为特殊功能开关。该功能主要应用于RX和DSP合为一颗芯片的K歌音箱场景。
+
+相关接口
+********
+
+get_le_audio_product_name
+--------------------------
+获取产测配对名
+
+原型：
+
+.. code-block:: c
+
+    const char *get_le_audio_product_name(void);
+
+参数：
+    ============   =============================================
+    返回值            返回产测配对名
+    ============   =============================================
+
+示例：
+
+.. code-block:: c
+
+    //配对模式下 支持厂测模式
+    if (__this->test) {
+        /* log_error("pir_ch_same"); */
+        return;
+    }
+    bool find_remoter = 0;
+    //设置产测TX方广播名字
+    char *tag_name = (char *)get_le_audio_product_name();
+    le_ext_adv_report_evt_t *evt = (le_ext_adv_report_evt_t *)report_pt;
+
+    find_remoter  = ble_resolve_adv_report(tag_name, evt->Data_Length, evt->Data);
+
+    if (find_remoter) {
+        __this->test = 1;
+        bigrx_exit_pair_mode(0);
+        return;
+    }
+
+    //正常模式
+    bigrx_private_report_ext_adv_data(evt);
+
+
+
+get_le_audio_pair_name
+-----------------------
+获取配对名
+
+原型：
+
+.. code-block:: c
+
+    const char *get_le_audio_pair_name(void);
+
+参数：
+    ============   =============================================
+    返回值            返回配对名
+    ============   =============================================
+
+示例：
+
+.. code-block:: c
+
+    tx_params = &big_tx_param;
+    memcpy(tx_params->pair_name, get_le_audio_pair_name(), sizeof(tx_params->pair_name));
+    printf("%s\n", tx_params->pair_name);
+
+
+
+get_broadcast_audio_sw_ops
+---------------------------
+获取bis音频和本地音频切换结构体句柄
+
+原型：
+
+.. code-block:: c
+
+    struct le_audio_mode_ops *get_broadcast_audio_sw_ops();
+
+参数：
+    ============   =============================================
+    返回值            返回le_audio和本地音频切换结构体句柄
+    ============   =============================================
+
+示例：
+
+.. code-block:: c
+
+    le_audio_switch_ops = get_broadcast_audio_sw_ops();
+
+    //关闭本地音频播放
+    if (le_audio_switch_ops && le_audio_switch_ops->local_audio_close) {
+        le_audio_switch_ops->local_audio_close();
+    }
+
+
+
+get_connected_audio_sw_ops
+---------------------------
+获取cis音频和本地音频切换结构体句柄
+
+原型：
+
+.. code-block:: c
+
+    struct le_audio_mode_ops *get_connected_audio_sw_ops();
+
+参数：
+    ============   =============================================
+    返回值            返回le_audio和本地音频切换结构体句柄
+    ============   =============================================
+
+示例：
+
+.. code-block:: c
+
+    le_audio_switch_ops = get_connected_audio_sw_ops();
+
+    //关闭本地音频播放
+    if (le_audio_switch_ops && le_audio_switch_ops->local_audio_close) {
+        le_audio_switch_ops->local_audio_close();
+    }
+
+
+
+le_audio_ops_register
+---------------------------
+根据不同的音源模式更新e_audio和本地音频切换结构体句柄
+
+原型：
+
+.. code-block:: c
+
+    int le_audio_ops_register(u8 mode);
+
+参数：
+    ============   =============================================
+    mode             音源模式
+    返回值            暂未使用
+    ============   =============================================
+
+示例：
+
+.. code-block:: c
+
+    mode = app_get_current_mode();
+    if (mode) {
+        le_audio_ops_register(mode->name);
+    }

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.6. 唤醒系统 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="4.7. 电源参数配置" href="power_param.html" />
+    <link rel="prev" title="4.5. 复位系统" href="reset.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">3. 外设驱动</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">4. 电源管理</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="summary.html">4.1. 概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system.html">4.2. 系统状态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io_config.html">4.3. gpio配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io_wkup.html">4.4. P33外设</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reset.html">4.5. 复位系统</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. 唤醒系统</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.6.1. 查唤醒源</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.6.1.1. 软关机查询唤醒源</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#is-wakeup-source">4.6.1.2. is_wakeup_source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.6.1.3. 运行状态唤醒源</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="power_param.html">4.7. 电源参数配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lowpower.html">4.8. 低功耗模式</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">4. </span>电源管理</a> &raquo;</li>
+      <li><span class="section-number">4.6. </span>唤醒系统</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">4.6. </span>唤醒系统<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>PMU 结构独立于系统，可以在系统睡眠或者软关机的情况下继续工作，提供多种唤醒功耗，所有PMU唤醒信号通过P11传给主系统。</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/wkup.svg"><img alt="运行与低功耗" src="../../../_images/wkup.svg" width="600" /></a>
+</figure>
+<p><strong>rtc，有以下唤醒源：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">R3_WKUP_SRC_ALM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">         </span><span class="c1">//闹钟唤醒</span>
+<span class="w">    </span><span class="n">R3_WKUP_SRC_PORT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">        </span><span class="c1">//rtc io唤醒</span>
+<span class="w">    </span><span class="n">R3_WKUP_SRC_256HZ</span><span class="p">,</span><span class="w">           </span><span class="c1">//频率256HZ唤醒</span>
+<span class="w">    </span><span class="n">R3_WKUP_SRC_64HZ</span><span class="p">,</span><span class="w">            </span><span class="c1">//频率64HZ唤醒</span>
+<span class="w">    </span><span class="n">R3_WKUP_SRC_2HZ</span><span class="p">,</span><span class="w">             </span><span class="c1">//频率2HZ唤醒</span>
+<span class="w">    </span><span class="n">R3_WKUP_SRC_1HZ</span><span class="p">,</span><span class="w">             </span><span class="c1">//频率1HZ唤醒</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p><strong>p33有以下唤醒源：</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">P3_WKUP_SRC_PCNT_OVF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">    </span><span class="c1">//pcnt计数溢出</span>
+<span class="w">    </span><span class="n">P3_WKUP_SRC_PORT_EDGE</span><span class="p">,</span><span class="w">       </span><span class="c1">//普通io唤醒</span>
+<span class="w">    </span><span class="n">P3_WKUP_SRC_ANA_EDGE</span><span class="p">,</span><span class="w">        </span><span class="c1">//模拟信号唤醒</span>
+<span class="w">    </span><span class="n">P3_WKUP_SRC_VDDIO_LVD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">   </span><span class="c1">//LVD唤醒</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p><strong>P11的所有中断事件可支持唤醒</strong></p>
+<section id="id2">
+<h2><span class="section-number">4.6.1. </span>查唤醒源<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3><span class="section-number">4.6.1.1. </span>软关机查询唤醒源<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>power_wakeup_reason_dump</dt><dd><p>软关机复位之后打印及记录唤醒源，调用此函数之后才能够使用判断唤醒源接口。</p>
+</dd>
+</dl>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">power_wakeup_reason_dump</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="is-wakeup-source">
+<h3><span class="section-number">4.6.1.2. </span>is_wakeup_source<a class="headerlink" href="#is-wakeup-source" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>软关机判断是否为指定唤醒源。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">WAKEUP_REASON</span><span class="w"> </span><span class="p">{</span>
+<span class="c1">//WAKEUP</span>
+<span class="n">PWR_WK_REASON_PLUSE_CNT_OVERFLOW</span><span class="p">,</span><span class="w">           </span><span class="c1">//pcnt唤醒复位</span>
+<span class="n">PWR_WK_REASON_P11</span><span class="p">,</span><span class="w">                          </span><span class="c1">//P11唤醒复位</span>
+<span class="n">PWR_WK_REASON_LPCTMU</span><span class="p">,</span><span class="w">                       </span><span class="c1">//触摸唤醒复位</span>
+<span class="n">PWR_WK_REASON_LPNFC</span><span class="p">,</span><span class="w">                        </span><span class="c1">//NFC唤醒复位</span>
+<span class="n">PWR_WK_REASON_PORT_EDGE</span><span class="p">,</span><span class="w">                    </span><span class="c1">//数字io输入边沿唤醒复位</span>
+<span class="n">PWR_WK_REASON_ANA_EDGE</span><span class="p">,</span><span class="w">                     </span><span class="c1">//模拟io输入边沿唤醒复位</span>
+<span class="n">PWR_WK_REASON_VDDIO_LVD</span><span class="p">,</span><span class="w">                    </span><span class="c1">//vddio lvd唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX0</span><span class="p">,</span><span class="w">                  </span><span class="c1">//p33 index0  io唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX1</span><span class="p">,</span><span class="w">                  </span><span class="c1">//p33 index1  io唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX2</span><span class="p">,</span><span class="w">                  </span><span class="c1">//p33 index2  io唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX3</span><span class="p">,</span><span class="w">                  </span><span class="c1">//p33 index3  io唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX4</span><span class="p">,</span><span class="w">                  </span><span class="c1">//p33 index4  io唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX5</span><span class="p">,</span><span class="w">                  </span><span class="c1">//p33 index5  io唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX6</span><span class="p">,</span><span class="w">                  </span><span class="c1">//p33 index6  io唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX7</span><span class="p">,</span><span class="w">                  </span><span class="c1">//p33 index7  io唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX8</span><span class="p">,</span><span class="w">                  </span><span class="c1">//p33 index8  io唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX9</span><span class="p">,</span><span class="w">                  </span><span class="c1">//p33 index9  io唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX10</span><span class="p">,</span><span class="w">                 </span><span class="c1">//p33 index10 io唤醒复位</span>
+<span class="n">PWR_WK_REASON_EDGE_INDEX11</span><span class="p">,</span><span class="w">                 </span><span class="c1">//p33 index11 io唤醒复位</span>
+<span class="n">PWR_ANA_WK_REASON_FALLINIG_EDGE_LDOIN</span><span class="p">,</span><span class="w">      </span><span class="c1">//LDO5V上升沿唤醒复位</span>
+<span class="n">PWR_ANA_WK_REASON_RISING_EDGE_LDOIN</span><span class="p">,</span><span class="w">        </span><span class="c1">//LDO5V下降沿唤醒复位</span>
+<span class="n">PWR_ANA_WK_REASON_FALLING_EDGE_VBATCH</span><span class="p">,</span><span class="w">      </span><span class="c1">//VBATCH上升降沿唤醒复位</span>
+<span class="n">PWR_ANA_WK_REASON_RISING_EDGE_VBATCH</span><span class="p">,</span><span class="w">       </span><span class="c1">//VBATCH下降沿唤醒复位</span>
+<span class="n">PWR_RTC_WK_REASON_ALM</span><span class="p">,</span><span class="w">                      </span><span class="c1">//RTC闹钟唤醒复位</span>
+<span class="n">PWR_RTC_WK_REASON_256HZ</span><span class="p">,</span><span class="w">                    </span><span class="c1">//RTC 256Hz时基唤醒复位</span>
+<span class="n">PWR_RTC_WK_REASON_64HZ</span><span class="p">,</span><span class="w">                     </span><span class="c1">//RTC 64Hz时基唤醒复位</span>
+<span class="n">PWR_RTC_WK_REASON_2HZ</span><span class="p">,</span><span class="w">                      </span><span class="c1">//RTC 2Hz时基唤醒复位</span>
+<span class="n">PWR_RTC_WK_REASON_1HZ</span><span class="p">,</span><span class="w">                      </span><span class="c1">//RTC 1Hz时基唤醒复位</span>
+
+<span class="n">PWR_WKUP_REASON_RESERVE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">63</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>};</p>
+<blockquote>
+<div><p>u8 is_wakeup_source(enum WAKEUP_REASON index);</p>
+</div></blockquote>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>index</p></td>
+<td><p>唤醒源</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>是否为指定唤醒源</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="id4">
+<h3><span class="section-number">4.6.1.3. </span>运行状态唤醒源<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>系统在运行状态或sleep模式唤醒之后，能够进入中断回调注册的函数，具体配置回调函数的方法在对应模块章节，支持以下模块。</p>
+<ul class="simple">
+<li><p>边沿唤醒</p></li>
+<li><p>rtc唤醒</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="reset.html" class="btn btn-neutral float-left" title="4.5. 复位系统" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="power_param.html" class="btn btn-neutral float-right" title="4.7. 电源参数配置" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+soundbar 音频系统框图
+====================
+
+## soundbar 音频系统框图如下：
+
+![绘图](./imgs/Soundbar.drawio.svg)

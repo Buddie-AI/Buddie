@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6. 文件系统 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="7. 操作系统" href="../os/index.html" />
+    <link rel="prev" title="5.1. PWM LED说明" href="../../pwm_led/led_api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. 文件系统</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">6.1. 概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#const">6.2. 使用const变量控制功能</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">6.3. 常用文件系统库接口函数</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mount">6.3.1. mount</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fget-partition">6.3.2. fget_partition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unmount">6.3.3. unmount</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#f-format">6.3.4. f_format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-fopen-const-char-path-const-char-mode">6.3.5. FILE *fopen(const char *path, const char *mode);</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fclose">6.3.6. fclose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fread">6.3.7. fread</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fwrite">6.3.8. fwrite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fseek">6.3.9. fseek</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fseek-fast">6.3.10. fseek_fast</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fread-fast">6.3.11. fread_fast</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flen">6.3.12. flen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ftell">6.3.13. ftell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fget-name">6.3.14. fget_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fget-path">6.3.15. fget_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#frename">6.3.16. frename</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fdelete">6.3.17. fdelete</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fdelete-by-name">6.3.18. fdelete_by_name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fget-free-space">6.3.19. fget_free_space</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fscan">6.3.20. fscan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fscan-interrupt">6.3.21. fscan_interrupt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fscan-release">6.3.22. fscan_release</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fselect">6.3.23. fselect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fdir-exist">6.3.24. fdir_exist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fget-attr">6.3.25. fget_attr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fset-attr">6.3.26. fset_attr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fget-attrs">6.3.27. fget_attrs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fset-vol">6.3.28. fset_vol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fmove">6.3.29. fmove</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fget-folder">6.3.30. fget_folder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fopen-dir-info">6.3.31. fopen_dir_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fenter-dir-info">6.3.32. fenter_dir_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fexit-dir-info">6.3.33. fexit_dir_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fget-dir-info">6.3.34. fget_dir_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fmk-dir">6.3.35. fmk_dir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fname-to-path">6.3.36. fname_to_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-last-num">6.3.37. get_last_num</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-bp-info">6.3.38. set_bp_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#put-bp-info">6.3.39. put_bp_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ff-set-fileindir-enable">6.3.40. ff_set_FileInDir_enable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ff-set-dirbaseinfo">6.3.41. ff_set_DirBaseInfo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fat-set-datetime-info">6.3.42. fat_set_datetime_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hidden-file">6.3.43. hidden_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fsave-fat-table">6.3.44. fsave_fat_table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#f-flush-wbuf">6.3.45. f_flush_wbuf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#finsert-file">6.3.46. finsert_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fdicvision-file">6.3.47. fdicvision_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utf82unicode">6.3.48. UTF82Unicode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unicode2utf8">6.3.49. Unicode2UTF8</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utf8-check">6.3.50. utf8_check</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">6. </span>文件系统</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">6. </span>文件系统<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="id2">
+<h2><span class="section-number">6.1. </span>概述<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>提供文件系统部分相关API。</p>
+</section>
+<section id="const">
+<h2><span class="section-number">6.2. </span>使用const变量控制功能<a class="headerlink" href="#const" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>const int FATFS_WRITE = 1; // 控制fatfs写功能开关。</p></li>
+<li><p>const int FILT_0SIZE_ENABLE = 1; //是否过滤0大小文件</p></li>
+<li><p>const int FATFS_LONG_NAME_ENABLE = 1; //是否支持长文件名</p></li>
+<li><p>const int FATFS_RENAME_ENABLE = 1; //是否支持重命名</p></li>
+<li><p>const int FATFS_FGET_PATH_ENABLE = 1; //是否支持获取路径</p></li>
+<li><p>const int FATFS_SAVE_FAT_TABLE_ENABLE = 1; //是否支持seek加速</p></li>
+<li><p>const int fatfs_support_oversector_rw = 0; //是否支持超过一个sector向设备拿数</p></li>
+</ol>
+</section>
+<section id="id3">
+<h2><span class="section-number">6.3. </span>常用文件系统库接口函数<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="mount">
+<h3><span class="section-number">6.3.1. </span>mount<a class="headerlink" href="#mount" title="Link to this heading"></a></h3>
+<p>挂载文件系统</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">imount</span><span class="w"> </span><span class="o">*</span><span class="n">mount</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">dev_name</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">fs_type</span><span class="p">,</span><span class="kt">int</span><span class="w"> </span><span class="n">cache_num</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">dev_arg</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>dev_name</p></td>
+<td><p>设备名称</p></td>
+</tr>
+<tr class="row-even"><td><p>path</p></td>
+<td><p>路径</p></td>
+</tr>
+<tr class="row-odd"><td><p>fs_type</p></td>
+<td><p>文件系统类型</p></td>
+</tr>
+<tr class="row-even"><td><p>cache_num</p></td>
+<td><p>申请缓存cache数目（暂不支持超过1）</p></td>
+</tr>
+<tr class="row-odd"><td><p>dev_arg</p></td>
+<td><p>设备参数</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">mnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mount</span><span class="p">(</span><span class="s">&quot;sd0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;storage/sd0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;fat&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mnt</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">log_d</span><span class="p">(</span><span class="s">&quot;sd mount fat succ&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">log_d</span><span class="p">(</span><span class="s">&quot;sd mount fat failed&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="fget-partition">
+<h3><span class="section-number">6.3.2. </span>fget_partition<a class="headerlink" href="#fget-partition" title="Link to this heading"></a></h3>
+<p>获取分区part</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">vfs_partition</span><span class="w"> </span><span class="o">*</span><span class="n">fget_partition</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">);</span><span class="c1">//获得分区part</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>分区路径</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">path</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;storage/sd0/C/&quot;</span><span class="p">;</span>
+<span class="c1">//char path[36] = &quot;storage/sd0/D/&quot;;</span>
+<span class="c1">//char path[36] = &quot;storage/sd0/E/&quot;;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">vfs_partition</span><span class="w"> </span><span class="n">part</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fget_partition</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="unmount">
+<h3><span class="section-number">6.3.3. </span>unmount<a class="headerlink" href="#unmount" title="Link to this heading"></a></h3>
+<p>卸载文件系统</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">unmount</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>路径</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">unmount</span><span class="p">(</span><span class="s">&quot;storage/sd0&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="f-format">
+<h3><span class="section-number">6.3.4. </span>f_format<a class="headerlink" href="#f-format" title="Link to this heading"></a></h3>
+<p>格式化接口</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">f_format</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">fs_type</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">clust_size</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>路径</p></td>
+</tr>
+<tr class="row-even"><td><p>fs_type</p></td>
+<td><p>文件系统类型</p></td>
+</tr>
+<tr class="row-odd"><td><p>clust_size</p></td>
+<td><p>簇大小,簇为0时默认为卡本身簇大小。</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">root_path</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;storage/sd0/C/&quot;</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f_format</span><span class="p">(</span><span class="n">root_path</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;fat&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="file-fopen-const-char-path-const-char-mode">
+<h3><span class="section-number">6.3.5. </span>FILE <a href="#id4"><span class="problematic" id="id5">*</span></a>fopen(const char <a href="#id6"><span class="problematic" id="id7">*</span></a>path, const char <a href="#id8"><span class="problematic" id="id9">*</span></a>mode);<a class="headerlink" href="#file-fopen-const-char-path-const-char-mode" title="Link to this heading"></a></h3>
+<p>打开文件</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="nf">fopen</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">mode</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>文件路径</p></td>
+</tr>
+<tr class="row-even"><td><p>mode</p></td>
+<td><p>打开模式（只读(“r”)，写(“w”)，可创建(“w+”)）</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>fopen 扩展功能</p></li>
+<li><p>自动打开、创建文件夹和文件。</p></li>
+<li><p>说明：</p></li>
+<li><ol class="arabic simple">
+<li><p>设备路径+文件，其中文件传入格式:”music/test/1/2/3/pk*.wav”  “JL_REC/AC69****.wav”  “JL_REC/AC690000.wav”</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="2">
+<li><p>文件名带*号，带多少个*表示多少个可变数字，最多为8+3的大小，如表示可变数字名称变为XXX0001,XXXX002这样得格式，不带*号则只创建一个文件，写覆盖。</p></li>
+</ol>
+</li>
+<li><p>date: 2020-07-22</p></li>
+</ul>
+</div>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">dg_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;storage/sd0/C/AC690000.MP3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w+&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fclose">
+<h3><span class="section-number">6.3.6. </span>fclose<a class="headerlink" href="#fclose" title="Link to this heading"></a></h3>
+<p>关闭文件</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fclose</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">fclose</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fread">
+<h3><span class="section-number">6.3.7. </span>fread<a class="headerlink" href="#fread" title="Link to this heading"></a></h3>
+<p>从文件中读取数据</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fread</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>buf</p></td>
+<td><p>保存读取到的数据</p></td>
+</tr>
+<tr class="row-even"><td><p>size</p></td>
+<td><p>每次读取字节数</p></td>
+</tr>
+<tr class="row-odd"><td><p>count</p></td>
+<td><p>总共读取次数</p></td>
+</tr>
+<tr class="row-even"><td><p>file</p></td>
+<td><p>指向文件流的文件指针</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">512</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">rlen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">512</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fread</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">rlen</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">len</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">rlen</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">log_e</span><span class="p">(</span><span class="s">&quot;fread: %x, %x, %x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="n">rlen</span><span class="p">,</span><span class="w"> </span><span class="n">fpos</span><span class="p">(</span><span class="n">f</span><span class="p">));</span>
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="fwrite">
+<h3><span class="section-number">6.3.8. </span>fwrite<a class="headerlink" href="#fwrite" title="Link to this heading"></a></h3>
+<p>写入数据到文件中</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fwrite</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>buf</p></td>
+<td><p>需要写入的数据</p></td>
+</tr>
+<tr class="row-even"><td><p>size</p></td>
+<td><p>每次写入字节数</p></td>
+</tr>
+<tr class="row-odd"><td><p>count</p></td>
+<td><p>总共写入次数</p></td>
+</tr>
+<tr class="row-even"><td><p>file</p></td>
+<td><p>指向文件流的文件指针</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">512</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">wlen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">512</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fwrite</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">wlen</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">len</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">wlen</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">log_e</span><span class="p">(</span><span class="s">&quot;fwrite: %x, %x, %x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="n">wlen</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="fseek">
+<h3><span class="section-number">6.3.9. </span>fseek<a class="headerlink" href="#fseek" title="Link to this heading"></a></h3>
+<p>Seek到相应得位置</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fseek</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">orig</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>offset</p></td>
+<td><p>偏移量</p></td>
+</tr>
+<tr class="row-odd"><td><p>orig</p></td>
+<td><p>偏移方式</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">fseek</span><span class="p">(</span><span class="n">wfil</span><span class="o">-&gt;</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">SEEK_SET</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fseek-fast">
+<h3><span class="section-number">6.3.10. </span>fseek_fast<a class="headerlink" href="#fseek-fast" title="Link to this heading"></a></h3>
+<p>快速seek</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fseek_fast</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">orig</span><span class="p">);</span><span class="c1">// 快速seek</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>offset</p></td>
+<td><p>偏移量</p></td>
+</tr>
+<tr class="row-odd"><td><p>orig</p></td>
+<td><p>偏移方式</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>一般手表case使用,去除互斥,设置ram里面跑</p>
+</div>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">fseek_fast</span><span class="p">(</span><span class="n">wfil</span><span class="o">-&gt;</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">SEEK_SET</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fread-fast">
+<h3><span class="section-number">6.3.11. </span>fread_fast<a class="headerlink" href="#fread-fast" title="Link to this heading"></a></h3>
+<p>从文件中快速读取数据</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fread_fast</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">count</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">);</span><span class="c1">//快速read</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>buf</p></td>
+<td><p>保存读取到的数据</p></td>
+</tr>
+<tr class="row-even"><td><p>size</p></td>
+<td><p>每次读取字节数</p></td>
+</tr>
+<tr class="row-odd"><td><p>count</p></td>
+<td><p>总共读取次数</p></td>
+</tr>
+<tr class="row-even"><td><p>file</p></td>
+<td><p>指向文件流的文件指针</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>一般手表case使用,去除互斥,设置ram里面跑</p>
+</div>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">512</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">rlen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">512</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fread_fast</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">rlen</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="flen">
+<h3><span class="section-number">6.3.12. </span>flen<a class="headerlink" href="#flen" title="Link to this heading"></a></h3>
+<p>获取文件长度</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">flen</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flen</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="ftell">
+<h3><span class="section-number">6.3.13. </span>ftell<a class="headerlink" href="#ftell" title="Link to this heading"></a></h3>
+<p>获取文件指针位置</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">ftell</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="n">cur_fptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ftell</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fget-name">
+<h3><span class="section-number">6.3.14. </span>fget_name<a class="headerlink" href="#fget-name" title="Link to this heading"></a></h3>
+<p>获取当前文件名称</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fget_name</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>文件名buf</p></td>
+</tr>
+<tr class="row-odd"><td><p>len</p></td>
+<td><p>长度</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">lfn_buf</span><span class="p">[</span><span class="mi">512</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">lfn_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fget_name</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">lfn_buf</span><span class="p">,</span><span class="w"> </span><span class="mi">512</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fget-path">
+<h3><span class="section-number">6.3.15. </span>fget_path<a class="headerlink" href="#fget-path" title="Link to this heading"></a></h3>
+<p>获取当前文件相对路径和绝对路径</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fget_path</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">vfscan</span><span class="w"> </span><span class="o">*</span><span class="n">fscan</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">is_relative_path</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>fscan</p></td>
+<td><p>扫描句柄</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p>路径buf</p></td>
+</tr>
+<tr class="row-even"><td><p>len</p></td>
+<td><p>buf长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>is_relative_path</p></td>
+<td><p>是否相对路径</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">lfn_buf</span><span class="p">[</span><span class="mi">512</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">path_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fget_path</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">lfn_buf</span><span class="p">,</span><span class="w"> </span><span class="mi">512</span><span class="err">，</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="frename">
+<h3><span class="section-number">6.3.16. </span>frename<a class="headerlink" href="#frename" title="Link to this heading"></a></h3>
+<p>重命名</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">frename</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>path</p></td>
+<td><p>重命名的文件名</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">rename</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;rename.mp3&quot;</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frename</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">rename</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fdelete">
+<h3><span class="section-number">6.3.17. </span>fdelete<a class="headerlink" href="#fdelete" title="Link to this heading"></a></h3>
+<p>删除文件</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fdelete</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">fdelete</span><span class="p">(</span><span class="n">file</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fdelete-by-name">
+<h3><span class="section-number">6.3.18. </span>fdelete_by_name<a class="headerlink" href="#fdelete-by-name" title="Link to this heading"></a></h3>
+<p>根据名字删除文件</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fdelete_by_name</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">fname</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>fname</p></td>
+<td><p>文件名绝对路径</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fdelete_by_name</span><span class="p">(</span><span class="s">&quot;storage/sd0/C/123.mp3&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fget-free-space">
+<h3><span class="section-number">6.3.19. </span>fget_free_space<a class="headerlink" href="#fget-free-space" title="Link to this heading"></a></h3>
+<p>获取设备剩余容量</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fget_free_space</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="o">*</span><span class="n">space</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>根路径</p></td>
+</tr>
+<tr class="row-even"><td><p>space</p></td>
+<td><p>剩余空间 K 为单位</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">root_path</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;storage/sd0/C/&quot;</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">space</span><span class="p">;</span>
+<span class="n">fget_free_space</span><span class="p">(</span><span class="n">root_path</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">space</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fscan">
+<h3><span class="section-number">6.3.20. </span>fscan<a class="headerlink" href="#fscan" title="Link to this heading"></a></h3>
+<p>文件扫描</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">vfscan</span><span class="w"> </span><span class="o">*</span><span class="n">fscan</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">max_deepth</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>路径</p></td>
+</tr>
+<tr class="row-even"><td><p>arg</p></td>
+<td><p>扫描方式</p></td>
+</tr>
+<tr class="row-odd"><td><p>max_deepth</p></td>
+<td><p>扫描深度，最大为9</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul>
+<li><p>arg:</p></li>
+<li><dl class="option-list">
+<dt><kbd><span class="option">-t</span></kbd></dt>
+<dd><p>文件类型</p>
+</dd>
+</dl>
+</li>
+<li><dl class="option-list">
+<dt><kbd><span class="option">-r</span></kbd></dt>
+<dd><p>包含子目录</p>
+</dd>
+</dl>
+</li>
+<li><dl class="option-list">
+<dt><kbd><span class="option">-d</span></kbd></dt>
+<dd><p>扫描文件夹</p>
+</dd>
+</dl>
+</li>
+<li><dl class="option-list">
+<dt><kbd><span class="option">-a</span></kbd></dt>
+<dd><p>文件属性 r: 读， /: 非</p>
+</dd>
+</dl>
+</li>
+<li><dl class="option-list">
+<dt><kbd><span class="option">-s</span></kbd></dt>
+<dd><p>排序方式， t:按时间排序， n:按文件号排序</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">path</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;storage/sd0/C/&quot;</span><span class="p">;</span>
+<span class="n">MUSIC_SCAN_PARAM_test</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-tMP3WTG -r -sn&quot;</span><span class="p">;</span>
+<span class="n">fsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fscan</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">MUSIC_SCAN_PARAM_test</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fscan-interrupt">
+<h3><span class="section-number">6.3.21. </span>fscan_interrupt<a class="headerlink" href="#fscan-interrupt" title="Link to this heading"></a></h3>
+<p>文件扫描，可打断。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">vfscan</span><span class="w"> </span><span class="o">*</span><span class="n">fscan_interrupt</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">max_deepth</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">callback</span><span class="p">)(</span><span class="kt">void</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>路径</p></td>
+</tr>
+<tr class="row-even"><td><p>arg</p></td>
+<td><p>扫描方式</p></td>
+</tr>
+<tr class="row-odd"><td><p>max_deepth</p></td>
+<td><p>扫描深度，最大为9</p></td>
+</tr>
+<tr class="row-even"><td><p>callback</p></td>
+<td><p>回调函数，用于打断、同时进行其他操作等</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">path</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;storage/sd0/C/&quot;</span><span class="p">;</span>
+<span class="n">MUSIC_SCAN_PARAM_test</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;-tMP3WTG -r -sn&quot;</span><span class="p">;</span>
+<span class="n">fsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fscan_interrupt</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">MUSIC_SCAN_PARAM_test</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fscan-release">
+<h3><span class="section-number">6.3.22. </span>fscan_release<a class="headerlink" href="#fscan-release" title="Link to this heading"></a></h3>
+<p>释放句柄</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">fscan_release</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">vfscan</span><span class="w"> </span><span class="o">*</span><span class="n">fs</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>fs</p></td>
+<td><p>vfscan句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">fscan_release</span><span class="p">(</span><span class="n">fsn</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fselect">
+<h3><span class="section-number">6.3.23. </span>fselect<a class="headerlink" href="#fselect" title="Link to this heading"></a></h3>
+<p>选择指定文件打开</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="nf">fselect</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">vfscan</span><span class="w"> </span><span class="o">*</span><span class="n">fs</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">selt_mode</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>fs</p></td>
+<td><p>vfscan句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>selt_mode</p></td>
+<td><p>按什么方式选择 (支持按簇号、序号、路径选择)</p></td>
+</tr>
+<tr class="row-odd"><td><p>arg</p></td>
+<td><p>传入选择的参数</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">selt_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FSEL_BY_NUMBER</span><span class="p">;</span><span class="w"> </span><span class="c1">//FSEL_BY_SCLUST</span>
+<span class="n">__this</span><span class="o">-&gt;</span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fselect</span><span class="p">(</span><span class="n">__this</span><span class="o">-&gt;</span><span class="n">fsn</span><span class="p">,</span><span class="w"> </span><span class="n">selt_mode</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="c1">///选择上一曲</span>
+</pre></div>
+</div>
+</section>
+<section id="fdir-exist">
+<h3><span class="section-number">6.3.24. </span>fdir_exist<a class="headerlink" href="#fdir-exist" title="Link to this heading"></a></h3>
+<p>检查挂载目录是否存在</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fdir_exist</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">dir</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>dir</p></td>
+<td><p>目录路径</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">dir</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;storage/sd0&quot;</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">exist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fdir_exist</span><span class="p">(</span><span class="n">dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fget-attr">
+<h3><span class="section-number">6.3.25. </span>fget_attr<a class="headerlink" href="#fget-attr" title="Link to this heading"></a></h3>
+<p>获取文件属性</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fget_attr</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">attr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>attr</p></td>
+<td><p>属性</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">attr</span><span class="p">;</span>
+<span class="n">fget_attr</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">attr</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fset-attr">
+<h3><span class="section-number">6.3.26. </span>fset_attr<a class="headerlink" href="#fset-attr" title="Link to this heading"></a></h3>
+<p>设置文件属性</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fset_attr</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">attr</span><span class="p">);</span><span class="w"> </span><span class="c1">//设置文件属性</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>attr</p></td>
+<td><p>属性</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">#define F_ATTR_RO       0x01</span>
+<span class="cm">#define F_ATTR_ARC      0x02</span>
+<span class="cm">#define F_ATTR_DIR      0x04</span>
+<span class="cm">#define F_ATTR_VOL      0x08</span>
+<span class="cm">*/</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">attr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">F_ATTR_RO</span><span class="p">;</span>
+<span class="n">fset_attr</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">attr</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fget-attrs">
+<h3><span class="section-number">6.3.27. </span>fget_attrs<a class="headerlink" href="#fget-attrs" title="Link to this heading"></a></h3>
+<p>获取文件相关信息</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fget_attrs</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">vfs_attr</span><span class="w"> </span><span class="o">*</span><span class="n">attr</span><span class="p">);</span><span class="c1">//获得文件相关信息如属性、簇号、大小等</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>attr</p></td>
+<td><p>属性</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">vfs_attr</span><span class="w"> </span><span class="n">param_attr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">path</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;storage/sd0/C/123.mp3&quot;</span><span class="p">;</span>
+<span class="c1">//===============================//</span>
+<span class="c1">//          打开参数文件         //</span>
+<span class="c1">//===============================//</span>
+<span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">fp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">-</span><span class="n">ENOENT</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">fget_attrs</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param_attr</span><span class="p">);</span>
+<span class="n">param_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">param_attr</span><span class="p">.</span><span class="n">fsize</span><span class="p">;</span>
+<span class="n">param_ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">param_attr</span><span class="p">.</span><span class="n">sclust</span><span class="p">;</span><span class="w"> </span><span class="c1">//cpu access addr</span>
+
+<span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fset-vol">
+<h3><span class="section-number">6.3.28. </span>fset_vol<a class="headerlink" href="#fset-vol" title="Link to this heading"></a></h3>
+<p>设置卷标</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fset_vol</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">);</span><span class="c1">//设置卷标</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>设备路径</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>卷标名字</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fset_vol</span><span class="p">(</span><span class="s">&quot;storage/udisk0/C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;my_udisk&quot;</span><span class="p">);</span><span class="c1">//设置卷标</span>
+</pre></div>
+</div>
+</section>
+<section id="fmove">
+<h3><span class="section-number">6.3.29. </span>fmove<a class="headerlink" href="#fmove" title="Link to this heading"></a></h3>
+<p>移动文件</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fmove</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path_dst</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">**</span><span class="n">newFile</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">clr_attr</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">path_len</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>path_dst</p></td>
+<td><p>目标路径</p></td>
+</tr>
+<tr class="row-odd"><td><p>newFile</p></td>
+<td><p>新文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>clr_attr</p></td>
+<td><p>是否清除文件属性,改为可读写</p></td>
+</tr>
+<tr class="row-odd"><td><p>path_len</p></td>
+<td><p>路径buf长度，针对长文件名</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fmove</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;storage/sd0/C/123/&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">newFile</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fget-folder">
+<h3><span class="section-number">6.3.30. </span>fget_folder<a class="headerlink" href="#fget-folder" title="Link to this heading"></a></h3>
+<p>获取文件夹信息</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fget_folder</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">vfscan</span><span class="w"> </span><span class="o">*</span><span class="n">fs</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ffolder</span><span class="w"> </span><span class="o">*</span><span class="n">arg</span><span class="p">);</span><span class="w"> </span><span class="c1">//获取文件夹序号和文件夹内文件数目</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>fs</p></td>
+<td><p>vfscan 结构句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>arg</p></td>
+<td><p>文件夹信息结构句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">ffolder</span><span class="w"> </span><span class="n">folder</span><span class="p">;</span>
+<span class="n">fget_folder</span><span class="p">(</span><span class="n">fsn</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">folder</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fopen-dir-info">
+<h3><span class="section-number">6.3.31. </span>fopen_dir_info<a class="headerlink" href="#fopen-dir-info" title="Link to this heading"></a></h3>
+<p>文件浏览使用，打开目录</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fopen_dir_info</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">**</span><span class="n">pp_file</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">dir_dj</span><span class="p">);</span><span class="w"> </span><span class="c1">//打开目录</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>路径</p></td>
+</tr>
+<tr class="row-even"><td><p>pp_file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-odd"><td><p>dir_dj</p></td>
+<td><p>目录信息句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">total_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen_dir_info</span><span class="p">(</span><span class="n">dev_manager_get_bs_root_path</span><span class="p">(</span><span class="n">fil_bs</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">fil_bs</span><span class="o">-&gt;</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fenter-dir-info">
+<h3><span class="section-number">6.3.32. </span>fenter_dir_info<a class="headerlink" href="#fenter-dir-info" title="Link to this heading"></a></h3>
+<p>文件浏览使用，进入目录</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fenter_dir_info</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">dir_dj</span><span class="p">);</span><span class="w"> </span><span class="c1">//进入目录</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>dir_dj</p></td>
+<td><p>目录信息句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+</section>
+<section id="fexit-dir-info">
+<h3><span class="section-number">6.3.33. </span>fexit_dir_info<a class="headerlink" href="#fexit-dir-info" title="Link to this heading"></a></h3>
+<p>文件浏览使用，退出目录</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fexit_dir_info</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">);</span><span class="w"> </span><span class="c1">//退出</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">total_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fexit_dir_info</span><span class="p">(</span><span class="n">fil_bs</span><span class="o">-&gt;</span><span class="n">file</span><span class="p">);</span><span class="c1">//</span>
+</pre></div>
+</div>
+</section>
+<section id="fget-dir-info">
+<h3><span class="section-number">6.3.34. </span>fget_dir_info<a class="headerlink" href="#fget-dir-info" title="Link to this heading"></a></h3>
+<p>文件浏览使用，获取目录信息</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fget_dir_info</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">start_num</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">total_num</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf_info</span><span class="p">);</span><span class="w"> </span><span class="c1">////获取目录信息</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-even"><td><p>start_num</p></td>
+<td><p>起始位置</p></td>
+</tr>
+<tr class="row-odd"><td><p>total_num</p></td>
+<td><p>获取目录个数</p></td>
+</tr>
+<tr class="row-even"><td><p>buf_info</p></td>
+<td><p>目录信息句柄</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">real_dir</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">fget_dir_info</span><span class="p">(</span><span class="n">fil_bs</span><span class="o">-&gt;</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">start_sn</span><span class="p">,</span><span class="w"> </span><span class="n">get_cnt</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fmk-dir">
+<h3><span class="section-number">6.3.35. </span>fmk_dir<a class="headerlink" href="#fmk-dir" title="Link to this heading"></a></h3>
+<p>创建目录</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fmk_dir</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">folder</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span><span class="w"> </span><span class="c1">//创建目录</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>路径</p></td>
+</tr>
+<tr class="row-even"><td><p>folder</p></td>
+<td><p>文件夹名称,不需要 /</p></td>
+</tr>
+<tr class="row-odd"><td><p>mode</p></td>
+<td><p>目录属性（1 设置为隐藏属性， 0 不设置 ）</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">path</span><span class="p">[</span><span class="mi">36</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;storage/sd0/C/&quot;</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">folder</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;123&quot;</span><span class="p">;</span>
+<span class="n">fmk_dir</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">folder</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fname-to-path">
+<h3><span class="section-number">6.3.36. </span>fname_to_path<a class="headerlink" href="#fname-to-path" title="Link to this heading"></a></h3>
+<p>拼接字符</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fname_to_path</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">fname</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">);</span><span class="w"> </span><span class="c1">//把路径和文件名拼接</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>result</p></td>
+<td><p>最终结果指针</p></td>
+</tr>
+<tr class="row-even"><td><p>path</p></td>
+<td><p>前路径指针</p></td>
+</tr>
+<tr class="row-odd"><td><p>fname</p></td>
+<td><p>需要拼接的字符</p></td>
+</tr>
+<tr class="row-even"><td><p>len</p></td>
+<td><p>fname长度</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fname_to_path</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;123/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;456.mp3&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">);</span><span class="w"> </span><span class="c1">//把路径和文件名拼接</span>
+</pre></div>
+</div>
+</section>
+<section id="get-last-num">
+<h3><span class="section-number">6.3.37. </span>get_last_num<a class="headerlink" href="#get-last-num" title="Link to this heading"></a></h3>
+<p>录音获取最后序号</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">get_last_num</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"> </span><span class="c1">//录音获取最后序号。</span>
+</pre></div>
+</div>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_last_num</span><span class="p">();</span><span class="w"> </span><span class="c1">//录音获取最后序号。</span>
+</pre></div>
+</div>
+</section>
+<section id="set-bp-info">
+<h3><span class="section-number">6.3.38. </span>set_bp_info<a class="headerlink" href="#set-bp-info" title="Link to this heading"></a></h3>
+<p>设置断点参数</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">set_bp_info</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">clust</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">fsize</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="o">*</span><span class="n">flag</span><span class="p">);</span><span class="w"> </span><span class="c1">//扫描前设置断点参数，需要put_bp_info对应释放buf.</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>clust</p></td>
+<td><p>记录的簇号</p></td>
+</tr>
+<tr class="row-even"><td><p>fsize</p></td>
+<td><p>记录的文件大小</p></td>
+</tr>
+<tr class="row-odd"><td><p>flag</p></td>
+<td><p>文件是否存在标志</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>接口调用在扫描前</p></li>
+<li><p>使用完需要put_bp_info对应释放buf</p></li>
+</ul>
+</div>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">bp_flag</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">sclust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x38b0</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">fsize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mo">01</span><span class="mi">8</span><span class="n">de0</span><span class="p">;</span>
+<span class="n">set_bp_info</span><span class="p">(</span><span class="n">sclust</span><span class="p">,</span><span class="w"> </span><span class="n">fsize</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bp_flag</span><span class="p">);</span><span class="w"> </span><span class="c1">//断点若有效把bp_flag置1,注意后面要用put_bp_info释放资源</span>
+</pre></div>
+</div>
+</section>
+<section id="put-bp-info">
+<h3><span class="section-number">6.3.39. </span>put_bp_info<a class="headerlink" href="#put-bp-info" title="Link to this heading"></a></h3>
+<p>释放内存</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">put_bp_info</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">__this</span><span class="o">-&gt;</span><span class="n">fsn</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">put_bp_info</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">MUSIC_PLAYER_ERR_FSCAN</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="ff-set-fileindir-enable">
+<h3><span class="section-number">6.3.40. </span>ff_set_FileInDir_enable<a class="headerlink" href="#ff-set-fileindir-enable" title="Link to this heading"></a></h3>
+<p>优化扫盘速度</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">ff_set_FileInDir_enable</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">enable</span><span class="p">);</span><span class="w"> </span><span class="c1">// 优化文件打开速度，如果不需要切换文件夹的操作，可置0关闭</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>enable</p></td>
+<td><p>开关</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>目的是是否去除获取文件夹内所有文件功能，默认enable 是1 获取数目，置0不获取，所以不需要切换文件夹操作的功能，可置0 关闭</p></li>
+<li><p>在扫描前调用接口</p></li>
+</ul>
+</div>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ff_set_FileInDir_enable</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// 优化文件打开速度，如果不需要切换文件夹的操作，可置0关闭</span>
+</pre></div>
+</div>
+</section>
+<section id="ff-set-dirbaseinfo">
+<h3><span class="section-number">6.3.41. </span>ff_set_DirBaseInfo<a class="headerlink" href="#ff-set-dirbaseinfo" title="Link to this heading"></a></h3>
+<p>设置目录项基点信息（用于加速）</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">ff_set_DirBaseInfo</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>加速序号选择文件，明显效果体现在上一曲加速</p></li>
+<li><p>注意buf使用</p></li>
+</ul>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>buf</p></td>
+<td><p>存储基点buf (长度 12 * n)</p></td>
+</tr>
+<tr class="row-even"><td><p>n</p></td>
+<td><p>基点数目</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">12</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">];</span>
+<span class="n">ff_set_DirBaseInfo</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fat-set-datetime-info">
+<h3><span class="section-number">6.3.42. </span>fat_set_datetime_info<a class="headerlink" href="#fat-set-datetime-info" title="Link to this heading"></a></h3>
+<p>设置文件的创建时间</p>
+<p>参数:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">fat_set_datetime_info</span><span class="p">(</span><span class="n">u16</span><span class="w"> </span><span class="n">year</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">month</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">day</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">hour</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">minute</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">second</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>year</p></td>
+<td><p>年</p></td>
+</tr>
+<tr class="row-even"><td><p>month</p></td>
+<td><p>月</p></td>
+</tr>
+<tr class="row-odd"><td><p>day</p></td>
+<td><p>日</p></td>
+</tr>
+<tr class="row-even"><td><p>hour</p></td>
+<td><p>小时</p></td>
+</tr>
+<tr class="row-odd"><td><p>minute</p></td>
+<td><p>分钟</p></td>
+</tr>
+<tr class="row-even"><td><p>second</p></td>
+<td><p>秒</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">fat_set_datetime_info</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="hidden-file">
+<h3><span class="section-number">6.3.43. </span>hidden_file<a class="headerlink" href="#hidden-file" title="Link to this heading"></a></h3>
+<p>隐藏属性文件是否过滤</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">hidden_file</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">flag</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>flag</p></td>
+<td><p>置1 为过滤</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">hidden_file</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="fsave-fat-table">
+<h3><span class="section-number">6.3.44. </span>fsave_fat_table<a class="headerlink" href="#fsave-fat-table" title="Link to this heading"></a></h3>
+<p>存储文件簇信息</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fsave_fat_table</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">btr</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>路径</p></td>
+</tr>
+<tr class="row-even"><td><p>file</p></td>
+<td><p>文件句柄</p></td>
+</tr>
+<tr class="row-odd"><td><p>btr</p></td>
+<td><p>buf 长度</p></td>
+</tr>
+<tr class="row-even"><td><p>buf</p></td>
+<td><p>buf指针</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>seek加速，4字节对齐</p>
+</div>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">buf</span><span class="p">[</span><span class="mi">4</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="p">];</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fsave_fat_table</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span><span class="p">,</span><span class="w"> </span><span class="n">buf</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="f-flush-wbuf">
+<h3><span class="section-number">6.3.45. </span>f_flush_wbuf<a class="headerlink" href="#f-flush-wbuf" title="Link to this heading"></a></h3>
+<p>刷新文件系统缓存buf</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">f_flush_wbuf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">path</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>path</p></td>
+<td><p>路径</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f_flush_wbuf</span><span class="p">(</span><span class="s">&quot;storage/sd0/C&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="finsert-file">
+<h3><span class="section-number">6.3.46. </span>finsert_file<a class="headerlink" href="#finsert-file" title="Link to this heading"></a></h3>
+<p>插入文件</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">finsert_file</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">i_file</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">fptr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>源文件</p></td>
+</tr>
+<tr class="row-even"><td><p>i_file</p></td>
+<td><p>需要插入的文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>fptr</p></td>
+<td><p>源文件被插入的位置</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">file_manager_insert_file</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">d_f</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">i_f</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">fptr</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">finsert_file</span><span class="p">(</span><span class="n">d_f</span><span class="p">,</span><span class="w"> </span><span class="n">i_f</span><span class="p">,</span><span class="w"> </span><span class="n">fptr</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">err</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="fdicvision-file">
+<h3><span class="section-number">6.3.47. </span>fdicvision_file<a class="headerlink" href="#fdicvision-file" title="Link to this heading"></a></h3>
+<p>分割文件</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fdicvision_file</span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">file_name</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">fptr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file</p></td>
+<td><p>源文件</p></td>
+</tr>
+<tr class="row-even"><td><p>file_name</p></td>
+<td><p>分割后第二个文件文件名</p></td>
+</tr>
+<tr class="row-odd"><td><p>fptr</p></td>
+<td><p>源文件被分割位置</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">tmp_name</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;123.mp3&quot;</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">fptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flen</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fdicvision_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">tmp_name</span><span class="p">,</span><span class="w"> </span><span class="n">fptr</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="utf82unicode">
+<h3><span class="section-number">6.3.48. </span>UTF82Unicode<a class="headerlink" href="#utf82unicode" title="Link to this heading"></a></h3>
+<p>UFT8 转换 Unicode</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">UTF82Unicode</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">utf8_buf</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="o">*</span><span class="n">pUniBuf</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">utf8_len</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>utf8_buf</p></td>
+<td><p>UTF8编码的字符串</p></td>
+</tr>
+<tr class="row-even"><td><p>pUniBuf</p></td>
+<td><p>short 类型Unicode字符串</p></td>
+</tr>
+<tr class="row-odd"><td><p>utf8_len</p></td>
+<td><p>utf8数据长度</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">path</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;这是一个测试demo.MP3&quot;</span><span class="p">;</span>
+<span class="n">u16</span><span class="w"> </span><span class="n">uni_buf</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="n">file_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">uni_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">UTF82Unicode</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">uni_buf</span><span class="p">,</span><span class="w"> </span><span class="n">file_len</span><span class="p">);</span><span class="w"> </span><span class="c1">//转化为长文件名Unicode形式</span>
+</pre></div>
+</div>
+</section>
+<section id="unicode2utf8">
+<h3><span class="section-number">6.3.49. </span>Unicode2UTF8<a class="headerlink" href="#unicode2utf8" title="Link to this heading"></a></h3>
+<p>Unicode 转 UTF8</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">Unicode2UTF8</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">utf8_buf</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="o">*</span><span class="n">pUniBuf</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">uni_len</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>utf8_buf</p></td>
+<td><p>UTF8编码的字符串</p></td>
+</tr>
+<tr class="row-even"><td><p>pUniBuf</p></td>
+<td><p>short 类型Unicode字符串</p></td>
+</tr>
+<tr class="row-odd"><td><p>uni_len</p></td>
+<td><p>unicode数据长度</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">utf_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Unicode2UTF8</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">uni_buf</span><span class="p">,</span><span class="w"> </span><span class="n">uni_len</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="utf8-check">
+<h3><span class="section-number">6.3.50. </span>utf8_check<a class="headerlink" href="#utf8-check" title="Link to this heading"></a></h3>
+<p>检查是否UTF8 码格式</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">utf8_check</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">length</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>str</p></td>
+<td><p>数据buff</p></td>
+</tr>
+<tr class="row-even"><td><p>length</p></td>
+<td><p>数据buff长度</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>示例:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;这是一个测试demo.MP3&quot;</span><span class="p">;</span>
+<span class="n">str_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">utf8_check</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">str_len</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../pwm_led/led_api.html" class="btn btn-neutral float-left" title="5.1. PWM LED说明" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../os/index.html" class="btn btn-neutral float-right" title="7. 操作系统" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

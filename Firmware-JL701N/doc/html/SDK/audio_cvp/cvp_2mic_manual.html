@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>15.4. 2-mic通话调试指引 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="15.5. 2-mic hybrid通话调试指引" href="cvp_2mic_hybrid_manual.html" />
+    <link rel="prev" title="15.3. 1-mic通话调试指引" href="cvp_1mic_manual.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">15. 通话清晰语音</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cvp_algorithm_list.html">15.1. 清晰语音算法列表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cvp_common_config.html">15.2. 清晰语音常用配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cvp_1mic_manual.html">15.3. <strong>1-mic</strong>通话调试指引</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">15.4. <strong>2-mic</strong>通话调试指引</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dms">15.4.1. DMS简述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enc">15.4.2. 双麦ENC开发设计要点</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">15.4.2.1. 概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#microphone">15.4.2.2. Microphone选型规格</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">15.4.2.3. 声学设计要点</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">15.4.2.4. 腔体气密性测试</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">15.4.2.5. 设计误区（避免）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">15.4.2.6. 开发生产测试指引</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">15.4.3. 双麦ENC参数与调试指引</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id14">15.4.3.1. 配套工具</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sdk">15.4.3.2. SDK配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">15.4.3.3. 数据分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">15.4.3.4. 在线调试</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#aec">15.4.4. AEC模块</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nlp">15.4.5. NLP模块</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#agc">15.4.6. AGC模块</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ans">15.4.7. ANS模块</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dns">15.4.8. 神经网络降噪DNS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id17">15.4.8.1. 通用参数说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18">15.4.8.2. 常见问题调试指引</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#wnc">15.4.9. WNC双麦风噪检测模块</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id21">15.4.9.1. 参数说明</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#jlsp-wnc">15.4.10. JLSP WNC双麦风噪检测模块</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id22">15.4.10.1. 参数说明</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mfdt">15.4.11. MFDT麦克风故障检测模块</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id23">15.4.11.1. 参数说明</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#eq">15.4.12. EQ参数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id24">15.4.13. 双麦头戴式话务耳机开发设计指引</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id25">15.4.13.1. 概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id26">15.4.13.2. Microphone选型规格</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id27">15.4.13.3. 声学设计要点</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id28">15.4.13.4. 流程和参数配置说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id29">15.4.13.5. 常见调试问题</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#q-a">15.4.14. 通话调试常见问题Q&amp;A</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id30">15.4.14.1. 有噪声或者电流声</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id31">15.4.14.2. 声音忽大忽小，不均匀</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id32">15.4.14.3. 回音消不掉</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id33">15.4.14.4. 远端听到的声音比较闷，不清晰</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id34">15.4.14.5. 远端听到的声音有尾音</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cvp_2mic_hybrid_manual.html">15.5. <strong>2-mic hybrid</strong>通话调试指引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cvp_3mic_manual.html">15.6. <strong>3-mic</strong>通话调试指引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cvp_uart_data_export.html">15.7. 串口写卡使用指引</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">15. </span>通话清晰语音</a> &raquo;</li>
+      <li><span class="section-number">15.4. </span><strong>2-mic</strong>通话调试指引</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mic">
+<h1><span class="section-number">15.4. </span><strong>2-mic</strong>通话调试指引<a class="headerlink" href="#mic" title="Link to this heading"></a></h1>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Version</p></th>
+<th class="head"><p>Date</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>V1.0</p></td>
+<td><p>2023-04-23</p></td>
+<td><p>初始版本</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>点击跳转 <a class="reference internal" href="../audio_flow/bt_call/bt_call_flow.html"><span class="std std-doc">通话算法节点配置说明</span></a></p></li>
+</ul>
+<section id="dms">
+<h2><span class="section-number">15.4.1. </span>DMS简述<a class="headerlink" href="#dms" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">DMS</span></code>是指2mic降噪技术，是通过双麦克风阵列，精准计算通话者说话的方位，在保护主方向目标语音的同时，去除环境中的各种干扰噪声，例如其他人的讲话声、交通工具产生的噪音、风噪声等等，给到远端接听的人以清晰语音</br></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>顺便提一下，ANC和ENC的区别：
+ANC（Active Noise Cancellation，主动降噪）耳机系统通过麦克风采集环境噪声，并将此噪声反相叠加到喇叭端，人耳听到的是相位相反的两种噪声叠加结果，于是达到了消噪的目的。
+ANC的受益人是耳机使用者本人，通过ANC功能，让用户自己减少受到环境噪声的影响。
+ENC的受益人是通话的另一方，通过ENC功能，减少环境噪声对通话的影响，让对方听到清晰语音。
+ANC让自己听感环境更加安静，ENC让通话的另一端听感环境更加安静。
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>1.双MIC降噪数据处理流程如下：<br>
+<img alt="" src="../../_images/cvp_dms.png" /></p></li>
+</ul>
+<p>注：降噪NS模块，可以选择传统降噪ANS，也可以选择神经网络降噪DNS，二选一。</p>
+<ul class="simple">
+<li><p>2.以下是对于端对端通话过程远端和近端的定义，本手册涉及的远端近端概念，遵照以下框图。 <br>
+<img alt="" src="../../_images/call_ul_dl1.png" /></p></li>
+</ul>
+<p>  我们讨论的回音，是指远端手机讲话，发送到连接蓝牙设备的近端手机，然后声音从蓝牙设备的speaker发出来，又被蓝牙设备的microphone采集到，通过近端手机发送回远端手机，远端可以延时听到自己讲话的声音。</p>
+</section>
+<section id="enc">
+<h2><span class="section-number">15.4.2. </span>双麦ENC开发设计要点<a class="headerlink" href="#enc" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3><span class="section-number">15.4.2.1. </span>概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>  为了方便介绍双麦克风系统相关信息，定义两个mic的连线上指向主mic方向为0°。相对的，指向副mic方向为180°</p>
+<p><img alt="" src="../../_images/enc_1.png" /></p>
+<p>  双麦ENC是基于波束成形(beamforming)技术来进行方向性选择的信号处理系统，依赖于不同方位的声音到达两个mic的幅度差和相位差，比如两个平行的mic朝向如下：
+<img alt="" src="../../_images/enc_2mic.png" /></p>
+<p>  正常情况下，人声到达两个mic的幅度和相位差是这样的：下面的mic的幅度和相位都大于上面的mic。而其他方向的噪声去到这两个mic的幅度差和相位差应该是接近或者上面的mic大于下面的mic的。</br>
+  双mic降噪目标效果是为了消除声源位于方向为90°至270°之间的声音，实际调试使用过程中，主mic两侧120°范围内的声音被清晰识别到，其余方向被不同程度的消除。</p>
+</section>
+<section id="microphone">
+<h3><span class="section-number">15.4.2.2. </span>Microphone选型规格<a class="headerlink" href="#microphone" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>Microphone选型规格</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>数量</p></td>
+<td><p>2个模拟MIC</p></td>
+</tr>
+<tr class="row-odd"><td><p>方向性</p></td>
+<td><p>全指向性</p></td>
+</tr>
+<tr class="row-even"><td><p>信噪比</p></td>
+<td><p>&gt;=62dB(A)</p></td>
+</tr>
+<tr class="row-odd"><td><p>相位</p></td>
+<td><p>±10°&#64;100-7kHz</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h3><span class="section-number">15.4.2.3. </span>声学设计要点<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>  为了能使系统达到最优效果，声学设计上需要有一定的约束，两个mic之间的频响以及相位不要有过大的差异。另外，两个MIC和Speaker之间，应该有减震、密封隔离处理，减少回音传播。
+设计要点如下：</p>
+<ul class="simple">
+<li><p>（1）MIC间距：15-35mm</p></li>
+<li><p>（2）MIC一致性（灵敏度和频响）：&lt;=1dB</p></li>
+<li><p>（3）两个mic到达各自的拾音孔之间的空间尽量限制在一个半径与拾音孔半径一致的圆柱体内，并做好密封，防止与内部腔体连通。两个mic对应的圆柱体空间尽量一致，这样可以保证声音从同样距离到达两个mic的相位以及增益一致。</p></li>
+<li><p>（4）两个mic距离拾音孔的距离越短，额外附加的频响就越小。但要注意为mic增加减震措施，减少非线性的回声</p></li>
+<li><p>（5）推荐腔体设计如下：</p></li>
+</ul>
+<p><img alt="" src="../../_images/enc_2mic_1.png" />
+<img alt="" src="../../_images/enc_2mic_2.png" />
+</br></p>
+<ul class="simple">
+<li><p>（6）推荐mic位置摆放设计如下：</p></li>
+</ul>
+<p><img alt="" src="../../_images/enc_2mic_3.png" />
+<img alt="" src="../../_images/enc_2mic_4.png" />
+<img alt="" src="../../_images/enc_2mic_5.png" /></p>
+</section>
+<section id="id3">
+<h3><span class="section-number">15.4.2.4. </span>腔体气密性测试<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>  双麦克风降噪算法依赖于不同的声源方向到达两个麦克风之间的相位差与幅度差来达到消除特定范围内噪声的效果。如果外界声音到达麦克风的声音路径除了外壳进音孔外的其他路径的分量较大时则会破坏不同的声源方向到达两个麦克风之间的相位差与幅度差，从而让ENC效果变差。</br>
+  为了保证外界声音进入到麦克风的能量主要经过外壳进音孔而不是其他路径，需要对麦克风与外壳之间的通道的气密性进行测试。</p>
+<section id="id4">
+<h4><span class="section-number">15.4.2.4.1. </span>测试步骤<br><a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>step1：准备一只装配好的耳机，烧写spp音频导出程序 <br>
+<img alt="" src="../../_images/export_mic_spp.png" /></p></li>
+<li><p>step2：耳机平放于桌面上。放置一个喇叭正对耳机。</p></li>
+<li><p>step3：用音频导出工具（安卓Audio_tool或者PC端工具）导出两个mic的音频数据 <br>
+<img alt="" src="../../_images/export_mic_tool.png" /></p></li>
+<li><p>step4：喇叭播放一段扫频信号(50Hz-8kHz)，导出两个mic（均不堵）的原始数据。</p></li>
+<li><p>step5：用替丁胶，橡皮泥或者其他隔音材料堵住主麦克风进音孔，再播放扫频信号（保持耳机相对于喇叭位置不变），导出两个mic的原始数据。</p></li>
+<li><p>step6：移开堵住主麦克风的替丁胶，橡皮泥或者其他隔音材料</p></li>
+<li><p>step7：用替丁胶，橡皮泥或者其他隔音材料堵住副麦克风进音孔，再播放扫频信号（保持耳机相对于喇叭位置不变），导出两个mic的原始数据。</p></li>
+<li><p>step8：结束音频数据记录</p></li>
+</ul>
+</section>
+<section id="id5">
+<h4><span class="section-number">15.4.2.4.2. </span>分析步骤<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>step1：用音频分析软件打开录音数据</p></li>
+<li><p>step2：观察接收到的扫频信号有无出现饱和。如果有则减少喇叭音量，重复上面的测试步骤。</p></li>
+<li><p>step3：用频谱分析工具分别分析，（主、副）麦克风收到的扫频信号与（主、副）麦克风被堵住的时候收到的扫频信号。</p></li>
+<li><p>step4：为了达到最佳效果，同一个麦克风堵住的信号频谱相对于没堵住的信号频谱应当有-25dB以上的衰减。</p></li>
+</ul>
+</section>
+<section id="id6">
+<h4><span class="section-number">15.4.2.4.3. </span>数据分析示例<a class="headerlink" href="#id6" title="Link to this heading"></a></h4>
+<p>  【分析示例1】不同场景录音数据如下：可以看到，两个mic都没有堵的情况下，都可以正常拾取到外部的声音，而堵住其中任何一个mic的进音孔，都会使其拾取到的声音明显突变到很小。
+<img alt="" src="../../_images/enc_2mic_6.png" /></p>
+<p>  【分析示例2】频响幅度差分析：可以看出，主副mic在堵住前后，有明显的幅度差，证明腔体气密性是合格的。虽然气密性差，也可以调出一定的ENC降噪效果，但达不到理论最优效果。</p>
+<p><img alt="" src="../../_images/enc_2mic_7.png" /></p>
+</section>
+<section id="id7">
+<h4><span class="section-number">15.4.2.4.4. </span>双麦降噪耳机气密性常见问题<a class="headerlink" href="#id7" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>问题1：使用了胶套，但胶套与外壳有缝隙，细微的缝隙也可以造成巨大的漏气，通过这些缝隙声音传播的声音非常大。应当让胶套比实际的空间稍大，靠装配的压力压紧，这样缝隙就基本被堵住。
+</br></p></li>
+<li><p>问题2：使用质地较硬的硅胶套，装配的时候没办法跟PCB板完全贴合导致漏气的发生。
+</br></p></li>
+<li><p>问题3：在外壳上做了开槽，把麦克风套在里面。这种情况因为外壳是硬质的塑料，与PCB板无法很好地贴合在一起，这种情况可以在麦克风周围增加一圈软性的胶垫来填补缝隙。
+</br></p></li>
+<li><p>问题4：麦克风的进音孔跟外壳开孔成90度。这种情况常见于主麦克风，这种情况可以通过特殊的胶套来保证麦克风的进音孔到外壳的进音孔的气密性，但这种成功率较低，经常因为胶套与外壳，或者与PCB的贴合度问题导致漏气。建议使用外壳开槽，麦克风周围增加一圈软性的胶垫来填补缝隙的方式构造麦克风的进音孔到外壳的进音孔之间的导音管，这样气密性比较容易得到保证。</p></li>
+</ul>
+</section>
+<section id="id8">
+<h4><span class="section-number">15.4.2.4.5. </span>双麦降噪耳机如何增加气密性<a class="headerlink" href="#id8" title="Link to this heading"></a></h4>
+<p>  当通过气密性测试发现耳机的气密性非常糟糕的情况下，可以使用一些可塑性的隔音物质对麦克风周围的空间进行填充，再测试气密性，从而找到漏气的位置。</br>
+  一般推荐使用bostik牌的蓝丁胶，这种胶呈胶泥状，有良好的隔音性与可塑性，且易于清理，可以重复使用。但对于一些过于细小的缝隙可能没法封住，这种情况可以使用704硅橡胶，用针筒注射到麦克风的附近，而且这种胶可以在生产中实际使用，但调试过程中不易清理，一般是蓝丁胶无法作用时使用。</br></p>
+<p>  调试的过程中应对注意，硅麦的振膜非常脆弱，如果不慎把胶挤到进音孔里，很容易导致麦克风的损坏，即使把胶重新清理干净。</p>
+<p>  当找到漏气的位置，就要考虑是使用打胶方式还是改进模具或者改进胶套方式来达到气密性增加的效果。</p>
+</section>
+</section>
+<section id="id9">
+<h3><span class="section-number">15.4.2.5. </span>设计误区（避免）<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>1、mic与拾音孔之间无密封。这样mic会与耳机内部腔体直接连通，声音的高频成分会被大大削减，声音到达两个mic之间的相位也会因为内部的反射而失去声源方向信息，从而令双mic系统失效。
+<img alt="" src="../../_images/enc_2mic_8.png" /></p></li>
+</ul>
+</br> 
+- 2、mic与外壳之间没有添加减震措施。喇叭播放的声音会通过外壳传到到mic中形成回声，这部分回声因为是通过固体震动传播，可能具有高度的非线性，会影响整个通话效果。
+</br>
+- 3、【建议】尽量避免两个mic一个上进音一个下进音，即同用上进音或者下进音。调试过程发现，有些方案，一个上进音，一个下进音，容易出现灵敏度和相位严重不一致情况，导致ENC失效。后续如果我们软件上面可以通过相关技术手段支持这种情况，再进行通知。
+<p><img alt="" src="../../_images/enc_2mic_9.png" /></p>
+</section>
+<section id="id10">
+<h3><span class="section-number">15.4.2.6. </span>开发生产测试指引<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>  本章节主要说明在样机开发阶段、试产阶段和量产阶段需要注意的事项和建议，最终目的是为了达到量产阶段产品性能一致性。我们强烈建议：开发和试产阶段，一定要使用仪器进行客观指标测试，确保后续量产的合格率。</br>
+  当我们参照ENC调试指引（“五、ENC参数与调试指引”）调试完一款ENC降噪样机之后，对着耳机的不同角度，比如0°，90°，180°讲话，正常的效果应该是0°的人声清晰舒适，对着90°和180°讲话，人声基本很小或者基本听不到。当满足这个主观感受之后，我们建议就可以多测试一些样机，来感受一致性了。</br>
+  接下来就可以通过测试仪器，对样机的个个指标进行详细测试和评估。目前我们已经支持美格信、兆华仪器、指南测控仪器厂商，下面就以美格信（Megasig）测试仪器为例，做一下测试指引。</p>
+<section id="id11">
+<h4><span class="section-number">15.4.2.6.1. </span>具体数据指标测试<a class="headerlink" href="#id11" title="Link to this heading"></a></h4>
+<p>测试结构图如下：</p>
+<p><img alt="" src="../../_images/enc_2.png" /></p>
+<p>  打开测试仪器厂商编写好的测试序列，点击开始测试，便可以测试样机的各个指标了。具体那些测试项需要测试，可以根据自己需求，进行增添和裁剪。</br>
+  下面是某一个样机的实际测试数据图：</br></p>
+<p><img alt="" src="../../_images/enc_data_3.png" /></p>
+<p>  从上面的测试数据（本数据只测试一台样机），我们比较关心的是：左右耳降噪曲线，主副mic频响测试。</p>
+<ul class="simple">
+<li><p>降噪曲线：客观评估样机的降噪深度和降噪频率范围。</p></li>
+<li><p>主副mic频响：客观评估mic的一致性，这一步和我们做数据导出分析频响的目的是一样的。</p></li>
+</ul>
+</section>
+<section id="id12">
+<h4><span class="section-number">15.4.2.6.2. </span>指向性测试（极性图）<a class="headerlink" href="#id12" title="Link to this heading"></a></h4>
+<p><img alt="" src="../../_images/enc_data_4.png" /></p>
+<p>实物测试图如下：</p>
+<ul class="simple">
+<li><p>步骤1：点击“快速工具”，在快速工具面板选择“蓝牙控制器”，连接DUT设备，选择“极性图测试”，进行设备的指向性测试 <br>
+<img alt="" src="../../_images/enc_data_5.png" /></p></li>
+<li><p>步骤2：蓝牙连接</p>
+<ul>
+<li><p>step1：功能选择“Search BT Address”-&gt;“运行”</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="" src="../../_images/enc_data_6.png" /></p>
+<ul class="simple">
+<li><p>step2：搜索到目标地址，功能选择“Connect”，同时在蓝牙地址码填入目标蓝牙地址</p></li>
+</ul>
+<p><img alt="" src="../../_images/enc_data_7.png" /></p>
+<ul class="simple">
+<li><p>step3：设置声卡播放测试信号</p></li>
+</ul>
+<p><img alt="" src="../../_images/enc_data_8.png" /></p>
+<ul class="simple">
+<li><p>步骤3：极性图测试
+蓝牙连接成功，先将转盘归0°，然后将样机的主副mic的连接线对着人工嘴，开始测试</p></li>
+</ul>
+<p><img alt="" src="../../_images/enc_data_9.png" /></p>
+<p>下面给出两个典型的双mic和单mic的指向性测试图 <br>
+<img alt="" src="../../_images/enc_data_10.png" /></p>
+<p>  可以看到，合理的声学设计和参数配置，双mic的有效拾音范围为120°左右，而单mic表现出现是全方位角度的有效拾音。</p>
+</section>
+</section>
+</section>
+<section id="id13">
+<h2><span class="section-number">15.4.3. </span>双麦ENC参数与调试指引<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
+<p><img alt="" src="../../_images/cvp_dms_enc.png" /></p>
+<ul class="simple">
+<li><p><strong>ENC_Process_MaxFreq</strong> : ENC处理的频率上限</br></p></li>
+<li><p><strong>ENC_Process_MinFreq</strong> : ENC处理的频率下限</br>
+  理论上讲，线性情况下，ENC可以处理全频带的语音宽带信号（16k）。但是如果出现信号失真情况，会影响ENC的处理结果，严重情况下，会导致消除失真的语音信号。所以，比如5k以上信号出现失真情况，则把ENC_Process_MaxFreq设置成5000，超出部分不做ENC处理。当然，为了达到最佳效果，我们建议还是要保证待处理信号的保真性。</br></p></li>
+<li><p><strong>SIR_MaxFreq</strong> : ENC参考数据频段</br></p></li>
+<li><p><strong>Mic_Distance</strong> : 两个mic 拾音孔之间的物理距离，单位是m（0.015即为15mm）</br>
+  该值要求尽量精确，需要借助测量工具进行科学测量。</br></p></li>
+<li><p><strong>Mic RMS diff（Target_Signal_Degradation）</strong> : 目标信号到达主麦克风与副麦克风之间的幅度差异补偿。</br>
+  该参数与两个mic之间的距离以及声学设计有关，影响ENC对噪声的抑制，以及对目标信号的保留。正常情况下，主mic信号大于等于参考mic信号。所以调试方法是，当主mic和参考mic的信号差异很小时，该值配1.0,当主mic信号大于参考mic时，则调小该值，即实现以下平衡：</br></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">主mic信号</span> <span class="o">*</span> <span class="n">Target_Signal_Degradation</span> <span class="o">=</span> <span class="n">参考mic信号</span>
+</pre></div>
+</div>
+<p>  可以使用以下方法确定最佳参数：</br></p>
+<ul class="simple">
+<li><p>1、在安静，低混响环境中(如消音室，室外空旷安静场地)，使用人工嘴正对主mic，播放扫频或白噪信号，分别采集主mic或副mic信号。分析幅度差异。</p></li>
+<li><p>2、在安静，低混响环境中(如消音室，室外空旷安静场地)，并且打开ENC，使用人工嘴1正对主mic，使用人工嘴2正对副mic，分别在人工嘴2播放白噪，人工嘴1播放扫频，计算得到两次测试的频响FR1,FR2（FR1对应人工嘴1）,计算降噪增益频响 FR_ENC = FR1-FR2。迭代调整Target_Signal_Degradation，使FR_ENC最大。</br>
+  注意：早期配置工具，Target_Signal_Degradation是需要手动计算的，新的工具，已经可以通过填写主副mic采集信号的rms幅值差，工具自动生成。</p></li>
+<li><p><strong>ENC_Aggressfactor</strong> : 动态侵略系数，越大压制越强</br></p></li>
+<li><p><strong>ENC_Minsuppress</strong> : 静态压制最小值，越大压制越小</br></p></li>
+</ul>
+<p>调试指引</p>
+<section id="id14">
+<h3><span class="section-number">15.4.3.1. </span>配套工具<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<p>（1）安卓手机apk：audio_tools(“AudioTools使用手册/记录”章节) </br>
+（2）PC音频录制工具（内置于“杰理SDK工具”，工具有帮助文档）</br></p>
+</section>
+<section id="sdk">
+<h3><span class="section-number">15.4.3.2. </span>SDK配置<a class="headerlink" href="#sdk" title="Link to this heading"></a></h3>
+<p>打开数据导出宏定义 <br>
+<img alt="" src="../../_images/export_mic_spp.png" />  <br>
+通过工具连接DUT样机，按照正常使用方式佩戴金机，然后开始录制音频数据。该操作，目的是为了录制通话人声（目标人声）到达两个mic的差异性。录制环境请遵循以下原则：</br>
+（1）空旷无混响环境</br>
+（2）安静无吵杂环境</br>
+（3）说话声音正常音量</br></p>
+</section>
+<section id="id15">
+<h3><span class="section-number">15.4.3.3. </span>数据分析<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<p>将通过spp导出到手机/电脑的主副mic的数据，用音频分析软件检查频响和幅度差异，为参数调节提供理论支持。</p>
+<p>（1）幅度方式示例如下： <br>
+<img alt="" src="../../_images/enc_data_11.png" /></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>主mic的幅值：-35.65dB
+副mic的幅值：-37.20dB
+差值：-1.55dB（即Mic RMS diff）
+根据公式：
+主mic信号 * Target_Signal_Degradation = 参考mic信号
+Target_Signal_Degradation = 10 ^ (-1.55 / 20)
+    = 0.8366
+故配置参数Target_Signal_Degradation填0.83
+</pre></div>
+</div>
+<p>  【注】后续版本支持直接填写两个mic的幅度差，由工具自己计算Target_Signal_Degradation。
+python计算如下：</p>
+<p><img alt="" src="../../_images/enc_data_12.png" /></p>
+<p>windows自带计算器计算如下：</p>
+<p><img alt="" src="../../_images/enc_data_13.png" /></p>
+<p>（2）频响分析示例 <br>
+<img alt="" src="../../_images/enc_data_14.png" />
+<img alt="" src="../../_images/enc_data_15.png" /></p>
+<p>  如果两个mic的频响曲线通过平移，3000Hz以内有较好的重合，表示频响正常。当然，如果全带宽频响一致，那是最好的了。如果出现频响严重不一致的问题，就需要检查电路或者mic的工艺一致性了。</p>
+</section>
+<section id="id16">
+<h3><span class="section-number">15.4.3.4. </span>在线调试<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<p>使用audio_tools在线调试ENC参数，感受实时效果 <br>
+<img alt="" src="../../_images/enc_online_tool.png" /></p>
+</section>
+</section>
+<section id="aec">
+<h2><span class="section-number">15.4.4. </span>AEC模块<a class="headerlink" href="#aec" title="Link to this heading"></a></h2>
+<p><img alt="" src="../../_images/cvp_dms_aec.png" /> <br>
+<code class="docutils literal notranslate"><span class="pre">注1</span></code>：双mic降噪ENC默认需要打开AEC模块。</br>
+<code class="docutils literal notranslate"><span class="pre">注2</span></code>：AEC模块的参数基本不用调试，这里是为了兼容性考虑，所以放到配置工具。如有需要，由原开发人员指导修改 </br></p>
+<p><img alt="" src="../../_images/enc_global.png" /> </br></p>
+<ul class="simple">
+<li><p><strong>global_minsuppress</strong> : 全局最小压制系数</br>
+针对某些信噪比比较差的信号经过各个算法模块处理过后，压制太多，导致声音损失严重。这个时候就可以通过配置全局最小压制系数来控制压制强度。该值越大，表示压制下限越高，压制效果越弱。0的时候最强，即最小可以压制成静音。</br></p></li>
+</ul>
+</section>
+<section id="nlp">
+<h2><span class="section-number">15.4.5. </span>NLP模块<a class="headerlink" href="#nlp" title="Link to this heading"></a></h2>
+<p><img alt="" src="../../_images/cvp_dms_nlp.png" /> </br>
+<strong>NLP_Process_MaxFrequency</strong> : 处理频率上限 </br>
+<strong>NLP_Process_MinFrequency</strong> : 处理频率下限 </br>
+<strong>OverDrive</strong> ：影响回声压制系数计算，数值越大压制则越强，当值为0的时候则无任何回声压制作用。</br></p>
+</section>
+<section id="agc">
+<h2><span class="section-number">15.4.6. </span>AGC模块<a class="headerlink" href="#agc" title="Link to this heading"></a></h2>
+<p><img alt="" src="../../_images/cvp_agc.png" /></p>
+<p>  AGC调试的是远端听到的声音。即mic采集到的人声传到远端手机端的声音大小。该模块是后级数字模块，即在一定的mic模拟增益的情况下，做完回音消除处理后，准备送到远端之前做的一个数字放大AGC。所以它只影响声音的大小。流程如下： <br>
+<img alt="" src="../../_images/cvp_agc_1.png" /></p>
+<ul class="simple">
+<li><p>调试指引：</p>
+<ul>
+<li><p>(1)增益单位是dB</p></li>
+<li><p>(2)当mic采集到的数据人声大于speech_thr（近端声音放大的阈值）时放大MAX_GAIN</p></li>
+<li><p>(3)当mic采集到的数据人声小于等于speech_thr（近端声音放大的阈值）时放大MIN_GAIN</p></li>
+<li><p>(4)最大放大倍数和最小放大倍数之间，是通过fade_in和fade_out来淡入淡出的。比如单端讲话，这个时候淡入的步进就是：ndt_fade_in，淡出的步进就是：ndt_fade_out。讲话的时候淡入，没说话的时候淡出。双端讲话则用dt_fade_in和dt_fade_out，用法一样。</p></li>
+<li><p>(5)speech_thr（近端声音放大的阈值）这个值根据mic采到的声音大小而定，如果太大，声音得不到均匀放大，即一会 放大max_gain，一会放大min_gain，听起来有可能忽大忽小。太小则有可能环境声也会一并放大。</p></li>
+<li><p>(6)使用AGC模块实现单工通话功能
+在某些情况下，整个通话回路产生了严重失真，导致算法无法处理好回音，这个时候，就只能选择单工的通话方式。
+所谓单工，即远端讲话的时候，听不到近端的声音，远端不讲话，可以听到近端的声音。而近端，什么时候都可以听到远端的声音。所以可以在检测到远端有说话，就开始将近端声音淡出，远端没说话，再自行淡入，就可以实现单工功能。
+<img alt="" src="../../_images/cvp_agc_2.png" /></p></li>
+</ul>
+</li>
+</ul>
+<p>  【注意】ECHO_PRESENT_THR 的值，决定什么时候进入单工处理。考虑到远端讲话的声音一般是比较大的，所以可以适当将该值设置高一点，避免远端环境声或者其他非目标声音稍微一大，就听不到近端声音。比如：远端过来的目标人声集中在-20dB到-40dB之间，则可以把ECHO_PRESENT_THR设置成-45dB。但是也要注意不能设置太大，太大会导致远端说话有些字达不到设定阈值，从而进入不了双端讲话模式，实现不了单工，出现漏回音的情况。</p>
+</section>
+<section id="ans">
+<h2><span class="section-number">15.4.7. </span>ANS模块<a class="headerlink" href="#ans" title="Link to this heading"></a></h2>
+<p><img alt="" src="../../_images/cvp_dms_ans.png" /></p>
+<p>注：降噪参数，推荐使用默认配置。如由需要调整，建议不要只调一个值，建议： </br>
+（1）如果要加强降噪效果，先调大一点动态压制AggressFactor，还不够，可以尝试调小一点静态压制minSuppress; </br>
+（2）如果要减弱降噪效果，先调大一点静态压制minSuppress，还不够，可以尝试调小一点动态压制AggressFactor; </br>
+（3）ANS_NoiseLevel ：初始噪声水平。用来加速降噪收敛，跟mic信号的信噪比有关。Mic信号信噪比高，该值可以小一点，反之则需要稍微大一点。如果初始噪声设置过高，则可能导致一开始声音比较小声，如果过小，可能降噪收敛加速不明显。所以这个值需要具体方案如果出现以上可能问题时，适当修改。 </br></p>
+</section>
+<section id="dns">
+<h2><span class="section-number">15.4.8. </span>神经网络降噪DNS<a class="headerlink" href="#dns" title="Link to this heading"></a></h2>
+<p>  神经网络降噪：收集大规模的干净语音和噪声数据集， 提取干净语音特征和带噪声语音特征，采用深度神经网络技术进行降噪模型的训练。训练出的降噪模型对输入信号实时进行噪声和语音的分类和回归，根据分类和回归的结果对语音信号进行噪声抑制，语音增强，提升信噪比。</br>
+  对比传统降噪算法，采用深度神经网络进行语音降噪和增强，噪声估计更准确，语音失真更小，同时也能适应非平稳噪声的降噪处理。</br></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>优点</p></th>
+<th class="head"><p>缺点</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ANS</p></td>
+<td><p>对平稳噪声处理效果好，对ram和mips要求低</p></td>
+<td><p>适应性差，对动态噪声处理效果欠佳</p></td>
+</tr>
+<tr class="row-odd"><td><p>DNS</p></td>
+<td><p>噪声估计准确，语音保真度高，适应性好</p></td>
+<td><p>对ram和mips要求高</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id17">
+<h3><span class="section-number">15.4.8.1. </span>通用参数说明<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<p><img alt="" src="../../_images/cvp_dms_ans.png" /></p>
+<p><strong>DNS_GainFloor</strong> : 增益平滑系数，该系数主要用于控制降噪增益最小值。如果降噪后底噪较大，可以适当减小该值；如果出现吃音问题，可以适当提高该值，建议设定范围：0.05 ~ 0.3。</p>
+<p><strong>DNS_OverDrive</strong> : 降噪强度控制，DNS_OverDrive=1为降噪中间值，即算法评估出来的降噪强度。大于1的时候，即为加强降噪强度，小于1的时候，即为降低降噪强度，建议调节范围：0.2 ~ 3 。</p>
+<p><strong>NoiseLevel</strong> ：初始噪声水平。用来加速降噪收敛，跟mic信号的信噪比有关。Mic信号信噪比高，该值可以小一点，反之则需要稍微大一点。如果初始噪声设置过高，则可能导致一开始声音比较小声，如果过小，可能降噪收敛加速不明显。所以这个值需要具体方案如果出现以上可能问题时，适当修改。</p>
+<p><img alt="" src="../../_images/cvp_sms_dns_1.png" /></p>
+</section>
+<section id="id18">
+<h3><span class="section-number">15.4.8.2. </span>常见问题调试指引<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<section id="id19">
+<h4><span class="section-number">15.4.8.2.1. </span>出现吃音或者一句话某个字某个字变得很小声问题<a class="headerlink" href="#id19" title="Link to this heading"></a></h4>
+<p>  出现该问题时，首先要确认所处环境是不是信噪比很低(如小于-5dB)，即噪声比人声大很多，这种情形下，优化空间有限，调试步骤如下：</p>
+<ul class="simple">
+<li><p>步骤1：通过调节mic的增益来缓解：如果mic的增益比较小(小于10dB)，可以适当提高mic增益来缓解吃音问题，建议调节范围不要超过15dB；提高mic增益可能会导致噪声增大，据实际情况调节。</p></li>
+<li><p>步骤2：调节DNS_GainFloor和DNS_OverDrive参数：适当提高DNS_GainFloor 或 适当减小 DNS_OverDrive，可以通过配合gain_floor和over_drive适度调节。</p></li>
+</ul>
+</section>
+<section id="id20">
+<h4><span class="section-number">15.4.8.2.2. </span>远端听到声音不均匀，忽大忽小<a class="headerlink" href="#id20" title="Link to this heading"></a></h4>
+<p>  如果后处理开启了AGC模块，出现该问题时，请参照“章节十：常见问题FAQ”第二个问题进行确认调整。</p>
+</section>
+</section>
+</section>
+<section id="wnc">
+<h2><span class="section-number">15.4.9. </span>WNC双麦风噪检测模块<a class="headerlink" href="#wnc" title="Link to this heading"></a></h2>
+<p>#define TCFG_AUDIO_DMS_GLOBAL_VERSION		DMS_GLOBAL_V100可用</br></p>
+<section id="id21">
+<h3><span class="section-number">15.4.9.1. </span>参数说明<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
+<p>1、在audio_cvp_dms.c里面把CONST_DMS_WNC置1</br>
+2、在audio_cvp_dms.c里面配置参数</br></p>
+<p><strong>wn_detect_time</strong>： 风噪检测的时间窗大小 越大越准，能过滤掉短时风噪，建议值 0.32f</br>
+<strong>wn_detct_time_ratio_thr</strong>： 在时间窗内超过wn_detect_thr的帧数占比阈值 , 越大越难触发 建议值 0.8f</br>
+<strong>wn_detect_thr</strong>： 风噪检测阈值 越大越难触发 建议值 0.5f</br>
+<strong>wn_minsuppress</strong>： 检测到风噪时，替换GlobalMinSuppress为这个值</br></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>基本原理：
+每一帧都会计算一个风噪的概率，当大于wn_detect_thr时，当前帧会被标记为风噪帧。当在wn_detect_time的时间内有wn_detct_time_ratio_thr比例的帧为风噪帧则认为风噪存在，使用wn_minsuppress替换GlobalMinSuppress的值
+</pre></div>
+</div>
+<p>3、可以通过int cvp_dms_get_wind_detect_state(void);获取风噪检测结果</br></p>
+</section>
+</section>
+<section id="jlsp-wnc">
+<h2><span class="section-number">15.4.10. </span>JLSP WNC双麦风噪检测模块<a class="headerlink" href="#jlsp-wnc" title="Link to this heading"></a></h2>
+<p>#define TCFG_AUDIO_DMS_GLOBAL_VERSION		DMS_GLOBAL_V200可用</br></p>
+<section id="id22">
+<h3><span class="section-number">15.4.10.1. </span>参数说明<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<p>1、在audio_cvp_dms.c里面把CONST_JLSP_WD_EN置1</br>
+2、在audio_cvp_dms.c里面配置参数</br>
+<img alt="" src="../../_images/cvp_tms_7.png" /> </br></p>
+<ul class="simple">
+<li><p><strong>WN_Correlation_Threshold</strong>: 双麦非相关性阈值，根据双麦采集到的音频相关性取值，相关性越小取值越大，取值范围（0~1），默认取值0.6</br></p></li>
+<li><p><strong>WN_MassCenter_Threshold</strong>：麦增益能量阈值，用于衡量音频特定频段能量强度，需要根据实际风噪做确定；</br>
+  确定方法如下：如果需要在大于3m/s风速下做降风噪，需要用样机在3m/s的实际环境下测试，使用int jlsp_get_wind_detect_info(int *wd_flag, int *wd_val, int *wd_lev)接口实时获取当前的风噪强度wd_val，把这个风噪强度的值wd_val填给ms_th。</br>
+<code class="docutils literal notranslate"><span class="pre">注意：有无风是由wn_msc_th和ms_th两个参数共同决定的。</span></code></br></p></li>
+<li><p><strong>WN_Gain_Offset</strong>：风噪能量增益偏移阈值，风噪参数确认后一般是不能修改mic增益的了，如果修改了mic的增益，mic数据变化的dB数需要填到wn_gain_offset这里</br>
+</br>
+在audio_aec_dms.c或者audio_cvp_3mic.c打开 WIND_DETECT_INFO_SPP_DEBUG_ENABLE可在通话是通过蓝牙spp工具查看看风噪值</br>
+<img alt="" src="../../_images/cvp_jlsp_wnc_spp.png" /> </br></p></li>
+</ul>
+</section>
+</section>
+<section id="mfdt">
+<h2><span class="section-number">15.4.11. </span>MFDT麦克风故障检测模块<a class="headerlink" href="#mfdt" title="Link to this heading"></a></h2>
+<p>功能介绍：使用双麦时，检测到其中一个麦克风异常（比如麦克风堵塞、麦克风坏了等），主动切换成单麦模式使用另一个正常的麦克风，保证通话能正常使用。</br></p>
+<section id="id23">
+<h3><span class="section-number">15.4.11.1. </span>参数说明<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<p><img alt="" src="../../_images/mfdt_cfg.png" /> </br></p>
+<ul class="simple">
+<li><p><strong>Detect Time</strong>：检测时间，单位：秒</br></p></li>
+<li><p><strong>Input Diff Threshold</strong>：麦克风能量差值，两个mic能量差异持续大于此阈值超过检测时间则会检测为故障，设置范围：0~90dB</br></p></li>
+<li><p><strong>Input Lower Bound</strong>：检测阈值，当有麦克风能量低于此值时，才可是做检测</br></p></li>
+<li><p><strong>MalfuncDet MaxFrequency</strong>：检测频率上限</br></p></li>
+<li><p><strong>MalfuncDet MinFrequency</strong>：检测频率下限</br></p></li>
+<li><p><strong>OnlyDetect</strong>：是否之作检测不做单麦切换， 0 ：故障切换到单mic模式， 1：只检测不切换</br></p></li>
+</ul>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*获取单双麦切换状态</span>
+<span class="cm"> * 0: 正常双麦 ;</span>
+<span class="cm"> * 1: 副麦坏了，触发故障</span>
+<span class="cm"> * -1: 主麦坏了，触发故障</span>
+<span class="cm"> */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">audio_cvp_dms_malfunc_state</span><span class="p">();</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * 获取mic的能量值，开了MFDT_EN才能用</span>
+<span class="cm"> * mic: 0 获取主麦能量</span>
+<span class="cm"> * mic：1 获取副麦能量</span>
+<span class="cm"> * return：返回能量值，[0~90.3],返回-1表示错误</span>
+<span class="cm"> */</span>
+<span class="kt">float</span><span class="w"> </span><span class="nf">audio_cvp_dms_mic_energy</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">mic</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="eq">
+<h2><span class="section-number">15.4.12. </span>EQ参数<a class="headerlink" href="#eq" title="Link to this heading"></a></h2>
+<p>  考虑到有些MIC物理特性，或者腔体声学设计缺陷，导致MIC采集到的声音比较低沉，这种情况可以适当的对声音做EQ处理。通话的EQ通常最多3段，就可以基本满足需求。具体什么EQ参数合适，根据实际情景进行配置。场景情景如下：</p>
+<ul class="simple">
+<li><p>情景1：声音低沉，闷，不够透亮</p>
+<ul>
+<li><p>（1）适当提高MIC的模拟增益</p></li>
+<li><p>（2）使用high-pass的滤波器做简单的处理，低频适当衰减。</p></li>
+</ul>
+</li>
+<li><p>情景2：声音听起来有唇齿音
+  如果使用msbc，有些mic灵敏度比较高，MIC可以采到6.8k左右的唇齿音，如果介意，这个时候可以做一个high-shelf的滤波器处理。</p></li>
+</ul>
+</section>
+<section id="id24">
+<h2><span class="section-number">15.4.13. </span>双麦头戴式话务耳机开发设计指引<a class="headerlink" href="#id24" title="Link to this heading"></a></h2>
+<section id="id25">
+<h3><span class="section-number">15.4.13.1. </span>概述<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
+<p>  双麦ENC头戴式话务耳机是基于两个MIC拾取信号的能量差变化进行环境噪声抑制的信号处理系统，依赖于主、副mic增益差对拾取有效语音的能量差异，一个典型的头戴式话务耳机物理结构如下：</p>
+<p><img alt="" src="../../_images/dms_flexible_1.png" /></p>
+<p>  区别于“章节四”提到的双麦ENC，头戴式话务耳机的ENC是全新的算法。正常佩戴使用时，因尽量调整主mic更靠近嘴（约1-2cm为宜），因此建议主mic连杆应尽量设计成软质材质，方便不同用户使用时根据自身特点进行灵活调整主mic位置至合适距离；副mic的位置应尽量远离主mic，主要用来采集环境声，避免拾取到更多的有效语言。</p>
+</section>
+<section id="id26">
+<h3><span class="section-number">15.4.13.2. </span>Microphone选型规格<a class="headerlink" href="#id26" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>Microphone选型规格</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>数量</p></td>
+<td><p>2个模拟MIC</p></td>
+</tr>
+<tr class="row-odd"><td><p>方向性</p></td>
+<td><p>全指向性，或者主MIC使用指向性MIC（效果更加）</p></td>
+</tr>
+<tr class="row-even"><td><p>信噪比</p></td>
+<td><p>&gt;=62dB(A)</p></td>
+</tr>
+<tr class="row-odd"><td><p>相位</p></td>
+<td><p>±10°&#64;100-7kHz</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id27">
+<h3><span class="section-number">15.4.13.3. </span>声学设计要点<a class="headerlink" href="#id27" title="Link to this heading"></a></h3>
+<p>  头戴式话务耳机ENC，目标效果是为了消除使用时的环境背景噪声。为了能使系统达到最优效果，声学设计上需要有一定的约束，两个mic之间需要满足一定的增益差异。另外，两个MIC在装配时，应该有减震、密封隔离处理，减少回音传播。</br>
+设计要点如下：</p>
+<ul class="simple">
+<li><p>（1）主mic孔开口朝向应正对嘴，或者主mic杆头做成可活动自由旋转调节。</p></li>
+<li><p>（2）副mic开孔位置应尽量远离主mic，一般选择位于耳罩壳上方开孔，朝向无特殊指定。相比通用ENC，对主副mic的距离限制在15mm到35mm，相反，话务耳机的主副mic应该尽量远离（一般建议主副mic距离≥11cm），使得主mic主要采集目标人声，副mic主要采集背景声。更重要的是，正常佩戴使用时，因尽量调整主mic更靠近嘴（约1-2cm为宜）。</p></li>
+<li><p>（3）主mic咪头选择海绵套包裹，以有效降低说话时产生的气流干扰，减少风噪。</p></li>
+</ul>
+<p>  关于主、副mic增益的设置，这里将给出一种基于播放单频信号测量两个mic收到信号幅频响应度的测定方式。测试环境为，以正常佩戴耳机姿势将耳机至于声源正前方，声源播放1KHz的正弦波信号，分别对两个mic收到信号进行幅频响应度（Total RMS Amplitude）的计算（可依托Audition软件进行分析）。
+表1：mic0处1KHz正弦波声压级为90dB时</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>mic0（dB）</p></th>
+<th class="head"><p>mic1（dB）</p></th>
+<th class="head"><p>SPL（dB）</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1KHz</p></td>
+<td><p>-46.2</p></td>
+<td><p>-26.6</p></td>
+<td><p>90</p></td>
+</tr>
+<tr class="row-odd"><td><p>3KHz</p></td>
+<td><p>-53.2</p></td>
+<td><p>-35.4</p></td>
+<td><p>83</p></td>
+</tr>
+<tr class="row-even"><td><p>6KHz</p></td>
+<td><p>-54.7</p></td>
+<td><p>-32.6</p></td>
+<td><p>82</p></td>
+</tr>
+<tr class="row-odd"><td><p>7KHz</p></td>
+<td><p>-54</p></td>
+<td><p>-30.6</p></td>
+<td><p>83</p></td>
+</tr>
+</tbody>
+</table>
+<p>表2：mic0处1KHz正弦波声压级为80dB时</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>mic0（dB）</p></th>
+<th class="head"><p>mic1（dB）</p></th>
+<th class="head"><p>SPL（dB</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1KHz</p></td>
+<td><p>-56.2</p></td>
+<td><p>-34.2</p></td>
+<td><p>80</p></td>
+</tr>
+<tr class="row-odd"><td><p>3KHz</p></td>
+<td><p>-64.7</p></td>
+<td><p>-52</p></td>
+<td><p>71</p></td>
+</tr>
+<tr class="row-even"><td><p>6KHz</p></td>
+<td><p>-65.7</p></td>
+<td><p>-43.5</p></td>
+<td><p>73</p></td>
+</tr>
+<tr class="row-odd"><td><p>7KHz</p></td>
+<td><p>-67.1</p></td>
+<td><p>-41.2</p></td>
+<td><p>76</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>注：
+1、表1/2中，mic0表示主mic，mic1表示副mic；
+2、声压级为将移动声压计置于mic0旁测得
+3、表中以1KHz频率对应的响应度为准，其他频率下的响应度可做参考
+4、主、副麦的频率响应应尽可能保持平坦，响应的最大点与最低点相差不超过5dB。
+5、主、副麦间的针对实际收录到信号的各频率区间应保持15-25dB的能量差异。
+</pre></div>
+</div>
+<p>  上述表1、表2分别是表示mic0处声压等级为90dB和80dB下，主、副mic针对不同单频信号实际收录到的幅频响应度（Total RMS Amplitude）的对应关系。需要说明的是，实际使用时两个mic间增益差可在允许范围内与表中测定值存在差异。</p>
+</section>
+<section id="id28">
+<h3><span class="section-number">15.4.13.4. </span>流程和参数配置说明<a class="headerlink" href="#id28" title="Link to this heading"></a></h3>
+<p><img alt="" src="../../_images/dms_flexible_2.png" /></p>
+<p>  专为话务耳机开发的双mic降噪算法，通过对主副mic采集到的信号进行运算，保留主mic语音，抑制衰减副mic采集到的环境声，从而实现在吵杂环境，对目标人声的清晰捕捉。算法处理输出信号，可以通过蓝牙发送给手机进行蓝牙通话，也可以通过usb audio传输到电脑，进行网络通话。其他更多应用，待各方案需求不断开发。</p>
+<ul class="simple">
+<li><p>SDK配置如下</p></li>
+<li><p>工具参数配置选中“双mic话务耳机”</p></li>
+<li><p>模块参数说明如下</p>
+<ul>
+<li><p><strong>AdaptiveFileter ENC</strong><br>
+AdaptiveFileter ENC，自适应滤波ENC模块<br></p>
+<ul>
+<li><p>ENC_Suppress_Pre<br>
+自适应滤波器前级动态压制控制值，越大压制越强</br></p></li>
+<li><p>ENC_Suppress_Post <br>
+自适应滤波器后级动态压制控制值，越大压制越强</br></p></li>
+<li><p>ENC_MinSuppress<br>
+自适应滤波器后级动态压制控制值下限，防止动态后级压制ENC_Suppress_Post过度，即后级动态压制最小抑制比率不会小于ENC_MinSuppress</br>
+<code class="docutils literal notranslate"><span class="pre">调试指引</span></code><br>
+步骤1：调整ENC_Suppress_Pre，当语音出现损伤时即为上限。这一步的目的是最大限度保留语音成分，同时抑制部分噪声。<br>
+步骤2：慢慢调整ENC_Suppress_Post，使得残余噪声环境音得到进一步的抑制衰减。<br></p></li>
+</ul>
+</li>
+<li><p><strong>降噪NS</strong><br>
+参照<strong>ANS模块</strong><br></p></li>
+<li><p><strong>自动增益控制AGC</strong><br>
+参照<strong>AGC参数</strong><br></p></li>
+<li><p><strong>EQ</strong><br>
+参照<strong>EQ参数</strong><br></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id29">
+<h3><span class="section-number">15.4.13.5. </span>常见调试问题<a class="headerlink" href="#id29" title="Link to this heading"></a></h3>
+<p>（1）主mic远离嘴吧，距离超过1-2cm</br>
+  由于耳机结构设计上的原因，正常佩戴时，主mic距离嘴巴距离超过1-2cm（比如5cm），这时候有两种处理方式：</br></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>方式1：改耳机模具结构，使得主mic和嘴巴的距离在1到2cm左右（推荐）。
+方式2：在原有的结构上，调出最优效果
+</pre></div>
+</div>
+<p>  如果选择方式2，则前面第3小节提到的主副mic采集信号要有15到20dB的差值不再适用。这个时候，正常使用佩戴讲话，无背景噪声情况下，主mic收到有效人声幅度应至少高于副mic 5dB以上即可。然后配合ENC参数说明， 进行语音保留和噪声抑制深度的平衡调整。</p>
+</section>
+</section>
+<section id="q-a">
+<h2><span class="section-number">15.4.14. </span>通话调试常见问题Q&amp;A<a class="headerlink" href="#q-a" title="Link to this heading"></a></h2>
+<section id="id30">
+<h3><span class="section-number">15.4.14.1. </span>有噪声或者电流声<a class="headerlink" href="#id30" title="Link to this heading"></a></h3>
+<p>关闭回音消除，听mic的原始声音是否有噪声或者电流声，如果有，则优先处理源头的噪声,因为干扰声会 严重影响通话效果。可以做以下尝试：</br>
+（1）通话的时候切换成LDO</br>
+（2）降低发射功率</br>
+如果以上操作无效，再检查pcb是否合理</br></p>
+</section>
+<section id="id31">
+<h3><span class="section-number">15.4.14.2. </span>声音忽大忽小，不均匀<a class="headerlink" href="#id31" title="Link to this heading"></a></h3>
+<p>（1）AGC放大参数是否合理（详细参考本文档“AGC参数”章节）</br>
+  由于不同的mic灵敏度不一样，这里可以讲max_gain和min_gain设置成一样，确认是否是AGC原因： </br>
+<img alt="" src="../../_images/cvp_agc_3.png" /></p>
+<p>  改完如果正常，则逐步加小相应的阈值SPEECH_THR，小于该阈值的当成噪声不放大。或者缩小MaxGain和MinGain的差值，优化声音在两个增益之间过度淡入淡出带来的不均匀效果。
+改完依旧不正常可能是“ANS参数设置不合理”。</br>
+（2）ANS参数是否合理</br>
+  如果mic本身（或者由于电路干扰）采到的声音信噪比比较低，经过降噪模块，则可能会损耗比较多的人声部分，说话小声的部分会变得比较小声。这个时候可以参数减弱ANS的强度，优先调ANS_Suppress，步进不要超过0.1。注意不要调太弱，降噪太弱，声音听起来也会不那么干净。</br>
+  如果当前没有回音问题，也可以尝试提高一些mic的增益，提高声音信噪比，提高ANS的降噪空间，再尝试通话，根据文档解决剩下的问题。</br></p>
+</section>
+<section id="id32">
+<h3><span class="section-number">15.4.14.3. </span>回音消不掉<a class="headerlink" href="#id32" title="Link to this heading"></a></h3>
+<p>（1）使能AEC的所有模块</p>
+<p>（2）硬件检查</p>
+<ul class="simple">
+<li><p>查看各个电源配置电压差是否满足要求，</p></li>
+<li><p>排查是不是硬件干扰过去的回音:可以将喇叭or麦换成等效电阻，AEC_MODE选择disable，如果这时候还存在回声，可能回音有部分来自于硬件的电路干扰，严重程度听回音大小。
+如果暂时无法修改硬件环境，可通过降低DAC增益或者MIC增益，减小回音程度。</p></li>
+</ul>
+</section>
+<section id="id33">
+<h3><span class="section-number">15.4.14.4. </span>远端听到的声音比较闷，不清晰<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
+<p>（1）确认麦的供电是否满足要求</br>
+  具体查看的麦对应的datasheet关于电源的供电范围说明，调整偏置电压到合适的范围内</br>
+（2）大声或者对着麦克风说话，看是否有改善</br>
+  如果有，则考虑MIC的增益设置不合理，加大MIC增益试试</br>
+（3）拆开样机外壳，试听声音效果</br></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>如果拆开样机外壳，声音明显改善，则怀疑是MIC的是声学设计影响了拾音效果
+注1：MIC和外壳孔隙尽量小，有MIC套防震处理
+注2：MIC开孔朝向尽量对着发声源（嘴巴）
+注3：MIC内部有独立腔体，减少声音回荡抵消部分频率成分
+</pre></div>
+</div>
+<p>（4）声音大，不清晰，浑浊
+  录制MIC原始信号（通过spp导出或者关闭算法，远端手机录音），分析具体的MIC信号频率成分（频响/频谱），注意底噪情况。使用EQ模块，对声音进行修饰处理：</br>
+  一般处理是加一段高通处理，常用是100~200Hz截止。如果中高频不够，再加一个带通处理，比如800到1200H的增强处理。</br></p>
+</section>
+<section id="id34">
+<h3><span class="section-number">15.4.14.5. </span>远端听到的声音有尾音<a class="headerlink" href="#id34" title="Link to this heading"></a></h3>
+<p>（1）可能mic本身（或者由于电路干扰）采到的声音信噪比比较低，目前的ANS参数无法压制mic的噪声，可以调整ANS参数，（详细参考本文档“ANS参数”章节）</br>
+（2）如果调节ANS参数会带来忽大忽小问题，那么还原ANS参数。降低AGC的效果，逐步减小相应的放大上限MAX_GAIN，至声音比较干净，再轻微提高MIC的增益，对声音的大小进行补偿。</br></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cvp_1mic_manual.html" class="btn btn-neutral float-left" title="15.3. 1-mic通话调试指引" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cvp_2mic_hybrid_manual.html" class="btn btn-neutral float-right" title="15.5. 2-mic hybrid通话调试指引" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

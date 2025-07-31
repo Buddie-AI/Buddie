@@ -1,0 +1,203 @@
+local_tws本地音乐转发 说明
+#########################
+
+概述
+*****
+    该方案实现非蓝牙模式下的本地音频转发。
+
+整体框图
+*********
+
+.. image:: imgs/整体框图.png
+
+功能使用
+********
+    使用该功能需要打开可视化配置工具上面 **蓝牙配置->TWS->本地音乐转发**。
+
+    .. image:: imgs/配置开关.png
+
+    打开该配置后，音频流程的媒体框图会自动切换到 **Local_TWS**
+
+    .. image:: imgs/媒体流程图.png
+
+流程设计及代码流程
+****************
+    1. 流程设计：若TWS主从机均处于蓝牙模式，则不区分Source和Sink角色，跟传统的TWS对箱使用保持一致。在一端切到非蓝牙模式时（如音乐，FM，AUX，PC等），当前音箱将成为  **Source** 角色，此时另一端音箱会切到Sink模式，作为接收设备接收Source设备发送的音频进行播放。
+
+    .. image:: imgs/LOCAL_TWS流程图.png
+
+    .. image:: imgs/模式切换消息时序.png
+
+    2. 代码流程： 下面以linein模式为例讲解local_tws代码流程，用户客户参考该模式给自己添加的模式添加本地转发功能
+
+        * 各个模式使用 **REGISTER_LOCAL_TWS_OPS** 注册接口到local_tws，结构体需要注册当前模式的idx和当前模式本地音频的打开接口。
+
+        .. image:: imgs/linein模式注册.png
+
+        * 模式进入的时候，调用 **local_tws_enter_mode** 并传递参数，第一个参数为当前模式的模式提示音，第二个参数为本地音频播放接口的传参。调用接口返回值为 -1，说明tws未连接，走非tws流程播放提示音。
+
+        .. image:: imgs/linein模式进入.png
+
+        * 模式进入会判断当前模式是否非蓝牙模式，非蓝牙模式成为 **Source** 设备，调用 **local_tws_become_to_source**, 发送命令 **CMD_TWS_ENTER_SINK_MODE_REQ** 给对端设备，对端设备收到后，会切到Sink模式并回复 **CMD_TWS_ENTER_SINK_MODE_RSP** ， Source在收到RSP之后调用同步播放提示音接口，并且在提示音结束的回调中打开本地解码。
+
+        .. image:: imgs/Source打开本地解码.png
+
+        * 在Source端打开和关闭本地解码， Sink端会分别收到 **TWS_EVENT_DATA_TRANS_START** 和 **TWS_EVENT_DATA_TRANS_CLOSE**, 分别在这两个事件处打开 **TWS接收数据流**
+
+        .. note:: 这里用户不需要修改，仅需要了解即可。
+
+        * 模式退出的时候，调用 **local_tws_exit_mode**， 通知对端设备关闭解码。
+
+        .. image:: imgs/linein模式退出.png
+
+    3. TWS消息交互：tws之间可以通过 **local_tws_cmd_send** 进行数据交互， 用户可以参考SDK的使用自己添加需要交互的信息，以音量回报为例：
+
+        * 第一次参数是CMD， 用户可以自己添加， 第二个参数是CMD带的参数或者数据。
+
+        .. image:: imgs/音量回报.png
+        
+        * 对端收到命令之后在 **local_tws_msg_handler** 函数处理。
+        
+        .. image:: imgs/命令处理.png
+		
+
+模块接口设计
+****************
+
+`````````````````````````````````````````````````
+local_tws_enter_mode
+`````````````````````````````````````````````````
+各个模式进入时调用开启local_tws流程，如果当前模式为蓝牙模式则通知对方进入蓝牙模式，非蓝牙模式则通知对方进入sink模式。
+
+原型：
+
+.. code-block:: c
+
+    int local_tws_enter_mode(const char *file_name, void *priv);
+
+参数：
+    ============   ===========================================
+    file_name        当前模式提示音
+    priv             source端播完提示音之后启动本地解码时需要的参数
+    返回值           是否启动成功，0表示调用成功，-1表示不成功，不成功则执行原本单机的模式初始化流程。
+    ============   ===========================================
+	
+示例：
+
+.. code-block:: c
+
+    static int app_linein_init()
+    {
+        int ret = -1;
+        linein_idle_flag = 0;
+        //开启ui
+
+        /* ui_update_status(STATUS_LINEIN_MODE); */
+
+    #if TCFG_LOCAL_TWS_ENABLE
+        ret = local_tws_enter_mode(get_tone_files()->linein_mode, NULL);
+    #endif //TCFG_LOCAL_TWS_ENABLE
+
+        if (ret != 0) {
+            tone_player_stop();
+            int ret = play_tone_file_callback(get_tone_files()->linein_mode, NULL, linein_tone_play_end_callback);
+            if (ret) {
+                linein_tone_play_end_callback(NULL, STREAM_EVENT_NONE); // 提示音播放失败就直接调用 linein start
+            }
+        }
+    #ifdef TCFG_PITCH_SPEED_NODE_ENABLE
+        app_var.pitch_mode = PITCH_0;    //设置变调初始模式
+    #endif
+        app_send_message(APP_MSG_ENTER_MODE, APP_MODE_LINEIN);
+        return 0;
+    }
+
+
+
+`````````````````````````````````````````````````
+local_tws_exit_mode
+`````````````````````````````````````````````````
+各个模式退出当前模式时调用同步状态和释放资源
+
+原型：
+
+.. code-block:: c
+
+    void app_linein_exit()
+    {
+    #if TCFG_LOCAL_TWS_ENABLE
+        local_tws_exit_mode();
+    #endif
+        linein_stop();
+        linein_idle_flag = 1;
+        app_send_message(APP_MSG_EXIT_MODE, APP_MODE_LINEIN);
+    }
+
+参数：
+    ============   ===========================================
+    参数             无
+    返回值           无
+    ============   ===========================================
+
+示例：
+
+.. code-block:: c
+
+    local_tws_exit_mode();
+
+`````````````````````````````````````````````````
+local_tws_cmd_send
+`````````````````````````````````````````````````
+local_tws 命令发送接口, 用于TWS信息交流
+
+原型：
+
+.. code-block:: c
+
+    void local_tws_cmd_send(u8 *data, u8 len);
+
+参数：
+    ============   ===========================================
+    data             需要发送的命令数据
+    len	             命令数据的长度
+    返回值           无
+    ============   ===========================================
+
+
+示例：
+
+.. code-block:: c
+
+    void local_tws_vol_report(u8 vol)
+    {
+        u8 data[2] = {CMD_TWS_VOL_REPORT, vol};
+        log_info("%s %d\n", __func__, vol);
+        local_tws_cmd_send(data, sizeof(data));
+    }
+
+`````````````````````````````````````````````````
+local_tws_get_role
+`````````````````````````````````````````````````
+用于获取当前设备的角色
+
+原型：
+
+.. code-block:: c
+
+    u8 local_tws_get_role(void)
+
+参数：
+    ============   ===========================================
+	参数		 	 无
+    返回值           当前设备角色
+    ============   ===========================================
+
+示例：
+
+.. code-block:: c
+
+    if(local_tws_get_role() == LOCAL_TWS_ROLE_SOURCE)) {
+        printf("current devices is SOURCE\n");
+    }
+
+

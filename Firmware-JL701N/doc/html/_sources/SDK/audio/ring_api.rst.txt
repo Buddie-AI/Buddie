@@ -1,0 +1,56 @@
+铃声
+==========
+铃声播放API是系统提供的用于播放来电铃声文件的接口,可以和其它类型的提示音叠加播放
+
+play_ring_file
+----------------------------------------
+播放来电铃声文件, 参数为按键音文件的相对路径，可用".*"代替文件后缀名。
+默认一直循环播放。
+
+原型: 
+
+.. code-block:: c
+
+    int play_ring_file(const char *file_name)
+
+示例:
+
+.. code-block:: c
+
+    play_ring_file("tone_en/ring.*");
+       
+
+ring_player_runing()
+----------------------------------------
+返回1表示正在播放铃声,返回0表示没有播放铃声
+
+原型: 
+
+.. code-block:: c
+
+    bool ring_player_runing()
+
+示例:
+
+.. code-block:: c
+
+    if (ring_player_runing()) {
+        // 正在播放铃声, do something
+    }
+
+
+ring_player_stop()
+----------------------------------------
+停止播放铃声
+
+原型: 
+
+.. code-block:: c
+
+    void ring_player_stop()
+
+示例:
+
+.. code-block:: c
+
+   ring_player_stop();

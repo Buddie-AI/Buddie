@@ -1,0 +1,427 @@
+音乐播放
+=============
+
+音乐文件播放API是系统提供的用于播放 U盘或SD卡 的文件的接口。
+
+
+music_file_play
+----------------------------------------
+播放单个音乐文件，返回对应的操作句柄
+
+原型: 
+
+.. code-block:: c
+
+ struct file_player *music_file_play(FILE *file, struct audio_dec_breakpoint *dbp)
+
+
+参数:
+
+    ============   ===================================
+    file           文件句柄
+    dbp            断点信息
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    FILE *file = fopen(path, "r");
+    if (file == NULL) {
+        printf(">>>[test]:err open folder\n");
+        return ;
+    }
+    struct file_player *player = music_file_play(file, dbp);
+
+
+
+music_file_play_callback
+-------------------------------
+播放单个音乐文件,支持播放事件回调并返回对应操作句柄。可用于播放完提示音后执行其它操作
+
+原型: 
+
+.. code-block:: c
+
+  struct file_player *music_file_play_callback(FILE *file, void *priv, music_player_cb_t callback, struct audio_dec_breakpoint *dbp)
+
+参数:
+
+    ============   ===================================
+    file            文件句柄
+    priv            回调callback函数传递的私有参数
+    callback        回调函数
+    dbp             断点信息
+    ============   ===================================
+
+示例：
+
+.. code-block:: c
+
+    int play_poweron_callback(void *priv, enum stream_event event)
+    {
+        if (event == STREAM_EVENT_STOP) {
+            // 音乐播放结束，do something
+        }
+        return 0;
+    }
+    FILE *file = fopen(path, "r");
+    struct file_player *player = music_file_play_callback(file, NULL, play_poweron_callback，NULL);
+
+
+get_music_file_player
+----------------------------------------
+返回打开的第一个音乐播放句柄
+
+原型: 
+
+.. code-block:: c
+
+    struct file_player *get_music_file_player(void) //返回第一个打开的音乐播放器指针
+
+
+示例:
+
+.. code-block:: c
+
+ struct file_player *file_player = get_music_file_player();
+ 
+
+music_file_player_pp
+----------------------------------------
+音乐播放暂停重开，播放中调用则暂停播放，再次调用则恢复播放，返回0代表暂停成功，-1表示暂停失败
+
+原型: 
+
+.. code-block:: c
+
+    int music_file_player_pp(struct file_player *music_player)
+
+参数:
+
+    ============   ===================================
+    music_player    打开文件播放时返回的句柄
+    ============   ===================================
+
+
+示例:
+
+.. code-block:: c
+
+ struct file_player *file_player = get_music_file_player();
+  music_file_player_pp(file_player);
+
+
+
+music_file_player_fr
+-------------------------------
+音乐快退,返回0代表成功，-1表示失败
+
+原型: 
+
+.. code-block:: c
+
+   int music_file_player_fr(u16 step_s, struct file_player *music_player)
+
+
+参数:
+
+    ============   ===================================
+    step_s          快退秒数
+    music_player    对应的文件播放句柄
+    ============   ===================================
+
+示例：
+
+.. code-block:: c
+
+    struct file_player *file_player = get_music_file_player();
+    music_file_player_fr(5,file_player);
+
+music_file_player_ff
+-------------------------------
+音乐快进,返回0代表成功，-1表示失败
+
+原型: 
+
+.. code-block:: c
+
+    int music_file_player_ff(u16 step_s, struct file_player *music_player)
+
+
+参数:
+
+    ============   ===================================
+    step_s          快进秒数
+    music_player    对应的文件播放句柄
+    ============   ===================================
+
+示例：
+
+.. code-block:: c
+
+   struct file_player *file_player = get_music_file_player();
+   music_file_player_ff(5,file_player);
+
+music_file_get_cur_time
+----------------------------------------
+获取音乐文件当前播放时间,返回当前播放到多少s
+
+原型: 
+
+.. code-block:: c
+
+    int music_file_get_cur_time(struct file_player *music_player)
+
+
+参数:
+
+    ============   ===================================
+    music_player    打开文件播放时返回的句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+ struct file_player *file_player = get_music_file_player();
+ int cur_time =  music_file_get_cur_time(file_player);
+
+   
+music_file_get_total_time
+----------------------------------------
+获取音乐文件总共的播放时长，返回总共可以播多少s
+
+原型: 
+
+.. code-block:: c
+
+   int music_file_get_total_time(struct file_player *music_player)
+
+参数:
+
+    ============   ===================================
+    music_player    打开文件播放时返回的句柄
+    ============   ===================================
+
+
+示例:
+
+.. code-block:: c
+
+ struct file_player *file_player = get_music_file_player();
+ int total_time = local_music_get_total_time(file_player);
+
+music_file_set_speed
+----------------------------------------
+设置音乐播放的速度，返回1代表成功，0,-1代表失败
+
+原型: 
+
+.. code-block:: c
+
+   int music_file_set_speed(struct file_player *music_player, enum _speed_level speed_mode) //设置播放速度
+
+
+参数:
+
+    ============   ===================================
+    music_player    文件播放句柄
+    speed_mode      设置档位, 值 0,1,2 ...依次对应0.5,0.75,1,1.25,1.5,2,3,4倍速
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+   struct file_player *file_player = get_music_file_player();
+   music_file_set_speed(file_player, 2);//1倍速播放
+
+   
+
+music_file_speed_up
+----------------------------------------
+增加音乐播放的速度，每调用一次，音乐播放的速度都会增加一档，增加到最大档 4 倍速后再调用就不再增加播放速度,返回1代表成功，0,-1代表失败
+总有7个档位的播放速度：
+
+    0.5  倍数
+    0.75 倍数
+    1    倍数
+    1.25 倍数
+    1.5  倍数
+    2    倍数
+    3    倍数
+    4    倍数
+
+    
+
+
+原型: 
+
+.. code-block:: c
+
+   int music_file_speed_up(struct file_player *music_player) //倍速播放接口
+
+参数:
+
+    ============   ===================================
+    music_player    打开文件播放时返回的句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+   struct file_player *file_player = get_music_file_player();
+   music_file_speed_up(file_player);
+
+music_file_speed_down
+----------------------------------------
+降低音乐播放的速度，每调用一次，音乐播放的速度都会减小一档，减小到最小档 0.5 倍速后再调用就不再减小播放速度,返回1代表成功，0,-1代表失败
+总有7个档位的播放速度：  
+    
+    0.5  倍数
+    0.75 倍数
+    1    倍数
+    1.25 倍数
+    1.5  倍数
+    2    倍数
+    3    倍数
+    4    倍数
+
+原型: 
+
+.. code-block:: c
+
+   int music_file_speed_down(struct file_player *music_player) //慢速播放接口
+
+参数:
+
+    ============   ===================================
+    music_player    打开文件播放时返回的句柄
+    ============   ===================================
+
+
+示例:
+
+.. code-block:: c
+
+   local_music_speed_down();
+
+    struct file_player *file_player = get_music_file_player();
+    music_file_speed_down(file_player);
+
+
+music_file_ab_repeat_set
+----------------------------------------
+设置AB点复读功能,根据参数设置断点A，断点B,还是取消断点,返回0代表失败，1代表成功
+
+原型: 
+
+.. code-block:: c
+
+ int music_file_ab_repeat_set(int ab_cmd, int ab_mode, struct file_player *music_player)
+
+参数:
+
+============   ===================================
+ab_cmd         命令，包括设置断点A,设置断点B，取消
+               断点，可配置值如下
+               AUDIO_IOCTRL_CMD_SET_BREAKPOINT_A 	
+               AUDIO_IOCTRL_CMD_SET_BREAKPOINT_B		
+               AUDIO_IOCTRL_CMD_SET_BREAKPOINT_MODE		
+ab_mode        参数，没有的时候传0
+music_player   打开文件播放时返回的句柄
+============   ===================================
+
+
+
+示例:
+
+.. code-block:: c
+
+    struct file_player *file_player = get_music_file_player();
+           music_file_ab_repeat_set(AUDIO_IOCTRL_CMD_SET_BREAKPOINT_B, 0, _player);
+
+
+
+
+music_file_ab_repeat_switch
+----------------------------------------
+设置AB点复读功能，每调用一次 会依次切换状态： 设置断点A，设置断点B，取消AB断点重复播放，返回0代表失败，1代表成功
+
+原型: 
+
+.. code-block:: c
+
+  int music_file_ab_repeat_switch(struct file_player *music_player)
+
+  参数:
+
+    ============   ===================================
+    music_player    打开文件播放时返回的句柄
+    ============   ===================================
+
+
+
+示例:
+
+.. code-block:: c
+
+    struct file_player *file_player = get_music_file_player();
+    music_file_ab_repeat_switch(file_player);
+
+
+   
+music_file_get_breakpoints
+----------------------------------------
+获取当前播放文件的断点信息，返回0代表成功，-1代表失败
+
+原型: 
+
+.. code-block:: c
+
+  int music_file_get_breakpoints(struct audio_dec_breakpoint *bp, struct file_player *music_player)
+
+
+参数:
+
+    ============   ===================================
+    bp             用于保存断点信息的变量指针
+    music_player   打开文件播放时返回的句柄
+    ============   ===================================
+
+
+示例:
+
+.. code-block:: c
+
+   struct file_player *file_player = get_music_file_player();
+   int ret = music_file_get_breakpoints(&bp->dbp,file_player);
+
+
+music_file_get_player_status
+----------------------------------------
+获取当前播放状态，返回状态值包括播放，暂停，结束
+
+原型: 
+
+.. code-block:: c
+
+  int music_file_get_player_status(struct file_player *music_player)
+
+
+参数:
+
+    ============   ===================================
+    music_player   打开文件播放时返回的句柄
+    ============   ===================================
+
+
+示例:
+
+.. code-block:: c
+
+   struct file_player *file_player = get_music_file_player();
+   int ret = music_file_get_player_status(file_player);
+

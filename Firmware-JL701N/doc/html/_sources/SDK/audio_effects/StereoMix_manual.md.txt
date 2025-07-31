@@ -1,0 +1,43 @@
+# 立体声混合（Stereo Mix）
+
+## 功能介绍
+
+实现立体声左右声道按不同比例混合，可用于混合、反相、声道对调等用途
+
+## 参数介绍
+![Stereo Mixer](./assets/stereo_mixer.png)
+- **左声道混合比例**
+    - CH1_MIX1：左声道混合增益，即`左声道`混合多少比例的CH1的声音
+    - CH1_MIX2：右声道混合增益，即`左声道`混合多少比例的CH2的声音
+- **右声道混合比例**
+    - CH2_MIX1：左声道混合增益，即`右声道`混合多少比例的CH1的声音
+    - CH2_MIX2：右声道混合增益，即`右声道`混合多少比例的CH2的声音
+
+## 使用范例
+
+- （1）左右声道直通输出，相当于bypass（default）<br>
+![stereo_mix_1](./assets/stereo_mix_1.png)
+
+<br>
+
+- （2）左右声道对调<br>
+![stereo_mix_2](./assets/stereo_mix_2.png)
+
+<br>
+
+- （3）左右声道分别混合一半的左声道信号，一半的右声道信号<br>
+![stereo_mix_3](./assets/stereo_mix_3.png)
+
+<br>
+
+- （4）左右声道混合后从左声道出，右声道输出静音<br>
+![stereo_mix_4](./assets/stereo_mix_4.png)
+
+<br>
+
+- （5）声道反相 <br>
+![stereo_mix_5](./assets/stereo_mix_5.png)
+
+- （6）DAC左右声道作差分输出<br>
+将左右声道数据混合后，分别推到左、右声道，并且将右声道数据反相，DAC硬件上将左右声道差分接线即可。<br>
+![stereo_mix_6](./assets/stereo_mix_6.png)

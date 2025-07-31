@@ -1,0 +1,1388 @@
+文件系统
+##############
+
+
+概述
+----
+
+提供文件系统部分相关API。
+
+使用const变量控制功能
+---------------------
+
+#. const int FATFS_WRITE = 1; // 控制fatfs写功能开关。
+#. const int FILT_0SIZE_ENABLE = 1; //是否过滤0大小文件
+#. const int FATFS_LONG_NAME_ENABLE = 1; //是否支持长文件名
+#. const int FATFS_RENAME_ENABLE = 1; //是否支持重命名
+#. const int FATFS_FGET_PATH_ENABLE = 1; //是否支持获取路径
+#. const int FATFS_SAVE_FAT_TABLE_ENABLE = 1; //是否支持seek加速
+#. const int fatfs_support_oversector_rw = 0; //是否支持超过一个sector向设备拿数
+
+
+.. vim: syntax=rst
+
+常用文件系统库接口函数
+---------------------
+
+mount 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+挂载文件系统
+
+原型：
+
+.. code-block:: c
+
+    struct imount *mount(const char *dev_name, const char *path, const char *fs_type,int cache_num, void *dev_arg); 
+
+参数：
+
+    ============   ===================================
+    dev_name         设备名称
+    path             路径
+    fs_type          文件系统类型
+    cache_num        申请缓存cache数目（暂不支持超过1）
+    dev_arg          设备参数
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    void *mnt = mount("sd0", "storage/sd0", "fat", 1, NULL);
+    if (mnt) {
+        log_d("sd mount fat succ");
+    } else {
+        log_d("sd mount fat failed");
+        return -1;
+    }
+
+
+fget_partition
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+获取分区part
+
+原型：
+
+.. code-block:: c
+
+    struct vfs_partition *fget_partition(const char *path);//获得分区part
+
+参数:
+
+    ============   ===================================
+    path             分区路径
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    char path[36] = "storage/sd0/C/";
+    //char path[36] = "storage/sd0/D/";
+    //char path[36] = "storage/sd0/E/";
+    struct vfs_partition part = fget_partition(path);
+
+
+unmount
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+卸载文件系统
+
+原型：
+
+.. code-block:: c
+
+    int unmount(const char *path);
+
+参数:
+
+    ============   ===================================
+    path             路径
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+	unmount("storage/sd0");
+
+
+f_format
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+格式化接口
+
+原型：
+
+.. code-block:: c
+
+    int f_format(const char *path, const char *fs_type, u32 clust_size);
+
+参数:
+
+    ============   ===================================
+    path             路径
+    fs_type          文件系统类型
+    clust_size       簇大小,簇为0时默认为卡本身簇大小。
+    ============   ===================================
+    
+示例:
+
+.. code-block:: c
+
+    char root_path[36] = "storage/sd0/C/";
+    int err = f_format(root_path, "fat", 0);
+
+
+FILE *fopen(const char *path, const char *mode);
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+打开文件
+
+原型：
+
+.. code-block:: c
+
+    FILE *fopen(const char *path, const char *mode);
+
+参数:
+
+    ============   ===================================
+    path             文件路径
+    mode             打开模式（只读("r")，写("w")，可创建("w+")）
+    ============   ===================================
+
+
+.. note:: 
+    * fopen 扩展功能
+    * 自动打开、创建文件夹和文件。
+    * 说明：
+    *   1. 设备路径+文件，其中文件传入格式:"music/test/1/2/3/pk*.wav"  "JL_REC/AC69****.wav"  "JL_REC/AC690000.wav"
+    *   2. 文件名带*号，带多少个*表示多少个可变数字，最多为8+3的大小，如表示可变数字名称变为XXX0001,XXXX002这样得格式，不带*号则只创建一个文件，写覆盖。
+    * date: 2020-07-22
+
+示例:
+
+.. code-block:: c
+    
+    FILE *dg_file = fopen("storage/sd0/C/AC690000.MP3", "w+");
+
+
+
+fclose
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+关闭文件
+
+原型：
+
+.. code-block:: c
+
+    int fclose(FILE *file);
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    fclose(file);
+
+
+
+fread
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+从文件中读取数据
+
+原型：
+
+.. code-block:: c
+
+    int fread(void *buf, u32 size, u32 count, FILE *file);
+
+参数:
+
+    ============   ===================================
+    buf              保存读取到的数据
+    size             每次读取字节数
+    count            总共读取次数
+    file             指向文件流的文件指针
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    char buf[512] = {0};
+    int rlen = 512;
+    int len = fread(buf, rlen, 1, f);
+    if (len != rlen) {
+        log_e("fread: %x, %x, %x\n", len, rlen, fpos(f));
+        fclose(f);
+        return;
+    }
+
+
+
+fwrite
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+写入数据到文件中
+
+原型：
+
+.. code-block:: c
+
+    int fwrite(void *buf, u32 size, u32 count, FILE *file);
+
+参数:
+
+    ============   ===================================
+    buf              需要写入的数据
+    size             每次写入字节数
+    count            总共写入次数
+    file             指向文件流的文件指针
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    char buf[512] = {0};
+    int wlen = 512;
+    int len = fwrite(buf, wlen, 1, f);
+    if (len != wlen) {
+        log_e("fwrite: %x, %x, %x\n", i, len, wlen);
+        return;
+    }
+
+
+
+fseek
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Seek到相应得位置
+
+原型：
+
+.. code-block:: c
+
+    int fseek(FILE *file, int offset, int orig);
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    offset           偏移量
+    orig             偏移方式
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    fseek(wfil->file, 0, SEEK_SET);
+
+
+fseek_fast
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+快速seek
+
+原型：
+
+.. code-block:: c
+
+    int fseek_fast(FILE *file, int offset, int orig);// 快速seek
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    offset           偏移量
+    orig             偏移方式
+    ============   ===================================
+
+.. note:: 
+    一般手表case使用,去除互斥,设置ram里面跑
+
+示例:
+
+.. code-block:: c
+
+    fseek_fast(wfil->file, 0, SEEK_SET);
+
+
+fread_fast
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+从文件中快速读取数据
+
+原型：
+
+.. code-block:: c
+
+    int fread_fast(void *buf, u32 size, u32 count, FILE *file);//快速read
+
+参数:
+
+    ============   ===================================
+    buf              保存读取到的数据
+    size             每次读取字节数
+    count            总共读取次数
+    file             指向文件流的文件指针
+    ============   ===================================
+
+.. note:: 
+    一般手表case使用,去除互斥,设置ram里面跑
+
+示例:
+
+.. code-block:: c
+
+    char buf[512] = {0};
+    int rlen = 512;
+    int len = fread_fast(buf, rlen, 1, f);
+
+
+flen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+获取文件长度
+
+原型：
+
+.. code-block:: c
+
+    int flen(FILE *file);
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    len = flen(file);
+
+
+
+ftell
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+获取文件指针位置
+
+原型：
+
+.. code-block:: c
+
+    int ftell(FILE *file);
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    u32 cur_fptr = ftell(file);
+
+
+
+fget_name
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+获取当前文件名称
+
+原型：
+
+.. code-block:: c
+
+    int fget_name(FILE *file, u8 *name, int len);
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    name             文件名buf
+    len              长度
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    char lfn_buf[512] = {0};
+    int lfn_len = fget_name(file, lfn_buf, 512);
+
+
+
+fget_path
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+获取当前文件相对路径和绝对路径
+
+原型：
+
+.. code-block:: c
+
+    int fget_path(FILE *file, struct vfscan *fscan, u8 *name, int len, u8 is_relative_path);
+
+参数:
+
+    ================   ===================================
+    file                 文件句柄
+    fscan                扫描句柄
+    name                 路径buf
+    len                  buf长度
+    is_relative_path     是否相对路径
+    ================   ===================================
+
+示例:
+
+.. code-block:: c
+
+    char lfn_buf[512] = {0};
+    int path_len = fget_path(file, lfn_buf, 512，1);
+
+
+frename
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+重命名
+
+原型：
+
+.. code-block:: c
+
+    int frename(FILE *file, const char *path);
+
+参数:
+
+    ============   ===================================
+    file            文件句柄
+    path            重命名的文件名
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    char rename[36] = "rename.mp3";
+    int ret = frename(file, rename);
+
+
+
+fdelete
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+删除文件
+
+原型：
+
+.. code-block:: c
+
+    int fdelete(FILE *file);
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    fdelete(file);
+
+
+fdelete_by_name
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+根据名字删除文件
+
+原型：
+
+.. code-block:: c
+
+    int fdelete_by_name(const char *fname);
+
+参数:
+
+    ============   ===================================
+    fname            文件名绝对路径
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    int ret = fdelete_by_name("storage/sd0/C/123.mp3");
+
+
+
+fget_free_space
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+获取设备剩余容量
+
+原型：
+
+.. code-block:: c
+
+    int fget_free_space(const char *path, u32 *space);
+
+参数:
+
+    ============   ===================================
+    path             根路径
+    space            剩余空间 K 为单位
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    char root_path[36] = "storage/sd0/C/";
+    int space;
+    fget_free_space(root_path, &space);
+
+
+
+fscan
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+文件扫描
+
+原型：
+
+.. code-block:: c
+
+    struct vfscan *fscan(const char *path, const char *arg, u8 max_deepth);
+
+参数:
+
+    ============   ===================================
+    path             路径
+    arg              扫描方式
+    max_deepth       扫描深度，最大为9
+    ============   ===================================
+
+.. note::
+    * arg:
+    * -t  文件类型
+    * -r  包含子目录
+    * -d  扫描文件夹
+    * -a  文件属性 r: 读， /: 非
+    * -s  排序方式， t:按时间排序， n:按文件号排序
+    
+示例:
+
+.. code-block:: c
+
+    char path[36] = "storage/sd0/C/";
+    MUSIC_SCAN_PARAM_test[36] = "-tMP3WTG -r -sn";
+    fsn = fscan(path, MUSIC_SCAN_PARAM_test, 9);
+
+
+fscan_interrupt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+文件扫描，可打断。
+
+原型：
+
+.. code-block:: c
+
+    struct vfscan *fscan_interrupt(const char *path, const char *arg, u8 max_deepth, int (*callback)(void)); 
+
+参数:
+
+    ============   ========================================
+    path             路径
+    arg              扫描方式
+    max_deepth       扫描深度，最大为9
+    callback         回调函数，用于打断、同时进行其他操作等
+    ============   ========================================
+
+示例:
+
+.. code-block:: c
+
+    char path[36] = "storage/sd0/C/";
+    MUSIC_SCAN_PARAM_test[36] = "-tMP3WTG -r -sn";
+    fsn = fscan_interrupt(path, MUSIC_SCAN_PARAM_test, 9);
+
+
+
+fscan_release
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+释放句柄
+
+原型：
+
+.. code-block:: c
+
+    void fscan_release(struct vfscan *fs);
+
+参数:
+
+    ============   ===================================
+    fs               vfscan句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    fscan_release(fsn);
+
+    
+fselect
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+选择指定文件打开
+
+原型：
+
+.. code-block:: c
+
+    FILE *fselect(struct vfscan *fs, int selt_mode, int arg);
+
+参数:
+
+    ============   ===================================
+    fs               vfscan句柄
+    selt_mode        按什么方式选择 (支持按簇号、序号、路径选择)
+    arg              传入选择的参数
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    int selt_mode = FSEL_BY_NUMBER; //FSEL_BY_SCLUST
+    __this->file = fselect(__this->fsn, selt_mode, 0);///选择上一曲
+
+
+fdir_exist
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+检查挂载目录是否存在
+
+原型：
+
+.. code-block:: c
+
+    int fdir_exist(const char *dir);
+
+参数:
+
+    ============   ===================================
+    dir              目录路径
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    char dir[36] = "storage/sd0";
+    int exist = fdir_exist(dir)
+
+
+fget_attr
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+获取文件属性
+
+原型：
+
+.. code-block:: c
+
+    int fget_attr(FILE *file, int *attr); 
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    attr             属性
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    int attr;
+    fget_attr(file, attr);
+
+
+fset_attr
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+设置文件属性
+
+原型：
+
+.. code-block:: c
+
+    int fset_attr(FILE *file, int attr); //设置文件属性
+
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    attr             属性
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    /*
+    #define F_ATTR_RO       0x01
+    #define F_ATTR_ARC      0x02
+    #define F_ATTR_DIR      0x04
+    #define F_ATTR_VOL      0x08
+    */
+
+    int attr = F_ATTR_RO;
+    fset_attr(file, attr);
+
+
+
+fget_attrs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+获取文件相关信息
+
+原型：
+
+.. code-block:: c
+
+    int fget_attrs(FILE *file, struct vfs_attr *attr);//获得文件相关信息如属性、簇号、大小等
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    attr             属性
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    FILE *fp = NULL;
+    struct vfs_attr param_attr = {0};
+    char path[36] = "storage/sd0/C/123.mp3";
+    //===============================//
+    //          打开参数文件         //
+    //===============================//
+    fp = fopen(path, "r");
+    if (!fp) {
+        return -ENOENT;
+    }
+
+    fget_attrs(fp, &param_attr);
+    param_len = param_attr.fsize;
+    param_ptr = (u8 *)param_attr.sclust; //cpu access addr
+
+    fclose(fp);
+
+
+fset_vol
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+设置卷标
+
+原型：
+
+.. code-block:: c
+
+    int fset_vol(const char *path, const char *name);//设置卷标
+
+
+参数:
+
+    ============   ===================================
+    path             设备路径
+    name             卷标名字
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    int ret = fset_vol("storage/udisk0/C", "my_udisk");//设置卷标
+
+
+fmove
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+移动文件
+
+原型：
+
+.. code-block:: c
+
+    int fmove(FILE *file, const char *path_dst, FILE **newFile, int clr_attr, int path_len);
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    path_dst         目标路径
+    newFile          新文件句柄
+    clr_attr         是否清除文件属性,改为可读写
+    path_len         路径buf长度，针对长文件名
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    int ret = fmove(file, "storage/sd0/C/123/", &newFile, 0, 3);
+
+
+
+fget_folder
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+获取文件夹信息
+
+原型：
+
+.. code-block:: c
+
+    int fget_folder(struct vfscan *fs, struct ffolder *arg); //获取文件夹序号和文件夹内文件数目
+
+参数:
+
+    ============   ===================================
+    fs               vfscan 结构句柄
+    arg              文件夹信息结构句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    struct ffolder folder;
+    fget_folder(fsn, &folder);
+
+
+
+
+fopen_dir_info
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+文件浏览使用，打开目录
+
+原型：
+
+.. code-block:: c
+
+    int fopen_dir_info(const char *path, FILE **pp_file, void *dir_dj); //打开目录
+
+参数:
+
+    ============   ===================================
+    path             路径
+    pp_file          文件句柄
+    dir_dj           目录信息句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    total_dir = fopen_dir_info(dev_manager_get_bs_root_path(fil_bs->dev), &fil_bs->file, 0);
+
+fenter_dir_info
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+文件浏览使用，进入目录
+
+原型：
+
+.. code-block:: c
+
+    int fenter_dir_info(FILE *file, void *dir_dj); //进入目录
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    dir_dj           目录信息句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+    total_dir = fenter_dir_info(fil_bs->file, dir_info); //使用open获得的file，无需重新申请。
+
+
+fexit_dir_info
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+文件浏览使用，退出目录
+
+原型：
+
+.. code-block:: c
+
+    int fexit_dir_info(FILE *file); //退出
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    total_dir = fexit_dir_info(fil_bs->file);//
+
+
+fget_dir_info
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+文件浏览使用，获取目录信息
+
+原型：
+
+.. code-block:: c
+
+    int fget_dir_info(FILE *file, u32 start_num, u32 total_num, void *buf_info); ////获取目录信息
+
+参数:
+
+    ============   ===================================
+    file             文件句柄
+    start_num        起始位置
+    total_num        获取目录个数
+    buf_info         目录信息句柄
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    real_dir =  fget_dir_info(fil_bs->file, start_sn, get_cnt, buf);
+
+
+
+fmk_dir
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+创建目录
+
+原型：
+
+.. code-block:: c
+
+    int fmk_dir(const char *path, char *folder, u8 mode); //创建目录
+
+
+参数:
+
+    ============   =========================================
+    path             路径
+    folder           文件夹名称,不需要 /
+    mode             目录属性（1 设置为隐藏属性， 0 不设置 ）
+    ============   =========================================
+
+示例:
+
+.. code-block:: c
+
+    char path[36] = "storage/sd0/C/";
+    char folder[16] = "123";
+    fmk_dir(path, folder, 0);
+
+
+
+fname_to_path
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+拼接字符
+
+原型：
+
+.. code-block:: c
+
+    int fname_to_path(char *result, const char *path, const char *fname, int len); //把路径和文件名拼接
+
+
+参数:
+
+    ============   ===================================
+    result           最终结果指针
+    path             前路径指针
+    fname            需要拼接的字符
+    len              fname长度
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    int ret = fname_to_path(result, "123/", "456.mp3", 7); //把路径和文件名拼接
+
+
+
+get_last_num
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+录音获取最后序号
+
+原型：
+
+.. code-block:: c
+
+    int get_last_num(void); //录音获取最后序号。
+
+
+示例:
+
+.. code-block:: c
+
+    int num = get_last_num(); //录音获取最后序号。
+
+
+set_bp_info
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+设置断点参数
+
+原型：
+
+.. code-block:: c
+
+    void set_bp_info(u32 clust, u32 fsize, u32 *flag); //扫描前设置断点参数，需要put_bp_info对应释放buf.
+
+参数:
+
+    ============   ===================================
+    clust            记录的簇号
+    fsize            记录的文件大小
+    flag             文件是否存在标志
+    ============   ===================================
+
+.. note:: 
+    * 接口调用在扫描前
+    * 使用完需要put_bp_info对应释放buf
+
+示例:
+
+.. code-block:: c
+
+    int bp_flag;
+    int sclust = 0x38b0;
+    int fsize = 018de0;
+    set_bp_info(sclust, fsize, &bp_flag); //断点若有效把bp_flag置1,注意后面要用put_bp_info释放资源
+
+
+
+put_bp_info
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+释放内存
+
+原型：
+
+.. code-block:: c
+
+    void put_bp_info(void);
+
+示例:
+
+.. code-block:: c
+
+    if (__this->fsn == NULL) {
+        put_bp_info();
+        return MUSIC_PLAYER_ERR_FSCAN;
+    }
+
+    
+ff_set_FileInDir_enable
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+优化扫盘速度
+
+原型：
+
+.. code-block:: c
+
+    void ff_set_FileInDir_enable(u8 enable); // 优化文件打开速度，如果不需要切换文件夹的操作，可置0关闭
+
+参数:
+
+    ============   ===================================
+    enable           开关
+    ============   ===================================
+
+.. note:: 
+    * 目的是是否去除获取文件夹内所有文件功能，默认enable 是1 获取数目，置0不获取，所以不需要切换文件夹操作的功能，可置0 关闭
+    * 在扫描前调用接口
+
+示例:
+
+.. code-block:: c
+
+   ff_set_FileInDir_enable(1); // 优化文件打开速度，如果不需要切换文件夹的操作，可置0关闭
+
+
+
+ff_set_DirBaseInfo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+设置目录项基点信息（用于加速）
+
+原型：
+
+.. code-block:: c
+
+    void ff_set_DirBaseInfo(void *buf, u16 n);
+    
+
+.. note:: 
+    * 加速序号选择文件，明显效果体现在上一曲加速
+    * 注意buf使用
+
+参数:
+
+    ============   ===================================
+    buf              存储基点buf (长度 12 * n)
+    n                基点数目
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    int n = 100;
+    char buf[12 * 100];
+    ff_set_DirBaseInfo(buf, n);
+
+
+fat_set_datetime_info
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+设置文件的创建时间
+
+参数:
+
+.. code-block:: c
+
+    void fat_set_datetime_info(u16 year, u8 month, u8 day, u8 hour, u8 minute, u8 second);
+
+参数:
+
+    ============   ===================================
+    year             年
+    month            月
+    day              日
+    hour             小时
+    minute           分钟
+    second           秒
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    fat_set_datetime_info(2023, 2, 16, 11, 3, 6);
+
+
+hidden_file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+隐藏属性文件是否过滤
+
+原型：
+
+.. code-block:: c
+
+    void hidden_file(u8 flag);
+
+参数:
+
+    ============   ===================================
+    flag             置1 为过滤
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    hidden_file(1);
+
+
+
+fsave_fat_table
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+存储文件簇信息
+
+原型：
+
+.. code-block:: c
+
+    int fsave_fat_table(FILE *file, u16 btr, u8 *buf);
+
+参数:
+
+    ============   ===================================
+    path             路径
+    file             文件句柄
+    btr              buf 长度
+    buf              buf指针
+    ============   ===================================
+
+.. note:: 
+    seek加速，4字节对齐
+
+示例:
+
+.. code-block:: c
+
+    char buf[4 * 1024];
+    int ret = fsave_fat_table(file, 4 * 1024, buf);
+
+
+f_flush_wbuf
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+刷新文件系统缓存buf
+
+原型：
+
+.. code-block:: c
+
+    int f_flush_wbuf(const char *path);
+
+参数:
+
+    ============   ===================================
+    path             路径
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    int ret = f_flush_wbuf("storage/sd0/C");
+
+
+finsert_file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+插入文件
+
+原型：
+
+.. code-block:: c
+
+    int finsert_file(FILE *file, FILE *i_file, u32 fptr);
+
+参数:
+
+    ============   ===================================
+    file             源文件
+    i_file           需要插入的文件
+    fptr             源文件被插入的位置
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    int file_manager_insert_file(FILE *d_f, FILE *i_f, u32 fptr)
+    {
+        int err = finsert_file(d_f, i_f, fptr);
+        return err;
+    }
+
+
+
+fdicvision_file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+分割文件
+
+原型：
+
+.. code-block:: c
+
+    int fdicvision_file(FILE *file, char *file_name, u32 fptr);
+
+参数:
+
+    ============   ===================================
+    file             源文件
+    file_name        分割后第二个文件文件名
+    fptr             源文件被分割位置
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    char tmp_name[16] = "123.mp3";
+    int fptr = flen(f) / 2;
+    int ret = fdicvision_file(f, tmp_name, fptr)
+
+
+
+UTF82Unicode
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+UFT8 转换 Unicode
+
+原型：
+
+.. code-block:: c
+
+    int UTF82Unicode(const char *utf8_buf, u16 *pUniBuf, int utf8_len);
+
+参数:
+
+    ============   ===================================
+    utf8_buf         UTF8编码的字符串
+    pUniBuf          short 类型Unicode字符串
+    utf8_len         utf8数据长度
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    const char path[32] = "这是一个测试demo.MP3";
+    u16 uni_buf[32];
+    file_len = strlen(path);
+    int uni_len = UTF82Unicode(path, uni_buf, file_len); //转化为长文件名Unicode形式
+
+
+Unicode2UTF8
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unicode 转 UTF8
+
+原型：
+
+.. code-block:: c
+
+    int Unicode2UTF8(char *utf8_buf, u16 *pUniBuf, int uni_len);
+
+参数:
+
+    ============   ===================================
+    utf8_buf         UTF8编码的字符串
+    pUniBuf          short 类型Unicode字符串
+    uni_len          unicode数据长度
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    int utf_len = Unicode2UTF8(path, uni_buf, uni_len);
+
+
+utf8_check
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+检查是否UTF8 码格式
+
+原型：
+
+.. code-block:: c
+
+    bool utf8_check(const char *str, int length);
+
+参数:
+
+    ============   ===================================
+    str              数据buff
+    length           数据buff长度
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    const char str[32] = "这是一个测试demo.MP3";
+    str_len = sizeof(str);
+    bool flag = utf8_check(str, str_len);
+
+
+ 

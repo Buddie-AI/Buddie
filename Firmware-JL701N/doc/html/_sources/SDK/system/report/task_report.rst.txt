@@ -1,0 +1,90 @@
+任务报告
+=================
+
+
+任务在运行过程中会统计以下信息：
+    - 1.处理器运行时长cpu run(unit:usec)
+    - 2.当前压栈值StaskPush(unit:word)
+    - 3.最深压栈值StackMax(unit:word)
+    - 4.任务最新开始运行时刻SwInTime(unit:usec)
+    - 5.任务运行时长RunTime(unit:usec)
+    - 6.任务名Name
+
+
+.. code-block:: c
+
+    cpu run: 45872
+    
+    StackPush:  StackMax:       SwInTime - RunTime(ms):     Name:
+    75 (9%)     250 (32%)       41050 - 3 (0%)              btstack
+    52 (10%)    303 (59%)       44014 - 2 (0%)              btctrler
+    116 (22%)   207 (40%)       45872 - 1038 (20%)          jlstream
+    66 (25%)    66 (25%)        0 - 0 (0%)                  pmu_task
+    21 (4%)     22 (4%)         45870 - 3945 (77%)          IDLE0
+    20 (3%)     20 (3%)         110 - 0 (0%)                IDLE1
+    146 (19%)   266 (34%)       45872 - 11 (0%)             app_core
+    41 (32%)    41 (32%)        45871 - 3 (0%)              systimer
+    
+    core[0] - icache, efficiency: 73%
+    core[1] - icache, efficiency: 0%
+    dcache, efficiency: 98%
+
+
+
+os_system_info_output
+------------------------------
+
+功能:
+
+    输出任务状态。
+
+.. code-block:: c
+
+    void os_system_info_output(void);
+
+参数:
+
+    ==========     ====================
+    -
+    返回值
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+        os_system_info_output();
+
+
+
+os_system_info_reset
+------------------------------
+
+功能:
+
+    重置任务运行时长。
+
+.. warning::
+    频率统计模块会定时重置，具体查阅clock_manager.c
+    
+
+.. code-block:: c
+
+    void os_system_info_reset(void);
+
+参数:
+
+    ==========     ====================
+    -
+    返回值
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+        os_system_info_reset();
+
+

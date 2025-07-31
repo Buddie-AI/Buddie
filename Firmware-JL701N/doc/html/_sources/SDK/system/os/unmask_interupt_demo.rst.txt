@@ -1,0 +1,73 @@
+不可屏蔽中断demo
+################
+
+使用不可屏蔽中断时需要相应的设置，以下以使用timer中断作示例：
+
+设置代码段
+----------
+在 :file:`sdk/cpu/xxx/sdk_ld.c` 文件中，设置代码段指向ram地址。不可屏蔽的中断回调代码需要放在ram段。如下图所示：
+
+.. _ui_image:
+
+    .. figure:: image/定义段.png
+       
+
+不可屏蔽中断初始化及中断回调设置
+------------------------------
+
+不可屏蔽的中断的回调函数，必须存放在ram中，如果有中断函数有调用其他函数，也要用AT指令指定到ram段，注意调用的变量不可定义为const类型。
+
+    .. code-block:: c
+        :linenos:
+
+        AT(.unmask_test_ram)
+        void fool(void)//被中断函数调用的其他函数体
+        {
+           //
+        }
+
+        AT(.unmask_test_ram)
+        void test_timer_callback_func(int tid)
+        {
+            /*不可屏蔽中断要保护临界区保护需要使用以下接口*/
+            unmask_enter_critical();
+            //保护内容
+            unmask_exit_critical();
+            
+            //调用其他函数
+            fool();
+        }
+
+
+
+初始化时，在使能中断前，要用 **irq_unmask_set（...）** 将对应的中断注册为不可屏蔽中断：
+
+
+    .. code-block:: c
+        :linenos:
+
+        void unmask_interrupt_test()
+        {
+            int timer_tid = 0;
+            struct gptimer_config test_timer_config;
+
+            printf("unmask_interrupt_test\n");
+
+            test_timer_config.resolution_us = 1 * 1000;//1ms 起一次中断 
+
+            test_timer_config.tid = -1; //timer自动分配
+
+            test_timer_config.irq_cb = test_timer_callback_func; //设置中断回调函数
+            test_timer_config.irq_priority = 7;
+
+            timer_tid = gptimer_init(&test_timer_config);
+
+            //设置不可屏蔽中断
+            irq_unmask_set(timer_tid + 4, 1, 0); 
+
+            gptimer_start(timer_tid); //使能timer中断
+        }
+
+
+
+

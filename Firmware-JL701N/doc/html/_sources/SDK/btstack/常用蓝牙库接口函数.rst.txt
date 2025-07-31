@@ -1,0 +1,797 @@
+.. vim: syntax=rst
+
+常用蓝牙库接口函数
+======================
+
+蓝牙库变量型参数配置
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+   蓝牙协议栈的库会定义一些weak常量去做功能开关或者参数配置。
+   不使用const目的主要是为了直接做向旧SDK兼容,如果用const客户替换后需要自行添加对应的const,否则编译不过.
+   这些weak常量在用户层重新定义值,便可以实现开启或关闭功能,修改参数的目的,也是很方便的。
+   下面介绍一些用户可能用到的参数
+
+蓝牙协议库的打印
+-------------------------
+#. u8 l2cap_debug_enable = 0;       每bit代表一个类型的打印，代码空间够直接配置为0xff
+#. u8 rfcomm_debug_enable = 0;      每bit代表一个类型的打印，代码空间够直接配置为0xff
+#. u8 profile_debug_enable = 0;     每bit代表一个类型的打印，代码空间够直接配置为0xff
+#. u8 ble_debug_enable    = 0;      每bit代表一个类型的打印，代码空间够直接配置为0xff
+#. u8 btstack_tws_debug_enable = 0; 每bit代表一个类型的打印，代码空间够直接配置为0xff
+
+功能开关，值是0关 1开
+--------------------------------
+#. u8 a2dp_source_bqb_support = 0;     做发射器时去做BQB profile测试，有些项需要配置一下才能测试通过
+#. u8 user_at_cmd_send_support = 0;    支持收发自定义AT命令的流程
+#. u8 emitter_hfp_hf_support = 0;      置1时作为发射器时不允许A2DP连接
+#. u8 hfp_ag_profile_support = 0;      hfp ag协议流程支持开关
+#. u8 hsp_profile_support = 0;         HSP协议流程支持开关（支持设备很少，被HFP替代的）
+#. u8 hfp_profile_support = 0;         HFP电话协议流程支持开关
+#. u8 acp_profile_support = 0;         AVCTP音乐控制协议流程支持开关
+#. u8 a2dp_profile_support = 0;        A2DP高级音频协议流程支持开关
+#. u8 spp_profile_support = 0;         SPP协议流程支持开关
+#. u8 spp_up_profile_support = 0;      扩展spp协议流程支持开关，比如需要支持连7路
+#. u8 hid_profile_support = 0;         HID协议流程支持开关（默认仅支持音量加减）
+#. u8 pbap_profile_support = 0;        PBAP电话本协议流程支持开关
+#. u8 a2dp_support_delay_report = 0;   蓝牙库配置要不要支持delay report流程
+#. u8 sync_default_volume_every_time = 1;  配置是每次连上都给手机发本地音量还是只有配对的时候发
+
+其它参数配置
+----------------------------
+
+#. u8 need_default_volume=0;(0-127,非0启动功能),配置要不要把本地的音量发给远端,注意有兼容问题,有些手机不在音乐状态可能是不接受的
+
+
+蓝牙库函数型参数配置
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+   这类接口用于配置蓝牙库的全局变量，一般是初始化的时候配置有效，大部分不支持连接过程中配置。
+
+bt_set_super_timeout_value
+----------------------------
+
+   功能: 配置连接超时断开的检测时间，做主机才有效
+
+.. code-block:: c
+
+    void bt_set_super_timeout_value(u16 time)
+
+参数：
+
+==========     ==========================
+time            连接超时检测时间，单位毫秒
+
+返回值          void
+==========     ==========================
+
+bt_set_page_timeout_value
+----------------------------
+
+   功能: 配置单次回连page最大停止时间
+
+.. code-block:: c
+
+   void bt_set_page_timeout_value(u16 time)
+
+参数：
+
+==========     ==========================
+time            回连时间，单位毫秒
+
+返回值          void
+==========     ==========================
+
+
+bt_set_update_battery_time
+----------------------------
+
+   功能: 设置电量显示发送更新的周期时间，为0表示关闭电量显示功能
+
+.. code-block:: c
+
+   void bt_set_update_battery_time(u8 time)
+
+参数：
+
+==========     =================================
+time            0关闭电量显示功能，非0开启电量显示
+
+返回值          void
+==========     =================================
+
+bt_set_simple_pair_param
+----------------------------
+
+   功能: 设置简易配对参数
+
+.. code-block:: c
+
+   void bt_set_simple_pair_param(u8 io_cap, u8 oob_data, u8 mitm)
+
+参数：
+
+=========    ==================================================================
+io_cap       0: Display only 设置只有输出显示的能力
+.            1: Display YesNo 设置只有输入 YES和NO的能力，能够显示
+.            2: KeyboardOnly 设备可以输入0-9,确认键 和YES/NO的能力,没有显示的能力
+.            3: NoInputNoOutput 设备没有输入和输出的能力
+oob_data     0 : 不存在OOB身份验证数据
+mitm         0 : not protect 身份验证不需要保护“中间人”攻击。
+.            1 :protect 身份验证需要防止“中间人”攻击。
+返回值        void
+=========    ==================================================================
+
+
+bt_change_hci_class_type
+----------------------------
+
+   功能: 提供接口修改设备类型信息，修改什么的类型，会影响到手机显示的图标或者搜索兼容性
+
+.. code-block:: c
+
+   void bt_change_hci_class_type(u32 class);
+
+参数：
+
+==========     ==========================
+class           部分参考值见下方举例
+
+返回值          void
+==========     ==========================
+
+.. code-block:: c
+
+   #define BD_CLASS_WEARABLE_HEADSET   0x240404/*ios10.2 display headset icon*/
+   #define BD_CLASS_HANDS_FREE         0x240408/*ios10.2 display bluetooth icon*/
+   #define BD_CLASS_MICROPHONE         0x240410
+   #define BD_CLASS_LOUDSPEAKER        0x240414
+   #define BD_CLASS_HEADPHONES         0x240418
+   #define BD_CLASS_CAR_AUDIO          0x240420
+   #define BD_CLASS_HIFI_AUDIO         0x240428
+   #define BD_CLASS_PHONEBOOK          0x340404
+   #define BD_CLASS_PAN_DEV            0X020118
+   #define BD_CLASS_MOUSE              0x002580
+   #define BD_CLASS_KEYBOARD           0x002540
+   #define BD_CLASS_KEYBOARD_MOUSE     0x0025C0
+   #define BD_CLASS_REMOTE_CONTROL     0x00254C
+   #define BD_CLASS_TRANSFER_HEALTH    0x10091C
+
+
+蓝牙库注册接口的函数
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+   这类函数的参数一般是一个或多个函数指针，当蓝牙异步获取到消息的时候会及时的回调信息给用户层。
+
+bt_music_info_handle_register
+--------------------------------
+
+功能: 该注册的函数接口可以在蓝牙获取到音乐ID3数据的时候，传递数据给用户层使用。
+
+.. code-block:: c
+
+    void bt_music_info_handle_register(void (*handler)(u8 type, u32 time, u8 *info, u16 len));
+
+参数：
+
+==========     ====================
+handler        传递函数名
+
+返回值          void
+==========     ====================
+
+示例:
+
+.. code-block:: c
+
+   void user_get_bt_music_info(u8 type, u32 time, u8 *info, u16 len)
+   {
+   }
+   bt_music_info_handle_register(user_get_bt_music_info);
+
+
+bt_spp_data_deal_handle_register
+----------------------------------
+
+功能: 该注册的函数接口可以在收到串口数据的时候及时传递到用户层进行处理
+
+.. code-block:: c
+
+    void bt_spp_data_deal_handle_register(void (*handler)(u8 packet_type, u16 channel, u8 *packet, u16 size))
+
+参数：
+
+==========     =============================
+handler        获取到数据或者状态后的回调函数
+
+返回值          void
+==========     =============================
+
+注册函数的参数说明：
+
+==============     ====================
+packet_type         数据类型
+channel             连接通道号
+packet              接收的数据指针
+size                接收到的数据长度
+返回值               void
+==============     ====================
+
+示例:
+
+.. code-block:: c
+
+   void spp_data_handler(u8 packet_type, u16 ch, u8 *packet, u16 size)
+   {
+      switch (packet_type) {
+      case 1:
+         printf("---spp connect:%x\n", ch);
+         break;
+      case 2:
+         printf("---spp disconnect:%x\n", ch);
+         break;
+      case 7:
+         puts("spp_rx:");
+         put_buf(packet,size);
+         break;
+      }
+   }
+   bt_spp_data_deal_handle_register(spp_data_handler);
+
+
+bt_read_remote_name_handle_register
+-------------------------------------
+
+功能: 该注册的函数接口可以在蓝牙获取到远端设备的名字是更新信息到用户层
+
+.. code-block:: c
+
+    void bt_read_remote_name_handle_register(void (*handle)(u8 status, u8 *addr, u8 *name))
+
+参数：
+
+==========     ======================
+handler        获取到名字后的回调函数
+
+返回值          void
+==========     ======================
+
+注册函数的参数说明：
+
+==============     ==========================
+status              1-获取失败   0-获取成功
+addr                配对设备地址
+name                配对设备名字
+返回值               void
+==============     ==========================
+
+示例:
+
+.. code-block:: c
+
+   void bt_read_remote_name(u8 status, u8 *addr, u8 *name)
+   {
+      if (status) {
+         printf("remote_name fail \n");
+      } else {
+         printf("remote_name : %s \n", name);
+      }
+      put_buf(addr, 6);
+   }
+   bt_read_remote_name_handle_register(bt_read_remote_name);
+
+
+bt_music_vol_change_handle_register
+-------------------------------------
+
+功能: 该注册的函数接口可以将手机与设备音乐模式的音量进行同步，将手机下发的音量值更新到用户层和获取用户层的音量发给手机
+
+.. code-block:: c
+
+    void bt_music_vol_change_handle_register(void (*handle)(int vol), int (*handle2)(void))
+
+参数：
+
+==========     =========================================
+handler        手机下发的音量传递到用户层回调接口
+handle2        调用同步音量命令时获取用户层的音量值发给手机
+返回值          void
+==========     =========================================
+
+示例:
+
+.. code-block:: c
+
+   void set_music_device_volume(int volume)
+   {
+   }
+   int phone_get_device_vol(void)
+   {
+   }
+   bt_music_vol_change_handle_register(set_music_device_volume, phone_get_device_vol);
+
+
+bt_get_battery_value_register
+-------------------------------------
+
+功能: 协议栈会调用该函数注册的函数接口获取当前设备的电量，这个返回值是要转换成等级 0-9
+
+.. code-block:: c
+
+    void bt_get_battery_value_register(int (*handle)(void))
+
+参数：
+
+==========     =========================================
+handler        提供函数给协议栈获取电量等级
+
+返回值          void
+==========     =========================================
+
+示例:
+
+.. code-block:: c
+
+   int bt_get_battery_value()
+   {
+      //取消默认蓝牙定时发送电量给手机，需要更新电量给手机使用USER_CTRL_HFP_CMD_UPDATE_BATTARY命令
+      /*电量协议的是0-9个等级，请比例换算*/
+      return get_cur_battery_level();
+   }
+   bt_get_battery_value_register(bt_get_battery_value);
+
+
+蓝牙weak函数
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+   除了部分通过注册函数的形式回调状态给上层用户之外,蓝牙库还定义了一些weak函数,在用户层重新定义可以获取到蓝牙库的一些信息更新
+
+bt_phone_date_and_time_feedback
+--------------------------------
+
+   功能：该接口可以返回连接手机的系统时间,安卓手机通过MAP实现,需要开MAP协议.苹果手机通过令USER_CTRL_HFP_GET_PHONE_DATE_TIME获取
+
+.. code-block:: c
+
+   void bt_phone_date_and_time_feedback(u8 *data, u16 len)
+
+参数：
+
+==========     ========================
+data           手机返回数据包的数据指针
+
+len            数据包的长度
+==========     ========================
+
+示例:
+
+.. code-block:: c
+
+      void bt_phone_date_and_time_feedback(u8 *data, u16 len)
+      {
+         put_buf(data, len);
+         puts((const char *)data);
+      }
+
+
+bt_phonebook_packet_handler
+--------------------------------
+
+   功能：该接口可以返回连接手机的通讯录数据
+
+.. code-block:: c
+
+   void bt_phonebook_packet_handler(u8 type, const u8 *name, const u8 *number, const char *date)
+
+参数：
+
+==========     ================================================================
+type           区分数据类型的标识，0-通讯录，1-来电，2-拨出，3-未接，0xff-准备断开
+name           电话信息对应的名字
+number         电话号码信息
+date           通话记录的时间
+==========     ================================================================
+
+示例:
+
+.. code-block:: c
+
+      void bt_phonebook_packet_handler(u8 type, const u8 *name, const u8 *number, const u8 *date)
+      {
+         static u16 number_cnt = 0;
+         log_debug("NO.%d:", number_cnt);
+         number_cnt++;
+         log_debug("type:%d ", type);
+         if (type == 0xff) {
+            number_cnt = 0;
+         }
+         if (name) {
+            log_debug(" NAME:%s  ", name);
+         }
+         if (number) {
+            log_debug("number:%s  ", number);
+         }
+         if (date) {
+            log_debug("date:%s ", date);
+         }
+      }
+
+蓝牙状态获取接口
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+   此类函数用于或许对应设备的一些状态信息或者连接信息。
+
+bt_get_music_volume
+--------------------------------
+
+   功能：该接口可以跟进地址获取对应设备的音量信息。这个音量是定义在avrcp的协议中
+
+.. code-block:: c
+
+   int bt_get_music_volume(bd_addr_t addr)
+
+参数：
+
+==========     ===========================
+addr           对应设备的地址信息
+
+返回值          返回对应设备的avrcp的音量值
+==========     ===========================
+
+示例:
+
+.. code-block:: c
+
+      static void a2dp_play(u8 *bt_addr, bool tx_do_action)
+      {
+         u8 data[8];
+         memcpy(data, bt_addr, 6);
+         //播放前获取对应设备的音量信息进行配置
+         data[6] = bt_get_music_volume(bt_addr);
+         if (data[6] > 127) {
+            data[6] = app_audio_bt_volume_update(bt_addr, APP_AUDIO_STATE_MUSIC);
+         }
+         a2dp_play_send_cmd(CMD_A2DP_PLAY, data, 7, tx_do_action);
+      }
+
+bt_check_conn_is_handup_for_addr
+-----------------------------------
+
+   功能：该接口可以查询设备是否在挂断状态
+
+.. code-block:: c
+
+   u8 bt_check_conn_is_handup_for_addr(u8 *addr)
+
+参数：
+
+==========     ==================================
+addr           对应设备的地址信息
+
+返回值          返回true表示该地址设备处于挂断状态
+==========     ==================================
+
+
+bt_get_current_remote_addr
+--------------------------------
+
+   功能：该接口可以查询当前设备的地址接口，一般连接一个设备的时候，提供参数给需要地址的接口
+
+.. code-block:: c
+
+   u8 *bt_get_current_receiver_addr()
+
+参数：
+
+==========     ======================================
+参数            无
+
+返回值          返回的是地址的指针,获取不到会返回NULL.
+==========     ======================================
+
+
+bt_get_esco_coder_busy_flag
+--------------------------------
+
+   功能：判断SCO/esco有没有正在使用
+
+.. code-block:: c
+
+   u8 bt_get_esco_coder_busy_flag(void)
+
+参数：
+
+==========     ======================================
+参数            无
+
+返回值          1为正在使用， 0为空闲
+==========     ======================================
+
+
+bt_get_curr_channel_state/bt_get_curr_channel_state_for_addr
+--------------------------------------------------------------
+
+   功能：用于获取当前设备的连接链路状态，可以用来判断有哪些链路连接上
+
+.. code-block:: c
+
+   u16 bt_get_curr_channel_state(void)
+   u16 bt_get_curr_channel_state_for_addr(u8 *addr)
+
+参数：
+
+==========     =======================================================
+addr            设备的地址
+
+返回值          当前连接的channel号。每一个bit代表一个链路，具体见下面定义
+==========     =======================================================
+
+.. code-block:: c
+
+   #define    SPP_CH       0x01 //串口链路
+   #define    HFP_CH       0x02 //通话链路
+   #define    A2DP_CH      0x04 //音频数据链路
+   #define    AVCTP_CH     0x08 //音频控制链路
+   #define    HID_CH       0x10 //HID控制链路
+   #define    AVDTP_CH     0x20 //音频命令链路
+   #define    PBAP_CH      0x40 //电话本链路
+
+
+bt_get_connect_status
+--------------------------------------------------------------
+
+   功能：主动获取当前连接的source设备的连接状态
+
+.. code-block:: c
+
+   u8 bt_get_connect_status(void)
+
+参数：
+
+==========     =======================================================
+参数            无
+
+返回值          当前连接状态，可能返回的几个状态如下：
+==========     =======================================================
+
+.. code-block:: c
+
+   typedef enum {
+      .......
+      BT_STATUS_INITING, /*正在初始化*/
+      BT_STATUS_WAITINT_CONN, /*等待连接*/
+      BT_STATUS_AUTO_CONNECTINT, /*正在回连*/
+      BT_STATUS_CONNECTING, /*已连接，没有电话和音乐在活动*/
+      BT_STATUS_TAKEING_PHONE, /*正在电话*/
+      BT_STATUS_PLAYING_MUSIC, /*正在音乐*/
+      BT_STATUS_A2DP_MEDIA_START,
+      BT_STATUS_A2DP_MEDIA_STOP,
+      .......
+   } STATUS_FOR_USER;
+
+
+bt_get_total_connect_dev
+-------------------------------
+
+   功能：主动获取当前连接的总设备数，不包含page状态的计数
+
+.. code-block:: c
+
+   u8 get_total_connect_dev(void)
+
+参数：
+
+==========     =======================================================
+参数            无
+
+返回值          返回当前连接的总设备数
+==========     =======================================================
+
+
+bt_a2dp_get_status
+------------------------------------
+
+   功能：主动获取当前连接的source设备的音频播放状态
+
+.. code-block:: c
+
+   u8 a2dp_get_status(void)
+
+参数：
+
+==========     =======================================================
+参数            无
+
+返回值          a2dp状态，返回值参考下面定义
+==========     =======================================================
+
+.. code-block:: c
+
+   typedef enum {
+      BT_MUSIC_STATUS_IDLE = 0,
+      BT_MUSIC_STATUS_STARTING,
+      BT_MUSIC_STATUS_SUSPENDING,
+   } BT_MUSIC_STATE;  //音乐状态
+
+
+bt_get_call_status/bt_get_call_status_for_addr
+-------------------------------------------------
+
+   功能：主动获取当前连接的source设备的通话状态
+
+.. code-block:: c
+
+      u8 get_call_status();
+      u8 bt_get_call_status_for_addr(u8 *addr);
+
+参数：
+
+==========     ================================================
+参数            没有 或者 设备地址
+
+返回值          当前连接的source设备的通话状态，返回值参考下面定义
+==========     ================================================
+
+.. code-block:: c
+
+   typedef enum {
+      BT_CALL_BATTERY_CHG = 0, //电池电量改变
+      BT_CALL_SIGNAL_CHG,      //网络信号改变
+      BT_CALL_INCOMING,   //电话打入    ----可能返回值
+      BT_CALL_OUTGOING,   //电话打出    ----可能返回值
+      BT_CALL_ACTIVE,     //接通电话    ----可能返回值
+      BT_CALL_HANGUP,      //电话挂断   ----可能返回值
+      BT_CALL_ALERT,       //远端reach
+      BT_SIRI_STATE,       //SIRI状态
+      BT_CALL_VOL_CHANGED,
+   } BT_CALL_IND_STA;
+
+
+bt_remote_dev_company_ioctrl
+------------------------------------
+
+   功能：这个接口会直接访问VM，根据地址获取已经记录好的设备厂商读操作时op_flag和value参数都传0。
+
+.. code-block:: c
+
+      u8 bt_remote_dev_company_ioctrl(bd_addr_t dev_addr, u8 op_flag, u8 value);
+
+参数：
+
+==========     =======================================================
+dev_addr        查询的设备地址
+op_flag         读操作固定0
+value           读操作无效，可固定0
+
+返回值          设备类型，返回值参考下面定义
+==========     =======================================================
+
+.. code-block:: c
+
+    enum {
+      REMOTE_DEV_UNKNOWN  = 0,
+      REMOTE_DEV_ANDROID,
+      REMOTE_DEV_IOS	,
+      REMOTE_DEV_XIAOMI,
+      REMOTE_DEV_DONGLE_SPEAK = 0xfa,
+   };
+
+
+bt_check_esco_state_via_addr
+-------------------------------
+
+   功能：根据地址获取连接设备的ESCO状态，实现一些一拖二的功能控制
+
+.. code-block:: c
+
+    u8 bt_check_esco_state_via_addr(u8 *addr);
+
+参数：
+
+==========     =======================================================
+参数            设备地址
+
+返回值          返回查询的一些状态，参考值看下面枚举
+==========     =======================================================
+
+.. code-block:: c
+
+      enum {
+         BD_ESCO_IDLE = 0,       /*当前没有设备通话中*/
+         BD_ESCO_BUSY_CURRENT,   /*当前地址对应的设备通话中*/
+         BD_ESCO_BUSY_OTHER,     /*通话中的设备非当前地址*/
+      };
+
+
+bt_restore_remote_device_info_opt
+------------------------------------
+
+   功能：该接口会直接操作VM，可以读取蓝牙记录列表中的蓝牙地址信息
+
+.. code-block:: c
+
+    u8 bt_restore_remote_device_info_opt(bd_addr_t *mac_addr, u8 conn_device_num, u8 id);
+
+参数：
+
+==================   =======================================================
+mac_addr             是用来保存多个地址信息的buffer
+conn_device_num      是期望读取最大个数（支持1-9）
+id                    一般情况是0。作为发射器和独立的HID模式是1
+
+返回值                实际获取到的个数，比期望少的时候说明只记录了这几个地址
+==================   =======================================================
+
+
+
+蓝牙功能类函数接口
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+bt_cmd_prepare/bt_cmd_prepare_for_addr
+-----------------------------------------
+
+   功能：原来user_send_cmd_prepare改名之后的函数，总的蓝牙命令发送接口
+
+.. code-block:: c
+
+   u32 bt_cmd_prepare(USER_CMD_TYPE cmd, u16 param_len, u8 *param)
+   u32 bt_cmd_prepare_for_addr(u8 *addr, USER_CMD_TYPE cmd, u16 param_len, u8 *param);  //可以指定地址发命令
+
+参数：
+
++-----------+-------------------------------------+
+| 名称      | 说明                                |
++===========+=====================================+
+| addr      | 需要指定设备的地址                  |
++-----------+-------------------------------------+
+| cmd       | avctp_user.h中USER_CMD_TYPE枚举的值 |
++-----------+-------------------------------------+
+| param_len | param参数的长度                     |
++-----------+-------------------------------------+
+| param     | 参数的地址                          |
++-----------+-------------------------------------+
+
+示例:
+
+.. code-block:: c
+
+   //例子A、USER_CTRL_HFP_CALL_SET_VOLUME命令需要1个参数的使用例子：
+   u8 vol = 8;
+   user_send_cmd_prepare(USER_CTRL_HFP_CALL_SET_VOLUME,1, &vol);
+   //例子B、USER_CTRL_DIAL_NUMBER 参数要用数组先存起来，param_len是号码长度，param可传参数数组指针，
+   user_val->income_phone_num  //已经存好号码
+   user_send_cmd_prepare(USER_CTRL_DIAL_NUMBER,user_val->phone_num_len,user_val->income_phone_num);
+
+
+
+
+bt_make_ble_address
+--------------------------------
+
+   功能：根据规则生产BLE的随机地址
+
+.. code-block:: c
+
+   void bt_make_ble_address(u8 *ble_address, u8 *edr_address)
+
+参数：
+
+============     ======================================
+ble_address       存放生成返回ble地址的指针
+edr_address       edr地址
+返回值             无
+============     ======================================
+
+示例:
+
+.. code-block:: c
+
+   //根据EDR的地址生成BLE的地址，并配置
+   u8 tmp_ble_addr[6];
+   bt_make_ble_address(tmp_ble_addr, (void *)bt_get_mac_addr());
+   le_controller_set_mac((void *)tmp_ble_addr);

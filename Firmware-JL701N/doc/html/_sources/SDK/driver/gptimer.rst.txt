@@ -1,0 +1,603 @@
+gptimer
+#######################
+gptimer支持计数、延时、定时、PWM、捕获。捕获模式支持滤波，双边沿触发
+
+
+
+gptimer_init
+------------------------------
+    timer功能初始化。
+
+原型:
+
+.. code-block:: c
+
+    int gptimer_init(const struct gptimer_config *gptimer);
+
+参数:
+
+    ==========     ====================
+    gptimer         timer配置
+    返回值          tiemr句柄(id号)
+    ==========     ====================
+
+
+
+
+
+gptimer_pwm_init
+------------------------------
+    pwm功能初始化。
+
+原型:
+
+.. code-block:: c
+
+    int gptimer_pwm_init(const struct gptimer_pwm_config *gptimer);
+
+参数:
+
+    ==========     ====================
+    gptimer         pwm配置
+    返回值           pwm句柄(id号)
+    ==========     ====================
+
+
+
+
+
+gptimer_capture_init
+------------------------------
+    capture功能初始化。
+
+原型:
+
+.. code-block:: c
+
+    int gptimer_capture_init(const struct gptimer_capture_config *gptimer);
+
+参数:
+
+    ==========     ====================
+    gptimer         capture配置
+    返回值           capture句柄(id号)
+    ==========     ====================
+
+
+
+
+
+gptimer_deinit
+------------------------------
+    timer/pwm/capture功能初始化取消。
+
+原型:
+
+.. code-block:: c
+
+    int gptimer_deinit(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值           保留
+    ==========     ====================
+
+
+
+
+
+gptimer_start
+------------------------------
+    timer/pwm/capture功能启动。
+
+原型:
+
+.. code-block:: c
+
+    int gptimer_start(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值           保留
+    ==========     ====================
+
+
+
+
+
+gptimer_pause
+------------------------------
+    timer/pwm/capture功能暂停。
+
+原型:
+
+.. code-block:: c
+
+    int gptimer_pause(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值           保留
+    ==========     ====================
+
+
+
+
+
+gptimer_rwesume
+------------------------------
+    timer/pwm/capture功能恢复。
+
+原型:
+
+.. code-block:: c
+
+    int gptimer_rwesume(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值           保留
+    ==========     ====================
+
+
+
+
+
+gptimer_set_resolution
+------------------------------
+    设置timer功能定时时间，单位us。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_set_resolution(int tid, u32 resolution_us);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    us               定时时间，单位：us
+    返回值           0
+    ==========     ====================
+
+
+
+
+
+gptimer_get_resolution
+------------------------------
+    获取timer功能定时时间，单位us。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_get_resolution(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值           定时时间，单位：us
+    ==========     ====================
+
+
+
+
+
+gptimer_set_pwm_freq
+------------------------------
+    设置pwm功能输出频率，单位Hz。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_set_pwm_freq(int tid, u32 pwm_freq);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    pwm_freq         输出频率，单位：Hz
+    返回值           0
+    ==========     ====================
+
+
+
+
+
+gptimer_get_pwm_freq
+------------------------------
+    获取pwm功能输出频率，单位Hz。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_get_pwm_freq(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值           输出频率，单位：Hz
+    ==========     ====================
+
+
+
+
+
+gptimer_set_pwm_duty
+------------------------------
+    设置pwm功能输出占空比。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_set_pwm_duty(int tid, u32 duty);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    duty            占空比，例：5123，占空比51.23%
+    返回值           0
+    ==========     ====================
+
+
+
+
+
+gptimer_get_pwm_duty
+------------------------------
+    获取pwm功能输出占空比。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_get_pwm_duty(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    duty           占空比，例：5123，占空比51.23%
+    ==========     ====================
+
+
+
+
+
+gptimer_pwm_flip
+------------------------------
+    翻转pwm输出。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_pwm_flip(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值           0
+    ==========     ====================
+
+
+
+
+
+gptimer_set_edge_type
+------------------------------
+    设置capture功能捕获边沿，边沿类型：上升沿、下降沿、双边沿。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_set_edge_type(int tid, enum GPTIMER_CAPTURE_EDGE edge_type);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    edge_type       边沿类型
+    返回值           0
+    ==========     ====================
+
+
+
+
+
+gptimer_get_edge_type
+------------------------------
+    获取capture功能捕获边沿。
+
+原型:
+
+.. code-block:: c
+
+    enum GPTIMER_CAPTURE_EDGE  gptimer_get_edge_type(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值          边沿类型：上升沿、下降沿、双边沿
+    ==========     ====================
+
+
+
+
+
+gptimer_set_capture_filter
+------------------------------
+    设置capture功能滤波参数。小于滤波参数的波被过滤。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_set_capture_filter(int tid, u32 filter_us);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    filter_us        滤波参数，单位：us。
+    ==========     ====================
+
+
+
+
+
+gptimer_get_capture_filter
+------------------------------
+    获取capture功能滤波参数。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_get_capture_filter(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值          滤波参数，单位：us。
+    ==========     ====================
+
+
+
+
+
+gptimer_get_capture_count
+------------------------------
+    获取capture功能count计数器的原始值。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_get_capture_count(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值          count计数器原始值
+    ==========     ====================
+
+
+
+
+
+gptimer_get_count
+------------------------------
+    获取count计数器的原始值。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_get_count(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值          count计数器原始值
+    ==========     ====================
+
+
+
+
+
+gptimer_get_prd
+------------------------------
+    获取prd寄存器的原始值。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_get_prd(int tid);
+
+参数:
+
+    ==========     ====================
+    tid              init时返回的句柄（id号）
+    返回值          prd寄存器原始值
+    ==========     ====================
+
+
+
+
+
+gptimer_set_irq_callback
+------------------------------
+    设置回调函数。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_set_irq_callback(int tid, void (*irq_cb)(int tid));
+
+参数:
+
+    ==========     ===================================
+    tid             init时返回的句柄（id号）
+    irq_cb          回调函数，void usr_irq_cb(int tid)
+    返回值           0
+    ==========     ===================================
+
+
+
+
+
+gptimer_set_work_mode
+------------------------------
+    设置工作模式，模式：timer,pwm,capture。
+
+原型:
+
+.. code-block:: c
+
+    u32 gptimer_set_work_mode(int tid, enum gptimer_type type);
+
+参数:
+
+    ==========     ===================================
+    tid             init时返回的句柄（id号）
+    type            工作模式
+    返回值           0
+    ==========     ===================================
+
+
+
+
+
+gptimer_get_work_mode
+------------------------------
+    获取工作模式，模式：timer,pwm,capture。
+
+原型:
+
+.. code-block:: c
+
+    enum GPTIMER_MODE gptimer_get_work_mode(int tid);
+
+参数:
+
+    ==========     ===================================
+    tid             init时返回的句柄（id号）
+    工作模式         工作模式:timer,pwm,capture
+    ==========     ===================================
+
+
+
+
+
+
+
+
+
+timer模式demo
+----------------------------------------
+
+.. code-block:: c
+
+  //定时器
+  void timer_callback_func(int tid)
+  {
+      
+  }
+
+  const struct gptimer_config timer_config = {
+    .resolution_us = 10*1000, //定时10ms
+    .irq_cb = timer_callback_func, //回调函数
+    .tid = -1,  //填-1,内部自动分配timer
+    .irq_priority = 1; //中断优先级，默认给1
+  };
+
+  int timer_tid = gptimer_init(&timer_config);
+  gptimer_start(timer_tid);
+  
+
+
+
+
+pwm模式demo
+----------------------------------------
+
+.. code-block:: c
+
+
+  const struct gptimer_pwm_config pwm_config = {
+    .port = PORTA, //指定输出IO，PA组
+    .pin = 0, //指定输出IO，BIT(0)脚  输出口PA0
+    .freq = 1000,//输出频率1Khz
+    .pwm_duty_X10000 = 5123, //占空比51.23%
+    .tid = -1,  //填-1,内部自动分配timer
+  };
+
+  int pwm_tid = gptimer_pwm_init(&pwm_config);
+  gptimer_start(pwm_tid);
+
+
+
+
+
+capture模式demo
+----------------------------------------
+
+.. code-block:: c
+
+  void capture_callback_func(int tid)
+  {    
+      enum gptimer_type mode = gptimer_get_work_mode(tid);
+
+      if (mode == GPTIMER_CAPTRUE){
+            u32 prd = gptimer_get_capture_count(tid);  //单位是us
+            if (prd > 10000){
+                gptimer_pause(tid);
+                gptimer_set_resolution(tid,1000); //  设置定时时间1ms
+                gptimer_set_work_mode(tid, GPTIMER_Timer);  // 切换为定时模式
+                gptimer_resume(tid);
+            }
+      }else if(mode == GPTIMER_Timer){
+          gptimer_pause(tid);
+          gptimer_set_edge_type(tid, GPTIMER_EDGE_RISE);
+          gptimer_set_work_mode(tid, GPTIMER_CAPTRUE);   // 切换为上升沿捕获模式
+          gptimer_resume(tid);
+      }
+  }
+
+  const struct gptimer_capture_config capture_config = {  
+    .port = PORTA, //指定输出IO，PA组
+    .pin = 0, //指定输出IO，BIT(0)脚  输出口PA0
+    .edge_type = GPTIMER_EDGE_RISE, //上升沿捕获
+    .filter = 1000, //需要滤掉的频率，大于该频率的波形被过滤；写0则关闭滤波功能
+    .irq_cb = capture_callback_func, //回调函数
+    .tid = -1,  //填-1,内部自动分配timer
+    .irq_priority = 1; //中断优先级，默认给1
+  };
+
+  int capture_tid = gptimer_capture_init(&capture_config);
+  gptimer_start(capture_tid);

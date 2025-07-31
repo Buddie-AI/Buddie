@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>muisc 应用详细设计说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>muisc 应用详细设计说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="muisc">
+<h1>muisc 应用详细设计说明<a class="headerlink" href="#muisc" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>引言<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3>术语和缩写词<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>解释</p></th>
+<th class="head"><p>缩写和术语</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sclust</p></td>
+<td><p>文件簇号</p></td>
+</tr>
+<tr class="row-odd"><td><p>breakpoint</p></td>
+<td><p>歌曲断点信息，包括文件信息和解码信息</p></td>
+</tr>
+<tr class="row-even"><td><p>valid dev</p></td>
+<td><p>有效播放设备，这个有效是指设备有可播放文件的意思</p></td>
+</tr>
+<tr class="row-odd"><td><p>FF</p></td>
+<td><p>快进</p></td>
+</tr>
+<tr class="row-even"><td><p>FR</p></td>
+<td><p>快退</p></td>
+</tr>
+<tr class="row-odd"><td><p>scanbreak</p></td>
+<td><p>打断正在扫描设备的过程</p></td>
+</tr>
+<tr class="row-even"><td><p>repeat</p></td>
+<td><p>播放循环模式</p></td>
+</tr>
+<tr class="row-odd"><td><p>music player</p></td>
+<td><p>音乐播放器</p></td>
+</tr>
+<tr class="row-even"><td><p>logo</p></td>
+<td><p>设备逻辑盘符</p></td>
+</tr>
+<tr class="row-odd"><td><p>evt_logo</p></td>
+<td><p>设备上线时对应的设备逻辑盘符</p></td>
+</tr>
+<tr class="row-even"><td><p>vm</p></td>
+<td><p>记忆存储区</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id3">
+<h2>总体设计<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="id4">
+<h3>需求概述<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>Music应用主要实现的功能包括：</p>
+<ol class="arabic simple">
+<li><p>实现MP3、WMA、WAV、FLAC、APE、M4A、AMR等格式歌曲的播放（格式可选配）。</p></li>
+<li><p>提供播放/暂停、快进快退、上下曲、设备切换、循环模式切换、路径/序号/簇号播放、录音文件夹过滤、录音/音乐切换播放、文件删除等操作。</p></li>
+<li><p>支持断点存取。</p></li>
+<li><p>支持播放信息获取，如：当前文件序号、簇号、断点信息、文件句柄、设备句柄等。</p></li>
+</ol>
+</section>
+<section id="id5">
+<h3>总体框架<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p><img alt="绘图" src="../../../../_images/1670310846298.drawio.svg" /></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>模块名称</p></th>
+<th class="head"><p>功能简述</p></th>
+<th class="head"><p>对应文件</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>music_mode</p></td>
+<td><p>实现对系统、设备管理器、播放模块等产生的各种消息处理</p></td>
+<td><p>music.c</p></td>
+</tr>
+<tr class="row-odd"><td><p>music_player</p></td>
+<td><p>播放器模块实现歌曲播放、切换、等操作</p></td>
+<td><p>music_player.c</p></td>
+</tr>
+<tr class="row-even"><td><p>dev_manager</p></td>
+<td><p>设备管理器为设备上下线及查询设备状态等操作提供api接口</p></td>
+<td><p>dev_manager.c</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id6">
+<h3>流程图<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p><img alt="绘图" src="../../../../_images/1670297957010.drawio.svg" /></p>
+</section>
+<section id="id7">
+<h3>数据结构说明<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">///模式参数结构体</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__music_task_parm</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">u8</span><span class="w"> </span><span class="nx">type</span><span class="p">;</span>
+<span class="w">    </span><span class="kr">int</span><span class="w"> </span><span class="nx">val</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">///断点信息结构体</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__breakpoint</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">///文件信息</span>
+<span class="w">    </span><span class="nx">u32</span><span class="w"> </span><span class="nx">fsize</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">u32</span><span class="w"> </span><span class="nx">sclust</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">///解码信息</span>
+<span class="w">    </span><span class="nx">struct</span><span class="w"> </span><span class="nx">audio_dec_breakpoint</span><span class="w"> </span><span class="nx">dbp</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+<span class="c1">///music模式控制结构体</span>
+<span class="nx">struct</span><span class="w"> </span><span class="nx">__music</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__music_task_parm</span><span class="w"> </span><span class="nx">task_parm</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">u16</span><span class="w"> </span><span class="nx">file_err_counter</span><span class="p">;</span><span class="w">          </span><span class="c1">//错误文件统计</span>
+<span class="w">    </span><span class="nx">u8</span><span class="w"> </span><span class="nx">file_play_direct</span><span class="p">;</span><span class="w">           </span><span class="c1">//0:下一曲， 1：上一曲</span>
+<span class="w">    </span><span class="nx">u8</span><span class="w"> </span><span class="nx">scandisk_break</span><span class="p">;</span><span class="w">           </span><span class="c1">//扫描设备打断标志</span>
+<span class="w">    </span><span class="kr">char</span><span class="w"> </span><span class="nx">device_tone_dev</span><span class="p">[</span><span class="mf">16</span><span class="p">];</span><span class="w">     </span><span class="c1">//播放设备logo记录</span>
+<span class="w">    </span><span class="nx">u32</span><span class="w"> </span><span class="nx">old_speed</span><span class="p">;</span><span class="w">              </span><span class="c1">//SD 时钟记录</span>
+<span class="w">    </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__breakpoint</span><span class="w"> </span><span class="o">*</span><span class="nx">breakpoint</span><span class="p">;</span><span class="c1">//断点记录指针</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h2>应用系统消息<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<section id="id9">
+<h3>消息分类<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p>系统消息分类：</p>
+<ol class="arabic simple">
+<li><p>按键消息（MSG_FROM_APP）
+主要是各种按键触发的消息及软件流程发送的消息</p></li>
+<li><p>设备消息（MSG_FROM_DEVICE）
+主要是各种设备上下线消息，本应用主要响应以下消息（in/out）：</p></li>
+</ol>
+<ul class="simple">
+<li><p>DRIVER_EVENT_FROM_SD0</p></li>
+<li><p>DRIVER_EVENT_FROM_SD1</p></li>
+<li><p>DRIVER_EVENT_FROM_SD2</p></li>
+<li><p>DEVICE_EVENT_FROM_OTG</p></li>
+</ul>
+<p>以应用情景对事件分类：</p>
+<ol class="arabic simple">
+<li><p>应用模式内部消息（music_app_msg_handler）</p></li>
+<li><p>设备消息处理（music_device_msg_handler）</p></li>
+<li><p>公共消息响应（app_default_msg_handler）</p></li>
+</ol>
+<p>公共消息同样会响应一些例如公共按键（模式切换/音量加减等）、音频外设上下线（linein/pc上下线等）、蓝牙事件（连接、通话、播放等）</p>
+</section>
+<section id="id10">
+<h3>消息处理<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>参考2.3详细流程框图</p>
+</section>
+</section>
+<section id="id11">
+<h2>解码器错误处理<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<section id="id12">
+<h3>错误处理说明<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<p>这里的出错误处理是指music应用调用music_player接口时返回值处理，二次开发可以根据实际需求根据不同错误码引导不同的流程设计，SDK默认的错误处理请参考章节2.3详细流程框图。</p>
+</section>
+<section id="music-player">
+<h3>Music player错误码<a class="headerlink" href="#music-player" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">///解码错误码表</span>
+<span class="kr">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_NULL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0</span><span class="p">,</span><span class="w">		</span><span class="c1">///没有错误， 不需要做任何</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_SUCC</span><span class="w">	  </span><span class="o">=</span><span class="w"> </span><span class="mh">0x1</span><span class="p">,</span><span class="w">		</span><span class="c1">///播放成功， 可以做相关显示、断点记忆等处理</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_PARM</span><span class="p">,</span><span class="w">	    		</span><span class="c1">///参数错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_POINT</span><span class="p">,</span><span class="w">	    		</span><span class="c1">///参数指针错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_NO_RAM</span><span class="p">,</span><span class="w">			</span><span class="c1">///没有ram空间错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_DECODE_FAIL</span><span class="p">,</span><span class="w">		</span><span class="c1">///解码器启动失败错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_DEV_NOFOUND</span><span class="p">,</span><span class="w">		</span><span class="c1">///没有找到指定设备</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_DEV_OFFLINE</span><span class="p">,</span><span class="w">		</span><span class="c1">///设备不在线错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_DEV_READ</span><span class="p">,</span><span class="w">			</span><span class="c1">///设备读错误</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_FSCAN</span><span class="p">,</span><span class="w">				</span><span class="c1">///设备扫描失败</span>
+<span class="w">    </span><span class="nx">MUSIC_PLAYER_ERR_FILE_NOFOUND</span><span class="p">,</span><span class="w">		</span><span class="c1">///没有找到文件</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id13">
+<h2>扫盘打断机制<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
+<section id="id14">
+<h3>机制说明<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<p>设备在music_player调用scandisk接口的时候，会注册music_player_scandisk_break接口（解决长时间扫盘打断问题），在扫描过程会被调用，music_player_scandisk_break函数内部会对消息进行查询， SDK默认会对一些例如按键切换模式、设备插拔、蓝牙连接等触发的事件进行扫盘打断动作，如二次开发有特殊情境需要进行打断，可以在解析到特定的事件后， 将scandisk_break标志位设置为1即可。</p>
+</section>
+<section id="id15">
+<h3>机制实现流程图<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<p><img alt="绘图" src="../../../../_images/1670313725311.drawio.svg" /></p>
+</section>
+</section>
+<section id="id16">
+<h2>断点说明<a class="headerlink" href="#id16" title="Link to this heading"></a></h2>
+<section id="id17">
+<h3>断点控制句柄创建<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<p>///获取断点句柄， 后面所有断点读/写都需要用到</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">breakpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">breakpoint_handle_creat</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="id18">
+<h3>断点信息控制句柄释放<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">breakpoint_handle_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">breakpoint</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id19">
+<h3>当前播放歌曲断点获取及保存<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">music_player_get_playing_breakpoint</span><span class="p">(</span><span class="nx">breakpoint</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="cm">/*1:获取所有信息，0：只获取文件信息*/</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w"> 	</span><span class="p">{</span>
+<span class="w">   </span><span class="nx">breakpoint_vm_write</span><span class="p">(</span><span class="nx">breakpoint</span><span class="p">,</span><span class="w"> </span><span class="nx">logo</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="vm">
+<h3>从vm获取设备断点信息并断点播放<a class="headerlink" href="#vm" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">breakpoint_vm_read</span><span class="p">(</span><span class="nx">breakpoint</span><span class="p">,</span><span class="w"> </span><span class="nx">logo</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_by_breakpoint</span><span class="p">(</span><span class="nx">logo</span><span class="p">,</span><span class="w"> </span><span class="nx">breakpoint</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api">
+<h2>API说明<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<section id="id20">
+<h3>播放器回调接口<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
+<p>播放音乐文件时可注册回调函数到播放器，播放器在对应状态下会执行回调函数。</p>
+<section id="music-player-play-success">
+<h4>music_player_play_success<a class="headerlink" href="#music-player-play-success" title="Link to this heading"></a></h4>
+<p>music 解码成功回调接口</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music 解码成功回调</span>
+<span class="cm">   @param    priv:私有参数， parm:暂时未用</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note	 此处可以做一些用户操作， 如断点保存， 显示， 获取播放信息等</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="k">static</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="nx">music_player_play_success</span><span class="p">(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="nx">priv</span><span class="p">,</span><span class="w"> </span><span class="kr">int</span><span class="w"> </span><span class="nx">parm</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>parm</p></td>
+<td class="text-left"><p>参数（暂时未用）</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>priv</p></td>
+<td class="text-left"><p>私有参数</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__player_cb</span><span class="w"> </span><span class="nx">music_player_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">start</span><span class="w"> 	</span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_success</span><span class="p">,</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">end</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_end</span><span class="p">,</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">err</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_decode_err</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-play-end">
+<h4>music_player_play_end<a class="headerlink" href="#music-player-play-end" title="Link to this heading"></a></h4>
+<p>music 解码结束回调处理</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music 解码结束回调处理</span>
+<span class="cm">   @param    priv:私有参数， parm:decoder解码器返回的事件</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note	此处将根据解码器返回的事件做出对应处理</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="k">static</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="nx">music_player_play_end</span><span class="p">(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="nx">priv</span><span class="p">,</span><span class="w"> </span><span class="kr">int</span><span class="w"> </span><span class="nx">parm</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>priv</p></td>
+<td class="text-left"><p>私有参数</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>parm</p></td>
+<td class="text-left"><p>decoder解码器返回的事件</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__player_cb</span><span class="w"> </span><span class="nx">music_player_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">start</span><span class="w"> 	</span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_success</span><span class="p">,</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">end</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_end</span><span class="p">,</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">err</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_decode_err</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-decode-err">
+<h4>music_player_decode_err<a class="headerlink" href="#music-player-decode-err" title="Link to this heading"></a></h4>
+<p>music 解码错误回调</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music 解码错误回调</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note	此处统一将错误通过消息的方式发出， 在music_app_msg_handler中统一响应</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="k">static</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="nx">music_player_decode_err</span><span class="p">(</span><span class="ow">void</span><span class="w"> </span><span class="o">*</span><span class="nx">priv</span><span class="p">,</span><span class="w"> </span><span class="kr">int</span><span class="w"> </span><span class="nx">parm</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>priv</p></td>
+<td class="text-left"><p>私有参数</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>parm</p></td>
+<td class="text-left"><p>参数（暂时未用）</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__player_cb</span><span class="w"> </span><span class="nx">music_player_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">start</span><span class="w"> 	</span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_success</span><span class="p">,</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">end</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_end</span><span class="p">,</span>
+<span class="w">	</span><span class="p">.</span><span class="nx">err</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_decode_err</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="music-player-scandisk-break">
+<h4>music_player_scandisk_break<a class="headerlink" href="#music-player-scandisk-break" title="Link to this heading"></a></h4>
+<p>music 播放器扫盘打断接口</p>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music 播放器扫盘打断接口</span>
+<span class="cm">   @param</span>
+<span class="cm">   @return  1:打断当前扫描，0:正常扫描</span>
+<span class="cm">   @note	设备扫描耗时长的情况下， 此接口提供打断机制</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="k">static</span><span class="w"> </span><span class="kr">int</span><span class="w"> </span><span class="nx">music_player_scandisk_break</span><span class="p">(</span><span class="ow">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：
+无</p>
+<p>示例：
+播放器回调接口直接赋值到播放器回调结构 ，创建播放器（music_player_creat）时把 （播放器回调结构）和（回调的私有参数） 作为参数传入，默认私有参数传NULL。</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__scan_callback</span><span class="w"> </span><span class="nx">scan_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">		</span><span class="p">.</span><span class="nx">enter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">scan_enter</span><span class="p">,</span>
+<span class="w">		</span><span class="p">.</span><span class="nx">exit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">scan_exit</span><span class="p">,</span>
+<span class="w">		</span><span class="p">.</span><span class="nx">scan_break</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_scandisk_break</span><span class="p">,</span>
+<span class="w">	</span><span class="p">};</span>
+
+<span class="w">	</span><span class="k">static</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__player_cb</span><span class="w"> </span><span class="nx">music_player_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">		</span><span class="p">.</span><span class="nx">start</span><span class="w"> 	</span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_success</span><span class="p">,</span>
+<span class="w">		</span><span class="p">.</span><span class="nx">end</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_play_end</span><span class="p">,</span>
+<span class="w">		</span><span class="p">.</span><span class="nx">err</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nx">music_player_decode_err</span><span class="p">,</span>
+<span class="w">	</span><span class="p">};</span>
+<span class="w">    </span><span class="c1">///播放器初始化</span>
+<span class="w">    </span><span class="nx">struct</span><span class="w"> </span><span class="nx">__player_parm</span><span class="w"> </span><span class="nx">parm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mf">0</span><span class="p">};</span>
+<span class="w">    </span><span class="nx">parm</span><span class="p">.</span><span class="nx">cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">music_player_callback</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">parm</span><span class="p">.</span><span class="nx">scan_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">scan_cb</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">music_player_creat</span><span class="p">(</span><span class="nx">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">parm</span><span class="p">);</span><span class="w"> </span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id21">
+<h3>设备消息响应接口<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
+<section id="music-device-msg-handler">
+<h4>music_device_msg_handler<a class="headerlink" href="#music-device-msg-handler" title="Link to this heading"></a></h4>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music 设备消息响应接口</span>
+<span class="cm">   @param     msg:消息</span>
+<span class="cm">   @return    0</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="k">static</span><span class="w"> </span><span class="kr">int</span><span class="w"> </span><span class="nx">music_device_msg_handler</span><span class="p">(</span><span class="kr">int</span><span class="w"> </span><span class="o">*</span><span class="nx">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>msg</p></td>
+<td class="text-left"><p>消息</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">int</span><span class="w"> </span><span class="nx">msg</span><span class="p">[</span><span class="mf">16</span><span class="p">];</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">app_get_message</span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span><span class="w"> </span><span class="nx">ARRAY_SIZE</span><span class="p">(</span><span class="nx">msg</span><span class="p">),</span><span class="w"> </span><span class="nx">NULL</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="nx">msg</span><span class="p">[</span><span class="mf">0</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">		</span><span class="k">case</span><span class="w"> </span><span class="nx">MSG_FROM_DEVICE</span><span class="o">:</span>
+<span class="w">			</span><span class="nx">music_device_msg_handler</span><span class="p">(</span><span class="nx">msg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">);</span>
+<span class="w">		</span><span class="k">break</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="app">
+<h3>app消息响应接口<a class="headerlink" href="#app" title="Link to this heading"></a></h3>
+<section id="music-app-msg-handler">
+<h4>music_app_msg_handler<a class="headerlink" href="#music-app-msg-handler" title="Link to this heading"></a></h4>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music app消息响应接口</span>
+<span class="cm">   @param    msg:消息</span>
+<span class="cm">   @return   0</span>
+<span class="cm">   @note</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="k">static</span><span class="w"> </span><span class="kr">int</span><span class="w"> </span><span class="nx">music_app_msg_handler</span><span class="p">(</span><span class="kr">int</span><span class="w"> </span><span class="o">*</span><span class="nx">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>msg</p></td>
+<td class="text-left"><p>消息</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">int</span><span class="w"> </span><span class="nx">msg</span><span class="p">[</span><span class="mf">16</span><span class="p">];</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">app_get_message</span><span class="p">(</span><span class="nx">msg</span><span class="p">,</span><span class="w"> </span><span class="nx">ARRAY_SIZE</span><span class="p">(</span><span class="nx">msg</span><span class="p">),</span><span class="w"> </span><span class="nx">NULL</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="nx">msg</span><span class="p">[</span><span class="mf">0</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">		</span><span class="k">case</span><span class="w"> </span><span class="nx">MSG_FROM_APP</span><span class="o">:</span>
+<span class="w">			</span><span class="nx">music_app_msg_handler</span><span class="p">(</span><span class="nx">msg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span><span class="p">);</span>
+<span class="w">		</span><span class="k">break</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id22">
+<h3>播放模式设置<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<section id="music-task-set-parm">
+<h4>music_task_set_parm<a class="headerlink" href="#music-task-set-parm" title="Link to this heading"></a></h4>
+<p>原型：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//*----------------------------------------------------------------------------*/</span>
+<span class="cm">/**@brief    music 模式切换前参数设置</span>
+<span class="cm">   @param    type:播放方式,暂时支持：</span>
+<span class="cm">  				  MUSIC_TASK_START_BY_NORMAL：首次播放按照正常断点播放</span>
+<span class="cm">				  MUSIC_TASK_START_BY_SCLUST：首次播放按照簇号播放</span>
+<span class="cm">			 val:播放参数</span>
+<span class="cm">   @return</span>
+<span class="cm">   @note	 首次播放执行参考music_player_play_start接口</span>
+<span class="cm">*/</span>
+<span class="cm">/*----------------------------------------------------------------------------*/</span>
+<span class="ow">void</span><span class="w"> </span><span class="nx">music_task_set_parm</span><span class="p">(</span><span class="nx">u8</span><span class="w"> </span><span class="nx">type</span><span class="p">,</span><span class="w"> </span><span class="kr">int</span><span class="w"> </span><span class="nx">val</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>参数：</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>名称</p></th>
+<th class="head text-left"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>type</p></td>
+<td class="text-left"><p>播放方式</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>val</p></td>
+<td class="text-left"><p>播放参数</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">//正常断点播放</span>
+<span class="nx">music_task_set_parm</span><span class="p">(</span><span class="nx">MUSIC_TASK_START_BY_NORMAL</span><span class="p">,</span><span class="nx">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="music-player-api">
+<h3>music_player API<a class="headerlink" href="#music-player-api" title="Link to this heading"></a></h3>
+<p>详见
+<a class="reference internal" href="#music_player.md"><span class="xref myst">《music_player》</span></a></p>
+</section>
+<section id="dev-manage-api">
+<h3>dev_manage API<a class="headerlink" href="#dev-manage-api" title="Link to this heading"></a></h3>
+<p>详见
+<a class="reference internal" href="#dev_manager.md"><span class="xref myst">《dev_manager》</span></a></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

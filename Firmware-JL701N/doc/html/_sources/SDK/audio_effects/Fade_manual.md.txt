@@ -1,0 +1,16 @@
+# 淡入（Fade）
+
+## 功能介绍
+
+- 用于消除mic打开的po声
+- 规避一些流程问题导致的数据流启动po声
+
+## 参数介绍
+**淡入淡出类型 &emsp;[Type]**：当前版本只支持Fade In
+**丢弃时长 &emsp;&emsp;&emsp;[Dump Time]**：数据流启动时mute住的时长
+**淡入时长 &emsp;&emsp;&emsp;[Fade Time]**：解mute之后，需要淡入的时长
+
+## 使用示例
+
+一般串在源节点之后，如下图所示
+![Fade](./assets/Fade.png)

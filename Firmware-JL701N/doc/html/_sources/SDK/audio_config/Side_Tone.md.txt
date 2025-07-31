@@ -1,0 +1,53 @@
+# 通话监听
+
+## 功能介绍
+通话麦克风的数据从本地DAC播放出来
+
+## 配置说明
+
+（1）蓝牙通话框图选择Side Tone数据流程图<br>
+![](./assets/side_tone_stream.png)<br>
+
+(2)音频配置里面打开通话监听使能<br>
+![](./assets/side_tone_cfg.png)<br>
+
+(3)通话监听配置的通话下行DAC节点名字配置里面，填写Side Tone数据流的通话下行dac节点的名字<br>
+![](./assets/side_tone_cfg_0.png)<br>
+![](./assets/side_tone_cfg_1.png)<br>
+![](./assets/side_tone_cfg_2.png)<br>
+
+(4)通话监听配置的监听Switch节点名字配置里面，填写Side Tone数据流的通话上行Switch节点的名字<br>
+![](./assets/side_tone_cfg_3.png)<br>
+![](./assets/side_tone_cfg_4.png)<br>
+![](./assets/side_tone_cfg_5.png)<br>
+
+
+## 常用接口
+### 打开监听接口
+```C
+
+/*
+*********************************************************************
+*                  Audio Sidetone Open
+* Description: 打开通话监听
+* Arguments  : None.
+* Return	 : 0成功 其他失败
+* Note(s)    : None.
+*********************************************************************
+*/
+int audio_sidetone_open(void);
+```
+### 关闭监听接口
+
+```C
+/*
+*********************************************************************
+*                  Audio Sidetone Close
+* Description: 关闭通话监听
+* Arguments  : None.
+* Return	 : 0成功 其他失败
+* Note(s)    : None.
+*********************************************************************
+*/
+int audio_sidetone_close(void);
+```

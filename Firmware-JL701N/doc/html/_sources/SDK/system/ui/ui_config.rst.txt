@@ -1,0 +1,143 @@
+UI 配置说明
+-----------------
+
+UI的设置在可视化配置工具的UI配置页面，如下图所示，在UI配置页面对UI进行使能，用户可以选择对应的UI
+
+.. _ui_image:
+
+    .. figure:: image/UI配置.png
+       :scale: 80%
+       :align: center
+
+       UI配置
+       
+LED7(数码管)配置
+~~~~~~~~~~~~~~~~~~~~~~~
+
+    UI类型配置选择：LED数码管屏，如下图所示：
+
+.. _nixie_image:
+
+    .. figure:: image/选择数码管.png
+       :scale: 80%
+       :align: center
+	   
+       选择数码管
+	   
+    选择了LED数码管后，可根据实际情况进行设置，以下为配置参数及参数说明：
+
+.. _nixie_default_image:
+
+    .. figure:: image/数码管默认配置.png
+       :scale: 80%
+       :align: center
+	   
+       数码管默认配置
+
+    **LED屏驱动跑RAM** ：占用ram约35K，led7_scan调用到的全部代码会存放在ram中，且扫描中断设置为 **不可屏蔽中断**，不使用不可屏蔽中断有可能出现闪屏的风险。
+
+    **LED7脚数码管屏** ：使能led7脚屏
+
+.. tip::
+    关于不可屏蔽中断使用方法及注意事项请阅读： ``操作系统`` 的 ``临界区（不可屏蔽中断）`` 及 ``不可屏蔽中断`` 。
+
+.. _nixie_io_image:
+
+    .. figure:: image/数码管IO配置.png
+       :scale: 80%
+       :align: center
+	   
+       数码管引脚配置
+
+    **LED屏引脚配置** ：选择对应的IO。
+    
+
+LCD配置
+~~~~~~~~~~~~~~~~~~~~~~~
+
+    UI类型选择：LCD点阵屏（soundbar），如下图所示。
+
+.. _lcd_image:
+
+    .. figure:: image/选择LCD屏.png
+       :scale: 80%
+       :align: center
+	   
+       选择LCD屏
+	   
+    选择了LCD后，可根据实际情况进行设置，以下为配置参数以及说明：
+
+.. _lcd_cfg_image:
+
+    .. figure:: image/LCD配置.png
+       :scale: 80%
+       :align: center
+	   
+       LCD屏配置
+
+    **LCD SPI口选择** ：选择对应的spi（SPI需在板级配置页里的<硬件SPI1>或<硬件SPI2>进行配置）。
+	   
+    **歌词显示** ：暂不支持。
+
+    **保存歌词的时间标签到flash** :暂不支持。
+
+    **OLED屏使能** ：使能OLED屏。
+
+    **SSD1306** :选择SSD1306驱动。
+
+.. _lcd_io_image:
+
+    .. figure:: image/LCD引脚配置.png
+       :scale: 80%
+       :align: center
+	   
+       LCD引脚配置
+
+    **LCD屏引脚配置** ：选择对应的IO。
+
+
+	   
+LCD UI 资源下载 说明
+~~~~~~~~~~~~~~~~~~~
+
+在 **UI工具说明** 文档中，通过工具生成UI资源后，我们需要将其下载进flash
+在我们提供的UI工程，点击生成UI资源后，如下图 UI 资源生成；生成后的资源会根据copy_file.bat被放到和UI工程文件夹同级目录的
+ui_resource文件夹下,如下图 UI资源存放位置
+
+.. _lcd_res0_image:
+
+    .. figure:: image/ui_resource_00.png
+       :scale: 80%
+       :align: center
+	   
+       UI 资源生成
+
+.. _lcd_res1_image:
+
+    .. figure:: image/ui_resource_01.png
+       :scale: 80%
+       :align: center
+	   
+       UI 资源存放位置
+	   
+在下载目录中新建两个文件夹，分别命名为 JL、font，并将ui_resource文件夹下的文件拷贝到JL、font文件夹中，如图 UI文件命名，分别用来存放图片、控件属性；字库文件
+
+.. _lcd_res2_image:
+
+    .. figure:: image/ui_resource_02.png
+       :scale: 80%
+       :align: center
+	   
+       UI 文件命名
+	   
+最后在download.bat中将JL、font连个文件夹一起下进flash的res区，如图 UI 文件下载
+	   
+.. _lcd_res3_image:
+
+    .. figure:: image/ui_resource_03.png
+       :scale: 40%
+       :align: center
+	   
+       UI 文件下载
+	   
+按照以上步骤执行，保证程序正常下载，可接入LCD屏查看效果

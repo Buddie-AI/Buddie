@@ -1,0 +1,292 @@
+uart
+#################
+    包含三个串口，每个串口都支持奇偶校验，1个起始位，8个数据位，1个停止位。其中串口1支持硬件流控。
+    详细的示例代码请参考SDK "cpu/periph_demo/uart_test.c"
+
+.. note::
+        串口收发的dma buffer 必须使用全局buffer，或者使用dma_malloc申请，不能使用临时变量，或者malloc申请
+
+uart_init
+-------------------------------------------------------
+初始化串口，支持指定串口号，或者自动分配串口
+
+原型：
+
+.. code-block:: c
+
+    int uart_init(uart_dev uart_num, const struct uart_config *config)
+
+参数：
+    ============   ===========================================
+    uart_num         串口号0~3，-1表示自动分配空闲的串口
+    config           串口配置信息
+    返回值            -1：串口初始化失败，其他值：为串口号
+    ============   ===========================================
+
+示例：
+
+.. code-block:: c
+
+    struct uart_config config = {
+        .baud_rate = 2000000,
+        .tx_pin = IO_PORTB_15,
+        .rx_pin = IO_PORTB_14,
+    };
+
+    uart_dev uart_num = uart_init(-1, &config);
+    if (uart_num == -1) {
+        printf("uart init error");
+    }else{
+        printf("uart%d init succ", uart_num);
+    }
+
+uart_dma_init
+-------------------------------------------------------
+串口dma初始化，串口收发必须配置dma参数，使用前先调用uart_init
+
+原型：
+
+.. code-block:: c
+
+    int uart_dma_init(uart_dev uart_num, const struct uart_dma_config *dma_config);
+
+参数：
+    ============   ===========================================
+    uart_num         串口号
+    dma_config       串口配置信息
+    返回值            0：成功，其他值：失败
+    ============   ===========================================
+
+示例：
+
+.. code-block:: c
+
+    const int uart_rx_dma_buffer_size = 768;
+    void *uart_rx_ptr = dma_malloc(uart_rx_dma_buffer_size);
+
+    struct uart_dma_config dma = {
+        .rx_timeout_thresh = 100,   //接收数据不够frame_size，串口空闲100us就触发中断
+        .frame_size = 32,   //接收32字节就触发中断
+        .event_mask = UART_EVENT_RX_DATA | UART_EVENT_RX_FIFO_OVF | UART_EVENT_TX_DONE,
+        .irq_callback = uart_irq_func,//在中断里面调用
+        .rx_cbuffer = uart_rx_ptr,   //使用支持dma的内存
+        .rx_cbuffer_size = uart_rx_dma_buffer_size,
+    };
+    //frame_size 一般是一个通讯帧的大小，rx_buffer_size一般为frame_size的两倍，内部是一个循环buffer
+
+    uart_dma_init(uart_num, &dma);
+
+
+
+uart_set_baudrate
+-------------------------------------------------------
+设置串口波特率
+
+原型：
+
+.. code-block:: c
+
+    s32 uart_set_baudrate(uart_dev uart_num, u32 baud_rate);
+
+参数：
+    ============   ===========================================
+    uart_num         串口号
+    baud_rate        波特率
+    返回值            0：成功，其他值：失败
+    ============   ===========================================
+
+uart_send_bytes
+-------------------------------------------------------
+启动串口dma，数据指针要求在发送完成之前保持有效
+
+原型：
+
+.. code-block:: c
+
+    s32 uart_send_bytes(uart_dev uart_num, const void *buffer, u32 tx_size);
+
+参数：
+    ============   ===========================================
+    uart_num         串口号
+    buffer           需要发送的数据指针，需要使用dma_malloc申请，或者全局变量
+    tx_size          需要发送的数据长度
+    返回值            发送的长度
+    ============   ===========================================
+
+uart_wait_tx_idle
+-------------------------------------------------------
+等待串口发送完成，不允许在中断函数使用
+
+原型：
+
+.. code-block:: c
+
+    s32 uart_wait_tx_idle(uart_dev uart_num, u32 timeout_ms);
+
+参数：
+    ============   ===========================================
+    uart_num         串口号
+    timeout_ms       超时时间，0就一直等，直到发送完成
+    返回值            0：成功，其他值：失败
+    ============   ===========================================
+
+
+uart_send_blocking
+-------------------------------------------------------
+阻塞式发送数据，不允许在中断函数，或者关闭中断的情况下使用
+
+原型：
+
+.. code-block:: c
+
+    s32 uart_send_blocking(uart_dev uart_num, const void *buffer, u32 tx_size, u32 timeout_ms);
+
+参数：
+    ============   ===========================================
+    uart_num         串口号
+    buffer           需要发送的数据指针，需要使用dma_malloc申请，或者全局变量
+    tx_size          需要发送的数据长度
+    timeout_ms       超时时间，0就一直等，直到发送完成
+    返回值            发送的长度
+    ============   ===========================================
+
+uart_recv_bytes
+-------------------------------------------------------
+从缓冲区copy数据
+
+原型：
+
+.. code-block:: c
+
+    s32 uart_recv_bytes(uart_dev uart_num void *buffer, u32 len);
+
+参数：
+    ============   ===========================================
+    uart_num         串口号
+    buffer           读取数据存放的buffer
+    len              需要读取数据长度    
+    返回值            读取的长度
+    ============   ===========================================
+
+uart_recv_blocking
+-------------------------------------------------------
+阻塞式读取串口数据，不允许在中断函数，或者关闭中断的情况下使用
+
+原型：
+
+.. code-block:: c
+
+    s32 uart_recv_blocking(uart_dev uart_num, void *buffer, u32 len, int timeout_ms);
+
+参数：
+    ============   ===========================================
+    uart_num         串口号
+    buffer           读取数据存放的buffer
+    len              需要读取数据长度   
+    timeout_ms       超时时间，0就一直等，直到读取完成 
+    返回值            读取的长度
+    ============   ===========================================
+
+
+uart_flow_ctrl_init
+-------------------------------------------------------
+流控配置，cts:检测到cts停止发送；rts:设置好阈值后当接收达到阈值会触发rts，当缓存少于阈值会释放rts，对于没有硬件流控的uart，则使用软件实现，会有比较大的滞后，设置的阈值余量要足够
+
+原型：
+
+.. code-block:: c
+
+    s32 uart_flow_ctrl_init(uart_dev uart_num, const struct uart_flow_ctrl *flow_ctrl);
+
+参数：
+    ============   ===========================================
+    uart_num         串口号
+    flow_ctrl        流控相关参数
+    返回值            0：成功，其他值：失败
+    ============   ===========================================
+
+uart_flow_ctrl_deinit
+-------------------------------------------------------
+流控配置，uart_deinit关闭串口时会调用该函数关闭硬件流。
+
+原型：
+
+.. code-block:: c
+
+    s32 uart_flow_ctrl_deinit(uart_dev uart_num);
+
+参数：
+    ============   ===========================================
+    uart_num         串口号
+    返回值            0：成功，其他值：失败
+    ============   ===========================================
+
+
+uart_deinit
+-------------------------------------------------------
+关闭串口，释放TX、RX io为高阻状态
+
+原型：
+
+.. code-block:: c
+
+    s32 uart_deinit(uart_dev uart_num)
+
+参数：
+    ============   ===========================================
+    uart_num         串口号
+    返回值            0：成功，其他值：失败
+    ============   ===========================================
+
+
+
+示例：
+
+.. code-block:: c
+
+    void uart_irq_func(uart_dev uart_num enum uart_event enent)
+    {
+        if (event & UART_EVENT_TX_DONE){
+            uart_send_bytes(uart_num, tx_buffer, 32);
+        }
+
+        if(event & UART_EVENT_RX_DATA){
+           int rx_len = uart_recv_bytes(uart_num,rx_buffer,32);
+           printf("recv data_length: %d",rx_len);
+        }
+
+        if(event & UART_EVENT_RX_FIFO_OVF){           
+           printf(" rx_buffer too small");
+        }
+    }
+
+
+    struct uart_config config = {
+        .baud_rate = 2000000,
+        .tx_pin = IO_PORTB_15,
+        .rx_pin = IO_PORTB_14,
+    };
+
+    //建议使用自动分配串口号模式打开串口
+    uart_dev uart_num = uart_init(-1, &config);
+    if (uart_num == -1) {
+        printf("uart init error");
+    }else{
+        printf("uart%d init succ", uart_num);
+    }
+
+
+    const int uart_rx_dma_buffer_size = 768;
+    void *uart_rx_ptr = dma_malloc(uart_rx_dma_buffer_size);
+
+    struct uart_dma_config dma = {
+        .rx_timeout_thresh = 100,   //接收数据不够frame_size，串口空闲100us就触发中断
+        .frame_size = 32,   //接收32字节就触发中断
+        .event_mask = UART_EVENT_RX_DATA | UART_EVENT_RX_FIFO_OVF | UART_EVENT_TX_DONE,
+        .irq_callback = uart_irq_func,//在中断里面调用
+        .rx_cbuffer = uart_rx_ptr,   //使用支持dma的内存
+        .rx_cbuffer_size = uart_rx_dma_buffer_size,
+    };
+    //frame_size 一般是一个通讯帧的大小，rx_buffer_size一般为frame_size的两倍，内部是一个循环buffer
+    //串口dma初始化，串口收发必须配置dma参数，使用前先调用uart_init
+    uart_dma_init(uart_num, &dma);

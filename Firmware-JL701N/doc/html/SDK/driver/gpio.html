@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.1. gpio &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.2. gptimer" href="gptimer.html" />
+    <link rel="prev" title="3. 外设驱动" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. 外设驱动</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.1. gpio</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">3.1.1. GPIO引脚输入输出模式</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-init">3.1.1.1. gpio_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-deinit">3.1.1.2. gpio_deinit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-set-mode">3.1.1.3. gpio_set_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-get-mode">3.1.1.4. gpio_get_mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-read">3.1.1.5. gpio_read</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-read-port">3.1.1.6. gpio_read_port</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-write">3.1.1.7. gpio_write</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-write-port">3.1.1.8. gpio_write_port</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-toggle-port">3.1.1.9. gpio_toggle_port</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-get-out-level">3.1.1.10. gpio_get_out_level</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-set-drive-strength">3.1.1.11. gpio_set_drive_strength</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-get-drive-strength">3.1.1.12. gpio_get_drive_strength</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">3.1.2. GPIO中断</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-irq-config">3.1.2.1. gpio_irq_config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-irq-set-callback">3.1.2.2. gpio_irq_set_callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-irq-set-edge">3.1.2.3. gpio_irq_set_edge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-irq-get-edge">3.1.2.4. gpio_irq_get_edge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-irq-enable">3.1.2.5. gpio_irq_enable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-irq-disable">3.1.2.6. gpio_irq_disable</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#gpio-crossbar">3.1.3. GPIO crossbar功能配置</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-set-function">3.1.3.1. gpio_set_function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-disable-function">3.1.3.2. gpio_disable_function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-request-function">3.1.3.3. gpio_request_function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gpio-release-function">3.1.3.4. gpio_release_function</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gptimer.html">3.2. gptimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpadc.html">3.3. gpadc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uart.html">3.4. uart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iic.html">3.5. iic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usb.html">3.6. USB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rdec.html">3.7. rdec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mcpwm.html">3.8. mcpwm</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">3. </span>外设驱动</a> &raquo;</li>
+      <li><span class="section-number">3.1. </span>gpio</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gpio">
+<h1><span class="section-number">3.1. </span>gpio<a class="headerlink" href="#gpio" title="Link to this heading"></a></h1>
+<p>gpio接口包括输入，输出，强驱，io中断，crossbar功能映射配置，所有接口支持同组最多16个，或者单个io操作。
+所有端口都具有外部中断功能。所有io共用同一个中断回调。要使用外部中断线，必须将端口配置为输入模式，io中断的数量请参阅对应Soc规格书。</p>
+<section id="id1">
+<h2><span class="section-number">3.1.1. </span>GPIO引脚输入输出模式<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>配置io输入，输出，高阻，强驱</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define GPIO_PIN_0                 ((uint16_t)0x0001)  </span><span class="cm">/* Pin 0 selected    */</span>
+<span class="cp">#define GPIO_PIN_1                 ((uint16_t)0x0002)  </span><span class="cm">/* Pin 1 selected    */</span>
+<span class="cp">#define GPIO_PIN_2                 ((uint16_t)0x0004)  </span><span class="cm">/* Pin 2 selected    */</span>
+<span class="cp">#define GPIO_PIN_3                 ((uint16_t)0x0008)  </span><span class="cm">/* Pin 3 selected    */</span>
+<span class="cp">#define GPIO_PIN_4                 ((uint16_t)0x0010)  </span><span class="cm">/* Pin 4 selected    */</span>
+<span class="cp">#define GPIO_PIN_5                 ((uint16_t)0x0020)  </span><span class="cm">/* Pin 5 selected    */</span>
+<span class="cp">#define GPIO_PIN_6                 ((uint16_t)0x0040)  </span><span class="cm">/* Pin 6 selected    */</span>
+<span class="cp">#define GPIO_PIN_7                 ((uint16_t)0x0080)  </span><span class="cm">/* Pin 7 selected    */</span>
+<span class="cp">#define GPIO_PIN_8                 ((uint16_t)0x0100)  </span><span class="cm">/* Pin 8 selected    */</span>
+<span class="cp">#define GPIO_PIN_9                 ((uint16_t)0x0200)  </span><span class="cm">/* Pin 9 selected    */</span>
+<span class="cp">#define GPIO_PIN_10                ((uint16_t)0x0400)  </span><span class="cm">/* Pin 10 selected   */</span>
+<span class="cp">#define GPIO_PIN_11                ((uint16_t)0x0800)  </span><span class="cm">/* Pin 11 selected   */</span>
+<span class="cp">#define GPIO_PIN_12                ((uint16_t)0x1000)  </span><span class="cm">/* Pin 12 selected   */</span>
+<span class="cp">#define GPIO_PIN_13                ((uint16_t)0x2000)  </span><span class="cm">/* Pin 13 selected   */</span>
+<span class="cp">#define GPIO_PIN_14                ((uint16_t)0x4000)  </span><span class="cm">/* Pin 14 selected   */</span>
+<span class="cp">#define GPIO_PIN_15                ((uint16_t)0x8000)  </span><span class="cm">/* Pin 15 selected   */</span>
+<span class="cp">#define GPIO_PIN_All               ((uint16_t)0xFFFF)  </span><span class="cm">/* All pins selected */</span>
+
+<span class="cp">#define GPIO_PIN_MASK              (0x0000FFFFu) </span><span class="cm">/* PIN mask for assert test */</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;asm/gpio_hw.h&quot;</span>
+</pre></div>
+</div>
+<section id="gpio-init">
+<h3><span class="section-number">3.1.1.1. </span>gpio_init<a class="headerlink" href="#gpio-init" title="Link to this heading"></a></h3>
+<p>初始化gpio，支持同组最多16个，或者单个io操作。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gpio_init</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">gpio_config</span><span class="w"> </span><span class="o">*</span><span class="n">config</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>config</p></td>
+<td><p>io配置信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>暂未使用</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">gpio_config</span><span class="w"> </span><span class="n">gpio_config_test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PORT_PIN_0</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PORT_PIN_1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PORT_PIN_2</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PORT_PIN_3</span><span class="p">,</span><span class="c1">//多个IO一起初始化</span>
+<span class="w">    </span><span class="p">.</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PORT_OUTPUT_LOW</span><span class="p">,</span><span class="c1">//PORT_INPUT_PULLUP_10K,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">hd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PORT_DRIVE_STRENGT_2p4mA</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="c1">//配置PB0/PB1/PB2/PB3输出模式并输出0</span>
+<span class="n">gpio_init</span><span class="p">(</span><span class="n">PORTB</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">gpio_config_test</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="gpio-deinit">
+<h3><span class="section-number">3.1.1.2. </span>gpio_deinit<a class="headerlink" href="#gpio-deinit" title="Link to this heading"></a></h3>
+<p>释放gpio，配置为高阻态，支持同组最多16个，或者单个io操作。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gpio_deinit</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>暂未使用</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//恢复PA3/PA10为高阻态</span>
+<span class="n">gpio_deinit</span><span class="p">(</span><span class="n">PORTA</span><span class="p">,</span><span class="w"> </span><span class="n">PORT_PIN_3</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PORT_PIN_10</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="gpio-set-mode">
+<h3><span class="section-number">3.1.1.3. </span>gpio_set_mode<a class="headerlink" href="#gpio-set-mode" title="Link to this heading"></a></h3>
+<p>初始化gpio，配置同组多个io模式，支持同组最多16个，或者单个io操作。与gpio_init相比少了io强驱配置。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gpio_set_mode</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_mode</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</p></td>
+</tr>
+<tr class="row-odd"><td><p>mode</p></td>
+<td><p>io模式，如PORT_INPUT_PULLUP_10K，详见枚举enum gpio_mode</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>0：成功，&lt;0：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gpio_set_mode</span><span class="p">(</span><span class="n">PORTB</span><span class="p">,</span><span class="w"> </span><span class="n">PORT_PIN_1</span><span class="p">,</span><span class="w"> </span><span class="n">PORT_OUTPUT_LOW</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;gpio init error&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="k">else</span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;gpio init succ&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="gpio-get-mode">
+<h3><span class="section-number">3.1.1.4. </span>gpio_get_mode<a class="headerlink" href="#gpio-get-mode" title="Link to this heading"></a></h3>
+<p>该函数体未实现。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_mode</span><span class="w"> </span><span class="nf">gpio_get_mode</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="gpio-read">
+<h3><span class="section-number">3.1.1.5. </span>gpio_read<a class="headerlink" href="#gpio-read" title="Link to this heading"></a></h3>
+<p>gpio输入模式下，读取io状态，兼容旧接口，只获取单个io状态。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gpio_read</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">gpio</span><span class="p">);</span><span class="c1">// 读取单个io输入值. gpio:IO_PORTA_00</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>gpio</p></td>
+<td><p>具体某个io，如：IO_PORTA_00</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>0：io输入低；1：io输入高；&lt;0：错误</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-read-port">
+<h3><span class="section-number">3.1.1.6. </span>gpio_read_port<a class="headerlink" href="#gpio-read-port" title="Link to this heading"></a></h3>
+<p>gpio输入模式下，读取io状态，支持获取同组最多16个，或者单个io状态。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//读取同组多个io值. 形参详见枚举; pin:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">gpio_read_port</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>&lt;0：失败；&gt;=0：成功，低16个bit表示每个io状态（pin对应的bit有效）</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-write">
+<h3><span class="section-number">3.1.1.7. </span>gpio_write<a class="headerlink" href="#gpio-write" title="Link to this heading"></a></h3>
+<p>gpio输出模式下，设置io输出状态，兼容旧接口，只配置单个io状态。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 设置单个io输出电平(需先配置为输出). gpio:IO_PORTA_00; value:0:out 0, 1:out 1</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">gpio_write</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">gpio</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>gpio</p></td>
+<td><p>具体某个io，如：IO_PORTA_00</p></td>
+</tr>
+<tr class="row-even"><td><p>value</p></td>
+<td><p>1：输出高；0：输出低</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>无效</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-write-port">
+<h3><span class="section-number">3.1.1.8. </span>gpio_write_port<a class="headerlink" href="#gpio-write-port" title="Link to this heading"></a></h3>
+<p>gpio输出模式下，设置io输出状态，支持配置同组最多16个，或者单个io状态。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 设置同组多个io输出电平(需先配置为输出).</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">gpio_write_port</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">out_state</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</p></td>
+</tr>
+<tr class="row-odd"><td><p>out_state</p></td>
+<td><p>1：输出高；0：输出低</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无效</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-toggle-port">
+<h3><span class="section-number">3.1.1.9. </span>gpio_toggle_port<a class="headerlink" href="#gpio-toggle-port" title="Link to this heading"></a></h3>
+<p>gpio输出模式下，翻转io输出状态，支持配置同组最多16个，或者单个io。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//需先配置为输出</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">gpio_toggle_port</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>&lt;0：错误；0：成功</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-get-out-level">
+<h3><span class="section-number">3.1.1.10. </span>gpio_get_out_level<a class="headerlink" href="#gpio-get-out-level" title="Link to this heading"></a></h3>
+<p>gpio任意模式下，获取io输出寄存器的状态，支持配置同组最多16个，或者单个io。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gpio_get_out_level</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>&lt;0：错误；&gt;=0：成功，低16个bit表示每个io状态（pin对应的bit有效）</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-set-drive-strength">
+<h3><span class="section-number">3.1.1.11. </span>gpio_set_drive_strength<a class="headerlink" href="#gpio-set-drive-strength" title="Link to this heading"></a></h3>
+<p>配置io输出驱动等级，支持配置同组最多16个，或者单个io。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gpio_set_drive_strength</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_drive_strength</span><span class="w"> </span><span class="n">drive</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</p></td>
+</tr>
+<tr class="row-odd"><td><p>drive</p></td>
+<td><p>驱动级别。详见枚举enum gpio_drive_strength</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无效</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-get-drive-strength">
+<h3><span class="section-number">3.1.1.12. </span>gpio_get_drive_strength<a class="headerlink" href="#gpio-get-drive-strength" title="Link to this heading"></a></h3>
+<p>获取gpio输出强度等级，只支持单个io。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 获取单个io输出强度 pin:只能带入1个io</span>
+<span class="k">enum</span><span class="w"> </span><span class="n">gpio_drive_strength</span><span class="w">  </span><span class="nf">gpio_get_drive_strength</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 等</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>驱动级别。详见枚举enum gpio_drive_strength</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+</section>
+<section id="id2">
+<h2><span class="section-number">3.1.2. </span>GPIO中断<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>配置io外部中断功能，所有io共用同一个中断回调，内部会根据触发边沿配置好上下拉。</p>
+<section id="gpio-irq-config">
+<h3><span class="section-number">3.1.2.1. </span>gpio_irq_config<a class="headerlink" href="#gpio-irq-config" title="Link to this heading"></a></h3>
+<p>初始化gpio中断功能，内部会根据触发边沿配置好上下拉，支持同组最多16个，或者单个io操作。不同芯片中断io及数目不同，请参阅对应Soc规格书。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//默认开中断</span>
+<span class="c1">//禁止同一个io同一边沿多次注册</span>
+<span class="c1">//单边沿与双边沿切换: 请先注销(PORT_IRQ_DISABLE)再注册</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">gpio_irq_config</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">gpio_irq_config_st</span><span class="w"> </span><span class="o">*</span><span class="n">config</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>config</p></td>
+<td><p>io中断配置信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>暂未使用</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">gpio_irq_callback_p_test1</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_irq_edge</span><span class="w"> </span><span class="n">edge</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;port%d.%d:%d-cb1</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="n">edge</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">gpio_irq_config_st</span><span class="w"> </span><span class="n">gpio_irq_config_test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PORT_PIN_0</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PORT_PIN_2</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">irq_edge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PORT_IRQ_EDGE_FALL</span><span class="p">,</span><span class="c1">//PORT_IRQ_ANYEDGE</span>
+<span class="w">    </span><span class="p">.</span><span class="n">callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gpio_irq_callback_p_test1</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="n">gpio_irq_config</span><span class="p">(</span><span class="n">PORTA</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">gpio_irq_config_test</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="gpio-irq-set-callback">
+<h3><span class="section-number">3.1.2.2. </span>gpio_irq_set_callback<a class="headerlink" href="#gpio-irq-set-callback" title="Link to this heading"></a></h3>
+<p>设置或修改io中断回调函数，可以设置为null，支持同组最多16个，或者单个io操作。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gpio_irq_set_callback</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="n">gpio_irq_callback_p</span><span class="w"> </span><span class="n">callback</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</p></td>
+</tr>
+<tr class="row-odd"><td><p>callback</p></td>
+<td><p>回调函数指针，可以为NULL</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>暂未使用</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-irq-set-edge">
+<h3><span class="section-number">3.1.2.3. </span>gpio_irq_set_edge<a class="headerlink" href="#gpio-irq-set-edge" title="Link to this heading"></a></h3>
+<p>设置或修改io中断触发沿，只有注册单边沿触发才能调用该函数切换边沿，支持同组最多16个，或者单个io操作。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//只有注册单边沿触发才能调用该函数切换边沿</span>
+<span class="c1">//单边沿与双边沿切换: 请先注销再注册</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">gpio_irq_set_edge</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_irq_edge</span><span class="w"> </span><span class="n">irq_edge</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</p></td>
+</tr>
+<tr class="row-odd"><td><p>irq_edge</p></td>
+<td><p>触发边沿，详见枚举enum gpio_irq_edge</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>暂未使用</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-irq-get-edge">
+<h3><span class="section-number">3.1.2.4. </span>gpio_irq_get_edge<a class="headerlink" href="#gpio-irq-get-edge" title="Link to this heading"></a></h3>
+<p>获取io中断触发沿，只支持单个io操作。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//  获取单个io触发边沿 pin:只能带入1个io</span>
+<span class="k">enum</span><span class="w"> </span><span class="n">gpio_irq_edge</span><span class="w"> </span><span class="nf">gpio_irq_get_edge</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0等</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>触发边沿，详见枚举enum gpio_irq_edge</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-irq-enable">
+<h3><span class="section-number">3.1.2.5. </span>gpio_irq_enable<a class="headerlink" href="#gpio-irq-enable" title="Link to this heading"></a></h3>
+<p>临时打开io中断，支持同组最多16个，或者单个io操作。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gpio_irq_enable</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>暂未使用</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-irq-disable">
+<h3><span class="section-number">3.1.2.6. </span>gpio_irq_disable<a class="headerlink" href="#gpio-irq-disable" title="Link to this heading"></a></h3>
+<p>临时关闭io中断，支持同组最多16个，或者单个io操作。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gpio_irq_disable</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>暂未使用</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+</section>
+<section id="gpio-crossbar">
+<h2><span class="section-number">3.1.3. </span>GPIO crossbar功能配置<a class="headerlink" href="#gpio-crossbar" title="Link to this heading"></a></h2>
+<p>将外设功能映射到io。</p>
+<section id="gpio-set-function">
+<h3><span class="section-number">3.1.3.1. </span>gpio_set_function<a class="headerlink" href="#gpio-set-function" title="Link to this heading"></a></h3>
+<p>将外设功能映射到io。只支持单个io操作。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 配置单个io为特殊功能. pin:只能带入1个io</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">gpio_set_function</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_function</span><span class="w"> </span><span class="n">fn</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 等</p></td>
+</tr>
+<tr class="row-odd"><td><p>fn</p></td>
+<td><p>外设功能，详见枚举：enum gpio_function</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>&lt;0：错误；0：成功</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gpio_set_function</span><span class="p">(</span><span class="n">PORTB</span><span class="p">,</span><span class="w"> </span><span class="n">PORT_PIN_1</span><span class="p">,</span><span class="w"> </span><span class="n">PORT_FUNC_UART0_TX</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;gpio uart0 tx error&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="k">else</span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;gpio uart0 tx succ&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="gpio-disable-function">
+<h3><span class="section-number">3.1.3.2. </span>gpio_disable_function<a class="headerlink" href="#gpio-disable-function" title="Link to this heading"></a></h3>
+<p>将映射到io的外设功能注销，同时配置释放io，配置为高阻。只支持单个io操作。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 注销单个io的特殊功能. pin:只能带入1个io</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">gpio_disable_function</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_function</span><span class="w"> </span><span class="n">fn</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 等</p></td>
+</tr>
+<tr class="row-odd"><td><p>fn</p></td>
+<td><p>外设功能，详见枚举：enum gpio_function</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>&lt;0：错误；0：成功</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-request-function">
+<h3><span class="section-number">3.1.3.3. </span>gpio_request_function<a class="headerlink" href="#gpio-request-function" title="Link to this heading"></a></h3>
+<p>注册io功能复用。只支持单个io操作。（暂未实现）</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// io复用时，io资源申请</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">gpio_request_function</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_function</span><span class="w"> </span><span class="n">fn</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">timeout</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 等</p></td>
+</tr>
+<tr class="row-odd"><td><p>fn</p></td>
+<td><p>外设功能，详见枚举：enum gpio_function</p></td>
+</tr>
+<tr class="row-even"><td><p>timeout</p></td>
+<td><p>获取io权限要等待的时间，单位：</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>&lt;0：错误；0：成功</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="gpio-release-function">
+<h3><span class="section-number">3.1.3.4. </span>gpio_release_function<a class="headerlink" href="#gpio-release-function" title="Link to this heading"></a></h3>
+<p>注销io功能复用。只支持单个io操作。（暂未实现）</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// io复用时，io资源释放</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">gpio_release_function</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_port</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pin</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">gpio_function</span><span class="w"> </span><span class="n">fn</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>port</p></td>
+<td><p>io端口号，详见枚举enum gpio_port</p></td>
+</tr>
+<tr class="row-even"><td><p>pin</p></td>
+<td><p>具体的io序号，如:PORT_PIN_0 等</p></td>
+</tr>
+<tr class="row-odd"><td><p>fn</p></td>
+<td><p>外设功能，详见枚举：enum gpio_function</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>&lt;0：错误；0：成功</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="3. 外设驱动" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gptimer.html" class="btn btn-neutral float-right" title="3.2. gptimer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

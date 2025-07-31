@@ -1,0 +1,142 @@
+# 音乐算法集成
+
+## 功能介绍
+音乐播放通路，集成第三方音效算法，客户可以在节点流程里面实现自己的自定义算法
+
+## 开发流程
+**（1）音频流程添加第三方音效开发节点**<br>
+根据实际需要，可以添加一个或多个自定义算法节点`EffectDev`<br>
+![EffectDev](./assets/EffectDev.png)
+
+**（2）自定义算法开发位置**<br>
+自定义节点0路径：`audio/framework/nodes/effect_dev0_node.c`<br>
+自定义节点1路径：`audio/framework/nodes/effect_dev1_node.c`<br>
+自定义节点2路径：`audio/framework/nodes/effect_dev2_node.c`<br>
+自定义节点3路径：`audio/framework/nodes/effect_dev3_node.c`<br>
+自定义节点4路径：`audio/framework/nodes/effect_dev4_node.c`<br>
+以EffectDev0开发为例：<br>
+- `初始化接口`<br>
+audio_effect_dev0_init函数中添加自定义算法初始化处理
+```C
+/* 自定义算法，初始化
+ * sample_rate:采样率
+ * ch_num:通道数，单声道 1，立体声 2, 四声道 4
+ * */
+static void audio_effect_dev0_init(u32 sample_rate, u8 ch_num)
+{
+    //TODO
+}
+```
+
+- `运行接口`<br>
+audio_effect_dev0_run函数中添加自定义算法运行处理
+```C
+/* 自定义算法，运行
+ * sample_rate:采样率
+ * ch_num:通道数，单声道 1，立体声 2, 四声道 4
+ * *data:输入输出数据同地址,位宽16bit
+ * data_len :输入数据长度，byte
+ * */
+static void audio_effect_dev0_run(u32 sample_rate, u8 ch_num,  s16 *data, u32 data_len)
+{
+    //TODO
+}
+```
+- `退出关闭接口` <br>
+audio_effect_dev0_exit函数中添加自定义算法关闭处理
+```C
+/* 自定义算法，关闭
+ * */
+static void audio_effect_dev0_exit()
+{
+    //TODO
+
+}
+```
+
+**（3）自定义算法-固定输入帧长**<br>
+用于处理算法需要固定帧长输入的场景
+```C
+/* 音效算法处理帧长
+ * 0   : 等长输入输出，输入数据算法需要全部处理完
+ * 非0 : 按照EFFECT_DEV0_FRAME_POINTS 固定帧长输入数据到算法处理接口                                    
+ */
+#define EFFECT_DEV0_FRAME_POINTS  (256) 
+```
+
+**（4）自定义算法-固定输入输出通道**<br>
+用于处理算法固定输入/输出通道的场景，当通道不匹配时，可能会存在参数协商失败的问题；<br>
+若算法固定输入通道，在effect_dev 之前添加Channel_Merge/Channel_Expander节点<br>
+若算法固定输出通道，在effect_dev 后添加Channel_Merge/Channel_Expander节点<br>
+
++ Channel_Merge节点
+    + 声道合并
+    + 参数说明：
+        + auto : 根据声道自定义适配，数据处理通常为(L+R)/2
+        + stereo_to_mono : 立体声->单声道
+        + qual_to_stero : 四声道->立体声
+        + qual_to_mono : 四声道->单声道
+        + tws_auto : 根据TWS声道状态，立体声->TWS L声道 or TWS R声道
+
++ Channel_Expander 节点
+    + 声道拓展，自适应根据通道协商，用于立体声->四声道、单声道->立体声；
+
++ 使用demo<br>
+![EffectDev](./assets/3rd_party_channel_adpter.png)
+
+**（5）自定义算法-参数配置**<br>
+![EffectDev](./assets/3rd_party_param.png)
+- 默认预留的参数
+```c
+struct user_effect_tool_param {
+    int   int_param[8];
+    float float_param[8];
+};
+```
+- 数据流启动时获取配置文件内参数、在线调试的临时参数，参数数据保存在节点句柄中
+```c
+/*节点start函数*/
+static void effect_dev0_ioc_start(struct effect_dev0_node_hdl *hdl)
+{
+    ......
+    /*
+     *获取配置文件内的参数,及名字
+     * */
+    int len = jlstream_read_node_data_new(hdl_node(hdl)->uuid, hdl_node(hdl)->subid, (void *)&hdl->cfg, hdl->name);
+    if (!len) {
+        log_error("%s, read node data err\n", __FUNCTION__);
+        return;
+    }
+    /*
+     *获取在线调试的临时参数
+     * */
+    if (config_audio_cfg_online_enable) {
+        if (jlstream_read_effects_online_param(hdl_node(hdl)->uuid, hdl->name, &hdl->cfg, sizeof(hdl->cfg))) {
+            log_debug("get effect dev0 online param\n");
+        }
+    }
+    ......
+}
+```
+- 在线调试更新参数
+```c
+static int effect_ioc_update_parm(struct effect_dev0_node_hdl *hdl, int parm)
+{
+    int ret = false;
+    struct user_effect_tool_param *cfg = (struct user_effect_tool_param *)parm;
+    if (hdl) {
+        memcpy(&hdl->cfg, cfg, sizeof(struct user_effect_tool_param));
+        //打印在线调音发送下来的参数
+        printf("effect dev0 name : %s \n", hdl->name);
+        for (int i = 0 ; i < 8; i++) {
+            printf("cfg->int_param[%d] %d\n", i, cfg->int_param[i]);
+        }
+        for (int i = 0 ; i < 8; i++) {
+            printf("cfg->float_param[%d] %d.%02d\n", i, (int)cfg->float_param[i], debug_digital(cfg->float_param[i]));
+        }
+
+        ret = true;
+    }
+    return ret;
+}
+```

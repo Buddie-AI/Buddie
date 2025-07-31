@@ -1,0 +1,506 @@
+消息队列
+=================
+
+消息队列（Queue）是一种先进先出的数据结构，当两个线程需要发送某些数据结构进行通信时，可通过通过消息队列的方式发送消息，某些线程的状态会由于接收不到消息处于非运行阻塞状态，也会随着接收到其他线程或中断发送的消息恢复为运行状态进行消息处理。
+
+
+
+os_taskq_post
+~~~~~~~~~~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        int os_taskq_post(const char *name, int argc, ...);
+
+- 功能说明：向某个任务发送消息，消息类型为Q_MSG;
+- 参数说明：
+
+    =========================  ============================================================================================
+      参数                      说明
+        name                    任务名
+        argc                    消息个数
+    =========================  ============================================================================================
+
+- 返回值：
+
+    =========================  ============================================================================================
+        0                       消息发送成功
+        非0                     消息发送失败
+    =========================  ============================================================================================
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+
+        void main(void)
+        {
+            ... ...
+            os_taskq_post("test", 1, 0x5A); //向test任务发送消息
+            ... ...
+        }
+
+
+os_taskq_post_type
+~~~~~~~~~~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        int os_taskq_post_type(const char *name, int type, int argc, int *argv);
+
+- 功能说明：向某个任务发送消息;
+- 参数说明：
+
+    =========================  ============================================================================================
+      参数                      说明
+        name                    任务名
+        type                    消息类型：
+
+                                    1. Q_MSG
+
+                                    2. Q_USER
+
+                                    3. Q_EVENT
+
+                                    4. Q_CALLBACK
+        argc                    消息个数
+        argv                    消息buf
+    =========================  ============================================================================================
+
+- 返回值：
+
+    =========================  ============================================================================================
+        0                       消息发送成功
+        非0                     消息发送失败
+    =========================  ============================================================================================
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+		
+		#include "system/includes.h"
+		
+		/**
+		* @brief demo 1
+		*
+		* @return
+		*/
+		static int _qcallback_handle()
+		{
+			printf("_qcallback_handle\n\n");
+			return 0;
+		}
+		/**
+		* @brief 发送callback 无参数的Q_CALLBACK的taskq demo
+		*
+		* @return 发送是否成功
+		*/
+		int qcallback_msg_post_none_argv()
+		{
+			int argv[2];
+			argv[0] = (int)_qcallback_handle;       // Function
+			argv[1] = 0;                            // 参数个数
+			return os_taskq_post_type("app_core", Q_CALLBACK, sizeof(argv) / sizeof(int), argv);
+		}
+		/**
+		* @brief demo 2
+		*
+		* @param msg1
+		*
+		* @return
+		*/
+		static int _qcallback_handle1(int msg1)
+		{
+			printf("_qcallback_handle1 msg1:%d\n", msg1);
+			return 0;
+		}
+		/**
+		* @brief 发送callback 1个参数的Q_CALLBACK的taskq demo
+		*
+		* @return 发送是否成功
+		*/
+		int qcallback_msg_post_one_argv()
+		{
+			int argv[3];
+			int msg = 1;
+			argv[0] = (int)_qcallback_handle1;      // Function
+			argv[1] = 1;                            // 参数个数
+			argv[2] = msg;                          // 参数1，可以是任意类型强转成int
+			return os_taskq_post_type("app_core", Q_CALLBACK, sizeof(argv) / sizeof(int), argv);
+		}
+		/**
+		* @brief demo 3
+		*
+		* @param msg1
+		* @param msg2
+		*
+		* @return
+		*/
+		static int _qcallback_handle2(int msg1, int msg2)
+		{
+			printf("_qcallback_handle2 msg1:%d, msg2:%d\n", msg1, msg2);
+			return 0;
+		}
+		/**
+		* @brief 发送function 2个参数的Q_CALLBACK的taskq demo
+		*
+		* @return 发送是否成功
+		*/
+		int qcallback_msg_post_two_argv()
+		{
+			int argv[4];
+			int msg = 1;
+			argv[0] = (int)_qcallback_handle2;      // Function
+			argv[1] = 2;                            // 参数个数
+			argv[2] = msg;                          // 参数1，可以是任意类型强转成int
+			argv[3] = msg + 1;                      // 参数2，可以是任意类型强转成int
+			return os_taskq_post_type("app_core", Q_CALLBACK, sizeof(argv) / sizeof(int), argv);
+		}
+		/**
+		* @brief Demo 4
+		*
+		* @param msg1
+		* @param msgArrCount
+		* @param msgArr
+		*
+		* @return
+		*/
+		static int _qcallback_handleM(int msg1, int msgArrCount, int *msgArr)
+		{
+			printf("_qcallback_handleM msg1:%d, msgArrCount:%d\n", msg1, msgArrCount);
+			for (int i = 0; i < msgArrCount; i++) {
+				printf("_qcallback_handleM i:%d, argv:%d\n", i, msgArr[i]);
+			}
+			printf("_qcallback_handleM end!\n");
+			return 100;
+		}
+		/**
+		* @brief 发送function 多个（这里演示4个）参数且设置（bit8、bit9和bit10）的Q_CALLBACK的taskq demo
+		*
+		* bit10是Function支持多参数
+		* bit8是Function的返回结果，需要在调用时把Function的返回结果的指针传入底层
+		* bit9是设置信号量，需要在调用时把信号量传入底层，在底层等待Function执行完成后会释放这个信号量
+		* （这里为了方便学习把多参数bit10、bit8和bit9做到一起，\
+		* bit9的信号量使得多参数的数组释放和bit8的回调结果在所有代码处理能在当前函数完成，\
+		* 所以推荐多参数bit10或bit8的使用和bit9一起）
+		* 注：该函数不能在Function执行的任务中调用，会死锁
+		*
+		* @return 发送是否成功
+		*/
+		static int qcallback_multi_argv_num = 5;				//参数个数5
+		int qcallback_msg_post_multi_argv_bit8_bit9()
+		{
+			int argv[4 + qcallback_multi_argv_num];
+			int *err = (int *)malloc(sizeof(int));
+			OS_SEM *sem = (OS_SEM *)malloc(sizeof(OS_SEM));
+			if (!(err && sem)) {
+				printf("qcallback_msg_post_multi_argv_bit8_bit9 malloc error!\n");
+				return 1;
+			}
+			argv[0] = (int)_qcallback_handleM;                  // Function
+			argv[1] = qcallback_multi_argv_num | BIT(8) | BIT(9) | BIT(10);    		// 参数个数5
+			// 以上的|BIT是使能功能bit8，bit9，bit10
+			// 用户按需设置以上argv[1]的数值
+			argv[2] = 0;										// 参数1，可以是任意类型强转成int
+			argv[3] = 1;										// 参数2
+			argv[4] = 2;										// 参数3
+			argv[5] = 3;										// 参数4
+			argv[6] = 4;										// 参数5
+			argv[7] = (int)err;                                 // BIT8，Function返回值返回到bit8
+			argv[8] = (int)sem;                                 // BIT9，Function执行完成后会释放该信号量
+			os_sem_create(sem, 0);                              // 创建信号量，初始值为0
+			int ret_err;
+			while (1) {
+				// 	执行Function的任务不能与调用qcallback_msg_post_multi_argv_bit8_bit9()的任务相同
+				ret_err = os_taskq_post_type("btstack", Q_CALLBACK, sizeof(argv) / sizeof(int), argv);
+				if (ret_err == OS_ERR_NONE) {
+					printf("qcallback_msg_post_multi_argv_bit8_bit9 pend1!\n");
+					os_sem_pend(sem, 0);    // 等待信号量，一直等待
+					printf("qcallback_msg_post_multi_argv_bit8_bit9 pend2!\n");
+					ret_err = *err;         // 获得Function的返回值，见_qcallback_handle_bit8_bit9的返回值是100
+					break;
+				}
+				os_time_dly(2);
+			}
+			printf("qcallback_msg_post_multi_argv_bit8_bit9 free!\n");
+			free(sem);
+			free(err);
+			printf("qcallback_msg_post_multi_argv_bit8_bit9:%d!\n", ret_err);   // 这里输出100
+			return ret_err;
+		}
+
+os_taskq_post_msg
+~~~~~~~~~~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        int os_taskq_post_msg(const char *name, int argc, ...);
+
+- 功能说明：任务获取消息，消息类型为Q_MSG;
+- 参数说明：
+
+    =========================  ============================================================================================
+      参数                      说明
+        name                    任务名
+        argc                    获取消息buf长度
+    =========================  ============================================================================================
+
+- 返回值：
+
+    =========================  ============================================================================================
+        0                       消息发送成功
+        非0                     消息发送失败
+    =========================  ============================================================================================
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+
+        void main(void)
+        {
+            ... ...
+            os_taskq_post_msg("test", 1, 0x5A); //向test任务发送消息
+            ... ...
+        }
+
+os_taskq_post_event
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        int os_taskq_post_event(const char *name, int argc, ...);
+
+- 功能说明：任务获取消息，消息类型为Q_EVENT;
+- 参数说明：
+
+    =========================  ============================================================================================
+      参数                      说明
+        name                    任务名
+        argc                    获取消息buf个数
+    =========================  ============================================================================================
+
+- 返回值：
+
+    =========================  ============================================================================================
+        0                       消息发送成功
+        非0                     消息发送失败
+    =========================  ============================================================================================
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+
+        void main(void)
+        {
+            ... ...
+            os_taskq_post_event("test", 1, 0x5A); //向test任务发送事件消息
+            ... ...
+        }
+
+
+
+os_taskq_pend
+~~~~~~~~~~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        int os_taskq_pend(const char *fmt, int *argv, int argc);
+
+- 功能说明：任务获取消息;
+- 参数说明：
+
+    =========================  ============================================================================================
+      参数                      说明
+        fmt                     保留
+        argv                    获取消息buf
+        argc                    获取消息buf长度
+    =========================  ============================================================================================
+
+- 返回值：
+
+    =========================  ============================================================================================
+        OS_TASKQ                消息获取成功
+    =========================  ============================================================================================
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+
+        static void my_task(void *p)
+        {
+            int ret;
+            int msg[20];
+
+            while (1) {
+                ret = os_taskq_pend(NULL, msg, ARRAY_SIZE(msg));
+                /TODO: msg handle
+                if (res == OS_TASKQ) {
+                    switch (msg[0]) {
+                    case Q_MSG:
+                        break;
+                    case Q_USER:
+                        break;
+                    case Q_EVENT:
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+        }
+
+
+os_taskq_accept
+~~~~~~~~~~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        int os_taskq_accept(int argc, int *argv);
+
+- 功能说明：任务非阻塞式获取消息;
+- 参数说明：
+
+    =========================  ============================================================================================
+      参数                      说明
+        argc                    获取消息buf长度
+        argv                    获取消息buf
+    =========================  ============================================================================================
+
+- 返回值：
+
+    =========================  ============================================================================================
+        OS_TASKQ                消息获取成功
+    =========================  ============================================================================================
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+
+        static void my_task(void *p)
+        {
+            int ret;
+            int msg[20];
+
+            while (1) {
+                ret = os_taskq_accept(ARRAY_SIZE(msg), msg);
+                if (ret == OS_TASKQ) {
+                    /TODO: msg handle
+                }
+            }
+        }
+
+
+
+os_taskq_del_type
+~~~~~~~~~~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        int os_taskq_del_type(const char *name, int type);
+
+- 功能说明：删除指定类型的消息;
+- 参数说明：
+
+    =========================  ============================================================================================
+      参数                      说明
+        name                    任务名
+        type                    消息类型：
+
+                                    1. Q_MSG
+
+                                    2. Q_USER
+
+                                    3. Q_EVENT
+
+                                    4. Q_CALLBACK
+    =========================  ============================================================================================
+
+- 返回值：
+
+    =========================  ============================================================================================
+        0                       消息删除成功
+        非0                     消息删除失败
+    =========================  ============================================================================================
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+
+        void main(void)
+        {
+            ... ...
+            os_taskq_del_type("test", Q_EVENT);
+            ... ...
+        }
+
+
+
+os_taskq_flush
+~~~~~~~~~~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        int os_taskq_flush(void);
+
+- 功能说明：强制处理完任务的所有消息;
+- 参数说明：无
+
+    
+
+- 返回值：
+
+    =========================  ============================================================================================
+        0                       消息处理成功
+        非0                     消息处理失败
+    =========================  ============================================================================================
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+
+        static void my_task(void *p)
+        {
+            int ret;
+            int msg[20];
+
+            while (1) {
+                ... ...
+                os_taskq_flush();
+                ... ...
+            }
+        }
+
+
+
+

@@ -1,0 +1,150 @@
+A2DP播放接口
+==================
+A2DP播放API是系统提供的用于播放蓝牙媒体音频的接口
+
+
+a2dp_player_open
+----------------------------------------
+播放指定的蓝牙设备的媒体音频。
+
+原型: 
+
+.. code-block:: c
+
+    int a2dp_player_open(u8 *btaddr)
+
+参数:
+
+    ============   ===================================
+    btaddr          蓝牙设备的MAC地址
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    void bt_event_handler(int *event)
+    {
+        struct bt_event *bt = (struct bt_event *)event;
+
+        switch(bt->event) {
+        case BT_STATUS_A2DP_MEDIA_START:
+            a2dp_player_open(bt->args);
+            break;
+        case BT_STATUS_A2DP_MEDIA_STOP:
+            a2dp_player_close(bt->args);
+            break;
+        }
+    } 
+
+
+a2dp_player_close
+----------------------------------------
+停止播放指定的蓝牙设备的媒体音频。
+
+原型: 
+
+.. code-block:: c
+
+    int a2dp_player_close(u8 *btaddr)
+
+参数:
+
+    ============   ===================================
+    btaddr          蓝牙设备的MAC地址
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    void bt_event_handler(int *event)
+    {
+        struct bt_event *bt = (struct bt_event *)event;
+
+        switch(bt->event) {
+        case BT_STATUS_A2DP_MEDIA_START:
+            a2dp_player_open(bt->args);
+            break;
+        case BT_STATUS_A2DP_MEDIA_STOP:
+            a2dp_player_close(bt->args);
+            break;
+        }
+    } 
+
+
+a2dp_player_get_btaddr
+----------------------------------------
+获取正在播放的蓝牙设备地址
+
+原型: 
+
+.. code-block:: c
+
+    int a2dp_player_get_btaddr(u8 *btaddr)
+
+参数:
+
+    ============   ===================================
+    btaddr          返回的蓝牙设备的MAC地址
+    返回值          1: 返回地址有效， 0: 没有播放的设备
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    u8 btaddr[6];
+    if (a2dp_player_get_btaddr(btaddr)) {
+        //获取到正在播放的设备地址, do something
+
+    }
+
+a2dp_player_runing
+----------------------------------------
+是否正在播放A2DP
+
+原型: 
+
+.. code-block:: c
+
+    int a2dp_player_runing()
+
+示例:
+
+.. code-block:: c
+
+    if (a2dp_player_runing()) {
+        //有A2DP正在播放, do something
+        
+    }
+
+a2dp_player_is_playig
+----------------------------------------
+获取是否正在播放指定地址的蓝牙设备的媒体音频
+
+原型: 
+
+.. code-block:: c
+
+    int a2dp_player_is_playig(u8 *btaddr)
+
+参数:
+
+    ============   ===================================
+    btaddr          蓝牙设备的MAC地址
+    返回值          1: 正在播放， 0: 未播放
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    u8 btaddr[6];
+    
+    get_bt_addr(btaddr);
+
+    if (a2dp_player_is_playing(btaddr)) {
+        //正在播放, do something
+
+    }

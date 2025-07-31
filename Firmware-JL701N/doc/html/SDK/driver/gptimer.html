@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.2. gptimer &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.3. gpadc" href="gpadc.html" />
+    <link rel="prev" title="3.1. gpio" href="gpio.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. 外设驱动</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpio.html">3.1. gpio</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.2. gptimer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-init">3.2.1. gptimer_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-pwm-init">3.2.2. gptimer_pwm_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-capture-init">3.2.3. gptimer_capture_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-deinit">3.2.4. gptimer_deinit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-start">3.2.5. gptimer_start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-pause">3.2.6. gptimer_pause</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-rwesume">3.2.7. gptimer_rwesume</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-set-resolution">3.2.8. gptimer_set_resolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-get-resolution">3.2.9. gptimer_get_resolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-set-pwm-freq">3.2.10. gptimer_set_pwm_freq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-get-pwm-freq">3.2.11. gptimer_get_pwm_freq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-set-pwm-duty">3.2.12. gptimer_set_pwm_duty</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-get-pwm-duty">3.2.13. gptimer_get_pwm_duty</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-pwm-flip">3.2.14. gptimer_pwm_flip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-set-edge-type">3.2.15. gptimer_set_edge_type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-get-edge-type">3.2.16. gptimer_get_edge_type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-set-capture-filter">3.2.17. gptimer_set_capture_filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-get-capture-filter">3.2.18. gptimer_get_capture_filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-get-capture-count">3.2.19. gptimer_get_capture_count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-get-count">3.2.20. gptimer_get_count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-get-prd">3.2.21. gptimer_get_prd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-set-irq-callback">3.2.22. gptimer_set_irq_callback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-set-work-mode">3.2.23. gptimer_set_work_mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gptimer-get-work-mode">3.2.24. gptimer_get_work_mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timerdemo">3.2.25. timer模式demo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pwmdemo">3.2.26. pwm模式demo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#capturedemo">3.2.27. capture模式demo</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gpadc.html">3.3. gpadc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uart.html">3.4. uart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iic.html">3.5. iic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usb.html">3.6. USB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rdec.html">3.7. rdec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mcpwm.html">3.8. mcpwm</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">3. </span>外设驱动</a> &raquo;</li>
+      <li><span class="section-number">3.2. </span>gptimer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gptimer">
+<h1><span class="section-number">3.2. </span>gptimer<a class="headerlink" href="#gptimer" title="Link to this heading"></a></h1>
+<p>gptimer支持计数、延时、定时、PWM、捕获。捕获模式支持滤波，双边沿触发</p>
+<section id="gptimer-init">
+<h2><span class="section-number">3.2.1. </span>gptimer_init<a class="headerlink" href="#gptimer-init" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>timer功能初始化。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gptimer_init</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">gptimer_config</span><span class="w"> </span><span class="o">*</span><span class="n">gptimer</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>gptimer</p></td>
+<td><p>timer配置</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>tiemr句柄(id号)</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-pwm-init">
+<h2><span class="section-number">3.2.2. </span>gptimer_pwm_init<a class="headerlink" href="#gptimer-pwm-init" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>pwm功能初始化。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gptimer_pwm_init</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">gptimer_pwm_config</span><span class="w"> </span><span class="o">*</span><span class="n">gptimer</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>gptimer</p></td>
+<td><p>pwm配置</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>pwm句柄(id号)</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-capture-init">
+<h2><span class="section-number">3.2.3. </span>gptimer_capture_init<a class="headerlink" href="#gptimer-capture-init" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>capture功能初始化。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gptimer_capture_init</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">gptimer_capture_config</span><span class="w"> </span><span class="o">*</span><span class="n">gptimer</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>gptimer</p></td>
+<td><p>capture配置</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>capture句柄(id号)</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-deinit">
+<h2><span class="section-number">3.2.4. </span>gptimer_deinit<a class="headerlink" href="#gptimer-deinit" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>timer/pwm/capture功能初始化取消。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gptimer_deinit</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>保留</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-start">
+<h2><span class="section-number">3.2.5. </span>gptimer_start<a class="headerlink" href="#gptimer-start" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>timer/pwm/capture功能启动。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gptimer_start</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>保留</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-pause">
+<h2><span class="section-number">3.2.6. </span>gptimer_pause<a class="headerlink" href="#gptimer-pause" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>timer/pwm/capture功能暂停。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gptimer_pause</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>保留</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-rwesume">
+<h2><span class="section-number">3.2.7. </span>gptimer_rwesume<a class="headerlink" href="#gptimer-rwesume" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>timer/pwm/capture功能恢复。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">gptimer_rwesume</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>保留</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-set-resolution">
+<h2><span class="section-number">3.2.8. </span>gptimer_set_resolution<a class="headerlink" href="#gptimer-set-resolution" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>设置timer功能定时时间，单位us。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_set_resolution</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">resolution_us</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>us</p></td>
+<td><p>定时时间，单位：us</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-get-resolution">
+<h2><span class="section-number">3.2.9. </span>gptimer_get_resolution<a class="headerlink" href="#gptimer-get-resolution" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>获取timer功能定时时间，单位us。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_get_resolution</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>定时时间，单位：us</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-set-pwm-freq">
+<h2><span class="section-number">3.2.10. </span>gptimer_set_pwm_freq<a class="headerlink" href="#gptimer-set-pwm-freq" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>设置pwm功能输出频率，单位Hz。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_set_pwm_freq</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">pwm_freq</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>pwm_freq</p></td>
+<td><p>输出频率，单位：Hz</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-get-pwm-freq">
+<h2><span class="section-number">3.2.11. </span>gptimer_get_pwm_freq<a class="headerlink" href="#gptimer-get-pwm-freq" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>获取pwm功能输出频率，单位Hz。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_get_pwm_freq</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>输出频率，单位：Hz</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-set-pwm-duty">
+<h2><span class="section-number">3.2.12. </span>gptimer_set_pwm_duty<a class="headerlink" href="#gptimer-set-pwm-duty" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>设置pwm功能输出占空比。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_set_pwm_duty</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">duty</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>duty</p></td>
+<td><p>占空比，例：5123，占空比51.23%</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-get-pwm-duty">
+<h2><span class="section-number">3.2.13. </span>gptimer_get_pwm_duty<a class="headerlink" href="#gptimer-get-pwm-duty" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>获取pwm功能输出占空比。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_get_pwm_duty</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>duty</p></td>
+<td><p>占空比，例：5123，占空比51.23%</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-pwm-flip">
+<h2><span class="section-number">3.2.14. </span>gptimer_pwm_flip<a class="headerlink" href="#gptimer-pwm-flip" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>翻转pwm输出。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_pwm_flip</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-set-edge-type">
+<h2><span class="section-number">3.2.15. </span>gptimer_set_edge_type<a class="headerlink" href="#gptimer-set-edge-type" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>设置capture功能捕获边沿，边沿类型：上升沿、下降沿、双边沿。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_set_edge_type</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">GPTIMER_CAPTURE_EDGE</span><span class="w"> </span><span class="n">edge_type</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>edge_type</p></td>
+<td><p>边沿类型</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-get-edge-type">
+<h2><span class="section-number">3.2.16. </span>gptimer_get_edge_type<a class="headerlink" href="#gptimer-get-edge-type" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>获取capture功能捕获边沿。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">GPTIMER_CAPTURE_EDGE</span><span class="w">  </span><span class="nf">gptimer_get_edge_type</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>边沿类型：上升沿、下降沿、双边沿</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-set-capture-filter">
+<h2><span class="section-number">3.2.17. </span>gptimer_set_capture_filter<a class="headerlink" href="#gptimer-set-capture-filter" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>设置capture功能滤波参数。小于滤波参数的波被过滤。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_set_capture_filter</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">filter_us</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>filter_us</p></td>
+<td><p>滤波参数，单位：us。</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-get-capture-filter">
+<h2><span class="section-number">3.2.18. </span>gptimer_get_capture_filter<a class="headerlink" href="#gptimer-get-capture-filter" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>获取capture功能滤波参数。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_get_capture_filter</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>滤波参数，单位：us。</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-get-capture-count">
+<h2><span class="section-number">3.2.19. </span>gptimer_get_capture_count<a class="headerlink" href="#gptimer-get-capture-count" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>获取capture功能count计数器的原始值。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_get_capture_count</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>count计数器原始值</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-get-count">
+<h2><span class="section-number">3.2.20. </span>gptimer_get_count<a class="headerlink" href="#gptimer-get-count" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>获取count计数器的原始值。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_get_count</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>count计数器原始值</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-get-prd">
+<h2><span class="section-number">3.2.21. </span>gptimer_get_prd<a class="headerlink" href="#gptimer-get-prd" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>获取prd寄存器的原始值。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_get_prd</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>prd寄存器原始值</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-set-irq-callback">
+<h2><span class="section-number">3.2.22. </span>gptimer_set_irq_callback<a class="headerlink" href="#gptimer-set-irq-callback" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>设置回调函数。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_set_irq_callback</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">irq_cb</span><span class="p">)(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>irq_cb</p></td>
+<td><p>回调函数，void usr_irq_cb(int tid)</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-set-work-mode">
+<h2><span class="section-number">3.2.23. </span>gptimer_set_work_mode<a class="headerlink" href="#gptimer-set-work-mode" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>设置工作模式，模式：timer,pwm,capture。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u32</span><span class="w"> </span><span class="nf">gptimer_set_work_mode</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="n">gptimer_type</span><span class="w"> </span><span class="n">type</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p>工作模式</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gptimer-get-work-mode">
+<h2><span class="section-number">3.2.24. </span>gptimer_get_work_mode<a class="headerlink" href="#gptimer-get-work-mode" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>获取工作模式，模式：timer,pwm,capture。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">GPTIMER_MODE</span><span class="w"> </span><span class="nf">gptimer_get_work_mode</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>tid</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>工作模式</p></td>
+<td><p>工作模式:timer,pwm,capture</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="timerdemo">
+<h2><span class="section-number">3.2.25. </span>timer模式demo<a class="headerlink" href="#timerdemo" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//定时器</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">timer_callback_func</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">gptimer_config</span><span class="w"> </span><span class="n">timer_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">.</span><span class="n">resolution_us</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="c1">//定时10ms</span>
+<span class="w">  </span><span class="p">.</span><span class="n">irq_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">timer_callback_func</span><span class="p">,</span><span class="w"> </span><span class="c1">//回调函数</span>
+<span class="w">  </span><span class="p">.</span><span class="n">tid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">  </span><span class="c1">//填-1,内部自动分配timer</span>
+<span class="w">  </span><span class="p">.</span><span class="n">irq_priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">//中断优先级，默认给1</span>
+<span class="p">};</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">timer_tid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gptimer_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer_config</span><span class="p">);</span>
+<span class="n">gptimer_start</span><span class="p">(</span><span class="n">timer_tid</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="pwmdemo">
+<h2><span class="section-number">3.2.26. </span>pwm模式demo<a class="headerlink" href="#pwmdemo" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">gptimer_pwm_config</span><span class="w"> </span><span class="n">pwm_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">.</span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PORTA</span><span class="p">,</span><span class="w"> </span><span class="c1">//指定输出IO，PA组</span>
+<span class="w">  </span><span class="p">.</span><span class="n">pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">//指定输出IO，BIT(0)脚  输出口PA0</span>
+<span class="w">  </span><span class="p">.</span><span class="n">freq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="c1">//输出频率1Khz</span>
+<span class="w">  </span><span class="p">.</span><span class="n">pwm_duty_X10000</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5123</span><span class="p">,</span><span class="w"> </span><span class="c1">//占空比51.23%</span>
+<span class="w">  </span><span class="p">.</span><span class="n">tid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">  </span><span class="c1">//填-1,内部自动分配timer</span>
+<span class="p">};</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">pwm_tid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gptimer_pwm_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pwm_config</span><span class="p">);</span>
+<span class="n">gptimer_start</span><span class="p">(</span><span class="n">pwm_tid</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="capturedemo">
+<h2><span class="section-number">3.2.27. </span>capture模式demo<a class="headerlink" href="#capturedemo" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">capture_callback_func</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">tid</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="n">gptimer_type</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gptimer_get_work_mode</span><span class="p">(</span><span class="n">tid</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">GPTIMER_CAPTRUE</span><span class="p">){</span>
+<span class="w">          </span><span class="n">u32</span><span class="w"> </span><span class="n">prd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gptimer_get_capture_count</span><span class="p">(</span><span class="n">tid</span><span class="p">);</span><span class="w">  </span><span class="c1">//单位是us</span>
+<span class="w">          </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">prd</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10000</span><span class="p">){</span>
+<span class="w">              </span><span class="n">gptimer_pause</span><span class="p">(</span><span class="n">tid</span><span class="p">);</span>
+<span class="w">              </span><span class="n">gptimer_set_resolution</span><span class="p">(</span><span class="n">tid</span><span class="p">,</span><span class="mi">1000</span><span class="p">);</span><span class="w"> </span><span class="c1">//  设置定时时间1ms</span>
+<span class="w">              </span><span class="n">gptimer_set_work_mode</span><span class="p">(</span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="n">GPTIMER_Timer</span><span class="p">);</span><span class="w">  </span><span class="c1">// 切换为定时模式</span>
+<span class="w">              </span><span class="n">gptimer_resume</span><span class="p">(</span><span class="n">tid</span><span class="p">);</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">mode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">GPTIMER_Timer</span><span class="p">){</span>
+<span class="w">        </span><span class="n">gptimer_pause</span><span class="p">(</span><span class="n">tid</span><span class="p">);</span>
+<span class="w">        </span><span class="n">gptimer_set_edge_type</span><span class="p">(</span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="n">GPTIMER_EDGE_RISE</span><span class="p">);</span>
+<span class="w">        </span><span class="n">gptimer_set_work_mode</span><span class="p">(</span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="n">GPTIMER_CAPTRUE</span><span class="p">);</span><span class="w">   </span><span class="c1">// 切换为上升沿捕获模式</span>
+<span class="w">        </span><span class="n">gptimer_resume</span><span class="p">(</span><span class="n">tid</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">gptimer_capture_config</span><span class="w"> </span><span class="n">capture_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">.</span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PORTA</span><span class="p">,</span><span class="w"> </span><span class="c1">//指定输出IO，PA组</span>
+<span class="w">  </span><span class="p">.</span><span class="n">pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">//指定输出IO，BIT(0)脚  输出口PA0</span>
+<span class="w">  </span><span class="p">.</span><span class="n">edge_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPTIMER_EDGE_RISE</span><span class="p">,</span><span class="w"> </span><span class="c1">//上升沿捕获</span>
+<span class="w">  </span><span class="p">.</span><span class="n">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="c1">//需要滤掉的频率，大于该频率的波形被过滤；写0则关闭滤波功能</span>
+<span class="w">  </span><span class="p">.</span><span class="n">irq_cb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">capture_callback_func</span><span class="p">,</span><span class="w"> </span><span class="c1">//回调函数</span>
+<span class="w">  </span><span class="p">.</span><span class="n">tid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w">  </span><span class="c1">//填-1,内部自动分配timer</span>
+<span class="w">  </span><span class="p">.</span><span class="n">irq_priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">//中断优先级，默认给1</span>
+<span class="p">};</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">capture_tid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gptimer_capture_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">capture_config</span><span class="p">);</span>
+<span class="n">gptimer_start</span><span class="p">(</span><span class="n">capture_tid</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gpio.html" class="btn btn-neutral float-left" title="3.1. gpio" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gpadc.html" class="btn btn-neutral float-right" title="3.3. gpadc" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,326 @@
+gpadc
+===================
+gpadc API是系统提供的用于adc采集的接口
+
+
+
+adc_init
+------------------------------
+功能:
+
+    adc功能初始化，一般在板级配置.c文件已经默认调用，用户无需再重复调用。
+
+原型:
+
+.. code-block:: c
+
+    void adc_init();
+
+参数:
+
+    ==========     ====================
+    --              无
+    返回值          无
+    ==========     ====================
+
+
+
+
+
+adc_add_sample_ch
+------------------------------
+    添加一个指定的 adc 通道到采集队列，采集队列最大支持10个采集通道。
+
+    最大支持通道数由 gpadc.h 文件中 ADC_MAX_CH 宏控制。
+
+原型:
+
+.. code-block:: c
+
+    u32 adc_add_sample_ch(enum AD_CH ch);
+
+参数:
+
+    ==========     ======================
+    ch             指定通道
+    返回值          指定通道所在队列的编号
+    ==========     ======================
+
+    
+
+
+
+adc_delete_ch
+------------------------------
+    删除一个指定的adc采集通道。
+
+原型:
+
+.. code-block:: c
+
+    u32 adc_delete_ch(enum AC_CH ch);
+
+参数:
+
+    ==========     ======================
+    ch             指定通道
+    返回值          指定通道所在队列的编号
+    ==========     ======================
+
+
+
+
+
+adc_set_sample_period
+------------------------------
+    设置一个指定通道的采样周期。调用 adc_add_sample_ch 后默认设置为 0。
+
+原型:
+
+.. code-block:: c
+
+    u32 adc_set_sample_period(enum AD_CH ch, u32 ms);
+
+参数:
+
+    ==========     ======================
+    ch             指定通道
+    ms              采样周期，单位：ms
+    返回值          指定通道所在队列的编号
+    ==========     ======================
+
+
+
+
+
+adc_get_value
+------------------------------
+    获取一个指定通道的 adc 原始值。
+
+原型:
+
+.. code-block:: c
+
+    u32 adc_get_value(enum AD_CH ch);
+
+参数:
+
+    ==========     ====================
+    ch             指定通道
+    返回值          adc原始值
+    ==========     ====================
+
+
+
+
+
+adc_get_voltage
+------------------------------
+    获取一个指定通道的实际电压值，单位mv。
+
+原型:
+
+.. code-block:: c
+
+    u32 adc_get_voltage(enum AD_CH ch);
+
+参数:
+
+    ==========     ====================
+    ch             指定通道
+    返回值          实际电压值 单位:mv
+    ==========     ====================
+
+
+
+
+
+
+adc_get_value_blocking
+------------------------------
+    阻塞式获取一个指定通道的 adc 原始值。会立即获取，调用时不需要延时等待。
+
+原型:
+
+.. code-block:: c
+
+    u32 adc_get_value_blocking(enum AD_CH ch);
+
+参数:
+
+    ==========     ====================
+    ch              指定通道
+    返回值          adc原始值
+    ==========     ====================
+
+
+
+
+
+adc_get_voltage_blocking
+------------------------------
+    阻塞式获取一个指定通道的实际电压值。会立即获取，调用时不需要延时等待。
+
+原型:
+
+.. code-block:: c
+
+    u32 adc_get_voltage_blocking(enum AD_CH ch);
+
+参数:
+
+    ==========     ====================
+    ch              指定通道
+    返回值          实际电压值 单位:mv
+    ==========     ====================
+
+
+
+
+
+adc_value_to_voltage
+------------------------------
+    将 adc 原始值转换为电压值。使用传入的 vbg 值进行电压值换算。
+
+原型:
+
+.. code-block:: c
+
+    u32 adc_value_to_voltage(u32 adc_vbg, u32 adc_value);
+
+参数:
+
+    ==========     ====================
+    adc_vbg         传入的vbg参考值
+    adc_value       adc原始值
+    返回值          实际电压值 单位:mv
+    ==========     ====================
+
+
+
+
+
+adc_value_to_voltage_filter
+------------------------------
+    将adc原始值转换为电压值。使用内部滤波后的 vbg 值进行电压换算。（推荐使用）
+
+原型:
+
+.. code-block:: c
+
+    u32 adc_value_to_voltage_filter(u32 adc_value);
+
+参数:
+
+    ==========     ====================
+    adc_value       adc原始值
+    返回值          实际电压值 单位:mv
+    ==========     ====================
+
+
+
+
+
+adc_io2ch
+------------------------------
+    将传入的 IO 口转换成对应的 AD_CH 并返回。
+
+原型:
+
+.. code-block:: c
+
+    u32 adc_io2ch(enum gpio_group gpio);
+
+参数:
+
+    ==========     ====================
+    gpio            指定IO口
+    返回值          adc_ch
+    ==========     ====================
+
+
+
+
+
+adc_io_ch_set
+------------------------------
+    设置 IO 通道的模式。调用 adc_add_ch 后默认为浮空输入模式。
+
+原型:
+
+.. code-block:: c
+
+    void adc_io_set_mode(enum AD_CH ch, enum gpio_mode mode);
+
+参数:
+
+    ==========     ====================
+    --              无
+    返回值          无
+    ==========     ====================
+
+
+
+
+
+gpadc采样流程图
+------------------------------
+
+.. _adc_sample_flow chart:
+
+.. figure:: image/gpadc流程图.svg
+   :scale: 100%
+   :align: center
+   :alt: gpadc采样流程图
+
+gpadc采样时序图
+------------------------------
+
+.. _adc_sample_timing:
+
+.. figure:: image/gpadc时序图.svg
+   :scale: 100%
+   :align: center
+   :alt: gpadc采样时序图
+
+
+gpadc各级通道示意图
+------------------------------
+
+.. _adc_ch:
+
+.. figure:: image/gpadc各级通道示意图.svg
+   :scale: 100%
+   :align: center
+   :alt: gpadc各级通道示意图
+
+
+参考demo
+------------------------------
+
+.. code-block:: c
+
+    void adc_test_demo(void)
+    {
+        adc_init(); //板级配置中默认会调用，实际使用时无需重复调用。
+
+        u32 user_ad_ch = adc_io2ch(IO_PORTA_02); //获取 PA2 对应的 AD_CH。
+
+        adc_add_sample_ch(user_ad_ch); //添加 PA2 到采集队列。
+        adc_set_sample_period(user_ad_ch, 500); //设置 PA2 的采样周期为500ms。
+
+        u32 user_ad_value = adc_get_value(user_ad_ch); //获取 PA2 的 ad原始值。
+        printf("user_ad_value = %d\n", user_ad_value);
+
+        u32 user_ad_voltage = adc_get_voltage(user_ad_ch); //获取 PA2 的电压值，单位：mv。
+        printf("user_ad_voltage = %d mv\n", user_ad_voltage);
+
+        user_ad_voltage = adc_value_to_voltage_filter(user_ad_value); //将采集到的 ad原始值转换成电压值，单位：mv。
+        printf("user_ad_value = %d ------> user_ad_voltage = %d mv\n", user_ad_value, user_ad_voltage);
+
+        u32 adc_value_pa6 = adc_get_value_blocking(io_port_to_ad_ch(IO_PORTA_06)); //阻塞式获取 PA6 的 ad原始值。
+        printf("adc_value_pa6 = %d\n", adc_value_pa6);
+
+        u32 adc_voltage_pa6 = adc_get_voltage_blocking(io_port_to_ad_ch(IO_PORTA_06)); //阻塞式获取 PA6 的电压值，单位：mv。
+        printf("adc_voltage_pa6 = %d\n", adc_voltage_pa6);
+    }

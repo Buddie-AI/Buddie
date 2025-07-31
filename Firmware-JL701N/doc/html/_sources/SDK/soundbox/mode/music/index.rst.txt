@@ -1,0 +1,13 @@
+音乐模式
+########
+
+.. toctree::
+   :maxdepth: 1
+   
+   music.md
+
+   
+
+
+
+

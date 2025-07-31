@@ -1,0 +1,39 @@
+# Reverb
+## 模块组成： 原声+早反射声+后反射声
+
+#### 此模块工具中保存多组预设参数组，作为预设模式可供选择，具体操作是：
+###                 节点配置 -> 导入配置， 在导入配置的下拉框中有多种预设模式可以选择
+加入后，在模块的当前配置 下拉框中就可以选择对应的参数组
+
+* 节点配置 的位置 位于参数界面的 右下角，可以通过这里进入节点配置界面
+* 在节点配置界面， 可以通过导入配置的下拉框中去选择预设的参数组，增加到预设模式
+* 可以点击配置名称旁边的小笔图标，进行预设模式名称编辑
+* 可以通过点击操作栏下面的小笔图标，回到参数编辑界面
+
+### 模块参数
+
+#### 占用Ram大小的控制参数，影响效果，不建议设得过小
+* **EarlyReflection bufsize Factor**  ：单位ms，影响早反射声的申请空间大小，以及 预延时范围
+* **LateReflection Bufsize Factor** ：影响后反射声的申请空间大小
+
+#### 增益类
+* **Dry Gain**  :原声增益
+* **LateReflection Gain**  :后反射声增益
+* **EarlyReflection Gain** : 早反射增益
+  
+#### 早反射参数
+* **EarlyReflection Roomsize Factor** ：早反射声空间大小，最大由EarlyReflection bufsize Factor决定
+* **EarlyReflection Stereo Width**   : 早反射声的立体感大小，0最小，100最大
+* **EarlyReflection Filter Taps** :影响早反射声的滤波器阶数，0是没有早反射
+
+#### 后反射参数
+* **LateReflection Decayfactor** ： 后反射反射声衰减因子，0衰减最快
+* **High Frequency Damping** ：后反射声的高频吸收因子，100对应吸收最快
+* **LateReflection Highcutoff Frequency**   : 后反射声的高切频率
+* **LateReflection Lowcutoff Frequency** :后反射声的低切频率
+* **LateReflection Diffusion** : 后反射声的扩散因子，越大扩散越厉害
+* **LateReflection Pre Delay** ： 后反射声的预延时
+* **LateReflection Transpose Type** : 后反射声的滤波器结构控制，SPACE_WIDE空间感较宽，SPACE_DIFFUSE扩散更快
+* **LateReflection Roomsize**  : 后反射空间大小，最大由lateRefbuf_factor决定
+* **EarlyReflection To LateReflection Ratio**  ：早反射在后反射的占比
+  

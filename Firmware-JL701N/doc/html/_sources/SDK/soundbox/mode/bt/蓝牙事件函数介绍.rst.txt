@@ -1,0 +1,321 @@
+.. vim: syntax=rst
+
+蓝牙事件函数介绍
+====================
+
+1、phonebook_packet_handler
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙电话本获取回调函数
+      @param   type : 事件类型
+               name : 名称
+               number : 数据长度
+               data : 数据 
+      @return  
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   void phonebook_packet_handler(u8 type, const u8 *name, const u8 *number, const u8 *date)
+
+参数：
+
++--------+----------+
+|  名称  |   说明   |
++========+==========+
+| type   | 事件类型 |
++--------+----------+
+| name   | 名称     |
++--------+----------+
+| number | 数据长度 |
++--------+----------+
+| date   | 数据     |
++--------+----------+
+
+示例：
+
+用于处理蓝牙电话本数据包
+
+.. code-block:: c
+
+   #define pbap_handler phonebook_packet_handler
+   
+   void pbap_close_status_update_to_user()
+   {
+      if (last_ptr_data_ptr) {
+         profile_log("some date left ====\n");
+         vcard_free(last_ptr_data_ptr);
+         last_ptr_data_ptr = NULL;
+         last_ptr_data_len = 0;
+      }
+      if (pbap_handler) {
+         pbap_handler(0xff, (const u8 *)"close", NULL, NULL);
+      }
+   }
+
+2、spp_data_handler
+~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙spp 协议数据回调，开发者可以在函数里面获取到接收的数据
+      @param   packet_type ： 数据类型
+               ch ： 数据类型
+               packet ： 数据缓存
+               size ： 数据长度
+      @return  
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   void spp_data_handler(u8 packet_type, u16 ch, u8 *packet, u16 size)
+
+参数：
+
++-------------+----------+
+|    名称     |   说明   |
++=============+==========+
+| packet_type | 数据类型 |
++-------------+----------+
+| ch          | 数据类型 |
++-------------+----------+
+| packet      | 数据缓存 |
++-------------+----------+
+| size        | 数据长度 |
++-------------+----------+
+
+示例：
+
+在蓝牙初始化流程会被注册，用于处理SPP消息
+
+.. code-block:: c
+
+   spp_data_deal_handle_register(spp_data_handler);
+
+3、set_music_device_volume
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙音乐音量同步
+      @param   volume ： 设置音量
+
+      @return  
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   void set_music_device_volume(int volume)
+
+参数：
+
++--------+------------+
+|  名称  |    说明    |
++========+============+
+| volume | 设置的音量 |
++--------+------------+
+
+示例：
+
+在蓝牙初始化流程会被注册，用于音量同步
+
+.. code-block:: c
+
+   music_vol_change_handle_register(set_music_device_volume, phone_get_device_vol);
+
+4、phone_sync_vol
+~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙通话音量同步
+      @param   
+      @return  
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   void phone_sync_vol(void)
+
+参数：
+
+无
+
+示例：
+
+在需要同步蓝牙通话音量时调用
+
+5、bt_read_remote_name
+~~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 获取连接设备名字回调函数，开发者可在这读取设备名字
+      @param   status ： 获取名字是否成功
+               addr ： 设备地址
+               name ： 设备名字
+      @return  
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   void bt_read_remote_name(u8 status, u8 *addr, u8 *name)
+
+参数：
+
++--------+------------------+
+|  名称  |       说明       |
++========+==================+
+| status | 获取名字是否成功 |
++--------+------------------+
+| addr   | 设备地址         |
++--------+------------------+
+| name   | 设备名字         |
++--------+------------------+
+
+示例：
+
+在蓝牙初始化流程会被注册，可用于获取远端蓝牙名称
+
+.. code-block:: c
+
+   read_remote_name_handle_register(bt_read_remote_name);
+
+6、user_get_bt_music_info
+~~~~~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙歌曲信息获取回调
+      @param   type ： 信息类型
+               time ： 播放时间
+               info ： 信息
+               len ： 信息长度
+      @return  
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   void user_get_bt_music_info(u8 type, u32 time, u8 *info, u16 len)
+
+参数：
+
++------+----------+
+| 名称 |   说明   |
++======+==========+
+| type | 信息类型 |
++------+----------+
+| time | 播放时间 |
++------+----------+
+| info | 信息     |
++------+----------+
+| len  | 信息长度 |
++------+----------+
+
+示例：
+
+在蓝牙初始化流程会被注册，用于获取歌曲信息如歌名，歌词，歌曲时长
+
+.. code-block:: c
+
+   bt_music_info_handle_register(user_get_bt_music_info);
+
+7、sys_enter_soft_poweroff
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief AP软关机，蓝牙关闭流程
+      @param   reason ： 关机原因
+      @return  
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   void sys_enter_soft_poweroff(enum poweroff_reason reason)
+
+参数：
+
++--------+----------+
+|  名称  |   说明   |
++========+==========+
+| reason | 关机原因 |
++--------+----------+
+
+示例：
+
+.. code-block:: c
+
+   static void call_app_api(int api, int err)
+   {
+      switch (api) {
+      case API_POWER_OFF:
+         sys_enter_soft_poweroff(POWEROFF_NORMAL);
+         break;
+      case API_TWS_POWER_OFF:
+         sys_enter_soft_poweroff(POWEROFF_NORMAL_TWS);
+         break;
+      default:
+         break;
+      }
+   }
+
+
+8、phone_income_num_check
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙来电报号
+      @param   priv : 暂无用途
+      @return  
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   void phone_income_num_check(void *priv)
+
+参数：
+
++------+----------+
+| 名称 |   说明   |
++======+==========+
+| priv | 暂无用途 |
++------+----------+
+
+示例：
+
+蓝牙来电流程bt_phone_income函数中播放远端手机号
+
+9、phone_ring_play_start
+~~~~~~~~~~~~~~~~~~~~~~~~~
+原型：
+
+.. code-block:: c
+
+   /*-----------------------------------------------------------------------------
+   @brief 蓝牙来电铃声播放
+      @param   
+      @return  是否支持手机来电铃声
+      @note
+      @demo
+   ------------------------------------------------------------------------------*/
+   u8 phone_ring_play_start(void)
+
+参数：
+
+无
+
+示例：
+
+蓝牙来电流程bt_phone_income函数中播放手机铃声

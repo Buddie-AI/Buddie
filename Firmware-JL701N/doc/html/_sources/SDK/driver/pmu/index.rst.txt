@@ -1,0 +1,14 @@
+电源管理
+############
+
+.. toctree::
+   :maxdepth: 1
+
+   summary.rst
+   system.rst
+   io_config.rst
+   io_wkup.rst
+   reset.rst
+   wkup.rst
+   power_param.rst
+   lowpower.rst

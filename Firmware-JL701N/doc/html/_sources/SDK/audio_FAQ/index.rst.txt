@@ -1,0 +1,8 @@
+音频FAQ
+#########
+
+.. toctree::
+   :maxdepth: 1
+
+   common/index.rst
+   MIC_Capless_FAQ.md

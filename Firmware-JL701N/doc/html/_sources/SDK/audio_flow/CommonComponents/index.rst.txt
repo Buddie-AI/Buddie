@@ -1,0 +1,13 @@
+音频流通用配置
+##############
+
+.. toctree::
+   :maxdepth: 1
+
+   bit_width.md
+   play_sync.md
+   bt_play_sync.md
+   dac.md
+   tws.md
+   reverse_phase.md
+   preset_effects.md

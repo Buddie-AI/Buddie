@@ -1,0 +1,271 @@
+消息管理
+###############
+
+概述
+------------
+介绍APP 消息相关操作和api
+
+
+默认支持的消息类型
+-----------------------------
+消息类型定义
+
+.. code-block:: c
+
+    enum {
+        MSG_FROM_KEY =  Q_MSG + 1,
+
+        MSG_FROM_TWS,
+        MSG_FROM_BT_STACK,
+        MSG_FROM_BT_HCI,
+
+        MSG_FROM_EARTCH,
+
+        MSG_FROM_BATTERY,
+        MSG_FROM_CHARGE_STORE,
+        MSG_FROM_TESTBOX,
+        MSG_FROM_ANCBOX,
+
+        MSG_FROM_TONE,
+
+        MSG_FROM_APP,
+
+        MSG_FROM_AUDIO,
+
+        MSG_FROM_CI_UART,
+        MSG_FROM_CDC,
+        MSG_FROM_CFGTOOL_TWS_SYNC,
+
+        MSG_FROM_DEVICE,
+    
+    }；
+
+
+消息处理流程
+-----------------------------
+
+消息处理流程图如下（以music模式获取消息为例）：
+
+    .. figure:: imgs/消息处理流程.png
+       :scale: 80%
+       :align: center
+	   
+       图 3：消息处理流程图
+       
+消息相关API介绍
+------------------------
+
+app_get_message
+----------------------------------------
+获取消息。
+
+原型: 
+
+.. code-block:: c
+
+    int app_get_message(int *msg, int max_num, const struct key_remap_table *key_table)
+
+参数:
+
+    ============   ===================================
+    msg            获取到的消息
+    max_num        一次获取到的消息最多的内容数量
+    key_table      按键表
+    返回值          1：获取成功   0：不需响应消息
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+        if (!app_get_message(msg, ARRAY_SIZE(msg), music_mode_key_table)) {
+            continue;
+        }
+
+app_default_msg_handler
+----------------------------------------
+公共消息处理。
+
+原型: 
+
+.. code-block:: c
+
+    void app_default_msg_handler(int *msg)
+
+参数:
+
+    ============   ===================================
+    msg            需要响应处理的消息
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    void app_default_msg_handler(int *msg)
+
+
+app_common_device_event_handler
+----------------------------------------
+公共设备消息处理。
+
+原型: 
+
+.. code-block:: c
+
+    static void app_common_device_event_handler(int *msg)
+
+参数:
+
+    ============   ===================================
+    msg            需要响应处理的消息
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    switch (msg[0]) {
+    case MSG_FROM_DEVICE:
+        app_common_device_event_handler(msg + 1);
+        break;
+    case MSG_FROM_APP:
+        app_common_app_event_handler(msg + 1);
+    default:
+        break;
+    }
+
+app_common_app_event_handler
+----------------------------------------
+公共app消息处理。
+
+原型: 
+
+.. code-block:: c
+
+    static void app_common_app_event_handler(int *msg)
+
+参数:
+
+    ============   ===================================
+    msg            需要响应处理的消息
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    switch (msg[0]) {
+    case MSG_FROM_DEVICE:
+        app_common_device_event_handler(msg + 1);
+        break;
+    case MSG_FROM_APP:
+        app_common_app_event_handler(msg + 1);
+    default:
+        break;
+    }
+
+app_common_app_event_handler
+----------------------------------------
+公共设备消息处理。
+
+原型: 
+
+.. code-block:: c
+
+    static void app_common_app_event_handler(int *msg)
+
+参数:
+
+    ============   ===================================
+    msg            需要响应处理的消息
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    switch (msg[0]) {
+    case MSG_FROM_DEVICE:
+        app_common_device_event_handler(msg + 1);
+        break;
+    case MSG_FROM_APP:
+        app_common_app_event_handler(msg + 1);
+    default:
+        break;
+    }
+
+
+app_send_message
+----------------------------------------
+推送只带一个参数的app类型的消息。
+
+原型: 
+
+.. code-block:: c
+
+    void app_send_message(int _msg, int arg)
+
+参数:
+
+    ============   ===================================
+    msg            需要推送的消息
+    arg            消息内容
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    app_send_message(APP_MSG_POWER_ON, 0);
+
+
+app_send_message2
+----------------------------------------
+推送只带两个参数的app类型的消息。
+
+原型: 
+
+.. code-block:: c
+
+    void app_send_message2(int _msg, int arg1, int arg2)
+
+参数:
+
+    ============   ===================================
+    msg            需要推送的消息
+    arg1            消息内容1
+    arg2            消息内容2
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    app_send_message2(g_mode_switch_msg[0], g_mode_switch_msg[1], g_mode_switch_arg);
+
+
+
+app_key_event_remap
+----------------------------------------
+按键消息转换。
+
+原型: 
+
+.. code-block:: c
+
+    int app_key_event_remap(const struct key_remap_table *table, int *_event)
+
+参数:
+
+    ============   ===================================
+    table           按键表
+    _event          需要转换的消息
+    返回值           0：没有对应的消息   1：转换后对应的消息或者处理
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    int key_msg = app_key_event_remap(key_table, msg + 1);

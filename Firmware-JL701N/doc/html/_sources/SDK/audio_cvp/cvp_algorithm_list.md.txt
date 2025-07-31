@@ -1,0 +1,38 @@
+# 清晰语音算法列表
+
+## 清晰语音介绍
+清晰语音处理CVP（**Clear Voice Process**）包括自研语音处理算法和第三方算法集成（3rdParty-CVP）
+
+## 语音处理算法列表
+
+|序号|算法模块|备注|
+|---|---|---|
+|1|AEC|回音消除|
+|2|NLP|非线性回音压制|
+|3|NS|降噪，包括传统降噪**ANS**和神经网络降噪**DNS**|
+|4|Beamforming|波束成形，双麦ENC|
+|5|AGC|自动增益控制|
+|6|Flexible|话务耳机算法|
+|7|WNC|风噪检查和压制|
+|8|MFDT|麦克风故障检测|
+
+## 语音处理节点列表
+
+|节点CN|节点EN|麦克风<br>数量|备注|
+|---|---|---|---|
+|单MIC通话|1MIC-ANS|1||
+|单MIC+DNS|1MIC-DNS|1||
+|双MIC通话<br>`抗风噪`|2MIC-ANS|2|Beamforming，**TALK Mic**+**FF Mic**|
+|双MIC+DNS<br>`抗风噪`|2MIC-DNS|2|Beamforming，**TALK Mic**+**FF Mic**|
+|2MIC-AWN<br>`抗风噪`|2MIC-AWN|2|DNS，Anti-WindNoise，**TALK Mic**+**FF Mic** <br>适用于mic布局前后各一个，<br>且其中一个不容易受到风噪影响，类似OWS类耳机|
+|2MIC-Hybrid<br>`抗风噪`|2MIC-Hybrid|2|DNS，**TALK Mic**+**FB Mic**|
+|话务双MIC通话|2MIC-TC-ANS|2|适用于有麦杆的方案|
+|话务双MIC+DNS|2MIC-TC-DNS|2|适用于有麦杆的方案|
+|3MIC通话<br>`抗风噪`|3MIC-DNS|3|Beamforming，DNS，**TALK Mic**+**FF Mic**+**FB Mic**|
+|通话第三方算法|3rdParty-CVP||第三方通话算法开发集成|
+
+<div class="admonition important">
+<p class="admonition-title">抗风噪说明</p>
+<p>2mic-beamforming：抗风噪5m/s<br> 2mic-AWM：抗风噪5m/s<br>2mic-Hybrid：抗风噪8m/s<br>3mic：抗风噪8m/s</p>
+<p>注意：该数据仅供参考，需要样机模具上符合一定的声学设计，保证麦克风在物理上有一定程度的抗风噪能力</p>
+</div>

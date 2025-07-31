@@ -1,0 +1,111 @@
+.. vim: syntax=rst
+
+tws连接配对介绍
+==============
+
+tws连接配对的流程文件路径：apps/soundbox/mode/bt/tws_dual_conn.c
+
+连接配对流程图
+^^^^^^^^^^^^^
+.. image:: media/tws开机流程.png
+
+基本概念：
+^^^^^^^^
+TWS_LOCAL_ADDR
+""""""""""""""
+TWS的本地地址，配对过程中本地地址会和远端设备的本地地址，组合成为公共地址，配对之后就直接通过本地地址进行连接
+
+TWS_COMM_ADDR
+"""""""""""""
+TWS配对之后的公共地址，TWS配对过程根据远端和本地地址进行策略计算得到（默认），也可以通过在代码重写 **tws_host_get_common_addr** 进行指定，例如配置了 **CONFIG_TWS_COMMON_ADDR_USED_LEFT** 则重写该接口为：
+
+CFG_BT_MAC_ADDR
+"""""""""""""""
+蓝牙mac地址，提供给手机搜索连接时使用的地址，如果tws未配对，则mac地址为VM或BTIF区域存储的地址，如果tws以配对，则mac地址会被改为tws的公共地址
+
+主从切换
+""""""""
+与手机连接的情况，TWS之间可以根据程序底层策略自动选择哪边做主机哪边做从机，该功能只在使用公共地址的情况使用
+
+非公共地址方式
+""""""""""""""
+TWS主从机通过按键配对之后，优先使用发起按键配对的一方的地址作为mac地址，如果连接手机再发起配对，则使用连接手机的一方的地址作为mac地址，在非公共地址的方式下，从机不会记录与手机的**回连信息**，单独开机，从机会回连TWS，回连超时则打开与手机的可发现可连接，手机可以与B再进行连接，此时手机蓝牙列表会有两个设备
+
+
+.. code-block:: c
+    
+    #if CONFIG_TWS_COMMON_ADDR_SELECT == CONFIG_TWS_COMMON_ADDR_USED_LEFT
+    void tws_host_get_common_addr(u8 *remote_mac_addr, u8 *common_addr, char channel)
+    {
+        if (channel == 'L') {
+            memcpy(common_addr, bt_get_mac_addr(), 6);
+        } else {
+            memcpy(common_addr, remote_mac_addr, 6);
+        }
+    }
+    #endif
+  
+pair_code
+"""""""""
+用于限制指定tws设备之间进行配对，只有pair_code相同的设备，才能进行配对
+
+相关接口说明
+^^^^^^^^^^^
+
+.. code-block:: c
+
+    int tws_api_wait_connection();
+
++ 函数功能：打开tws等待连接，调用之后，tws处于等待连接状态，可以被已经配对过的tws连接
+
+.. code-block:: c
+
+    int tws_api_create_connection(int timeout);
+
++ 函数功能：搜索并连接已经配对过的tws
++ 函数参数：timeout: 单位ms， 0 表示不超时
++ 返回值:  0: 函数调用成功
+
+.. code-block:: c
+
+    int tws_api_search_sibling_by_code();
++ 函数功能：通过搜索码搜索tws设备
++ 返回值：0：函数调用成功；-EINVAL：tws连接已存在；-ENOMEM：申请内存失败；-ENOENT：申请硬件资源失败
+
+.. code-block:: c
+
+    int tws_api_wait_pair_by_code(u16 pair_code, const char *name, int timeout_ms)
++ 函数功能：等待相同pair_code的设备配对
++ 参数：
+    + pair_code ：暂无作用
+    + name : 不为空会打开手机链路的可发现可连接
+    + timeout_ms:超时时间，0表示不超时
+
+.. code-block:: c
+
+    int tws_api_auto_pair(int timeout)
+
++ 函数功能：tws自动配对
++ 参数：超时时间，0表示不超时
++ 返回值： 0表示调用成功，-EFAULT表示已连接手机或者tws连接已存在
+
+.. code-block:: c
+
+    int tws_api_detach(enum tws_detach_reason reason, int timeout);
+
++ 函数功能：断开tws连接
++ 参数：
+  
+  + reason： 断开原因
+  + timeout: 等待超时时间，为0则不等待直接返回
+  + 返回值：任何情况都返回0 
+
+
+.. code-block:: c
+
+    int tws_api_remove_pairs();
++ 函数功能：发送解除配对命令给对方, 成功后会收到TWS_EVENT_REMOVE_PAIRS事件
++ 返回值：
+  
+  + -EINVAL 表示tws未连接
+  + 0 表示函数调用成功 

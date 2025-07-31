@@ -1,0 +1,12 @@
+K歌三合一
+################
+
+.. toctree::
+   :maxdepth: 1
+
+   JL701N+AC706N方案.rst
+   AC706N+AC706N方案.rst
+
+
+
+

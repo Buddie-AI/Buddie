@@ -1,0 +1,37 @@
+# LHDC认证流程
+
+## 产品支持LHDC
+1. SDK使能LHDC：默认SDK支持的LHDC lib带有使用限制（10min播放时长），超时自动静音
+2. 如果要使用LHDC过Hi-Res认证获得小金标，则需要获得LHDC的授权。授权后盛微先进公司（即LHDC原厂）会提供带有授权的lib，替换SDK默认的LHDC lib（cpu/brxx/liba/**libLHDCv4DecodeLib.a**或cpu/brxx/liba/**libLHDCv5DecodeLib.a**），即可无限制使用LHDC
+3. LHDC授权使用多算法授权的方式，请参考：[🔗多算法授权使用说明](https://doc.zh-jieli.com/Tools/zh-cn/mass_prod_tools/multi_auth/index.html)
+
+## JAS申请流程
+客戶申請 LHDC 認證時會做的測試項目與JAS預測項目， 如果客戶的產品可，以支持**24bit/96KHz**那麼測試項目中會包含**JAS HRAW**的預先認證測試。最後結果還是需要客戶自行送報告給JAS。
+
+詳細**JAS HRAW**認證流程如下：
+
+**TWS 耳机认证 Hi-Res AUDIO WIRELESS 金标的软硬件要求如下：**
+
+1. 耳機單體頻響要達到 40KHz 或以上， 簡易自評方式以 1KHz 頻點音壓為基準，
+則 40KHz 頻點音壓差值不超過 20dB 為限， 例 1KHz 音壓測試數據為 100dB，
+則 40KHz 音壓值需大於等於 80dB， 20KHz 至 40KHz 區間音壓需自然遞減過渡，
+太大的起伏會造成認證困難， 此處需要客戶提供耳機單體頻響報告確認是否能
+過認證（详细见 LHDC_HRAW_Sample ）
+1. 左右耳的相位差， 在 5K Hz 的 Sizetone 下连续播放 5 分钟累计误差小于 50us
+ü 此處需要客戶提供示波器截圖（詳細請見 LHDC_HRAW_Sample）
+1. 支持 900K 码率
+2. 要是 JAS 会员
+3. 以上條件符合後需寄 5 台样机给到盛微台湾， 盛微测试后出测试报告。
+4. 客戶拿到测试报告后发给 JAS
+5. JAS 审查测试报告后， 可以申请金标
+6. 如在欲在外包装打金标 Logo 須同時打 LHDC 的 LOGO
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>上述提到的LHDC_HRAW_Sample文档，请联系深圳办获取</p>
+</div>
+
+
+
+
+

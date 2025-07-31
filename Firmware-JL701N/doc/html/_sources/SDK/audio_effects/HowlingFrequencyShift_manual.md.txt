@@ -1,0 +1,13 @@
+# 移频（Frequency Shift）
+
+## 功能介绍
+- 移频分为按比例(pitch shift)和按绝对值移频(frequency shift)。按比例移频率根据频率的高低，移动
+的实际频率会不一样。按绝对值移频则固定移动一定的频率。
+
+## 使用说明
+* **pitch shift ratio:**:按比例移频的比例，单位是百分比
+* **frequency shift scale**:按绝对值移频的移频量，单位是Hz
+
+* **use pitch shift**:  勾选后使用按比例移频出时间
+* **use frequency shift**:  勾选后使用按绝对值移频易触发陷波
+* **bypass**: 勾选后移频模块不运行,占用的内存也会释放

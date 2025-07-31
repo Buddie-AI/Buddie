@@ -1,0 +1,53 @@
+# 音频代码优化
+
+## 优化原则
+- **原则1**：关闭不用的模块
+- **原则2**：用到的模块，关闭不用的属性
+- **原则3**：用到的模块，使用低负复杂度配置（对效果有一定的影响，需根据具体方案需求而定）
+
+## 优化指引
+### 省电容MIC
+根据`原则1`，根据具体方案，如果没用到省电容MIC，关闭模块使能<br>
+![MIC Capless Enable](./assets/capless_mic_enable.png)
+
+较早期的SDK，该配置项没有开放到工具配置，可在SDK手动修改<br>
+![MIC Capless Enable](./assets/capless_mic_enable_1.png)
+
+### PLC类型配置
+根据`原则3`，使用低复杂度的配置，可以优化**2k**左右的代码体积<br>
+![PLC Lite](./assets/PLC_Lite.png)
+
+### EQ滤波器类型使能配置
+根据`原则2`，根据实际方案，关闭没有用到的滤波器：lib_media_config.c
+```C
+//***********************
+//* 	 EQ             *
+//***********************
+const int config_audio_eq_hp_enable = 1;		//High Pass
+const int config_audio_eq_lp_enable = 1;		//Low Pass
+const int config_audio_eq_bp_enable = 1;		//Band Pass(Peaking)
+const int config_audio_eq_hs_enable = 1;		//High Shelf
+const int config_audio_eq_ls_enable = 1;		//Low Shelf
+#ifdef CONFIG_256K_FLASH
+const int config_audio_eq_hs_q_enable = 0;		//High Shelf Q
+const int config_audio_eq_ls_q_enable = 0;		//Low Shelf Q
+const int config_audio_eq_hp_adv_enable = 0;	//High Pass Advance：对应工具上阶数可选的Hp
+const int config_audio_eq_lp_adv_enable = 0;	//Low Pass Advance：对应工具上阶数可选的Lp
+#else
+const int config_audio_eq_hs_q_enable = 1;		//High Shelf Q
+const int config_audio_eq_ls_q_enable = 1;		//Low Shelf Q
+const int config_audio_eq_hp_adv_enable = 1;	//High Pass Advance：对应工具上阶数可选的Hp
+const int config_audio_eq_lp_adv_enable = 1;	//Low Pass Advance：对应工具上阶数可选的Lp
+#endif
+
+```
+
+### 通话算法优化
+根据`原则1`，具体方案中如果没用到对应的CVP算法模块，可以配置不使能<br>
+```C
+/*模块使能，控制代码是否链接*/
+const u8 CONST_AEC_ENABLE = 1;
+const u8 CONST_NLP_ENABLE = 1;
+const u8 CONST_NS_ENABLE  = 1;
+const u8 CONST_AGC_ENABLE = 1;
+```

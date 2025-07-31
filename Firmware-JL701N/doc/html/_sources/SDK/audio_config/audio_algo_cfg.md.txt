@@ -1,0 +1,14 @@
+# 音频算法配置
+
+## 清晰语音算法配置
+- 1mic算法选择
+  - SMS_DEFAULT
+  - SMS_TDE
+- 3mic算法选择
+  - 模式一
+  - 模式二
+
+## MUSIC_PLC配置
+- PLC类型选择
+  - PLC_LITE：
+  - PLC_ADVANCED：

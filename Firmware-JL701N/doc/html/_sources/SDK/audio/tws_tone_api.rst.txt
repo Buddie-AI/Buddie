@@ -1,0 +1,265 @@
+提示音(TWS)
+==================
+TWS同步播放提示音API是系统提供的用于TWS同步播放提示音文件的接口, 支持播放单个文件或文件列表，
+默认采用排队方式, 相互之间不打断。由于TWS每次通信有一定的时间间隔,干扰环境下可能会导致多次重发，
+建议将delay_msec设置在300ms以上,增加抗干扰能力。
+
+
+tws_play_tone_file
+----------------------------------------
+同步播放单个提示音文件，默认采用叠加方式播放，在某些资源受限的情况下也可能以打断方式播放。
+
+原型: 
+
+.. code-block:: c
+
+    int tws_play_tone_file(const char *file_name, int delay_msec)
+
+参数:
+
+    ============   ===================================
+    file_name       文件名
+    delay_msec      多少msec以后开始同步出声音
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    tws_play_tone_file("tone_en/tws_connect.*", 300); 
+
+
+tws_play_tone_file_callback
+-------------------------------
+同步播放单个提示音文件,支持播放事件回调。可用于播放完提示音后执行其它操作
+
+原型: 
+
+.. code-block:: c
+
+    int tws_play_tone_file_callback(const char *file_name, int delay_msec, u32 func_uuid)
+
+参数:
+
+    ============   ===========================================
+    file_name       文件名
+    delay_msec      多少msec以后开始同步出声音
+    func_uuid       播放事件回调函数绑定的uuid,用于查找回调函数
+    ============   ===========================================
+
+示例：
+
+.. code-block:: c
+
+    int tws_play_tone_callback(int fname_uuid, enum stream_event event)
+    {
+        if (event == STREAM_EVENT_STOP) {
+            // 提示音播放结束，do something
+        }
+        return 0;
+    }
+    // 将目标回调函数绑定到一个uuid上
+    REGISTER_TWS_TONE_CALLBACK(tws_connect_cb_stub) = {
+        .func_uuid = 0xAB34E781,
+        .callback  = tws_play_tone_callback
+    };
+
+    tws_play_tone_file_callback("tone_en/tws_connect.*", 300, 0xAB34E781);
+
+
+tws_play_tone_file_alone
+----------------------------------------
+打断方式同步播放单个提示音文件
+
+原型: 
+
+.. code-block:: c
+
+    int tws_play_tone_file_alone(const char *file_name, int delay_msec)
+
+参数:
+
+    ============   ===================================
+    file_name       文件名
+    delay_msec      多少msec以后开始同步出声音
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    tws_play_tone_file_alone("tone_en/low_power.*", 300); 
+
+
+tws_play_tone_file_alone_callback
+-----------------------------------
+打断方式同步播放单个提示音文件,支持播放事件回调。可用于播放完提示音后执行其它操作
+
+原型: 
+
+.. code-block:: c
+
+    int play_tone_file_alone_callback(const char *file_name, int delay_msec, int func_uuid)
+
+参数:
+
+    ============   ===========================================
+    file_name       文件名
+    delay_msec      多少msec以后开始同步出声音
+    func_uuid       播放事件回调函数绑定的uuid,用于查找回调函数
+    ============   ===========================================
+
+示例：
+
+.. code-block:: c
+
+    int tws_play_tone_alone_callback(int fname_uuid, enum stream_event event)
+    {
+        if (event == STREAM_EVENT_STOP) {
+            // 提示音播放结束，do something
+        }
+        return 0;
+    }
+    // 将目标回调函数绑定到一个uuid上
+    REGISTER_TWS_TONE_CALLBACK(tws_lowpower_cb_stub) = {
+        .func_uuid = 0x208DEAFC,
+        .callback  = tws_play_tone_alone_callback
+    };
+
+    tws_play_tone_file_alone_callback("tone_en/low_power.*", 300, 0x208DEAFC);
+
+tws_play_tone_files
+----------------------------------------
+播放多个提示音文件, 默认采用叠加方式播放，在某些资源受限的情况下也可能以打断方式播放。
+
+原型: 
+
+.. code-block:: c
+
+    int tws_play_tone_files(const char *file_name[], u8 file_num, int delay_msec)
+
+参数:
+
+    ============   ===========================================
+    file_name[]     文件名指针数组，播放过程中不能被释放
+    file_num        文件个数
+    delay_msec      多少msec以后开始同步出声音
+    ============   ===========================================
+
+示例:
+
+.. code-block:: c
+
+    static const char *file_list[] = {
+        "tone_en/1.*",
+        "tone_en/2.*",
+        "tone_en/3.*",
+        "tone_en/4.*"
+    };
+
+    void main()
+    {
+        tws_play_tone_files(file_list, 4, 300);
+    }
+
+tws_play_tone_files_callback
+----------------------------------------
+播放多个提示音文件, 支持播放事件回调。
+
+原型: 
+
+.. code-block:: c
+
+    int tws_play_tone_files_callback(const char *file_name[], u8 file_num, int delay_msec, u32 func_uuid)
+
+示例:
+
+.. code-block:: c
+
+    static const char *file_list[] = {
+        "tone_en/1.*",
+        "tone_en/2.*",
+        "tone_en/3.*",
+        "tone_en/4.*"
+    };
+
+    int play_files_callback(int priv, enum stream_event event)
+    {
+        if (event == STREAM_EVENT_STOP) {
+            // 提示音播放结束，do something
+        }
+        return 0;
+    }
+    // 将目标回调函数绑定到一个uuid上
+    REGISTER_TWS_TONE_CALLBACK(tws_fils_cb_stub) = {
+        .func_uuid = 0xC9087A16,
+        .callback  = play_files_callback
+    };
+
+    void main()
+    {
+        tws_play_tone_files_callback(file_list, 4, 300, 0xC9087A16);
+    }
+
+
+tws_play_ring_file
+----------------------------------------
+同步播放铃声文件，默认采用叠加方式播放，在某些资源受限的情况下也可能以打断方式播放。
+
+原型: 
+
+.. code-block:: c
+
+    int tws_play_ring_file(const char *file_name, int delay_msec)
+
+参数:
+
+    ============   ===================================
+    file_name       文件名
+    delay_msec      多少msec以后开始同步出声音
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    tws_play_ring_file("tone_en/ring.*", 300); 
+
+
+tws_play_ring_file_callback
+-------------------------------
+同步播放铃声文件,支持播放事件回调。可用于播放完提示音后执行其它操作
+
+原型: 
+
+.. code-block:: c
+
+    int tws_play_ring_file_callback(const char *file_name, int delay_msec, u32 func_uuid)
+
+参数:
+
+    ============   ===========================================
+    file_name       文件名
+    delay_msec      多少msec以后开始同步出声音
+    func_uuid       播放事件回调函数绑定的uuid,用于查找回调函数
+    ============   ===========================================
+
+示例：
+
+.. code-block:: c
+
+    int tws_play_ring_callback(int fname_uuid, enum stream_event event)
+    {
+        if (event == STREAM_EVENT_STOP) {
+            // 提示音播放结束，do something
+        }
+        return 0;
+    }
+    // 将目标回调函数绑定到一个uuid上
+    REGISTER_TWS_TONE_CALLBACK(tws_ring_cb_stub) = {
+        .func_uuid = 0x33458901,
+        .callback  = tws_play_ring_callback
+    };
+
+    tws_play_ring_file_callback("tone_en/ring.*", 300, 0x33458901);
+

@@ -1,0 +1,47 @@
+# 声道适配
+
+## 音频分流器
+
+- 将数据流复制多份进行分流，供后续节点做不同的处理。
+
+![sound_splitter](./assets/sound_splitter.png)
+
+## 声道拆分
+
+- 支持将立体声`LR`拆分为左声道`L` 和 右声道`R`分别输出。
+
+![vocal_track_separation](./assets/vocal_track_separation.png)
+
+## 声道组合
+
+- 支持`两路`单声道`L、R`合并为`立体声`
+
+![vocal_track_synthesis_LR](./assets/vocal_track_synthesis.png)
+
+- 支持`两路`立体声`LR、LR`合并为`四声道`
+
+![vocal_track_synthesis_LR_LR](./assets/vocal_track_synthesis2.png)
+
+
+## ChannelMerge（声道合并器）
+
+- 支持将输入的`一路`立体声`LR`转换为单声道`LR_MIX`
+
+![channel_merge_LR](./assets/channel_merge.png)
+
+- 支持将输入的`一路`四声道 `LR_LR`转换为立体声`LR`
+
+![channel_merge_LR_LR](./assets/channel_merge2.png)
+
+
+
+## ChannelExpander（声道扩展器）
+
+- 支持将输入的`一路`立体声`LR`扩展为四声道`LR_LR`
+- 支持将输入的`一路`单声道扩展为立体声`LR`
+
+![channel_expander](./assets/channel_expander.png)
+
+此外ChannelExpander还提供配置选项，选择是否将扩展的声道静音（立体声的`R`声道、四声道的`RL / RR`声道）。
+
+![channel_expander_param](./assets/channel_expander_param.png)

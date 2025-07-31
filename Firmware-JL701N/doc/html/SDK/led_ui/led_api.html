@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LED API说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>LED API说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="led-api">
+<span id="led-api-chapter"></span><h1>LED API说明<a class="headerlink" href="#led-api" title="Link to this heading"></a></h1>
+<section id="api">
+<h2>配置工具相关API<a class="headerlink" href="#api" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>led_ui_manager_display</p>
+<blockquote>
+<div><ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">led_ui_manager_display</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">local_action</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">uuid</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：执行UI状态切换</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>local_action</p></td>
+<td><p>对于TWS应用有效：</p>
+<p>0：UI状态切换需要TWS同步显示。</p>
+<p>1：只在本机切换，不需要TWS同步。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>uuid</p></td>
+<td><p><a class="reference internal" href="led_config.html#led-status-config-t"><span class="std std-ref">LED状态配置</span></a> 中生成的LED状态的UUID，</p></td>
+</tr>
+<tr class="row-even"><td><p>mode</p></td>
+<td><p>0: 覆盖切换</p>
+<p>1: 打断切换</p>
+<p>2: 恢复上一次的UI状态</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：无</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>led_ui_manager_display_by_name</p>
+<blockquote>
+<div><ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">led_ui_manager_display_by_name</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">local_action</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：执行UI状态切换</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>local_action</p></td>
+<td><p>对于TWS应用有效：</p>
+<p>0：UI状态切换需要TWS同步显示。</p>
+<p>1：只在本机切换，不需要TWS同步。</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p><a class="reference internal" href="led_config.html#led-status-config-t"><span class="std std-ref">LED状态配置</span></a> 中输入的LED状态名字符串，注意只支持是全英文名，不能带中文。</p></td>
+</tr>
+<tr class="row-even"><td><p>mode</p></td>
+<td><p>0: 覆盖切换</p>
+<p>1: 打断切换</p>
+<p>2: 恢复上一次的UI状态</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：无</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>led_ui_manager_status_busy_query</p>
+<blockquote>
+<div><ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="nf">led_ui_manager_status_busy_query</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：用于查询LED显示状态</p></li>
+<li><p>参数说明：无</p></li>
+<li><dl>
+<dt>返回值：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>LED UI状态空闲</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>LED UI状态忙</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>led_tws_state_sync</p>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">led_tws_state_sync</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">led_state</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">msec</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">force_sync</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p>功能说明：led状态tws之间同步</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>led_state</p></td>
+<td><p>uuid</p></td>
+</tr>
+<tr class="row-odd"><td><p>msec</p></td>
+<td><p>自调用函数tws同步回调函数的时间，单位：毫秒（msec）</p></td>
+</tr>
+<tr class="row-even"><td><p>force_sync</p></td>
+<td><p>0：TWS主机调用才发起同步</p>
+<p>1：TWS主机/从机调用都发起同步</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：无</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>led_tws_state_sync_by_name</p>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">led_tws_state_sync_by_name</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">msec</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">force_sync</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p>功能说明：led状态tws之间同步</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p><a class="reference internal" href="led_config.html#led-status-config-t"><span class="std std-ref">LED状态配置</span></a> 中输入的LED状态名字符串，注意只支持是全英文名，不能带中文。</p></td>
+</tr>
+<tr class="row-odd"><td><p>msec</p></td>
+<td><p>自调用函数tws同步回调函数的时间，单位：毫秒（msec）</p></td>
+</tr>
+<tr class="row-even"><td><p>force_sync</p></td>
+<td><p>0：TWS主机调用才发起同步</p>
+<p>1：TWS主机/从机调用都发起同步</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：无</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="id1">
+<h2>硬件底层相关API<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>pwm_led_one_flash_display</p>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">pwm_led_one_flash_display</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">led_index</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">led0_bright</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">led1_bright</span><span class="p">,</span>
+<span class="w">                   </span><span class="n">u32</span><span class="w"> </span><span class="n">period</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">start_light_time</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">light_time</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p>功能说明：设置周期闪1次LED状态</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>led_index</p></td>
+<td><p>需要点亮的led索引:
+0：输出低电平点亮；</p>
+<p>1：输出高电平点亮；</p>
+<p>2：高低电平交替点亮；</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>led0_bright</p></td>
+<td><p>输出低电平点亮对应灯的亮度，设置范围：0~500，值越大，亮度越亮</p></td>
+</tr>
+<tr class="row-even"><td><p>led1_bright</p></td>
+<td><p>输出高电平点亮对应灯的亮度，设置范围：0~500，值越大，亮度越亮</p></td>
+</tr>
+<tr class="row-odd"><td><p>period</p></td>
+<td><p>循环周期，单位：毫秒（ms）</p></td>
+</tr>
+<tr class="row-even"><td><p>start_light_time</p></td>
+<td><p>灯在周期中开始点亮的起始时间，单位：毫秒</p></td>
+</tr>
+<tr class="row-odd"><td><p>light_time</p></td>
+<td><p>灯在周期中点亮的持续时间，单位：毫秒</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：无</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>pwm_led_double_flash_display</p>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">pwm_led_double_flash_display</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">led_index</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">led0_bright</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">led1_bright</span><span class="p">,</span>
+<span class="w">                      </span><span class="n">u32</span><span class="w"> </span><span class="n">period</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">first_light_time</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">gap_time</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">second_light_time</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p>功能说明：设置周期闪2次LED状态</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>led_index</p></td>
+<td><p>需要点亮的led索引:
+0：输出低电平点亮；</p>
+<p>1：输出高电平点亮；</p>
+<p>2：高低电平交替点亮；</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>led0_bright</p></td>
+<td><p>输出低电平点亮对应灯的亮度，设置范围：0~500，值越大，亮度越亮</p></td>
+</tr>
+<tr class="row-even"><td><p>led1_bright</p></td>
+<td><p>输出高电平点亮对应灯的亮度，设置范围：0~500，值越大，亮度越亮</p></td>
+</tr>
+<tr class="row-odd"><td><p>period</p></td>
+<td><p>循环周期，单位：毫秒（ms）</p></td>
+</tr>
+<tr class="row-even"><td><p>first_light_time</p></td>
+<td><p>灯在周期中第1次点亮的持续时间，单位：毫秒</p></td>
+</tr>
+<tr class="row-odd"><td><p>gap_time</p></td>
+<td><p>灯在周期中第1次与第2次点亮的间隔时间，单位：毫秒</p></td>
+</tr>
+<tr class="row-even"><td><p>second_light_time</p></td>
+<td><p>灯在周期中第2次点亮的持续时间，单位：毫秒</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：无</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>pwm_led_breathe_display</p>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">pwm_led_breathe_display</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">led_index</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">breathe_time</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">led0_bright</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">led1_bright</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">u32</span><span class="w"> </span><span class="n">led0_light_delay_time</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">led1_light_delay_time</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">led_blink_delay_time</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p>功能说明：设置周期呼吸的UI效果</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>led_index</p></td>
+<td><p>需要点亮的led索引:
+0：输出低电平点亮；</p>
+<p>1：输出高电平点亮；</p>
+<p>2：高低电平交替点亮；</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>breathe_time</p></td>
+<td><p>呼吸周期(灭-&gt;最亮-&gt;灭), 设置范围: 500ms以上</p></td>
+</tr>
+<tr class="row-even"><td><p>led0_bright</p></td>
+<td><p>输出低电平点亮对应灯的亮度，设置范围：0~500，值越大，亮度越亮</p></td>
+</tr>
+<tr class="row-odd"><td><p>led1_bright</p></td>
+<td><p>输出高电平点亮对应灯的亮度，设置范围：0~500，值越大，亮度越亮</p></td>
+</tr>
+<tr class="row-even"><td><p>led0_light_delay_time</p></td>
+<td><p>低电平点亮的灯在呼吸到最亮时延时的时间，单位：毫秒</p></td>
+</tr>
+<tr class="row-odd"><td><p>led1_light_delay_time</p></td>
+<td><p>高电平点亮的灯在呼吸到最亮时延时的时间，单位：毫秒</p></td>
+</tr>
+<tr class="row-even"><td><p>led_blink_delay_time</p></td>
+<td><p>在两次呼吸之间的灭灯时间，单位：毫秒</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：无</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

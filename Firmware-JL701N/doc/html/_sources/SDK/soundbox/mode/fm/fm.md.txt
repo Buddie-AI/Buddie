@@ -1,0 +1,819 @@
+fm 应用详细设计说明
+==================
+
+
+### 术语和缩写词
+
+| 解释         | 缩写和术语                                                  |
+| ------------ | ---------------------------------------------------------- |
+| FM           | FM 调频即收音机功能                                         |
+| Fm 真实频点   | 指具体的绝对频率值                                          |
+| Fm 虚拟频点   | 使用了数字序号 1、2、3 代替了 8750、8760、8770 等真实的频率   |
+| Fm 频道      | 具有有效信息的频点                                           |
+| Fm 台号      | 某频道在搜索到的所有频道中的序号                              |
+
+## 总体设计
+###  需求概述
+FM应用主要实现的功能包括：
+ 1. 实现内置收音模块和linein通道采集外置收音模块(RDA5807/BK1080/QN8035)实现fm功能的播放;
+ 2. 提供播放/暂停、加/减音量、上下频点切换、上下频道切换、全自动/半自动搜台等操作;
+ 3. 支持最近浏览的台号/虚拟频点、搜索到的频道总数和频道映射表存取。
+
+###  总体架构设计
+本应用主要由以下四个模块组成，其中驱动层为内外置收音模块驱动，中间层为收音模块管理单元和FM vm模块，应用层的实现主要是FM资源管理/消息处理模块。关于各个模块的详细介绍以及模块之间的关联在本文后面叙述。
+
+| 模块名称            | 对应文件                                  |
+| ------------------ | ---------------------------------------- |
+| 内外置收音模块驱动   | fm_inside.c,QN8035.c,Bk1080.c,RDA5807.c  |
+| 收音模块管理单元     | fm_manage.c                              |
+| FM vm              | fm_rw.c                                  |
+| FM 应用管理         | fm.c,fm_api.c,fm_app_msg_handler.c       |
+
+###  模块关联图及应用层流程框图
+![绘图](./imgs/0.png)
+
+![绘图](./imgs/1.png)
+
+## 内外置收音模块驱动模块设计说明
+### 模块描述
+该模块是内外置收音模块的驱动部分，根据收音模块管理单元提供的注册接口，往收音模块管理部分注册其驱动接口操作集和标识字符串。
+
+### 模块接口设计
+在fm_manage.h中定义如下结构体信息包含内外置收音模块需要注册的操作函数以及logo。
+
+``` javascript
+typedef struct {
+    u8(*init)(void *priv);			      //初始化收音模块
+    u8(*close)(void *priv);			   //关闭收音模块
+    u8(*set_fre)(void *priv, u16 fre);	//设置收音模块真实频点
+    u8(*mute)(void *priv, u8 flag);	   //收音模块mute
+    u8(*read_id)(void *priv);		      //获取收音模块id
+    u8 logo[20];					         //收音模块标识字符串
+} FM_INTERFACE;
+```
+
+### 收音模块驱动注册说明
+通过以下宏定义将收音模块驱动接口注册进入收音模块管理单元。
+``` javascript
+#define REGISTER_FM(fm) \
+	static FM_INTERFACE fm SEC_USED(.fm_dev)
+```
+
+例如:
+``` javascript
+//在fm_inside.c注册内置收音模块驱动接口
+REGISTER_FM(fm_inside) = {
+    .logo 	= "fm_inside",
+    .init   	= fm_inside_init,
+    .close  	= fm_inside_powerdown,
+    .set_fre 	= fm_inside_set_fre,
+    .mute   	= fm_inside_mute,
+    .read_id 	= fm_inside_read_id,
+};
+
+//在QN8035.c注册外置收音模块qn8035驱动接口
+REGISTER_FM(qn8035) = {
+    .logo  	= "qn8035",
+    .init    	= qn8035_init,
+    .close   	= qn8035_powerdown,
+    .set_fre 	= qn8035_set_fre,
+    .mute   	= qn8035_mute,
+    .read_id 	= qn8035_read_id,
+};
+```
+## 收音模块管理单元设计说明
+### 模块描述
+该模块用于对驱动层收音模块注册的驱动接口操作集进行管理和封装，隐藏具体的收音模块操作细节，并为应用层提供简单清晰的调用接口。
+
+### 模块接口设计
+在fm_manage.c中定义静态变量，用于指向在线收音模块注册的操作函数集。
+``` javascript
+static FM_INTERFACE *fm_hdl = NULL;
+``` 
+收音模块管理单元初始化时，遍历驱动层注册的收音模块驱动接口，获取收音模块的ID以检查是否有收音模块在线，在线则将fm_hdl指向在线收音模块注册的操作函数集，并初始化该在线收音模块。在后续的操作中，对在线收音模块进行的关闭，mute和设置频点等操作都是通过fm_hdl实现。
+
+该模块为应用层提供的接口如下。
+#### fm_manage_init
+收音模块管理单元初始化函数，完成源申请，iic初始化，在线收音模块初始化等。
+
+原型：
+``` javascript
+int fm_manage_init(void);
+```
+参数：
+| - | 无 |
+| - | -|
+| 返回值 | -1：无设备在线，0：设备在线 |
+
+示例：
+``` javascript
+fm_manage_init();
+```
+
+#### fm_manage_check_online
+收音模块在线检测。
+
+原型：
+``` javascript
+void fm_manage_check_online(void);
+```
+参数：
+| - | 无 |
+| - | -|
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_manage_check_online();
+```
+
+#### fm_manage_mute
+收音模块mute。
+
+原型：
+``` javascript
+void fm_manage_mute(u8 mute);
+```
+参数：
+| mute | 0：dismute， 1：mute |
+| - | -|
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_manage_mute(1);
+```
+
+#### fm_manage_set_fre
+收音模块设置真实频点。
+
+原型：
+``` javascript
+bool fm_manage_set_fre(u16 fre);
+```
+参数：
+| fre | 真实频点(875-1080) |
+| - | -|
+| 返回值 | 1：有效频点， 0：无效频点 |
+
+示例：
+``` javascript
+fm_manage_set_fre(8750);
+```
+
+#### fm_manage_get_fre
+获取收音模块当前频点。
+
+原型：
+``` javascript
+u16 fm_manage_get_fre(void);
+```
+参数：
+| - | 无 |
+| - | -|
+| 返回值 | 真实频点值(875-1080) |
+
+示例：
+``` javascript
+u16 fre = fm_manage_get_fre();
+```
+ 
+#### fm_manage_close
+关闭收音模块。
+
+原型：
+``` javascript
+void fm_manage_close(void);
+```
+参数：
+| - | 无 |
+| - | -|
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_manage_close();
+```
+
+#### fm_manage_start
+收音模块出声，打开内置解码通道或者打开linein通道使收音模块出声。
+
+原型：
+``` javascript
+int fm_manage_start(void);
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | -1：失败， 0：成功 |
+
+示例：
+``` javascript
+fm_manage_start();
+```
+
+## FM vm模块设计说明
+### 模块描述
+该模块通过vm来保存FM搜台信息，存储的信息主要包括mask标志，最近浏览的虚拟频点，最近浏览的台号，搜索到的有效频道总数和频道映射表。
+
+### 模块接口设计
+以下为存储信息的数据结构。
+``` javascript
+typedef struct _FM_INFO_ {
+   u16 mask;			   //mask 标志 
+   u16 curFreq;			//最近浏览的虚拟频点 
+   u16 curChanel;		   //最近浏览的台号(1-206) 
+   u16 total_chanel;		//搜索到的有效频道总数 
+   u8 dat[MEM_FM_LEN];  //频道映射表 
+} FM_INFO; 
+``` 
+收音模块管理单元初始化时，遍历驱动层注册的收音模块驱动接口，获取收音模块的ID以检查是否有收音模块在线，在线则将fm_hdl指向在线收音模块注册的操作函数集，并初始化该在线收音模块。在后续的操作中，对在线收音模块进行的关闭，mute和设置频点等操作都是通过fm_hdl实现。
+
+该模块向应用层提供的接口都是围绕上面的信息对vm进行读写，接口如下。
+#### fm_read_info
+读取FM 信息。
+
+原型：
+``` javascript
+void fm_read_info(FM_INFO *info);
+```
+参数：
+| info | 存放FM信息的结构体 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+FM_INFO fm_info = {0};
+fm_read_info(&fm_info);//获取vm信息
+```
+
+#### fm_save_info
+存储FM 信息。
+
+原型：
+``` javascript
+void fm_save_info(FM_INFO *info);
+```
+参数：
+| info | 存放FM信息的结构体 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+FM_INFO fm_info = {0};
+fm_info.mask = FM_VM_MASK;
+fm_info.curFreq = 1;
+fm_info.curChanel = 0;
+fm_info.total_chanel  = 0;
+fm_save_info(&fm_info);
+```
+
+#### get_total_mem_channel
+获取记忆有效总台数。
+
+原型：
+``` javascript
+u16 get_total_mem_channel(void);
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 总台数 |
+
+示例：
+``` javascript
+u16 total_ch = get_total_mem_channel();
+```
+
+#### get_channel_via_fre
+将真实频点转换为台号。
+
+原型：
+``` javascript
+u16 get_channel_via_fre(u16 fre);
+```
+参数：
+| fre | 真实频点 |
+| - |- |
+| 返回值 | 0：非有效频点，其他：台号 |
+
+示例：
+``` javascript
+u16 ch = get_channel_via_fre(875);
+```
+
+#### get_fre_via_channel
+将台号转换为虚拟频点。
+
+原型：
+``` javascript
+u16 get_fre_via_channel(u16 channel);
+```
+参数：
+| channel | 台号 |
+| - |- |
+| 返回值 | 0：无效台号，其他：虚拟频点 |
+
+示例：
+``` javascript
+u16 fre = get_fre_via_channel(1);
+```
+
+#### fm_last_ch_save
+将台号转换为虚拟频点。
+
+原型：
+``` javascript
+void fm_last_ch_save(u16 channel);
+```
+参数：
+| channel | 台号 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_last_ch_save(1);
+```
+
+#### fm_last_freq_save
+保存最近浏览的真实频点，实际保存到vm的是经过转换的虚拟频点。
+
+原型：
+``` javascript
+void fm_last_freq_save(u16 freq);
+```
+参数：
+| freq | 真实频点 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_last_freq_save(875);
+```
+
+#### clear_all_fm_point
+清除所有频点信息。
+
+原型：
+``` javascript
+void clear_all_fm_point(void);
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+clear_all_fm_point();
+```
+
+#### save_fm_point
+将某一真实频点对应的频道映射位置1，表示有效频点。
+
+原型：
+``` javascript
+void save_fm_point(u16 fre);
+```
+参数：
+| fre | 真实频点 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+save_fm_point(875);
+```
+
+#### delete_fm_point
+将某一虚拟频点对应的频道映射位置0，表示无效频点。
+
+原型：
+``` javascript
+void delete_fm_point(u16 fre);
+```
+参数：
+| fre | 虚拟频点(1-206) |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+delete_fm_point(5);
+```
+
+## FM应用管理模块设计说明
+### 模块描述
+该模块是FM模式的应用层，主要实现资源的管理和按键/设备消息处理的实现。
+
+### 模块接口设计
+以下为应用层使用的数据结构。
+``` javascript
+struct fm_opr {
+    u8 fm_dev_mute;			   //收音模块mute标志位
+    u8 scan_flag;				   //搜台标志(全自动/半自动向下,上搜台/0则表示搜索完成或不搜索)
+    u16 fm_freq_cur;			   //当前虚拟频点
+    u16 fm_freq_channel_cur;	//当前台号
+    u16 fm_total_channel;		//总台数
+    s16 scan_fre;				   //当前搜索虚拟频点
+u16 fm_freq_temp;			      //用于记录半自动搜台前的虚拟频点
+}; 
+``` 
+
+以下为FM模式应用层提供的操作接口说明，这些接口主要是对中间层提供的接口进行封装打包，形成更具应用性的接口供用户使用。
+#### app_fm_init
+fm模式初始化，完成资源加载，收音模块初始化，vm信息获取等。
+
+原型：
+``` javascript
+void app_fm_init(void);
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+app_fm_init();
+```
+
+#### app_fm_exit
+退出fm模式，完成资源释放，关闭收音模块，音频解码等。
+
+原型：
+``` javascript
+void app_fm_exit(void);
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+app_fm_exit();
+```
+
+#### fm_app_start
+开启fm模式，打开音频解码通道，出声。
+
+原型：
+``` javascript
+void fm_app_start(void);
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_app_start();
+```
+
+#### fm_app_mute
+收音模块mute住。
+
+原型：
+``` javascript
+void fm_app_mute(u8 mute);
+```
+参数：
+| mute | 0：disable 1：enable |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_app_mute(1);
+```
+
+#### fm_read_info_init
+获取vm信息，根据台号或者频点设置当前收音模块频点。
+
+原型：
+``` javascript
+void fm_read_info_init(void);
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_read_info_init();
+```
+
+#### fm_delete_freq
+删除vm当前虚拟频点。
+
+原型：
+``` javascript
+void fm_delete_freq();
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_delete_freq();
+```
+
+#### fm_scan_up
+向上搜索一个有效频点，并设置收音模块为当前频点。
+
+原型：
+``` javascript
+void fm_scan_up();
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_scan_up();
+```
+
+#### fm_scan_down
+向下搜索一个有效频点，并设置收音模块为当前频点。
+
+原型：
+``` javascript
+void fm_scan_down();
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_scan_down();
+```
+
+#### fm_scan_stop
+停止搜台并设置当前频道，将搜台标志置0。
+
+原型：
+``` javascript
+void fm_scan_stop();
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_scan_stop();
+```
+
+#### fm_scan_all
+搜索所有频道。
+
+原型：
+``` javascript
+void fm_scan_all();
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_scan_all();
+```
+
+#### fm_volume_pp
+mute住/解mute收音模块。
+
+原型：
+``` javascript
+void fm_volume_pp(void);
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_volume_pp();
+```
+
+#### fm_prev_freq
+设置上一个虚拟频点。
+
+原型：
+``` javascript
+void fm_prev_freq();
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_prev_freq();
+```
+
+#### fm_next_freq
+设置下一个虚拟频点。
+
+原型：
+``` javascript
+void fm_next_freq();
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_next_freq();
+```
+
+#### fm_volume_up
+增加音量。
+
+原型：
+``` javascript
+void fm_volume_up();
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_volume_up();
+```
+
+#### fm_volume_down
+降低音量。
+
+原型：
+``` javascript
+void fm_volume_down();
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_volume_down();
+```
+
+#### fm_prev_station
+设置为上一个台号。
+
+原型：
+``` javascript
+void fm_prev_station();
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_prev_station();
+```
+
+#### fm_next_station
+设置为下一个台号。 
+
+原型：
+``` javascript
+void fm_next_station();
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_next_station();
+```
+
+#### fm_get_fm_dev_mute
+获取mute标志。  
+
+原型：
+``` javascript
+u8 fm_get_fm_dev_mute(void);
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 1：mute住，0：无mute |
+
+示例：
+``` javascript
+fm_get_fm_dev_mute();
+```
+
+#### fm_get_cur_channel
+获取当前台号。  
+
+原型：
+``` javascript
+u8 fm_get_cur_channel(void);
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 当前台号 |
+
+示例：
+``` javascript
+u8 ch = fm_get_cur_channel();
+```
+
+#### fm_get_cur_fre
+获取当前真实频点。  
+
+原型：
+``` javascript
+u16 fm_get_cur_fre(void);
+```
+参数：
+| - | 无 |
+| - |- |
+| 返回值 | 当前真实频点 |
+
+示例：
+``` javascript
+u16 fre = fm_get_cur_fre();
+```
+
+#### fm_sel_station
+设置当前台号。  
+
+原型：
+``` javascript
+void fm_sel_station(u8 channel);
+```
+参数：
+| channel | 当前台号 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_sel_station(1);
+```
+
+#### fm_set_fre
+设置当前频点。  
+
+原型：
+``` javascript
+u8 fm_set_fre(u16 fre);
+```
+参数：
+| fre | 当前真实频点 |
+| - |- |
+| 返回值 | 无 |
+
+示例：
+``` javascript
+fm_set_fre(875);
+```
+
+fm 开发注意事项
+==================
+
+由于fm灵敏度会受到flash访问影响，所以在用户自己添加代码需要在fm模式下频繁运行的，如定时执行的函数，可以放到动态加载段内进入fm模式的时候动态加载到ram中运行，需要注意的是**中断入口**和**汇编**无法放动态加载，需要定到ram的段中
+
+### 如何将函数定到动态加载段
++ 将函数通过AT(.xxx) 定到xxx段内
+
+![绘图](./imgs/2.png)
+
++ 在将xxx段放到section.c中
+
+![绘图](./imgs/3.png)
+
+### 如何将函数定到ram中
+对于不能放到动态加载的函数，需要使用定到ram的方式
+
+![绘图](./imgs/4.png)

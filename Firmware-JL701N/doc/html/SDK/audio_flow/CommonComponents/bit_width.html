@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>13.2.1. 位宽配置说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="13.2.2. 播放同步" href="play_sync.html" />
+    <link rel="prev" title="13.2. 音频流通用配置" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">13. 音频流程</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../audio_stream_flow_rules.html">13.1. 音频流程规范</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">13.2. 音频流通用配置</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">13.2.1. 位宽配置说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">13.2.1.1. 位宽配置介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">13.2.1.2. 位宽配置注意事项</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="play_sync.html">13.2.2. 播放同步</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bt_play_sync.html">13.2.3. 蓝牙音频同步</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dac.html">13.2.4. DAC节点配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tws.html">13.2.5. TWS音频流配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reverse_phase.html">13.2.6. 反相器(Inverter)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="preset_effects.html">13.2.7. 音效预设</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../system_flow.html">13.3. 系统模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../media_flow.html">13.4. 媒体</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bt_call/index.html">13.5. 蓝牙通话</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mic_effects/index.html">13.6. 麦克风音效</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../third_party_algorithm/index.html">13.7. 第三方算法集成</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_dut/index.html">13.8. 产测模式</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">13. </span>音频流程</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">13.2. </span>音频流通用配置</a> &raquo;</li>
+      <li><span class="section-number">13.2.1. </span>位宽配置说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">13.2.1. </span>位宽配置说明<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>16bit/24bit位宽：音频采样样的位数，位数越多，精度越高</p></li>
+<li><p>本SDK支持16bit、24bit位宽的选配</p></li>
+</ul>
+<section id="id2">
+<h2><span class="section-number">13.2.1.1. </span>位宽配置介绍<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>音频流程图，可独立配置目标位宽</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2><span class="section-number">13.2.1.2. </span>位宽配置注意事项<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>位宽选配不支持在线更新，选配后需重新编译下载</p></li>
+<li><p>选16bit时，流程图内的节点可按照需求调整输入输出端点的位宽</p></li>
+<li><p>选24bit时，流程图内的节点输出位宽无需变动，SDK运行时会自动把所有节点协商24bit位宽</p></li>
+<li><p>DRC节点在16bit与24bit位宽下，输入输出曲线的表达范围有变化，二者调试效果不能简单的平移使用。16bit满幅度是90.3dB，24bit的满幅度是138.47dB，如果想将16bit环境调好的DRC参数配置平移到24bit环境，可将16bit环境下的输入输出幅度分别加上16bit与24bit满幅度的差值48.17（138.47-90.3）</p></li>
+</ul>
+<p><img alt="assets" src="../../../_images/bit_width.png" /></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="13.2. 音频流通用配置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="play_sync.html" class="btn btn-neutral float-right" title="13.2.2. 播放同步" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+设备管理
+#############
+
+.. toctree::
+   :maxdepth: 1
+
+   dev_manager.md
+   
+
+
+
+

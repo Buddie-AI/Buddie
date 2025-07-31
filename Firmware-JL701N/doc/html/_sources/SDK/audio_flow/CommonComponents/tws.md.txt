@@ -1,0 +1,6 @@
+# TWS音频流配置
+
+## TWS单声道配置（默认）
+![对箱单声道](../assets/tws_box_channel_default.png)
+## TWS立体声配置
+![对箱单声道](../assets/tws_box_channel_LR.png)

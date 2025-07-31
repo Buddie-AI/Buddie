@@ -1,0 +1,78 @@
+
+V1.1.0  音频流程补丁修改说明
+########################################################
+
+概述
+===========
+   目前工具支持音频流程图打补丁，如果有需手动修改的情况或者提示错误的情况，请按补丁版本自行修改
+
+
+
+patch_2 音频流程修改说明
+----------------------------
+
+此版本主要对音频通路精度进行优化，支持16bit、24bit精度可选，默认可自动合并，如出现错误，请对比发布的补丁音频流程图自行手动修改
+
+一、系统模式主要修改介绍
+
+1. 按键通路增加SRC处理
+2. 增加铃声处理通路
+   
+   .. figure:: patch_2/系统/imgs/系统公共.png
+
+3. 立体声、立体声pro、1.1_channel mixer后增加channel expander处理
+
+   .. figure:: patch_2/系统/imgs/系统独立.png
+
+二、媒体主要修改介绍
+
+1. 删除提示音、按键音处理通路
+2. MIXER节点替换成BitWidth Convert节点
+   
+   .. figure:: patch_2/媒体/imgs/媒体公共.png
+
+3. 媒体1.1_channel 删除channel merge 节点
+   
+   .. figure:: patch_2/媒体/imgs/媒体1.1删除.png
+
+4. 媒体1.1_channel 音频分流器节点替换成声道拆分节点，插入steromix节点
+
+   .. figure:: patch_2/媒体/imgs/媒体1.1替换.png
+
+
+三、蓝牙通话主要修改介绍
+
+1. 删除提示音、按键音处理通路
+2. mixer节点替换成BitWidth Convert节点
+   
+   .. figure:: patch_2/通话/imgs/通话共同.png
+
+3. 插入NoiseGate节点
+
+   .. figure:: patch_2/通话/imgs/通话插入.png
+
+4. 立体声、立体声pro、1.1_channel加入channel expander节点
+   
+   .. figure:: patch_2/通话/imgs/通话新增.png
+
+
+
+四、混响主要修改介绍
+
+1. DAC前插入BitWidth Convert节点
+      
+   .. figure:: patch_2/混响/imgs/混响插入.png
+
+2. 新增1.1_channel分组
+
+   .. figure:: patch_2/混响/imgs/混响新增.png
+
+3. 将混响框图改成麦克风音效框图
+
+   .. figure:: patch_2/混响/imgs/麦克风音效.png
+
+
+patch_1 音频流程修改说明
+--------------------------
+
+媒体流程图外部输入添加解码节点、mixer后添加人声消除节点等修改，默认可自动合并，如出现错误，请对比发布的补丁音频流程图自行手动修改

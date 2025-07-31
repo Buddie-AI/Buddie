@@ -1,0 +1,232 @@
+CPU频率管理器
+=================
+
+CPU频率管理主要提供以下功能：
+    - 1.频率刷新
+    - 2.频率申请、频率释放
+    - 3.频率锁定、频率解锁
+
+
+.. warning::
+   CPU频率管理所有函数不能在中断态调用 
+
+clock_refurbish
+------------------------------
+
+功能:
+
+    刷新当前频率，具体流程如下：
+        - 1.设置到最高频率
+        - 2.根据操作系统的IDLE情况进行下调频率
+        - 3.下调频率不会低于clock_alloc的总和
+
+.. code-block:: c
+
+    void clock_refurbish(void);
+
+参数:
+
+    ==========     ====================
+
+    返回值
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    void test_func(void) {
+
+        clock_refurbish();
+
+        //TODO
+    }
+
+
+
+clock_alloc
+------------------------------
+
+功能:
+
+    申请特定频率。
+    申请成功后，会调用clock_refurbish动态调整。
+    申请失败，不会对当前频率进行任何改变。
+
+.. code-block:: c
+
+    int clock_alloc(const char *name, u32 clk);
+
+参数:
+
+    ==========     ====================
+    name            拥有者
+    clk             申请频率值，单位Hz
+    返回值          0:success
+                    -1:faild
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    void test_func(void) {
+
+        int ret;
+
+        ret = clock_alloc("owner", 12000000UL);    //"owner"申请12MHz频率
+        if (ret != 0) {
+            //TODO  //申请失败
+            return;
+        }
+
+        //TODO
+
+        ret = clock_free("owner");
+        if (ret != 0) {
+            //TODO  //申请失败
+            return;
+        }
+    }
+
+
+clock_free
+------------------------------
+
+功能:
+
+    释放特定频率。
+    释放成功后，会调用clock_refurbish动态调整。
+    释放失败，不会对当前频率进行任何改变。
+
+.. code-block:: c
+
+    int clock_free(const char *name);
+
+参数:
+
+    ==========     ====================
+    name            拥有者
+    返回值          0:success
+                    -1:faild
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    void test_func(void) {
+
+        int ret;
+
+        ret = clock_alloc("owner", 12000000UL);    //"owner"申请12MHz频率
+        if (ret != 0) {
+            //TODO  //申请失败
+            return;
+        }
+
+        //TODO
+
+        ret = clock_free("owner");
+        if (ret != 0) {
+            //TODO  //申请失败
+            return;
+        }
+    }
+
+
+
+clock_lock
+------------------------------
+
+功能:
+
+    锁定特定频率：
+    锁定成功后，立即设置为特定频率并锁定。解锁前所有频率配置接口均无效。
+    锁定失败，不会对当前频率进行任何改变。
+
+.. code-block:: c
+
+    int clock_lock(const char *name, u32 clk);
+
+参数:
+
+    ==========     ====================
+    name            拥有者
+    clk             锁定频率值，单位Hz
+    返回值          0:success
+                    -1:faild
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    void test_func(void) {
+
+        int ret;
+
+        ret = clock_lock("owner", 12000000UL); //"owner"锁定12MHz频率
+        if (ret != 0) {
+            //TODO  //锁定失败
+            return;
+        }
+
+        //TODO
+
+        ret = clock_unlock("owner");           //"owner"解锁
+        if (ret != 0) {
+            //TODO  //解锁失败
+            return;
+        }
+    }
+
+
+clock_unlock
+------------------------------
+
+功能:
+
+    解锁频率：
+    解锁成功后，当前频率会动态调整。
+    解锁失败，不会对当前频率进行任何改变。
+
+.. code-block:: c
+
+    int clock_unlock(const char *name);
+
+参数:
+
+    ==========     ====================
+    name            拥有者
+    返回值          0:success
+                    -1:faild
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    void test_func(void) {
+
+        int ret;
+
+        ret = clock_lock("owner", 12000000UL); //"owner"锁定12MHz频率
+        if (ret != 0) {
+            //TODO  //锁定失败
+            return;
+        }
+
+        //TODO
+
+        ret = clock_unlock("owner");           //"owner"解锁
+        if (ret != 0) {
+            //TODO  //解锁失败
+            return;
+        }
+    }

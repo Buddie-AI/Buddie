@@ -1,0 +1,44 @@
+# Hi-Res Audio FAQ
+
+## Hi-Res使能后距离短容易卡顿
+相较于SBC和AAC格式，LDAC/LHDC的码率较高，最高可到900kbps以上，对蓝牙的带宽要求很高。所以它不能做到跟AAC和SBC一样的距离。最高码率情况下，有些场景（干扰较强）可能距离只有1到2米。当出现距离较短的时候，可以从以下方面进行调整优化：
+- **优化蓝牙性能**<br>
+优化蓝牙收发性能，可以提高数据传输成功率，减少重发，从而减少数据出现欠载的情况
+- **调整音频延时**<br> 
+适当加大LDAC或者LHDC格式的延时，在蓝牙传输出现阻塞的时候 ，可以优化卡顿的情况。 
+- **调整音效流程**<br> 
+由于LDAC/LHDC是96kHz甚至192kHz，采样率高，音效模块需要处理更多的采样点。可能会跑不过来，或者运行时间过长。调整音效模块流程，加大系统时钟，可以缩短运行时间，或者根据系统资源情况，将代码高频运行代码指定到RAM运行
+
+## LDAC频响曲线没有到40kHz
+**LDAC不同的质量，会影响频响**，官方文档将LDAC质量划为以下3档：<br>
+**HQ** : Encode setting for High Quality.<br>
+**SQ** : Encode setting for Standard Quality.<br>
+**MQ** : Encode setting for Mobile use Quality.<br>
+![LDAC Frequency Response](./assets/LDAC_FR.png)<br>
+所以，测试LDAC频响的时候，需要确认以下两点：<br>
+- <1>输出采样率设置到96kHz或以上<br>
+- <2>LDAC质量选择，如果要达到40kHz以上，需要配置到高质量(如下图华为Nova10手机所示的`首选音质`)<br>
+![Nova10 LDAC](./assets/LDAC_bps.png)
+
+## LHDC频响测试数据
+- **V3/V4频响曲线（48kHz有效频响）**<br>
+![LHDC V4 FR](./assets/LHDC_V4_FR.png)
+
+<br>
+
+- **V5频响曲线（96kHz有效频响）**<br>
+![LHDC V5 FR](./assets/LHDC_V5_FR.png)
+
+## LHDC质量设置
+LHDC质量设置，一般是在**开发者选项**里面配置，只有`质量优先`、`偏重音频质量`(不同手机描述不同)，才能正确选择采样率到96kHz或者192kHz，否则会出现选择了96kHz，退出采样率选择菜单，重新进入采样率选择界面，采样率切回48kHz的情况。
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>LDAC和LHDC的质量配置方法是类似的，使用过程可以相互参考</p>
+</div>
+
+![LHDC Quality](./assets/LHDC_Quality.png)
+
+## 小米手机支持自带播放器测试不到对应采样率的有效带宽
+小米14（其他型号可参考小米14）自带播放器，表面看起来也是QQ音乐，但是实际上播放96kHz以上采样率文件的时候是不完整的，这个时候用来测试LHDC/LDAC也是有问题的。<br>
+建议下载官方发布的最新版本QQ音乐播放器测试，亲测可行👍

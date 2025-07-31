@@ -1,0 +1,123 @@
+普通中断
+========
+
+系统提供普通中断与不可屏蔽中断。
+
+
+request_irq
+~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        void request_irq(u8 index, u8 priority, void (*handler)(void), u8 cpu_id);
+
+- 功能说明：注册中断，多核SoC需要指定执行中断服务函数的CPU，SDK默认使用CPU0
+- 参数说明：
+
+    =========================  ============================================================================================
+      参数                      说明
+        index                    中断号，具体查看hwi.h文件
+        priority                 中断优先级，有效值0-5。注：SDK划分0-5为普通中断，6-7为不可屏蔽中断。
+        handler                  中断服务函数
+        cpu_id                   中断服务函数执行CPU。一般中断SDK默认使用CPU0
+    =========================  ============================================================================================
+
+- 返回值：无
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+
+        interrupt
+        void timer0_isr(void)
+        {
+            //TODO: clear pending
+        }
+
+        request_irq(IRQ_TIME0_IDX, 0, timer4_isr, 0);
+
+
+不可屏蔽中断
+===========
+
+不可屏蔽中断只要是解决一些实时性要求较高的且不受中断保护影响的事情，例如LED数码管显示。
+不可屏蔽中断是脱离整套操作系统独立存在的，在不可屏蔽中断中，不能调用任何操作系统接口及临界保护接口。
+若有资源（如GPIO）在不可屏蔽中断是有使用，需要通调用为不可屏蔽中断设计的临界保护接口unmask_enter_critical或unmask_exit_critical。例：
+
+    .. code-block:: c
+        :linenos:
+
+        interrupt
+        void timer0_isr(void)
+        {
+            unmask_enter_critical();
+            
+            //TODO: clear pending, GPIO settings, values settings, misc
+
+            unmask_exit_critical();
+        }
+
+
+        static void task_foo(void *priv)
+        {
+            //中断注册
+            request_irq(IRQ_TIME0_IDX, 0, timer4_isr, 0);
+
+            //设置为不可屏蔽中断
+            irq_unmask_set(IRQ_TIME0_IDX, 1, 0);
+
+            unmask_enter_critical();
+
+            //TODO: GPIO settings
+
+            unmask_exit_critical();
+        }
+
+
+.. warning::
+    使用不可屏蔽中断的中断服务函数，以及调用到的函数，都必须存放RAM内存中。因为在VM擦除或写入过程，会关闭SFC，从而导致无法运行flash的代码。
+
+
+irq_unmask_set
+~~~~~~~~~~~~~~
+
+- 函数原型：
+
+    .. code-block:: c
+
+        void irq_unmask_set(u8 index, u8 priority, u8 cpu_id);
+
+
+- 功能说明：注册中断，多核SoC需要指定执行中断服务函数的CPU，SDK默认使用CPU0
+- 参数说明：
+
+    =========================  ============================================================================================
+      参数                      说明
+        index                    中断号，具体查看hwi.h文件
+        priority                 中断优先级，有效值0-5。注：SDK划分0-5为普通中断，6-7为不可屏蔽中断。
+        handler                  中断服务函数
+        cpu_id                   中断服务函数执行CPU。一般中断SDK默认使用CPU0
+    =========================  ============================================================================================
+
+- 返回值：无
+
+
+- 示例：
+
+    .. code-block:: c
+        :linenos:
+
+        interrupt
+        void timer0_isr(void)
+        {
+            //TODO: clear pending
+        }
+
+        request_irq(IRQ_TIME0_IDX, 0, timer0_isr, 0);
+
+
+

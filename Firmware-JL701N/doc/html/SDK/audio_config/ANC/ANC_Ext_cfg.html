@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12.4.2. ANC扩展功能说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="12.4.3. ANC防破音配置" href="ANC_AntiSat_cfg.html" />
+    <link rel="prev" title="12.4.1. ANC使用配置" href="ANC_cfg.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">12. 音频配置</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../DAC_cfg.html">12.1. DAC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ADC_cfg.html">12.2. ADC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Linein_cfg.html">12.3. Linein配置</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">12.4. ANC配置</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ANC_cfg.html">12.4.1. ANC使用配置</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">12.4.2. ANC扩展功能说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">12.4.2.1. 耳道自适应</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">12.4.2.2. 智能免摘</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">12.4.2.3. 风噪检测</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">12.4.2.4. 广域点击</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">12.4.2.5. 贴合度检测</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ANC_AntiSat_cfg.html">12.4.3. ANC防破音配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ANC_function_cfg.html">12.4.4. ANC软件功能配置</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../General_cfg.html">12.5. 通用音频配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../phone_call_cfg.html">12.6. 通话配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_algo_cfg.html">12.7. 音频算法配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../codec.html">12.8. 编解码配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../music_palyback.html">12.9. 音乐播放配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../production_test.html">12.10. 产测配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kws.html">12.11. 离线语音识别KWS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spatial_audio.html">12.12. 空间音效</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Hi_Res_Audio/index.html">12.13. Hi-Res Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Side_Tone.html">12.14. 通话监听</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_code_size.html">12.15. 音频代码优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_delay.html">12.16. 延时配置（Delay）</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">12. </span>音频配置</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">12.4. </span>ANC配置</a> &raquo;</li>
+      <li><span class="section-number">12.4.2. </span>ANC扩展功能说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="anc">
+<h1><span class="section-number">12.4.2. </span>ANC扩展功能说明<a class="headerlink" href="#anc" title="Link to this heading"></a></h1>
+<p><img alt="ANC扩展功能" src="../../../_images/ANC-EXT_func.jpg" /><br></p>
+<section id="id1">
+<h2><span class="section-number">12.4.2.1. </span>耳道自适应<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3><span class="section-number">12.4.2.1.1. </span>需求简介<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>简介：ANC降噪效果与耳机佩戴松紧度，以及用户的耳道差异息息相关；耳道自适应技术，通过麦克风收集用户耳道特性和佩戴情况的声学特征信息，自适应调整降噪参数，以提供更加舒适和个性化的降噪体验；</p>
+<ul class="simple">
+<li><p>优势：补全不同人耳道的佩戴差异</p></li>
+<li><p>关键词：（操作）自适应、（输入）耳道/佩戴信息、（输出）调滤波器/增益。</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3><span class="section-number">12.4.2.1.2. </span>软件配置<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<section id="id4">
+<h4><span class="section-number">12.4.2.1.2.1. </span>基础配置<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>提示音配置：配置如下图，自适应需要特殊的提示音，会提供默认提示音<code class="docutils literal notranslate"><span class="pre">Adaptive</span> <span class="pre">ANC</span> <span class="pre">Tone1/2/3</span></code>，需要质量比较好的提示音格式，如MTY/SBC等，如需自定义提示音，可将提示音发给原厂检查是否满足要求：
+<img alt="耳道自适应提示音" src="../../../_images/ANC-ear_adaptive_tone.jpg" /><br>
+<br></p></li>
+<li><p>每次切降噪模式，都触发耳道自适应，配置以下宏定义即可</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define ANC_EAR_ADAPTIVE_EVERY_TIME		1   </span><span class="cm">/*每次切ANC_ON都进行自适应*/</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>自适应参数配置及调试方法：参考《JL耳道自适应调试指南》，导出anc_ext.bin下载到小机</p></li>
+<li><p>anc_ext.bin 文件路径：.\SDK\cpu\br28\tools\anc_ext.bin</p></li>
+</ul>
+</section>
+</section>
+<section id="api">
+<h3><span class="section-number">12.4.2.1.3. </span>API定义<a class="headerlink" href="#api" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+<span class="cm">/*自适应模式-重新检测</span>
+<span class="cm"> * param: tws_sync_en          1 TWS同步自适应，支持TWS降噪平衡，需左右耳一起调用此接口</span>
+<span class="cm"> *                             0 单耳自适应, 不支持TWS降噪平衡，可TWS状态下单耳自适应</span>
+<span class="cm"> */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">audio_anc_mode_ear_adaptive</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">tws_sync_en</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">   强制中断自适应</span>
+<span class="cm">   param: default_flag		1 退出后恢复默认ANC效果； 0 退出后保持ANC_OFF(避免与下一个切模式流程冲突)</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">anc_ear_adaptive_forced_exit</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">default_flag</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">   自适应/普通参数切换（只切换参数）</span>
+<span class="cm">	param:  mode 		0 使用普通参数; 1 使用自适应参数</span>
+<span class="cm">			tone_play 	0 不播放提示音；1 播放提示音</span>
+<span class="cm">			update_flag 0 不更新效果；	1 即时更新效果</span>
+<span class="cm"> */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">audio_anc_coeff_adaptive_set</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">tone_play</span><span class="p">);</span>
+
+<span class="cm">/*ANC滤波器模式循环切换*/</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">audio_anc_coeff_adaptive_switch</span><span class="p">();</span>
+
+<span class="cm">/*当前ANC滤波器模式获取 0:普通参数 1:自适应参数*/</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">audio_anc_coeff_mode_get</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+
+</pre></div>
+</div>
+</section>
+<section id="demo">
+<h3><span class="section-number">12.4.2.1.4. </span>使用demo<a class="headerlink" href="#demo" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//切换耳道自适应滤波器，更新效果</span>
+<span class="n">audio_anc_coeff_adaptive_set</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span><span class="w">  </span><span class="c1">//切换自适应滤波器</span>
+<span class="n">audio_anc_param_reset</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">           </span><span class="c1">//（可选）复位ANC，更新参数效果；需在ANC模式下</span>
+
+<span class="c1">//切换默认滤波器，更新效果</span>
+<span class="n">audio_anc_coeff_adaptive_set</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span><span class="w">  </span><span class="c1">//切换默认滤波器</span>
+<span class="n">audio_anc_param_reset</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w">           </span><span class="c1">//（可选）复位ANC，更新参数效果；需在ANC模式下</span>
+</pre></div>
+</div>
+</section>
+<section id="faq">
+<h3><span class="section-number">12.4.2.1.5. </span>FAQ<a class="headerlink" href="#faq" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>耳道自适应场景互斥问题<br>
+前置条件：ANC模式下支持进入耳道自适应；
+播歌：会打断背景音乐，等自适应完成之后再继续播放
+通话：不支持耳道自适应；
+其他功能互斥：智能免摘/贴合度检测/场景自适应等功能，SDK 默认会关闭，等自适应完成再打开；</p></li>
+<li><p>耳道自适应结束会使用自适应参数，并保存到vm，后续切降噪模式都会使用自适应参数，如果需要恢复默认ANC参数则调用<code class="docutils literal notranslate"><span class="pre">audio_anc_coeff_adaptive_set</span></code>接口设置</p></li>
+</ol>
+</section>
+<section id="cpu">
+<h3><span class="section-number">12.4.2.1.6. </span>CPU差异<a class="headerlink" href="#cpu" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>特性</p></th>
+<th class="head"><p>700N</p></th>
+<th class="head"><p>701N</p></th>
+<th class="head"><p>708N</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>耳道自适应</p></td>
+<td><p>×</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id5">
+<h2><span class="section-number">12.4.2.2. </span>智能免摘<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+</section>
+<section id="id6">
+<h2><span class="section-number">12.4.2.3. </span>风噪检测<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+</section>
+<section id="id7">
+<h2><span class="section-number">12.4.2.4. </span>广域点击<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+</section>
+<section id="id8">
+<h2><span class="section-number">12.4.2.5. </span>贴合度检测<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ANC_cfg.html" class="btn btn-neutral float-left" title="12.4.1. ANC使用配置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ANC_AntiSat_cfg.html" class="btn btn-neutral float-right" title="12.4.3. ANC防破音配置" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

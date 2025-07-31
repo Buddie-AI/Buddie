@@ -1,0 +1,1293 @@
+muisc player应用说明
+==========================
+		
+
+| 缩写、术语   | 解 释      |
+| ------------ | ---------- |
+| Music_player | 播放器     |
+| Dev_manager  | 设备管理器 |
+| file_manager | 文件管理器 |
+## 功能概述
+music player播放器模块接口实现以下功能：
+(1)支持播放器启动及退出
+(2)提供播放类接口
+	1. 播放上一曲
+	2)播放下一曲
+	3)播放第一曲
+	4)播放最后一曲
+	5)自动播放下一曲
+	6)播放上一个文件夹
+	7)播放下一个文件夹
+	8)播放上一设备
+	9)播放下一设备
+10)断点播放
+11)序号播放
+12)簇号播放
+13)路径播放
+14)一键切换录音文件夹播放
+(3)操作类接口
+1)播放/暂停
+2)快进/快退
+3)设置播放循环模式
+4)停止播放
+
+(4)状态获取类接口、
+1)获取播放断点
+2)获取文件总数
+3)获取当前播放文件号
+4)获取当前播放文件所在文件夹下的文件总数
+5)获取当前播放文件所在文件夹
+6)获取文件夹总数
+7)获取当前播放文件的文件句柄
+8)获取当前播放文件的文件簇号
+9)获取当前播放设备
+10)获取当前播放的音乐设备（如果当前播放的是录音设备，返回对应的音乐设备）
+11)获取当前播放的下一个设备
+12)获取当前播放的上一个设备
+13)获取播放状态
+14)获取当前播放歌曲时间
+15)获取当前播放歌曲总时间
+16)获取当前播放循环模式
+17)获取当前是否是录音设备播放状态
+(5)其他
+删除当前正在播放的设备
+
+## 关键结构体、枚举类型及参数
+### 回调接口结构体
+
+``` javascript
+struct __player_cb {
+    ///解码成功回调
+    void (*start)(void *priv, int parm);
+    ///解码结束回调
+    void (*end)(void *priv, int parm);
+    ///扫盘打断回调
+    int (*fsn_break)(void);
+};
+```
+说明：
+播放器回调有应用层在调用music_player_creat启动播放器时传入。
+解码成功回调：应用层可以在这里做一些解码状态获取，如：歌曲序号、文件名，及显示等。
+解码结束回调：可以根据方案需求引导不同的流程走向。
+扫盘打断回调：扫盘打断回调为长时间扫描设备（主要是针对文件特别多的设备）提供打断机制，具体实现方式， 请参考文档【music应用详细设计说明】，打断原理如下流程（流程结合了music应用，即music.c中实现）：
+
+![绘图](imgs/1670403964902.drawio.svg)
+
+### 参数设置结构体
+
+``` javascript
+struct __player_parm {
+    struct __player_cb *cb;
+    ///其他扩展
+};
+```
+
+### music player总控制句柄
+
+``` javascript
+struct __music_player {
+    struct __dev 			*dev;//当前播放设备节点
+    struct vfscan			*fsn;//设备扫描句柄
+    FILE		 			*file;//当前播放文件句柄
+    void 					*priv;//music回调函数，私有参数
+    struct __player_parm 	parm;//回调及参数配置
+};
+```
+
+### 文件扫描参数
+
+``` javascript
+///播放参数，文件扫描时用，文件后缀等
+static const char scan_parm[] = "-t"
+#if (TCFG_DEC_MP3_ENABLE)
+                                "MP1MP2MP3"
+#endif
+#if (TCFG_DEC_WMA_ENABLE)
+                                "WMA"
+#endif
+#if ( TCFG_DEC_WAV_ENABLE || TCFG_DEC_DTS_ENABLE)
+                                "WAVDTS"
+#endif
+#if (TCFG_DEC_FLAC_ENABLE)
+                                "FLA"
+#endif
+#if (TCFG_DEC_APE_ENABLE)
+                                "APE"
+#endif
+#if (TCFG_DEC_M4A_ENABLE)
+                                "M4AAAC"
+#endif
+#if (TCFG_DEC_M4A_ENABLE || TCFG_DEC_ALAC_ENABLE)
+                                "MP4"
+#endif
+#if (TCFG_DEC_AMR_ENABLE)
+                                "AMR"
+#endif
+#if (TCFG_DEC_DECRYPT_ENABLE)
+                                "SMP"
+#endif
+#if (TCFG_DEC_MIDI_ENABLE)
+                                "MID"
+#endif
+                                " -sn -r"
+#if (TCFG_RECORD_FOLDER_DEV_ENABLE)
+                                " -m"
+                                REC_FOLDER_NAME
+#endif
+                                ;
+```
+说明：
+		scan_parm在扫盘dev_manager_scan_disk调用是使用， 参数设置了文件后缀如：MP3/WAV/WMA等后缀的歌曲将在设备扫盘时将被扫描到， 没有的后缀， 将被过滤（被过滤的歌曲是不会被播放的）。同时该参数也设置了一些特殊的内容，如录音文件夹内容过滤等。
+### 播放器错误码表
+
+``` javascript
+enum {
+    MUSIC_PLAYER_ERR_NULL = 0x0,		///没有错误， 不需要做任何
+    MUSIC_PLAYER_SUCC	  = 0x1,		///播放成功， 可以做相关显示、断点记忆等处理
+    MUSIC_PLAYER_ERR_PARM,	    		///参数错误
+    MUSIC_PLAYER_ERR_POINT,	    		///参数指针错误
+    MUSIC_PLAYER_ERR_NO_RAM,			///没有ram空间错误
+    MUSIC_PLAYER_ERR_DECODE_FAIL,		///解码器启动失败错误
+    MUSIC_PLAYER_ERR_DEV_NOFOUND,		///没有找到指定设备
+    MUSIC_PLAYER_ERR_DEV_OFFLINE,		///设备不在线错误
+    MUSIC_PLAYER_ERR_DEV_READ,			///设备读错误
+    MUSIC_PLAYER_ERR_FSCAN,				///设备扫描失败
+    MUSIC_PLAYER_ERR_FILE_NOFOUND,		///没有找到文件
+};
+```
+说明：
+具体错误处理统一外抛到应用层根据实际需求引导不同流程的走向，SDK默认在music.c集中处理。
+
+## 播放类接口内部流程设计
+### 基础流程
+
+![绘图](./imgs/1670403964902.drawio.svg)
+
+### 流程说明
+
+(1)解码停止music_player_stop的时候要判断接下来的播放是否需要重新扫盘决定参数是传1还是0
+(2)选择设备建议判断是否是当前正在使用的设备，如果是不需要重新选择，只需要通过dev_manager_online_check判断设备是否还在线
+(3)如果需要重新选择设备或者有特殊需求就需要重新扫盘，如果要重新扫盘(1)中描述的stop参数必须要是1
+(4)选择文件file_manager_select，根据不同的需求通过设置不同的参数进行文件选择
+(5)启动解码器，需要提供的参数为文件控制句柄及断点信息， 如果没有断点填NULL，如果有指定断点，播放的时候会从指定的断点位置开始播放
+(6)所有错误返回值由上层应用层处理（sdk 默认在music.c中处理），具体提含义情况music_player错误码表
+
+### 接口举例说明
+此处以指定设备断点播放作为特例说明展开式事例说明：
+
+``` javascript
+int music_player_play_by_breakpoint(char *logo, struct __breakpoint *bp)
+{
+//判断参数是否有效
+    if (bp == NULL) {
+        return MUSIC_PLAYER_ERR_PARM;
+    }
+    if (logo == NULL) {
+//设备没有指定
+        music_player_stop(0);///停止解码，注意参数
+//检查当前设备是否在线
+        if (dev_manager_online_check(__this->dev, 1) == 0) {
+            return MUSIC_PLAYER_ERR_DEV_OFFLINE;
+        }
+        //使用当前设备，不需要找设备， 不需要扫描
+    } else {
+        music_player_stop(1);///停止解码，注意参数
+//查找指定设备
+        __this->dev = dev_manager_find_spec(logo, 1/*1表示有效设备*/);
+        if (__this->dev == NULL) {
+            return MUSIC_PLAYER_ERR_DEV_NOFOUND;
+        }
+//找到了设备，下面开始扫盘
+        __this->fsn = dev_manager_scan_disk(__this->dev, NULL, scan_parm, cycle_mode, __this->parm.cb->fsn_break);
+    }
+    if (__this->fsn == NULL) {
+        return MUSIC_PLAYER_ERR_FSCAN;
+    }
+    //扫盘成功后，下面就是文件选择了
+    __this->file = file_manager_select(__this->fsn, FSEL_BY_SCLUST, bp->sclust);//根据文件簇号查找断点文件
+    if (__this->file == NULL) {
+        return MUSIC_PLAYER_ERR_FILE_NOFOUND;
+    }
+    //文件选择好，接下来就是启动解码器
+    int err = music_player_decode_start(__this->file, &(bp->dbp));
+    if (err == MUSIC_PLAYER_SUCC) {
+        //播放成功，将当前设备激活， 下次查找活动设备，就是当前激活的设备了
+        dev_manager_set_active(__this->dev);
+        log_i("[%s %d] ok\n", __FUNCTION__, __LINE__);
+    }
+//此处断点播放执行完毕，所有的返回值，请根据错误码表进行处理
+    return err;
+}
+```
+
+## 详细接口说明
+### music_player_creat
+music_player创建接口
+
+原型：
+``` javascript
+bool music_player_creat(void *priv, struct __player_parm *parm)
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player播放结束创建
+   @param	 priv: 传递给cb回调函数的参数
+   			 parm：播放器回调，包含扫盘回调和播放回调
+   @return
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+```
+
+参数：
+
+| 名称 | 说明                               |
+| ---- | ---------------------------------- |
+| priv | 传递给cb回调函数的参数             |
+| parm | 播放器回调，包含扫盘回调和播放回调 |
+
+示例：
+``` javascript
+static const struct __scan_callback scan_cb = {
+	.enter = scan_enter,
+	.exit = scan_exit,
+	.scan_break = music_player_scandisk_break,
+};
+
+static const struct __player_cb music_player_callback = {
+	.start 	= music_player_play_success,
+	.end   = music_player_play_end,
+	.err   = music_player_decode_err,
+};
+///播放器初始化
+struct __player_parm parm = {0};
+parm.cb = &music_player_callback;
+parm.scan_cb = &scan_cb;
+	
+music_player_creat(NULL, &parm); 
+```
+### music_player_destroy
+music_player释放接口
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player释放接口
+   @param	 NULL
+   @return
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+void music_player_destroy(void)
+```
+
+参数：
+无
+
+示例：
+``` javascript
+music_player_creat(NULL, &parm); 
+……
+music_player_destroy();
+```
+
+### music_player_decode_start
+music_player解码器启动接口
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player解码器启动接口
+   @param
+			 file：
+			 	文件句柄
+			 dbp：
+			 	断点信息
+   @return   music_player 错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_decode_start(FILE *file, struct audio_dec_breakpoint *dbp)
+```
+参数：
+
+| 名称 | 说明     |
+| ---- | -------- |
+| file | 文件句柄 |
+| dbp  | 断点信息 |
+
+示例：
+
+``` javascript
+int err = music_player_decode_start(__this->file, &(bp->dbp));
+```
+
+
+### music_player_get_playing_breakpoint
+music_player获取当前播放设备断点信息
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放设备断点信息
+   @param
+			 bp：
+			 	断点缓存，外部调用提供
+			 flag：
+			 	1：需要获取歌曲断点信息及文件信息， 0：只获取文件信息
+   @return   成功与否
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+bool music_player_get_playing_breakpoint(struct __breakpoint *bp, u8 flag)
+```
+
+参数：
+
+| 名称 | 说明                                                  |
+| ---- | ----------------------------------------------------- |
+| bp   | 断点缓存，外部调用提供                                |
+| flag | 1：需要获取歌曲断点信息及文件信息， 0：只获取文件信息 |
+
+示例：
+
+``` javascript
+   if (music_player_get_playing_breakpoint(__this->breakpoint, 1) == true) {
+      ……
+   }
+```
+
+### music_player_get_file_total
+music_player获取当前播放设备文件总数
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放设备文件总数
+   @param
+   @return   文件总数
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+u16 music_player_get_file_total(void)
+```
+
+参数：
+无
+
+示例：
+``` javascript
+u32 file_num = music_player_get_file_total();
+```
+
+ ### music_player_get_file_cur
+ music_player获取当前播放文件序号
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放文件序号
+   @param
+   @return   当前文件序号
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+u16 music_player_get_file_cur(void)
+```
+
+参数：无
+
+示例：
+
+``` javascript
+u16 cur_file_index = music_player_get_file_cur();
+```
+
+ ###  music_play_get_fileindir_number
+ music_player获取当前播放文件所在文件夹的文件总数
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放文件所在文件夹的文件总数
+   @param
+   @return   文件总数
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+u16 music_play_get_fileindir_number(void)
+```
+参数：
+无
+
+示例：
+
+``` javascript
+u16 file_num = music_play_get_fileindir_number();
+```
+
+### music_play_get_dir_cur
+music_player获取当前播放文件所在文件夹
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放文件所在文件夹
+   @param
+   @return   当前文件夹序号
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+u16 music_play_get_dir_cur(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+u16 cur_dir_index = music_play_get_dir_cur();
+```
+
+###  music_play_get_dir_total
+music_player获取文件夹总数
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取文件夹总数
+   @param
+   @return   文件夹总数
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+u16 music_play_get_dir_total(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+u16 dir_num = music_play_get_dir_total();
+```
+
+###  music_player_get_file_hdl
+music_player获取当前播放文件句柄
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取文件句柄
+   @param
+   @return   文件句柄
+   @note	 需要注意文件句柄的生命周期
+*/
+/*----------------------------------------------------------------------------*/
+FILE *music_player_get_file_hdl(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+FILE *file_hd = music_player_get_file_hdl();
+```
+
+
+
+###  music_player_get_file_sclust
+music_player获取当前播放文件簇号
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取文件簇号
+   @param
+   @return   文件簇号, -1:无效
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+u32 music_player_get_file_sclust(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+u32 sclust_index = music_player_get_file_sclust();
+```
+
+###  music_player_get_dev_cur
+music_player获取当前播放设备盘符
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放设备盘符
+   @param
+   @return   设备盘符
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+char *music_player_get_dev_cur(void)
+```
+参数：无
+
+示例：
+``` javascript
+char *cur_dev = music_player_get_dev_cur();
+```
+
+
+###  music_player_get_dev_next
+获取当前播放设备下一个设备
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放设备下一个设备
+   @param
+   @return   设备盘符
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+char *music_player_get_dev_next(u8 auto_next)
+```
+参数：
+
+| 名称      | 说明                             |
+| --------- | -------------------------------- |
+| auto_next | 0：跳过录音设备  1：自动下一设备 |
+
+示例：
+
+``` javascript
+char *next_logo = music_player_get_dev_next(1);
+```
+
+###  music_player_get_dev_prev
+获取当前播放设备上一个设备
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放设备上一个设备
+   @param
+   @return   设备盘符
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+char *music_player_get_dev_prev(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+char *prev_logo = music_player_get_dev_prev();
+```
+
+###   music_player_get_play_status
+获取当前播放状态
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放状态
+   @param
+   @return   返回值如：
+  				 FILE_DEC_STATUS_STOP,//解码停止
+  				 FILE_DEC_STATUS_PLAY,//正在解码
+  				 FILE_DEC_STATUS_PAUSE,//解码暂停
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_get_play_status(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+if(music_player_get_play_status() == FILE_DEC_STATUS_PLAY){
+//……
+}
+```
+
+###  music_player_get_dec_cur_time
+获取当前播放歌曲时间
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放歌曲时间
+   @param
+   @return   当前播放时间
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_get_dec_cur_time(void)
+```
+参数：无
+
+示例：
+``` javascript
+u32 cur_second = music_player_get_dec_cur_time();
+```
+
+###  music_player_get_dec_total_time
+获取当前播放歌曲总时间
+ 
+ 原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放歌曲总时间
+   @param
+   @return   当前播放总时间
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_get_dec_total_time(void)
+```
+参数： 无
+
+示例：
+
+``` javascript
+u32 total_second = music_player_get_dec_total_time();
+```
+
+
+###  music_player_get_repeat_mode
+music_player获取当前播放循环模式
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放循环模式
+   @param
+   @return   当前播放循环模式
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+u8 music_player_get_repeat_mode(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+u8 mode =music_player_get_repeat_mode();
+```
+
+###  music_player_get_cur_music_dev
+music_player获取当前播放对应的music设备
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前播放对应的music设备
+   @param
+   @return   设备盘符
+   @note	 播放录音区分时，可以通过该接口判断当前播放的音乐设备是什么以便做录音区分判断
+*/
+/*----------------------------------------------------------------------------*/
+char *music_player_get_cur_music_dev(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+char *logo = music_player_get_cur_music_dev();
+```
+
+
+###  music_player_get_record_play_status
+music_player获取当前录音区分播放状态
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player获取当前录音区分播放状态
+   @param
+   @return   true：录音文件夹播放, false：非录音文件夹播放
+   @note	 播放录音区分时，可以通过该接口判断当前播放的是录音文件夹还是非录音文件夹
+*/
+/*----------------------------------------------------------------------------*/
+bool music_player_get_record_play_status(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+if(music_player_get_record_play_status()){
+	//……
+}
+```
+
+
+###  music_player_get_dev_flit
+music_player从设备列表找设备
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player从设备列表里面往前或往后找设备，并且过滤掉指定字符串的设备
+   @param
+   			flit:过滤字符串， 查找设备时发现设备logo包含这个字符串的会被过滤
+			direct：查找方向， 1:往后， 0：往前
+   @return   查找到符合条件的设备逻辑盘符， 找不到返回NULL
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+char *music_player_get_dev_flit(char *flit, u8 direct)
+```
+参数：
+
+| 名称   | 说明                                                        |
+| ------ | ----------------------------------------------------------- |
+| flit   | 过滤字符串， 查找设备时发现设备logo包含这个字符串的会被过滤 |
+| direct | 查找方向， 1:往后， 0：往前                                 |
+
+
+示例：
+
+``` javascript
+char *logo = music_player_get_dev_flit("_rec",1);
+```
+
+###  music_player_pp
+music_player播放/暂停
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player播放/暂停
+   @param
+   @return
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_pp(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+music_player_pp();
+```
+
+
+###  music_player_stop
+music_player解码停止
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player解码停止
+   @param
+			 fsn_release：
+				1：释放扫盘句柄
+				0：不释放扫盘句柄
+   @return
+   @note	 如果释放了扫盘句柄，需要重新扫盘，否则播放失败
+*/
+/*----------------------------------------------------------------------------*/
+void music_player_stop(u8 fsn_release)
+```
+参数：
+| 名称        | 说明                                                  |
+| ----------- | ----------------------------------------------------- |
+| fsn_release | 是否释放扫盘句柄，1：释放扫盘句柄   0：不释放扫盘句柄 |
+
+示例：
+
+``` javascript
+music_player_stop(0);
+```
+
+###  music_player_ff
+music_player快进
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player快进
+   @param	 step：快进步进
+   @return
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+void music_player_ff(int step)
+```
+参数：
+| 名称 | 说明         |
+| ---- | ------------ |
+| step | 快进步进(秒) |
+
+示例：
+
+``` javascript
+music_player_ff(3);
+```
+
+
+###  music_player_fr
+music_player快退
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player快退
+   @param	 step：快退步进
+   @return
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+void music_player_fr(int step)
+```
+参数：
+| 名称 | 说明         |
+| ---- | ------------ |
+| step | 快退步进(秒) |
+
+示例：
+
+``` javascript
+music_player_fr(3);
+```
+
+###  music_player_set_repeat_mode
+music_player设置播放循环模式
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player设置播放循环模式
+   @param	 mode：循环模式
+				FCYCLE_ALL
+				FCYCLE_ONE
+				FCYCLE_FOLDER
+				FCYCLE_RANDOM
+   @return  循环模式
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_set_repeat_mode(u8 mode)
+```
+参数：
+| 名称 | 说明     |
+| ---- | -------- |
+| mode | 循环模式 |
+
+示例：
+
+``` javascript
+music_player_set_repeat_mode(FCYCLE_ONE);
+```
+
+
+###   music_player_change_repeat_mode
+music_player切换循环模式
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player切换循环模式
+   @param
+   @return   循环模式
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_change_repeat_mode(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+music_player_change_repeat_mode();
+```
+
+
+###  music_player_delete_playing_file
+music_player删除当前播放文件,并播放下一曲
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player删除当前播放文件,并播放下一曲
+   @param
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_delete_playing_file(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+music_player_delete_playing_file();
+```
+
+
+###  music_player_play_prev
+music_player播放上一曲
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player播放上一曲
+   @param
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_prev(void)
+```
+参数：
+无
+
+示例：
+``` javascript
+music_player_play_prev();
+```
+
+###   music_player_play_next
+music_player播放下一曲
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player播放下一曲
+   @param
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_next(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+music_player_play_next();
+```
+
+###  music_player_play_first_file
+music_player播放第一曲
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player播放第一曲
+   @param
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_first_file(char *logo)
+```
+参数：
+| 名称 | 说明     |
+| ---- | -------- |
+| logo | 逻辑盘符 |
+
+示例；
+
+``` javascript
+music_player_play_first_file("sd0");
+```
+
+###  music_player_play_last_file
+music_player播放最后一曲
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player播放最后一曲
+   @param
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_last_file(char *logo)
+```
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| logo | 逻辑盘符 |
+
+示例：
+
+``` javascript
+music_player_play_last_file("sd0");
+```
+
+
+###   music_player_play_auto_next
+music_player自动播放下一曲
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player自动播放下一曲
+   @param
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_auto_next(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+music_player_play_auto_next();
+```
+
+###   music_player_play_folder_prev
+music_player切换上一个文件夹
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player上一个文件夹
+   @param
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_folder_prev(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+music_player_play_folder_prev();
+```
+
+###   music_player_play_folder_next
+music_player 切换下一个文件夹
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player下一个文件夹
+   @param
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_folder_next(void)
+```
+参数：无
+
+示例：
+
+``` javascript
+music_player_play_folder_next();
+```
+
+
+###  music_player_play_devcie_prev
+music_player 切换上一个设备
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player上一个设备
+   @param	 bp：断点信息
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_devcie_prev(struct __breakpoint *bp)
+```
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| bp   | 断点信息 |
+
+示例：
+
+``` javascript
+music_player_play_devcie_prev(NULL);
+```
+
+
+###   music_player_play_devcie_next
+music_player 切换下一个设备
+
+原型：
+``` javascript
+
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player下一个设备
+   @param	 bp：断点信息
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_devcie_next(struct __breakpoint *bp)
+```
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| bp   | 断点信息 |
+
+示例：
+
+``` javascript
+music_player_play_devcie_next(NULL);
+```
+
+
+
+### music_player_play_by_breakpoint
+music_player断点播放指定设备
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player断点播放指定设备
+   @param
+   			 logo：逻辑盘符，如：sd0/sd1/udisk0
+   			 bp：断点信息
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_by_breakpoint(char *logo, struct __breakpoint *bp)
+```
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| logo | 逻辑盘符 |
+| bp   | 断点信息 |
+
+示例：
+
+``` javascript
+music_player_play_by_breakpoint("sd0",bp)
+```
+
+###   music_player_play_by_number
+music_playe序号播放指定设备
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player序号播放指定设备
+   @param
+   			 logo：逻辑盘符，如：sd0/sd1/udisk0
+   			 number：指定播放序号
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_by_number(char *logo, u32 number)
+```
+参数：
+| 名称   | 说明         |
+| :----- | :----------- |
+| logo   | 逻辑盘符     |
+| number | 指定播放序号 |
+
+示例：
+
+``` javascript
+music_player_play_by_number("sd0",0);
+```
+
+
+###  music_player_play_by_sclust
+music_player簇号播放指定设备
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player簇号播放指定设备
+   @param
+   			 logo：逻辑盘符，如：sd0/sd1/udisk0
+   			 sclust：指定播放簇号
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_by_sclust(char *logo, u32 sclust)
+```
+参数：
+| 名称   | 说明         |
+| :----- | :----------- |
+| logo   | 逻辑盘符     |
+| sclust | 指定播放簇号 |
+
+
+
+示例：
+
+``` javascript
+u32 sclust = music_player_get_file_sclust();
+music_player_play_by_sclust("sd0",sclust);
+```
+
+###  music_player_play_by_path
+music_player路径播放指定设备
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player路径播放指定设备
+   @param
+   			 logo：逻辑盘符，如：sd0/sd1/udisk0, 设置为NULL，为默认当前播放设备
+   			 path：指定播放路径
+   @return   播放错误码
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_by_path(char *logo, const char *path)
+```
+参数：
+| 名称 | 说明         |
+| :--- | :----------- |
+| logo | 逻辑盘符     |
+| path | 指定播放路径 |
+
+示例：
+
+``` javascript
+int err = music_player_play_by_path("udisk0","/test.wav")
+```
+
+
+###  music_player_play_record_folder
+music_player录音区分切换播放
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    music_player录音区分切换播放
+   @param
+   			 logo：逻辑盘符，如：sd0/sd1/udisk0, 设置为NULL，为默认当前播放设备
+   			 bp：断点信息
+   @return   播放错误码
+   @note	 通过指定设备盘符，接口内部通过解析盘符是否"_rec"
+   			 来确定是切换到录音播放设备还是非录音播放设备
+*/
+/*----------------------------------------------------------------------------*/
+int music_player_play_record_folder(char *logo, struct __breakpoint *bp)
+```
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| logo | 逻辑盘符 |
+| bp   | 断点信息 |
+
+示例：
+``` javascript
+music_player_play_record_folder(NULL,NULL);
+```
+
+

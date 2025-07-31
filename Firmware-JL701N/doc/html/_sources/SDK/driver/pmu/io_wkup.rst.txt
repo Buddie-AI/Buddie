@@ -1,0 +1,215 @@
+P33外设
+#######################
+
+边沿唤醒
+-----------------
+
+p33的边沿唤醒模块支持选择普通io的唤醒和模拟信号唤醒，支持在低功耗模式下唤醒，支持配置上升沿/下降沿，滤波仅支持模拟信号部分，如下图所示：
+
+- 普通io有12路，配置方式为wkup_param.port[x]
+- 模拟信号有4路，配置方式为wkup_param.aport[x]
+
+.. figure:: file/io_wkup.svg
+   :width: 400
+   :align: center
+   :alt: 复位
+
+配置边沿唤醒
+>>>>>>>>>>>>>>>>>>>>>
+
+.. code-block:: c
+
+    #define MAX_WAKEUP_PORT     12  //最大同时支持数字io输入个数
+
+    #define MAX_WAKEUP_ANA_PORT 4   //最大同时支持模拟io输入个数
+
+    typedef enum {
+        RISING_EDGE = 0,
+        FALLING_EDGE,
+        BOTH_EDGE,
+    } POWER_WKUP_EDGE;
+
+    //filter
+    typedef enum {
+        PORT_FLT_NULL = 0,
+        PORT_FLT_256us,
+        PORT_FLT_512us,
+        PORT_FLT_1ms,
+        PORT_FLT_2ms,
+        PORT_FLT_4ms,
+        PORT_FLT_8ms,
+        PORT_FLT_16ms,
+    } POWER_AWKUP_FLT;
+
+    struct port_wakeup {
+        u8 pullup_down_enable;    //上下拉是否使能
+        POWER_WKUP_EDGE edge;     //唤醒边沿条件
+        POWER_AWKUP_FLT filter;	  //滤波参数，普通io输入没有滤波可配制
+        u8 iomap;      			  //唤醒io
+    };
+
+    struct wakeup_param {
+        //数字io输入
+        const struct port_wakeup *port[MAX_WAKEUP_PORT];
+        //模拟io输入
+        const struct port_wakeup *aport[MAX_WAKEUP_ANA_PORT];
+    };
+
+    void power_wakeup_init(const struct wakeup_param *param);
+
+参数:
+
+    ==========     =============================
+    param          边沿唤醒相关参数配置
+    ==========     =============================
+
+唤醒使能/关闭
+>>>>>>>>>>>>>>>>>>>>>
+    普通io或模拟信号边沿唤醒使能/关闭，awakeup是模拟信号使用的接口，wakeup是普通io使用的接口。
+
+原型:
+
+.. code-block:: c
+
+    void power_wakeup_index_enable(u8 index, u8 enable);
+    void power_awakeup_index_enable(u8 index, u8 enable);
+    void power_wakeup_gpio_enable(u8 gpio, u8 enable);
+    void power_awakeup_gpio_enable(u8 gpio, u8 enable);
+
+参数:
+
+    ==========     =============================
+    enable         为0则关闭，为1则使能
+    index          通道号，对应唤醒参数中的数组号
+    gpio           gpio序号
+    ==========     =============================
+    
+边沿类型配置
+>>>>>>>>>>>>>>>>>>>>>
+    普通io或模拟信号边沿类型设置，awakeup是模拟信号使用的接口，wakeup是普通io使用的接口。
+
+原型:
+
+.. code-block:: c
+    
+    void power_wakeup_gpio_edge(u8 gpio, POWER_WKUP_EDGE edge);
+    void power_awakeup_gpio_edge(u8 gpio, POWER_WKUP_EDGE edge);
+
+参数:
+
+    ==========     =============================
+    gpio           gpio序号
+    edge           表示边沿类型
+    ==========     =============================  
+
+边沿唤醒回调
+>>>>>>>>>>>>>>>>>>>>>
+    配置gpio或模拟信号边沿唤醒回调，该接口只能被调用一次，会被覆盖，awakeup是模拟信号使用的接口，wakeup是普通io使用的接口。
+ 
+原型:
+   
+.. code-block:: c
+
+    void power_wakeup_set_callback(void (*wakeup_callback)(u8 index, u8 gpio));
+    void power_awakeup_set_callback(void (*wakeup_callback)(u8 index, u8 gpio, POWER_WKUP_EDGE edge));
+
+
+
+:参数:
+    ===============     =============================
+    wakeup_callback     回调函数
+    index               唤醒注册的通道
+    gpio                gpio序号
+    edge                唤醒边沿
+    ===============     ============================= 
+
+示例：
+>>>>>>>>>>>>>>>>>>>>>
+
+.. code-block:: c
+
+    static struct port_wakeup port0 = {
+        .pullup_down_enable = 1,                //配置I/O 内部上下拉是否使能
+        .edge               = FALLING_EDGE,     //唤醒方式选择,可选：上升沿\下降沿
+        .filter             = PORT_FLT_16ms,
+        .iomap              = IO_PORTB_01,      //唤醒口选择
+
+    };
+
+    static const struct wakeup_param wk_param = {
+        .port[1] = &port0,
+    }
+
+    static void port_wakeup_callback(u8 index, u8 gpio)
+    {
+  
+
+
+    }
+
+    static void aport_wakeup_callback(u8 index, u8 gpio, POWER_WKUP_EDGE edge)
+    {
+
+
+
+    }
+
+    power_wakeup_init(&wk_param);
+
+    power_awakeup_set_callback(aport_wakeup_callback);
+    power_wakeup_set_callback(port_wakeup_callback);
+
+    //获取io_wakeup的引脚信息
+    u8 wake_io = 0;                                         
+    for (int i = 0; i < 12; i++) {                            
+        if (is_wakeup_source(PWR_WK_REASON_EDGE_INDEX0+i)) {
+            wake_io = wk_param.port[i]->iomap;
+        }
+    }
+
+
+长按复位
+----------
+长按复位有2路，分别是普通io和模拟信号，普通io的通道与边沿唤醒通道0共用，即通道0选择的io即使长按复位，又具有边沿唤醒功能，如下图所示：
+
+.. figure:: file/long_press_reset.svg
+   :width: 400
+   :align: center
+   :alt: 复位
+
+
+
+配置长按复位0
+>>>>>>>>>>>>>>>>>>>
+
+    配置普通io的长按复位。
+ 
+原型:
+   
+.. code-block:: c
+
+    void gpio_longpress_pin0_reset_config(u32 pin, u32 level, u32 time)
+
+参数:
+    ===============     ====================================================
+    pin                 gpio序号
+    level               0：下降沿触发    1：上升沿触发
+    time                0：关闭长按复位，1、2、4、8、16：长按复位时间，单位为秒
+    ===============     ====================================================
+
+配置长按复位1
+>>>>>>>>>>>>>>>>>>>
+    配置模拟信号长按复位。
+
+原型:
+   
+.. code-block:: c
+
+    void gpio_longpress_pin1_reset_config(u32 pin, u32 level, u32 time)
+
+参数:
+    ===============     ====================================================
+    pin                 IO_LDOIN_DET/IO_VBTCH_DET
+    level               0：下降沿触发    1：上升沿触发
+    time                0：关闭长按复位，1、2、4、8、16：长按复位时间，单位为秒
+    ===============     ====================================================

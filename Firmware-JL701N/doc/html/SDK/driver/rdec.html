@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.7. rdec &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.8. mcpwm" href="mcpwm.html" />
+    <link rel="prev" title="3.6. USB" href="usb.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. 外设驱动</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpio.html">3.1. gpio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gptimer.html">3.2. gptimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpadc.html">3.3. gpadc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uart.html">3.4. uart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iic.html">3.5. iic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usb.html">3.6. USB</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.7. rdec</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rdec-init">3.7.1. rdec_init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rdec-deinit">3.7.2. rdec_deinit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rdec-start">3.7.3. rdec_start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rdec-pause">3.7.4. rdec_pause</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rdec-resume">3.7.5. rdec_resume</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rdec-get-value">3.7.6. rdec_get_value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-2demo">3.7.7. phase_2模式demo</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mcpwm.html">3.8. mcpwm</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">3. </span>外设驱动</a> &raquo;</li>
+      <li><span class="section-number">3.7. </span>rdec</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rdec">
+<h1><span class="section-number">3.7. </span>rdec<a class="headerlink" href="#rdec" title="Link to this heading"></a></h1>
+<p>rdec支持两线输入，兼容phase_4、phase_2、phase_1三种模式（不同芯片支持不同模式），模块支持复用。</p>
+<section id="rdec-init">
+<h2><span class="section-number">3.7.1. </span>rdec_init<a class="headerlink" href="#rdec-init" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>rdec功能初始化。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">rdec_init</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">rdec_config</span><span class="w"> </span><span class="o">*</span><span class="n">rdec_cfg</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>rdec_cfg</p></td>
+<td><p>rdec配置</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>rdec配置句柄(id号)</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="rdec-deinit">
+<h2><span class="section-number">3.7.2. </span>rdec_deinit<a class="headerlink" href="#rdec-deinit" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>rdec功能初始化取消。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">rdec_deinit</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">rdec_cfg_id</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>rdec_cfg_id</p></td>
+<td><p>init时返回的句柄（id号）</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="rdec-start">
+<h2><span class="section-number">3.7.3. </span>rdec_start<a class="headerlink" href="#rdec-start" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>rdec功能启动。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">rdec_start</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">rdec_cfg_id</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div></div></blockquote>
+</section>
+<section id="rdec-pause">
+<h2><span class="section-number">3.7.4. </span>rdec_pause<a class="headerlink" href="#rdec-pause" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>rdec功能暂停。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">rdec_pause</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">rdec_cfg_id</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div></div></blockquote>
+</section>
+<section id="rdec-resume">
+<h2><span class="section-number">3.7.5. </span>rdec_resume<a class="headerlink" href="#rdec-resume" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>rdec功能恢复。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">rdec_resume</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">rdec_cfg_id</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div></div></blockquote>
+</section>
+<section id="rdec-get-value">
+<h2><span class="section-number">3.7.6. </span>rdec_get_value<a class="headerlink" href="#rdec-get-value" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>获取rdec计数值，有符号。</p>
+</div></blockquote>
+<p>原型:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">s8</span><span class="w"> </span><span class="nf">rdec_get_value</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">rdec_cfg_id</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>参数:</p>
+<blockquote>
+<div></div></blockquote>
+</section>
+<section id="phase-2demo">
+<h2><span class="section-number">3.7.7. </span>phase_2模式demo<a class="headerlink" href="#phase-2demo" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">usr_cfg_id</span><span class="p">;</span><span class="w"> </span><span class="c1">//当前配置的句柄（id号）</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">//编码器累计值</span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">rdec_timer_test_func</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">s8</span><span class="w"> </span><span class="n">dat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rdec_get_value</span><span class="p">(</span><span class="n">usr_cfg_id</span><span class="p">);</span>
+<span class="w">    </span><span class="n">data</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">dat</span><span class="p">;</span>
+<span class="w">    </span><span class="n">rdec_debug</span><span class="p">(</span><span class="s">&quot;data = %d, dat = %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">dat</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">rdec_test_func</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">usr_timer_add</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">rdec_timer_test_func</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">//1s读取一次编码器值</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">rdec_config</span><span class="w"> </span><span class="n">usr_rdec_cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">.</span><span class="n">ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RDEC_0</span><span class="p">,</span><span class="w"> </span><span class="c1">//RDEC_0模块</span>
+<span class="w">        </span><span class="p">.</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RDEC_PHASE_2</span><span class="p">,</span><span class="w"> </span><span class="c1">//phase_2模式</span>
+<span class="w">        </span><span class="p">.</span><span class="n">port_0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IO_PORTC_00</span><span class="p">,</span><span class="w"> </span><span class="c1">//A相IO口</span>
+<span class="w">        </span><span class="p">.</span><span class="n">port_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IO_PORTC_01</span><span class="p">,</span><span class="w"> </span><span class="c1">//B相IO口</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="c1">//给-1，使用默认时钟s</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="n">usr_cfg_id</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">rdec_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">usr_rdec_cfg</span><span class="p">);</span>
+<span class="w">    </span><span class="n">rdec_start</span><span class="p">(</span><span class="n">usr_cfg_id</span><span class="p">);</span>
+<span class="w">    </span><span class="n">rdec_pause</span><span class="p">(</span><span class="n">usr_cfg_id</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usb.html" class="btn btn-neutral float-left" title="3.6. USB" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mcpwm.html" class="btn btn-neutral float-right" title="3.8. mcpwm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LED配置 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>LED配置</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="led">
+<h1>LED配置<a class="headerlink" href="#led" title="Link to this heading"></a></h1>
+<p>LED配置包括硬件配置和状态配置，在可视化配置工具中，配置界面在 <code class="docutils literal notranslate"><span class="pre">LED配置</span></code> 选项框中。</p>
+<figure class="align-center" id="id3">
+<span id="led-config-image"></span><a class="reference internal image-reference" href="../../_images/001_led_config.png"><img alt="LED配置界面" src="../../_images/001_led_config.png" style="width: 576.0px; height: 312.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">LED配置界面</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<section id="id1">
+<h2>LED硬件配置<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>LED硬件配置指在具体的方案中，芯片IO与LED灯的硬件连接关系，用户需要根据硬件原理图进行配置，可配置的项目有：</p>
+<blockquote id="led-hw-config-image">
+<div><figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../../_images/005_led_hw_config.png"><img alt="LED硬件配置界面" src="../../_images/005_led_hw_config.png" style="width: 766.1999999999999px; height: 129.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">LED硬件配置界面</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<ol class="arabic" id="led-name-config">
+<li><p><strong>LED名</strong> ：指代该LED的名称，需要保证不同LED配置不同的名字，该名称在 <a class="reference internal" href="#led-status-config-t"><span class="std std-ref">LED状态配置</span></a> 中被引用；</p></li>
+<li><p><strong>IO名</strong> ：指该LED在原理图上连接主控芯片的IO编号，点击可查看对应封装的可选IO口列表，根据原理选择对应IO即可；</p>
+<blockquote>
+<div><figure class="align-center" id="id5">
+<span id="led-io-config-image"></span><a class="reference internal image-reference" href="../../_images/002_io_config.png"><img alt="LED可选IO列表" src="../../_images/002_io_config.png" style="width: 267.2px; height: 253.60000000000002px;" /></a>
+<figcaption>
+<p><span class="caption-text">LED可选IO列表</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</li>
+<li><p><strong>点亮方式</strong> ：指可以点亮该LED驱动方式，点击可查看驱动方式列表，根据LED正负极选择即可；</p>
+<blockquote>
+<div><figure class="align-center" id="id6">
+<span id="led-driver-mode-config-image"></span><a class="reference internal image-reference" href="../../_images/003_driver_mode_config.png"><img alt="LED可选驱动方式列表" src="../../_images/003_driver_mode_config.png" style="width: 337.0px; height: 205.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">LED可选驱动方式列表</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>SDK发布的标准原理图推荐使用的1个IO推2个LED连接方式：</p>
+<blockquote>
+<div><figure class="align-center" id="id7">
+<span id="led-hw-connect-image"></span><a class="reference internal image-reference" href="../../_images/004_led_schem_connect.png"><img alt="LED连接原理图" src="../../_images/004_led_schem_connect.png" style="width: 344.0px; height: 322.40000000000003px;" /></a>
+<figcaption>
+<p><span class="caption-text">LED连接原理图</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<p>使用上述连接方式，两个LED需要配置为相同IO，并使用PWM作为驱动方式，其中蓝灯（BLUE）选择 <strong>PWM低电平</strong> ，红灯（RED）选择 <strong>PWM高电平</strong> 。</p>
+</div>
+</section>
+<section id="led-status-config-t">
+<span id="id2"></span><h2>LED状态配置<a class="headerlink" href="#led-status-config-t" title="Link to this heading"></a></h2>
+<p>状态配置是用户定义不同UI的闪烁方式，并可以在情景配置中调用该闪烁方式，要显示一个完整的UI，对此有如下约定：</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ol class="arabic simple">
+<li><p>每个UI状态包含若干个子状态；</p></li>
+<li><p>子状态在时间轴上切换，周期循环或者单次状态；</p></li>
+</ol>
+</div>
+<p>UI显示原理如下图：</p>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../../_images/006_ui_status_theory.svg"><img alt="UI显示原理示例图" src="../../_images/006_ui_status_theory.svg" width="800" /></a>
+<figcaption>
+<p><span class="caption-text">UI显示原理示例图</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>每个子状态可以配置参数如图：</p>
+<figure class="align-center" id="id9">
+<span id="led-child-status-image"></span><a class="reference internal image-reference" href="../../_images/007_led_child_status.png"><img alt="子状态配置" src="../../_images/007_led_child_status.png" style="width: 692.5px; height: 111.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">子状态配置</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple">
+<li><p><strong>状态名</strong> ：定义LED UI状态的名称，用户根据UI特征命名即可，该名称在情景配置中 <a class="reference internal" href="led_status.html#led-display-config"><span class="std std-ref">LED显示</span></a> 中被引用；</p></li>
+<li><p><strong>LED名</strong> ：<a class="reference internal" href="#led-name-config"><span class="std std-ref">LED硬件配置</span></a> 中定义的名称；</p></li>
+<li><p><strong>状态</strong> ：当前时刻设置的LED状态，可设置为 <strong>亮</strong> 和 <strong>灭</strong> ；</p></li>
+<li><p><strong>时间</strong> ：设置当前状态持续时间，单位为毫秒（ms）；</p></li>
+<li><p><strong>亮度</strong> ：设置当前状态亮度，该配置当状态设置为 <strong>亮</strong> 时起作用，设置为 <strong>灭</strong> 是无效；</p></li>
+<li><p><strong>呼吸速率</strong> ：设置为0时，是普通亮灭效果，设置为非0时，是呼吸效果，值越大，呼吸速率越快，从没到亮的时间越短；</p></li>
+<li><p><strong>与下一时刻的关系</strong> ：支持如下选择：</p>
+<ul class="simple">
+<li><p>等待：当时间设置为非0，且不是最后一个子状态时，需要设置为等待，表示在设置为指定状态需要持续一段时间，才切换到下一个子状态；</p></li>
+<li><p>继续：当时间设置为0，且不是最后一个子状态时，需要设置为继续，表示在设置为指定状态后立即切换到下一个子状态；</p></li>
+<li><p>结束：当子状态是最后一个子状态，且该UI状态只显示一次，需要配置为结束；</p></li>
+<li><p>循环：当子状态是最后一个子状态，且该UI状态循环显示，需要配置为循环；</p></li>
+</ul>
+</li>
+</ol>
+<p>SDK默认状态配置分析：</p>
+<ol class="arabic">
+<li><p><strong>红灯常亮</strong></p>
+<p>配置如图：</p>
+<blockquote id="red-led-light-status-image">
+<div><figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="../../_images/008_red_led_light_status.png"><img alt="红灯常亮配置" src="../../_images/008_red_led_light_status.png" style="width: 688.5px; height: 105.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">红灯常亮配置</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<ul class="simple">
+<li><p>子状态1：蓝灯灭（复位上一状态蓝灯的状态），等待时间为0，并立即执行下一子状态；</p></li>
+<li><p>子状态2：红灯亮，等待时间为0，并结束子状态切换；</p></li>
+</ul>
+<p>执行上述2个子状态后，UI效果是蓝灯熄灭，红灯维持亮的状态，波形示例如下：</p>
+<figure class="align-center" id="id11">
+<span id="red-led-light-wave-image"></span><a class="reference internal image-reference" href="../../_images/009_red_led_light_wave_output.svg"><img alt="红灯常亮时序" src="../../_images/009_red_led_light_wave_output.svg" width="500" /></a>
+<figcaption>
+<p><span class="caption-text">红灯常亮时序</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p><strong>蓝灯慢闪（周期）</strong></p>
+<p>配置如图：</p>
+<blockquote id="led-slow-flash-conifg-image">
+<div><figure class="align-center" id="id12">
+<a class="reference internal image-reference" href="../../_images/020_led_slow_flash_config.png"><img alt="蓝灯慢闪配置" src="../../_images/020_led_slow_flash_config.png" style="width: 690.0px; height: 143.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">蓝灯慢闪配置</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<ul class="simple">
+<li><p>子状态1：红灯灭（复位上一状态红灯的状态），等待时间为0，并立即执行下一子状态；</p></li>
+<li><p>子状态2：蓝灯亮，持续时间为100ms，等待持续时间结束后切换到下一子状态执行；</p></li>
+<li><p>子状态3：蓝灯灭，持续时间为1900ms，持续时间结束后循环回到第一个子状态执行；</p></li>
+</ul>
+<p>执行上述3个子状态后，UI效果是红灯熄灭，蓝灯亮100ms，然后熄灭1900ms，循环往复，整体周期是周期2000ms，波形示例如下：</p>
+<figure class="align-center" id="id13">
+<span id="blue-slow-flash-wave-image"></span><a class="reference internal image-reference" href="../../_images/010_blue_slow_flash_wave_output.svg"><img alt="蓝灯慢闪时序" src="../../_images/010_blue_slow_flash_wave_output.svg" width="500" /></a>
+<figcaption>
+<p><span class="caption-text">蓝灯慢闪时序</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p><strong>红蓝灯交替快闪（周期）</strong></p>
+<p>配置如图：</p>
+<blockquote id="double-flash-config-image">
+<div><figure class="align-center" id="id14">
+<a class="reference internal image-reference" href="../../_images/011_double_flash_config.png"><img alt="红蓝灯交替快闪" src="../../_images/011_double_flash_config.png" style="width: 701.0px; height: 268.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">红蓝灯交替快闪</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<ul class="simple">
+<li><p>子状态1：红灯灭（复位上一状态红灯的状态），等待时间为0，并立即执行下一子状态；</p></li>
+<li><p>子状态2：蓝灯灭（复位上一状态蓝灯的状态），等待时间为0，并立即执行下一子状态；</p></li>
+<li><p>子状态3：红灯亮，持续时间为500ms，等待持续时间结束后切换到下一子状态执行；</p></li>
+<li><p>子状态4：红灯灭，等待时间为0，并立即执行下一子状态；</p></li>
+<li><p>子状态5：蓝灯亮，持续时间为500ms，等待持续时间结束后切换到下一子状态执行；</p></li>
+<li><p>子状态6：蓝灯灭，等待时间为0，立即循环回到第一个子状态执行；</p></li>
+</ul>
+<p>执行上述6个子状态后，UI效果是红灯亮500ms然后切换到蓝灯亮500ms，循环往复，整体周期是周期1000ms，波形示例如下：</p>
+<figure class="align-center" id="id15">
+<span id="double-fast-flash-wave-image"></span><a class="reference internal image-reference" href="../../_images/012_double_fast_flash_wave_output.svg"><img alt="红蓝灯交替快闪时序" src="../../_images/012_double_fast_flash_wave_output.svg" width="500" /></a>
+<figcaption>
+<p><span class="caption-text">红蓝灯交替快闪时序</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p><strong>蓝灯闪3下（单次）</strong></p>
+<p>配置如图：</p>
+<blockquote id="single-flash-3-times-config-image">
+<div><figure class="align-center" id="id16">
+<a class="reference internal image-reference" href="../../_images/013_single_flash_3_times_config.png"><img alt="蓝灯闪3下配置" src="../../_images/013_single_flash_3_times_config.png" style="width: 692.5px; height: 304.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">蓝灯闪3下配置</span><a class="headerlink" href="#id16" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<ul class="simple">
+<li><p>子状态1：红灯灭（复位上一状态红灯的状态），等待时间为0，并立即执行下一子状态；</p></li>
+<li><p>子状态2：蓝灯亮，持续时间为300ms，等待持续时间结束后切换到下一子状态执行；</p></li>
+<li><p>子状态3：蓝灯灭，持续时间为300ms，等待持续时间结束后切换到下一子状态执行；</p></li>
+<li><p>子状态4：蓝灯亮，持续时间为300ms，等待持续时间结束后切换到下一子状态执行；</p></li>
+<li><p>子状态5：蓝灯灭，持续时间为300ms，等待持续时间结束后切换到下一子状态执行；</p></li>
+<li><p>子状态6：蓝灯亮，持续时间为300ms，等待持续时间结束后切换到下一子状态执行；</p></li>
+<li><p>子状态7：蓝灯灭，等待时间为0，状态显示结束；</p></li>
+</ul>
+<p>执行上述7个子状态后，UI效果是红灯亮灭3次，间隔是300ms，波形示例如下：</p>
+<figure class="align-center" id="id17">
+<span id="blue-flash-3-times-wave-image"></span><a class="reference internal image-reference" href="../../_images/013_blue_flash_3_times__wave_output.svg"><img alt="蓝灯闪3下时序" src="../../_images/013_blue_flash_3_times__wave_output.svg" width="500" /></a>
+<figcaption>
+<p><span class="caption-text">蓝灯闪3下时序</span><a class="headerlink" href="#id17" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p><strong>红灯呼吸（周期）</strong></p>
+<p>配置如图：</p>
+<blockquote id="red-led-breathe-config-image">
+<div><figure class="align-center" id="id18">
+<a class="reference internal image-reference" href="../../_images/014_red_breathe_config.png"><img alt="红灯呼吸" src="../../_images/014_red_breathe_config.png" style="width: 693.0px; height: 192.5px;" /></a>
+<figcaption>
+<p><span class="caption-text">红灯呼吸</span><a class="headerlink" href="#id18" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<ul class="simple">
+<li><p>子状态1：蓝灯灭（复位上一状态红灯的状态），等待时间为0，并立即执行下一子状态；</p></li>
+<li><p>子状态2：红灯从灭到亮呼吸，并在呼吸到最高亮度时维持一段时间，呼吸+最高亮度维持时间为1000ms，维持时间与呼吸速率有关，呼吸速率越大，维持时间越长，等待持续时间结束后切换到下一子状态执行；</p></li>
+<li><p>子状态3：红灯从亮到灭呼吸，持续时间为1000ms，<strong>注意：</strong> 亮度与持续时间，呼吸速率需要配置为与子状态2相同，保证效果对称，等待持续时间结束后切换到下一子状态执行；</p></li>
+<li><p>子状态4：红灯灭，持续时间结束后循环回到第一个子状态执行。</p></li>
+</ul>
+<p>执行上述4个子状态后，UI效果是红灯周期呼吸，波形示例如下：</p>
+<figure class="align-center" id="id19">
+<span id="red-led-breathe-wave-image"></span><a class="reference internal image-reference" href="../../_images/014_red_breathe_wave_output.svg"><img alt="红灯呼吸时序" src="../../_images/014_red_breathe_wave_output.svg" width="500" /></a>
+<figcaption>
+<p><span class="caption-text">红灯呼吸时序</span><a class="headerlink" href="#id19" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>LED配置约束事项：</p>
+<ol class="arabic simple">
+<li><p>同一时刻只能显示一种UI状态；</p></li>
+<li><p>硬件PWM模块只有一个，同一时刻只能点亮一个LED；</p></li>
+</ol>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

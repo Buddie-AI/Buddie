@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LED显示 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>LED显示</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="led">
+<span id="led-display-config"></span><h1>LED显示<a class="headerlink" href="#led" title="Link to this heading"></a></h1>
+<p>LED显示是指基于系统事件触发对应LED状态显示的功能，在可视化配置工具中，配置界面在 <code class="docutils literal notranslate"><span class="pre">情景配置</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">LED配置</span></code> 选项框中。</p>
+<figure class="align-center" id="id1">
+<span id="led-display-config-image"></span><a class="reference internal image-reference" href="../../_images/015_led_display_config.png"><img alt="LED显示配置界面" src="../../_images/015_led_display_config.png" style="width: 576.0px; height: 312.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">LED显示配置界面</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>LED显示配置界面有多个 <strong>场景编辑</strong> 卡组成，可以点击右上角的“增加”按键添加，或者点击卡片内的“X”删除，每个卡片可以配置1组事件和UI显示状态的对应关系，如图：</p>
+<figure class="align-center" id="led-display-card">
+<a class="reference internal image-reference" href="../../_images/016_led_display_card.png"><img alt="../../_images/016_led_display_card.png" src="../../_images/016_led_display_card.png" style="width: 547.0px; height: 204.0px;" /></a>
+</figure>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../_images/017_led_display_card_edit.png"><img alt="LED显示编辑卡界面" src="../../_images/017_led_display_card_edit.png" style="width: 691.1999999999999px; height: 307.2px;" /></a>
+<figcaption>
+<p><span class="caption-text">LED显示编辑卡界面</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>场景编辑选项卡可配置选项与配置规则可参考 <strong>工具章节</strong> 描述。</p>
+<p>当点击 <code class="docutils literal notranslate"><span class="pre">任务选择</span></code> 的 <code class="docutils literal notranslate"><span class="pre">LED</span></code> 任务时，会显示如下界面：</p>
+<figure class="align-center" id="id3">
+<span id="led-status-select-image"></span><a class="reference internal image-reference" href="../../_images/018_led_status_select.png"><img alt="LED任务显示界面" src="../../_images/018_led_status_select.png" style="width: 616.0px; height: 272.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">LED任务显示界面</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>LED任务中的UI显示列表在 <a class="reference internal" href="led_config.html#led-status-config-t"><span class="std std-ref">LED状态配置</span></a> 中定义，UI从一种状态切换到另外一种状态有2种逻辑：</p>
+<ol class="arabic">
+<li><p><strong>状态切换：</strong> 新的UI状态会覆盖当前的UI状态，举例说明：</p>
+<ul class="simple">
+<li><p>上一次的UI状态是；红灯慢闪；</p></li>
+<li><p>新的UI状态是；红灯闪3下；</p></li>
+<li><p>切换结果：红灯闪3下，结束后LED处于熄灭状态；</p></li>
+</ul>
+</li>
+<li><p><strong>打断执行：</strong> 新的UI状态会打断当前UI状态执行，并在执行完成后，会恢复上一次UI的状态，举例说明</p>
+<ul class="simple">
+<li><p>上一次的UI状态是；红灯慢闪；</p></li>
+<li><p>新的UI状态是；红灯闪3下；</p></li>
+<li><p>切换结果：红灯闪3下，结束后会恢复红灯慢闪的UI状态；</p></li>
+</ul>
+<p>前提是需要满足如下约束条件：</p>
+<ul class="simple">
+<li><p>上一次的UI状态是一个周期性显示的UI；</p></li>
+<li><p>新的UI状态是一个单次显示的UI；</p></li>
+</ul>
+<p>如果不满足上述条件，将按照 <strong>状态切换</strong> 逻辑处理；</p>
+</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>在TWS应用中，LED在状态切换时，默认会同步主从机之间的UI状态同步切换，效果上实现tws之间的同步闪烁，如需实现主从机/左右耳差异化显示的UI，可以在条件判断增加类似如下图的配置：</p>
+<blockquote id="led-status-left-image">
+<div><figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../../_images/019_led_status_left.png"><img alt="TWS差异化UI显示" src="../../_images/019_led_status_left.png" style="width: 572.5px; height: 256.0px;" /></a>
+<figcaption>
+<p><span class="caption-text">TWS差异化UI显示</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.4. rscp按键配置说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3. 外设驱动" href="../driver/index.html" />
+    <link rel="prev" title="2.3. rcsp开发说明" href="rcsp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. 蓝牙协议栈</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="event.html">2.1. 协议栈事件说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="%E5%B8%B8%E7%94%A8%E8%93%9D%E7%89%99%E5%BA%93%E6%8E%A5%E5%8F%A3%E5%87%BD%E6%95%B0.html">2.2. 常用蓝牙库接口函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcsp.html">2.3. rcsp开发说明</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.4. rscp按键配置说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">2.4.1. 编写目的</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.4.2. 业务流程图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xxx-json-txtapp">2.4.3. xxx_json.txt文件设置杰理手机APP界面的功能显示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#json-txtpid-vid">2.4.4. json.txt文件设置固件的PID/VID</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">2. </span>蓝牙协议栈</a> &raquo;</li>
+      <li><span class="section-number">2.4. </span>rscp按键配置说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rscp">
+<h1><span class="section-number">2.4. </span>rscp按键配置说明<a class="headerlink" href="#rscp" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2><span class="section-number">2.4.1. </span>编写目的<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>为方便后续新项目对手机APP的添加支持，该章节主要说明项目开发中是如何通过xxx_json.txt文件来配置显示杰理手机APP中的按键功能。固件已经开发完成全部按键配置的功能，除非有新客户需求原本RCSP协议无法满足的，需要与杰理移动端/固件工程师协商后改动固件代码，否则只需与服务器部门同事协商当前固件的PID-VID，并通过杰理服务器部门同事上传xxx_json.txt（该文件由杰理手机APP读取并根据文件内容显示界面）即可完成手机APP的按键配置功能。</p>
+<p>该文档暂时只支持杰理之家APP的（音箱、耳机（tws、挂脖）、声卡）配置说明。</p>
+<p>常见按键配置功能如下图所示：单击、双击、设置蓝牙名、工作模式（正常/游戏模式）、mic设置、ota升级、ANC功能（降噪模式、通透模式）。具体功能根据固件类型、客户需求来改变。</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/1658729772626.png" src="../../_images/1658729772626.png" />
+</figure>
+</div></blockquote>
+</section>
+<section id="id2">
+<h2><span class="section-number">2.4.2. </span>业务流程图<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/1658729006541.png" src="../../_images/1658729006541.png" />
+</figure>
+</div></blockquote>
+</section>
+<section id="xxx-json-txtapp">
+<h2><span class="section-number">2.4.3. </span>xxx_json.txt文件设置杰理手机APP界面的功能显示<a class="headerlink" href="#xxx-json-txtapp" title="Link to this heading"></a></h2>
+<p>如果有客户自定义的按键配置，可以具体参考当前目录下的若干xxx_json.txt来新写一份，然后上传到服务器。如果客户没有要求，则不设置PID和VID，杰理手机APP会有默认的文件，如杰理手机app默认是使用当前目录下的文件。</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/1658734501238.png" src="../../_images/1658734501238.png" />
+</figure>
+</div></blockquote>
+<p>默认manifest_headset_json.txt内容如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="s">&quot;chip&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s">&quot;series&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;manifest&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;manifest_headset&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;bluetooth&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="s">&quot;device&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;headset&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;has_tws&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;has_charging_bin&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;has_ai&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;has_ota&quot;</span><span class="o">:</span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;key_settings&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="s">&quot;key_num&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;左&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Left&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;右&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Right&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="s">&quot;key_action&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;短按耳机&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Single Tap Setting&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;轻点两下耳机&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Double Tap Setting&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="s">&quot;key_function&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;无作用&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;None&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;上一曲&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Previous Track&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;下一曲&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Next Track&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;播放/暂停&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Play/Pause&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;接听电话&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Answer Call&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;挂断电话&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Hang Up&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;回拨电话&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Call Back&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;音量加&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Volume Up&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;音量减&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Volume Down&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;拍照&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Take Photo&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s">&quot;led_settings&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="s">&quot;scene&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;未配对&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Unpaired&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;未连接&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Disconnected&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;已连接&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Connected&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="s">&quot;effect&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;全灭&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;All Off&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;红灯常亮&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Solid Red Light&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;蓝灯常亮&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Solid Blue Light&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;红灯呼吸&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Red Light Flashing&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;蓝灯呼吸&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Blue Light Flashing&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;红蓝交替快闪&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Alternate Fast Flash of Red and Blue Lights&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;红蓝交替慢闪&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Alternate Slow Flash of Red and Blue Lights&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s">&quot;work_mode&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;普通模式&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Normal Mode&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;游戏模式&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Gaming Mode&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="s">&quot;mic_channel&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;自动切换&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Automatic&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;始终左耳&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Always Left Ear&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="s">&quot;value&quot;</span><span class="o">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">        </span><span class="s">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="s">&quot;zh&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;始终右耳&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s">&quot;en&quot;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Always Right Ear&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="json-txtpid-vid">
+<h2><span class="section-number">2.4.4. </span>json.txt文件设置固件的PID/VID<a class="headerlink" href="#json-txtpid-vid" title="Link to this heading"></a></h2>
+<p>设置完成xxx_json.txt文件后，需要上传到服务器。与服务器同事讨论VID、PID后，在固件download文件夹下的json.txt中设置完成，并在download.bat中的isd_download.exe操作前添加json_to_res.exe json.txt，并在isd_download.exe操作的-res后面添加config.dat，APP通过读取这里的配置，就可以从服务器拉到改配置文件。</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/1662447225615.png" src="../../_images/1662447225615.png" />
+</figure>
+<figure class="align-default">
+<img alt="../../_images/1658730496016.png" src="../../_images/1658730496016.png" />
+</figure>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rcsp.html" class="btn btn-neutral float-left" title="2.3. rcsp开发说明" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../driver/index.html" class="btn btn-neutral float-right" title="3. 外设驱动" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

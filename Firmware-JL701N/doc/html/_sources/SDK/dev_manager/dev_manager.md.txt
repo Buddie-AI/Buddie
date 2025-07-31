@@ -1,0 +1,1028 @@
+dev manager应用说明
+==========================
+		
+
+| 缩写、术语  | 解 释                                                                                                                                                                                                               |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Dev_manager | 设备管理器                                                                                                                                                                                                          |
+| valid       | 有效设备标志，有效指的是设备中有可播放文件，music_player会查询有效设备进行播放，跳过无效设备。                                                                                                                      |
+| logo        | 设备逻辑盘符，如：sd0/udisk0等                                                                                                                                                                                      |
+| active      | 最后活动活动设备，dev_manager_find_active表示查找最后活动设备，dev_manager_set_active可以将需要指定的设备设置为最后活动设备， 同时注意设备上线的时候默认会将设备设置为最后活动设备。                                |
+| _rec        | SDK 默认在需要支持录音文件夹区分设备后追加“_rec”(例如：sd0对应的录音文件播放设备为“sdk0_rec”)，并提供dev_manager_get_rec_logo接口获取录音播放设备及dev_manager_get_phy_logo接口获取录音播放设备对应的音乐设备。 |
+## 功能概述
+Dev_manager设备接口实现以下功能：
+
+ 1. 支持设备上下线
+ 2. 支持设备查找
+	1) 查找第一个设备
+	2)查找最后一个设备
+	3)查找当前设备上一个设备
+	4)查找当前设备下一个设备
+	5)查找最后活动设备
+	6)查找指定设备
+	7)查找指定序号的设备
+ 3. 支持设置设备信息
+	1. 设置设备有效/无效
+	2)设置设备为活动设备
+ 4. 支持获取设备信息
+	1. 获取设备逻辑盘符
+	2)获取音乐设备逻辑盘符
+	3)获取录音播放设备逻辑盘符
+	4)获取设备根目录
+	5)获取设备文件浏览根目录
+
+ 5. 支持设备在线检查
+
+ 6. 其他
+
+	1. 设备扫盘及扫盘释放
+	
+## 关键结构体、枚举类型及参数说明
+### 设备管理器结构体
+
+``` javascript
+struct __dev_manager {
+	struct list_head 	list;
+	OS_MUTEX			mutex;
+	OS_SEM			    sem;
+};
+```
+说明：
+该结构体主要起到设备链表管理的作用。
+
+### 设备节点const信息结构体
+
+``` javascript
+struct __dev_reg {
+	char *logo;//设备选择使用的逻辑盘符
+	char *name;//设备名称，底层匹配设备节点使用
+	char *storage_path;//设备路径，文件系统mount时使用
+	char *bs_storage_path;//设备浏览使用的设备路径，供文件浏览文件系统mount使用
+	char *root_path;//设备文件系统根目录
+	char *bs_root_path;//文件浏览设备文件系统根目录
+	char *fs_type;//文件系统类型,如：fat, sdfile
+};
+```
+说明：
+设备const信息， 在dev_manager.c中断dev_reg[]中配置。
+
+### 设备节点结构体
+
+``` javascript
+struct __dev {
+	struct list_head 	entry;
+	struct __dev_reg 	*parm;//设备参数
+	volatile u8			valid:	1;//有效设备标记， 这里有效是指是否有可播放文件
+	volatile u32		active_stamp;///活动设备时间戳，通过时间戳记录当前最后活动设备
+#if (TCFG_LFN_EN)
+	u8 					lfn_buf[512];///设备长文件名缓存
+#endif
+};
+```
+
+###  设备配置参数
+
+``` javascript
+const struct __dev_reg dev_reg[] = {
+    //内置flash
+    {
+        /*logo*/			SDFILE_DEV,
+        /*name*/			NULL,
+        /*storage_path*/	SDFILE_MOUNT_PATH,
+        /*bs_storage_path*/	NULL,
+        /*root_path*/		SDFILE_RES_ROOT_PATH,
+        /*bs_root_path*/	NULL,
+        /*fs_type*/			"sdfile"
+    },
+    //内置录音
+    {
+        /*logo*/			"rec_sdfile",
+        /*name*/			NULL,
+        /*storage_path*/	"mnt/rec_sdfile",
+        /*bs_storage_path*/	NULL,
+        /*root_path*/		"mnt/rec_sdfile/C/",
+        /*bs_root_path*/	NULL,
+        /*fs_type*/			"rec_sdfile"
+    },
+    //sd0
+    {
+        /*logo*/			"sd0",
+        /*name*/			"sd0",
+        /*storage_path*/	"storage/sd0",
+        /*bs_storage_path*/	SD0_BS_STORAGE_PATH,
+        /*root_path*/		"storage/sd0/C/",
+        /*bs_root_path*/	SD0_BS_ROOT_PATH,
+        /*fs_type*/			"fat"
+    },
+    //sd1
+    {
+        /*logo*/			"sd1",
+        /*name*/			"sd1",
+        /*storage_path*/	"storage/sd1",
+        /*bs_storage_path*/	SD1_BS_STORAGE_PATH,
+        /*root_path*/		"storage/sd1/C/",
+        /*bs_root_path*/	SD1_BS_ROOT_PATH,
+        /*fs_type*/			"fat"
+    },
+    //u盘
+    {
+        /*logo*/			"udisk0",
+        /*name*/			"udisk0",
+        /*storage_path*/	"storage/udisk0",
+        /*bs_storage_path*/	UDISK0_BS_STORAGE_PATH,
+        /*root_path*/		"storage/udisk0/C/",
+        /*bs_root_path*/	UDISK0_BS_ROOT_PATH,
+        /*fs_type*/			"fat"
+    },
+    //sd0录音文件夹分区
+    {
+        /*logo*/			"sd0_rec",
+        /*name*/			"sd0",
+        /*storage_path*/	"storage/sd0",
+        /*bs_storage_path*/	NULL,
+        /*root_path*/		"storage/sd0/C/"REC_FOLDER_NAME,
+        /*bs_root_path*/	NULL,
+        /*fs_type*/			"fat"
+    },
+    //sd1录音文件夹分区
+    {
+        /*logo*/			"sd1_rec",
+        /*name*/			"sd1",
+        /*storage_path*/	"storage/sd1",
+        /*bs_storage_path*/	NULL,
+        /*root_path*/		"storage/sd1/C/"REC_FOLDER_NAME,
+        /*bs_root_path*/	NULL,
+        /*fs_type*/			"fat"
+    },
+    //u盘录音文件夹分区
+    {
+        /*logo*/			"udisk0_rec",
+        /*name*/			"udisk0",
+        /*storage_path*/	"storage/udisk0",
+        /*bs_storage_path*/	NULL,
+        /*root_path*/		"storage/udisk0/C/"REC_FOLDER_NAME,
+        /*bs_root_path*/	NULL,
+        /*fs_type*/			"fat"
+    },
+    //外挂fat分区
+    {
+        /*logo*/			"fat_nor",
+        /*name*/			"fat_nor",
+        /*storage_path*/	"storage/fat_nor",
+        /*bs_storage_path*/	NULL,
+        /*root_path*/		"storage/fat_nor/C/",
+        /*bs_root_path*/	NULL,
+        /*fs_type*/			"fat"
+    },
+    //外挂flash资源分区
+    {
+        /*logo*/			"res_nor",
+        /*name*/			"res_nor",
+        /*storage_path*/	"storage/res_nor",
+        /*bs_storage_path*/	NULL,
+        /*root_path*/		"storage/res_nor/C/",
+        /*bs_root_path*/	NULL,
+        /*fs_type*/			"nor_sdfile"
+    },
+    ///外挂录音分区
+    {
+        /*logo*/			"rec_nor",
+        /*name*/			"rec_nor",
+        /*storage_path*/	"storage/rec_nor",
+        /*bs_storage_path*/	NULL,
+        /*root_path*/		"storage/rec_nor/C/",
+        /*bs_root_path*/	NULL,
+        /*fs_type*/			"nor_fs"
+    },
+    {
+        /*logo*/			"nor_ui",
+        /*name*/			"nor_ui",
+        /*storage_path*/	"storage/nor_ui",
+        /*bs_storage_path*/	NULL,
+        /*root_path*/		"storage/nor_ui/C/",
+        /*bs_root_path*/	NULL,
+        /*fs_type*/			"nor_sdfile"
+    },
+
+    //<新加设备参数请在reg end前添加!!
+    //<reg end
+    {
+        /*logo*/			NULL,
+        /*name*/			NULL,
+        /*storage_path*/	NULL,
+        /*bs_storage_path*/	NULL,
+        /*root_path*/		NULL,
+        /*bs_root_path*/	NULL,
+        /*fs_type*/			NULL
+    },
+};
+```
+
+## 设备管理流程框架
+
+![绘图](imgs/1670396694501.drawio.svg)
+
+
+## 如何将自定义设备加入到设备链表
+具体操作步骤：
+ 1. 配置dev_reg， 加入自定义设备信息项，包括:
+		 1）设备逻辑盘符logo，设备匹配及查找时使用；
+		 2）dev_name设备名称，设备上线时，底层内部会匹配设备链表（在对应板卡.c文件中配置设备，如下图），如找不到对应的设备， 上线失败；
+
+	``` javascript
+		REGISTER_DEVICES(device_table) = {
+		#if TCFG_SD0_ENABLE
+			{ "sd0", 	&sd_dev_ops, 	(void *) &sd0_data},
+		#endif
+		#if TCFG_SD1_ENABLE
+			{ "sd1", 	&sd_dev_ops, 	(void *) &sd1_data},
+		#endif
+
+		#if TCFG_UDISK_ENABLE
+			{ "udisk0",   &mass_storage_ops , NULL},
+		#endif
+
+		#if TCFG_NORFLASH_DEV_ENABLE
+		#if TCFG_NOR_FAT
+			{ "fat_nor",   &norflash_dev_ops , (void *)&norflash_fat_dev_data},
+		#endif
+
+		#if TCFG_NOR_FS
+			{ "res_nor",   &norfs_dev_ops , (void *)&norflash_norfs_dev_data},
+		#endif
+
+		#if TCFG_NOR_REC
+			{"rec_nor",   &norfs_dev_ops , (void *)&norflash_norfs_rec_dev_data},
+		#endif
+		#endif /*TCFG_NORFLASH_DEV_ENABLE*/
+
+		};
+	```
+
+
+	3）storage_path、bs_storage_path设备路径，设备mout底层内部使用，其中如果没有文件浏览需求可以将对应设备的bs_storage_path设置为NULL；
+	4）root_path、bs_root_path设备扫盘（scan_disk）、文件访问时使用(fopen)及其他文件操作， 如果没有文件浏览bs_root_path可以设置为NULL；
+	5）fs_type文件系统类型， 例如：fat/sdfile等；
+		 
+		 
+ 2. 常驻设备不需要检测的， 可以在dev_manager_task函数内直接add到设备链表，如：
+	``` javascript
+	 static void dev_manager_task(void *p)
+	{
+		int res = 0;
+		int msg[8] = {0};
+		///过滤隐藏 和 .开头名名的字文件
+		hidden_file(1);
+		///设备初始化，
+		devices_init();
+	#if SDFILE_STORAGE && TCFG_CODE_FLASH_ENABLE
+		dev_manager_add(SDFILE_DEV);
+	#endif
+		……
+	}
+	```
+
+ 3. 需要检测设备上下线事件响应，参考dev_status.c中的dev_status_event_filter处理流程。
+ 4. 设备选择， 在指定情景， 通过以下这些接口选择设备：
+	``` javascript?linenums
+	//dev_manager查找第一个设备
+	struct __dev *dev_manager_find_first(u8 valid);
+	//dev_manager查找最后一个设备
+	struct __dev *dev_manager_find_last(u8 valid);
+	//dev_manager查找参数设备的前一个设备
+	struct __dev *dev_manager_find_prev(struct __dev *dev, u8 valid);
+	//dev_manager查找参数设备的后一个设备
+	struct __dev *dev_manager_find_next(struct __dev *dev, u8 valid);
+	//dev_manager查找最后活动设备
+	struct __dev *dev_manager_find_active(u8 valid);
+	//dev_manager查找指定逻辑盘符对应的设备
+	struct __dev *dev_manager_find_spec(char *logo, u8 valid);
+	//dev_manager查找指定序号设备
+	struct __dev *dev_manager_find_by_index(u32 index, u8 valid);
+	```
+
+ 5. 设置设备信息及获取设备信息。
+ 6. 注意：支持上下线的设备， 要时刻留意设备的生命周期， 切记不能在设备从设备链表del之后还继续使用。
+
+ ## 详细API说明
+ ###  设备添加
+ #### dev_manager_add
+ 
+ 原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    设备增加接口
+	@param	 logo:逻辑盘符，如：sd0/sd1/udisk0等
+	@return   0:成功，非0是失败
+	@note
+*/
+/*----------------------------------------------------------------------------*/
+int dev_manager_add(char *logo)
+```
+
+	
+	
+参数：
+
+| 名称 | 说明     |
+| :--- | :------- |
+| logo | 逻辑盘符 |
+
+示例：
+
+``` javascript
+dev_manager_add("sd0");
+```
+###  设备删除
+#### dev_manager_del 
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    设备删除接口
+   @param	 logo:逻辑盘符，如：sd0/sd1/udisk0等
+   @return   0:成功，非0是失败
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int dev_manager_del(char *logo)
+```
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| logo | 逻辑盘符 |
+
+示例：
+
+``` javascript
+dev_manager_del("sd0");
+```
+
+###  设备在线检测接口
+####  dev_manager_check 
+通过设备节点检查设备是否在设备链表
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    通过设备节点检查设备是否在线
+   @param	 dev:设备节点
+   @return   成功返回设备节点， 失败返回NULL
+   @note     通过设备节点检查设备是否在设备链表中
+*/
+/*----------------------------------------------------------------------------*/
+struct __dev *dev_manager_check(struct __dev *dev)
+```
+
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| dev  | 设备节点 |
+
+示例：
+``` javascript
+struct __dev *cur_dev = dev_manager_find_active(0);
+//……
+if（dev_manager_check(cur_dev)）{
+//……
+}
+```
+
+
+####  dev_manager_check_by_logo
+通过盘符检查设备是否在设备链表
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    通过盘符检查设备是否在线
+   @param	 logo:逻辑盘符，如:sd0/sd1/udisk0
+   @return   成功返回设备节点， 失败返回NULL
+   @note     通过设备节点检查设备是否在设备链表中
+*/
+/*----------------------------------------------------------------------------*/
+struct __dev *dev_manager_check_by_logo(char *logo)
+
+```
+
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| logo | 逻辑盘符 |
+
+示例：
+``` javascript
+struct __dev *dev = dev_manager_check_by_logo("sd0");
+if(dev){
+	//……
+}
+```
+
+####  dev_manager_online_check_by_logo
+通过逻辑盘符判断设备是否在线
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief   通过逻辑盘符判断设备是否在线
+   @param
+   			logo：逻辑盘符，如：sd0/sd1/udisk0
+			valid：
+				1：检查有效可播放设备
+				0：检查所有设备
+   @return  1：在线 0：不在线
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int dev_manager_online_check_by_logo(char *logo, u8 valid)
+```
+
+参数：
+| 名称  | 说明               |
+| :---- | :----------------- |
+| logo  | 逻辑盘符           |
+| valid | 是否检测可播放文件 |
+
+示例：
+
+``` javascript
+if(dev_manager_online_check_by_logo("sd0",1)){
+	//……
+}
+```
+
+####  dev_manager_online_check
+通过设备节点判断设备是否在线
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief   通过设备节点判断设备是否在线
+   @param
+   			dev：设备节点
+			valid：
+				1：检查有效可播放设备
+				0：检查所有设备
+   @return  1：在线 0：不在线
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+int dev_manager_online_check(struct __dev *dev, u8 valid)
+```
+参数：
+| 名称  | 说明               |
+| :---- | :----------------- |
+| dev   | 设备节点           |
+| valid | 是否检测可播放文件 |
+
+示例：
+
+``` javascript
+struct __dev *first_dev = dev_manager_find_first(0);
+if(dev_manager_online_check(first_dev,1)){
+	//……
+}
+```
+
+###  在线设备总数获取
+####  dev_manager_get_total
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    获取设备总数
+   @param	 valid:
+   					1：有效可播放设备, 0;所有设备,包括有可播放设备及无可播放设备
+   @return   设备总数
+   @note     根据使用情景决定接口参数
+*/
+/*----------------------------------------------------------------------------*/
+u32 dev_manager_get_total(u8 valid)
+```
+参数：
+| 名称  | 说明               |
+| :---- | :----------------- |
+| valid | 是否检测可播放文件 |
+
+示例：
+
+``` javascript
+	if(dev_manager_get_total(1)){
+		//……
+	}
+```
+
+### 设备获取接口
+#### dev_manager_find_first
+获取设备列表第一个设备
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    获取设备列表第一个设备
+   @param	 valid:
+   					1：有效可播放设备, 0;所有设备,包括有可播放设备及无可播放设备
+   @return   成功返回设备设备节点,失败返回NULL
+   @note     根据使用情景决定接口参数
+*/
+/*----------------------------------------------------------------------------*/
+struct __dev *dev_manager_find_first(u8 valid)
+```
+
+参数：
+| 名称  | 说明               |
+| :---- | :----------------- |
+| valid | 是否检测可播放文件 |
+
+示例：
+
+``` javascript
+struct __dev *first_dev = dev_manager_find_first(0);
+```
+
+#### dev_manager_find_last
+获取设备列表最后一个设备
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    获取设备列表最后一个设备
+   @param	 valid:
+   					1：有效可播放设备中查找
+					0：所有设备,包括有可播放设备及无可播放设备中查找
+   @return   成功返回设备设备节点,失败返回NULL
+   @note     根据使用情景决定接口参数
+*/
+/*----------------------------------------------------------------------------*/
+struct __dev *dev_manager_find_last(u8 valid)
+```
+
+参数：
+| 名称  | 说明               |
+| :---- | :----------------- |
+| valid | 是否检测可播放文件 |
+
+示例：
+
+``` javascript
+struct __dev *last_dev = dev_manager_find_last(0);
+```
+
+####  dev_manager_find_prev
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    获取上一个设备节点
+   @param
+   			dev:当前设备节点
+			valid:
+   					1：有效可播放设备中查找,
+					0：所有设备,包括有可播放设备及无可播放设备中查找
+   @return   成功返回设备设备节点,失败返回NULL
+   @note     根据当前设置的参数设备节点，找链表中的上一个设备
+*/
+/*----------------------------------------------------------------------------*/
+struct __dev *dev_manager_find_prev(struct __dev *dev, u8 valid)
+```
+
+参数：
+| 名称  | 说明               |
+| :---- | :----------------- |
+| dev   | 设备节点           |
+| valid | 是否检测可播放文件 |
+
+示例：
+
+``` javascript
+struct __dev *cur_dev = dev_manager_find_active(0);
+struct __dev *prev_dev = dev_manager_find_prev(dev,0);
+```
+
+#### dev_manager_find_next
+获取下一个设备节点
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    获取下一个设备节点
+   @param
+   			dev:当前设备节点
+			valid:
+   					1：有效可播放设备中查找,
+					0：所有设备,包括有可播放设备及无可播放设备中查找
+   @return   成功返回设备设备节点,失败返回NULL
+   @note     根据当前设置的参数设备节点，找链表中的下一个设备
+*/
+/*----------------------------------------------------------------------------*/
+struct __dev *dev_manager_find_next(struct __dev *dev, u8 valid)
+```
+
+参数：
+| 名称  | 说明               |
+| :---- | :----------------- |
+| dev   | 设备节点           |
+| valid | 是否检测可播放文件 |
+
+示例：
+
+``` javascript
+struct __dev *cur_dev = dev_manager_find_active(0);
+struct __dev *next_dev = dev_manager_find_next(dev,0);
+```
+
+####  dev_manager_find_active
+获取当前活动设备节点
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    获取当前活动设备节点
+   @param
+			valid:
+   					1：有效可播放设备中查找,
+					0：所有设备,包括有可播放设备及无可播放设备中查找
+   @return   成功返回设备设备节点,失败返回NULL
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+struct __dev *dev_manager_find_active(u8 valid)
+```
+
+参数：
+| 名称  | 说明               |
+| :---- | :----------------- |
+| valid | 是否检测可播放文件 |
+
+示例：
+
+``` javascript
+struct __dev *cur_dev = dev_manager_find_active(1);
+```
+
+####  dev_manager_find_spec
+获取指定设备节点
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    获取指定设备节点
+   @param
+   			logo：指定逻辑盘符，如：sd0/sd1/udisk0
+			valid:
+   					1：有效可播放设备中查找,
+					0：所有设备,包括有可播放设备及无可播放设备中查找
+   @return   成功返回设备设备节点,失败返回NULL
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+struct __dev *dev_manager_find_spec(char *logo, u8 valid)
+```
+
+参数：
+| 名称  | 说明               |
+| :---- | :----------------- |
+| dev   | 设备节点           |
+| valid | 是否检测可播放文件 |
+
+示例：
+
+``` javascript
+struct __dev *dev = dev_manager_find_spec("sd0",1);
+```
+
+####  dev_manager_find_by_index
+获取指定序号设备节点
+
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief    获取指定序号设备节点
+   @param
+   			index：指定序号，指的是在设备链表中的顺序
+			valid:
+   					1：有效可播放设备中查找,
+					0：所有设备,包括有可播放设备及无可播放设备中查找
+   @return   成功返回设备设备节点,失败返回NULL
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+struct __dev *dev_manager_find_by_index(u32 index, u8 valid)
+```
+参数：
+| 名称  | 说明               |
+| :---- | :----------------- |
+| dev   | 设备节点           |
+| valid | 是否检测可播放文件 |
+
+示例：
+``` javascript
+struct __dev *dev = dev_manager_find_by_index(0,1);
+```
+
+### 设备文件扫描
+#### dev_manager_scan_disk
+原型：
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief   设备扫盘
+   @param
+   			dev：设备节点
+   			path：指定扫描目录
+   			parm：扫描参数，包括文件后缀等
+   			cycle_mode：播放循环模式
+			callback：扫描打断回调
+   @return  成功返回扫描控制句柄，失败返回NULL
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+struct vfscan *dev_manager_scan_disk(struct __dev *dev, const char *path, const char *parm, u8 cycle_mode, int (*callback)(void))
+```
+参数：
+| 名称       | 说明                     |
+| :--------- | :----------------------- |
+| dev        | 设备节点                 |
+| path       | 指定扫描目录             |
+| parm       | 扫描参数，包括文件后缀等 |
+| cycle_mode | 播放循环模式             |
+| callback   | 扫描打断回调             |
+
+示例：
+
+``` javascript
+__struct __dev *dev;
+struct vfscan *fsn;
+dev = dev_manager_find_active(0);
+
+fsn = dev_manager_scan_disk(dev,NULL,"-tMP3 -sn -r",FCYCLE_LIST,NULL);
+```
+
+
+### 设备扫描释放
+####  dev_manager_scan_disk_release
+设备扫盘释放
+
+原型：
+
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief   设备扫盘释放
+   @param
+   			fsn：扫描句柄
+   @return  无
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+void dev_manager_scan_disk_release(struct vfscan *fsn)
+```
+参数：
+| 名称 | 说明         |
+| :--- | :----------- |
+| fsn  | 文件扫描句柄 |
+
+示例：
+``` javascript
+__struct __dev *dev;
+struct vfscan *fsn;
+dev = dev_manager_find_active(0);
+fsn = dev_manager_scan_disk(dev,NULL,"-tMP3 -sn -r",FCYCLE_LIST,NULL);
+//……
+dev_manager_scan_disk_release(fsn);
+```
+
+
+### 设备有效性标记
+####  dev_manager_set_valid
+通过设备节点标记指定设备是否有效
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief   通过设备节点标记指定设备是否有效
+   @param
+   			dev：设备节点
+			flag:
+   					1：设备有效,
+					0：设备无效
+   @return
+   @note    这里有无效是指是否有可播放文件
+*/
+/*----------------------------------------------------------------------------*/
+void dev_manager_set_valid(struct __dev *dev, u8 flag)
+```
+
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| dev  | 设备节点 |
+| flag | 是否有效 |
+
+示例：
+
+``` javascript
+__struct __dev *dev;
+dev = dev_manager_find_active(0);
+dev_manager_set_valid（dev,1);
+```
+
+####  dev_manager_set_valid_by_logo
+通过逻辑盘符标记指定设备是否有效
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief   通过逻辑盘符标记指定设备是否有效
+   @param
+   			logo：逻辑盘符，如：sd0/sd1/udisk0
+			flag:
+   					1：设备有效,
+					0：设备无效
+   @return
+   @note    这里有无效是指是否有可播放文件
+*/
+/*----------------------------------------------------------------------------*/
+void dev_manager_set_valid_by_logo(char *logo, u8 flag)
+```
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| logo | 逻辑盘符 |
+| flag | 是否有效 |
+
+示例：
+
+``` javascript
+dev_manager_set_valid_by_logo("sd0",1);
+```
+
+### 盘符获取接口
+####  dev_manager_get_logo
+获取设备节点的逻辑盘符
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief   获取设备节点的逻辑盘符
+   @param
+   			dev：设备节点
+   @return  成功返回逻辑盘符，如：sd0/sd1/udisk0，失败返回NULL
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+char *dev_manager_get_logo(struct __dev *dev)
+```
+
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| dev  | 设备节点 |
+
+示例：
+
+``` javascript
+__struct __dev *dev;
+dev = dev_manager_find_active(0);
+if(dev){
+	char *logo = dev_manager_get_logo(dev);
+}
+```
+
+####  dev_manager_get_phy_logo
+获取物理设备节点的逻辑盘符(去掉_rec后缀)
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief   获取物理设备节点的逻辑盘符(去掉_rec后缀)
+   @param
+   			dev：设备节点
+   @return  成功返回逻辑盘符，如：sd0/sd1/udisk0，失败返回NULL
+   @note    物理逻辑盘符是指非录音文件夹设备盘符(录音文件夹设备如：sd0_rec)
+*/
+/*----------------------------------------------------------------------------*/
+char *dev_manager_get_phy_logo(struct __dev *dev)
+```
+
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| dev  | 设备节点 |
+
+示例：
+
+``` javascript
+__struct __dev *dev;
+dev = dev_manager_find_active(0);
+if(dev){
+	char *logo = dev_manager_get_phy_logo(dev);
+}
+```
+
+####  dev_manager_get_rec_logo
+获取录音文件夹设备节点的逻辑盘符(追加_rec后缀)
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief   获取录音文件夹设备节点的逻辑盘符(追加_rec后缀)
+   @param
+   			dev：设备节点
+   @return  成功返回逻辑盘符，如：sd0_rec/sd1_rec/udisk0_rec，失败返回NULL
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+char *dev_manager_get_rec_logo(struct __dev *dev)
+```
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| dev  | 设备节点 |
+
+示例：
+
+``` javascript
+__struct __dev *dev;
+dev = dev_manager_find_active(0);
+if(dev){
+	char *logo = dev_manager_get_rec_logo(dev);
+}
+```
+
+### 根目录路径获取
+####  dev_manager_get_root_path
+通过设备节点获取设备文件系统根目录
+
+原型：
+
+``` javascript
+//*----------------------------------------------------------------------------*/
+/**@brief   通过设备节点获取设备文件系统根目录
+   @param
+   			dev：设备节点
+   @return  成功返回根目录，失败返回NULL
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+char *dev_manager_get_root_path(struct __dev *dev)
+```
+
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| dev  | 设备节点 |
+
+示例：
+
+``` javascript
+__struct __dev *dev;
+dev = dev_manager_find_space("sd0",1);
+if(dev){
+	char *root_path = dev_manager_get_root_path(dev);
+	//……
+}
+```
+
+
+####  dev_manager_get_root_path_by_logo
+通过逻辑盘符获取设备文件系统根目录
+
+原型：
+
+``` javascript
+
+//*----------------------------------------------------------------------------*/
+/**@brief   通过逻辑盘符获取设备文件系统根目录
+   @param
+   			logo：逻辑盘符，如：sd0/sd1/udisk0
+   @return  成功返回根目录，失败返回NULL
+   @note
+*/
+/*----------------------------------------------------------------------------*/
+char *dev_manager_get_root_path_by_logo(char *logo)
+```
+
+参数：
+| 名称 | 说明     |
+| :--- | :------- |
+| logo | 逻辑盘符 |
+
+示例：
+
+``` javascript
+char *root_path = dev_manager_get_root_path_by_logo("sd0");
+```
+
+
+

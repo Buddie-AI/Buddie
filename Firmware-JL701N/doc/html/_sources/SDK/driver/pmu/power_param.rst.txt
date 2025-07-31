@@ -1,0 +1,110 @@
+电源参数配置
+#######################
+
+power_param
+-----------
+
+电源参数配置，初始化电源、低功耗模块。
+
+.. code-block:: c
+
+    struct low_power_param {
+        //---------------power_config
+        u8 vddiom_lev;			//vddiom电压
+        u8 vddiow_lev;			//vddiow电压
+
+        //--------------lowpower
+        u8 config;				//低功耗使能，蓝牙&&系统空闲可进入低功耗
+        u8 osc_type;			//低功耗晶振类型，btosc/lrc
+        u32 btosc_hz;			//蓝牙晶振频率
+        u32 osc_delay_us;		//低功耗晶振起振延时，为预留配置。
+
+        u8 lptmr_flow;          //低功耗时序参数，不配置
+        u32 t1;
+        u32 t2;
+        u32 t3_lrc;
+        u32 t4_lrc;
+        u32 t3_btosc;
+        u32 t4_btosc;
+    };
+
+
+power_config_lpnfc_en
+-----------------------
+
+原型:
+
+.. code-block:: c
+
+   void power_config_lpnfc_en(u8 en)
+
+参数:
+
+    ==========     ============================================
+    en              为0则关闭软关机nfc功能，为1则使能软关机nfc功能
+    ==========     ============================================
+
+power_config_keep_vddio
+-------------------------
+
+- softoff模式保持vddio，vddiow_lev不需要配置，sleep、softoff模式会保持电压。
+- softoff模式不保持vddio，vddiow_lev需要配置，即为软关机的电压。
+
+
+原型:
+
+.. code-block:: c
+
+   void power_config_keep_vddio(u8 en)
+
+参数:
+
+    ==========     ============================================================
+    en              为0则软关机不保持vddio，为1则使能软关机保持vddio，程序默认保持
+    ==========     ============================================================
+
+初始化
+---------
+
+.. code-block:: c
+
+    void board_power_init(void)
+    {
+        puts("power config\n");
+
+        //初始化电源、低功耗
+        power_init(&power_param);
+
+        //配置软关机lpctmu使能
+        power_config_lpctmu_en(TCFG_LP_TOUCH_KEY_ENABLE);
+
+        //配置软关机lpnfc使能
+        power_config_lpnfc_en(TCFG_LP_NFC_TAG_ENABLE);
+
+        //设置低功耗回调函数
+        power_set_callback(TCFG_LOWPOWER_LOWPOWER_SEL,
+                       sleep_enter_callback, sleep_exit_callback,
+                       board_set_soft_poweroff);
+
+        //边沿唤醒初始化
+        power_wakeup_init(&wk_param);
+
+        //软关机醒来释放锁
+        soff_latch_release();
+
+        //配置边沿唤醒回调函数
+        power_awakeup_set_callback(aport_wakeup_callback);
+        power_wakeup_set_callback(port_wakeup_callback);
+
+        //设置电源模式
+        if (is_charge_online()) {
+            power_set_mode(PWR_LDO15);
+        } else {
+            power_set_mode(TCFG_LOWPOWER_POWER_SEL);
+        }
+    }
+
+
+
+
+

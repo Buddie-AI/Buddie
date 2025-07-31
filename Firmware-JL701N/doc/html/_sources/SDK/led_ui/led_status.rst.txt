@@ -1,0 +1,92 @@
+.. _led_display_config:
+
+LED显示
+#############
+
+LED显示是指基于系统事件触发对应LED状态显示的功能，在可视化配置工具中，配置界面在 ``情景配置`` --> ``LED配置`` 选项框中。
+
+.. _led_display_config_image:
+
+.. figure:: image/015_led_display_config.png
+   :scale: 30%
+   :align: center
+   :alt: LED显示配置界面
+
+   LED显示配置界面
+
+
+LED显示配置界面有多个 **场景编辑** 卡组成，可以点击右上角的“增加”按键添加，或者点击卡片内的“X”删除，每个卡片可以配置1组事件和UI显示状态的对应关系，如图：
+
+.. _led_display_card:
+
+.. figure:: image/016_led_display_card.png
+   :scale: 100%
+   :align: center
+.. figure:: image/017_led_display_card_edit.png
+   :scale: 60%
+   :align: center
+   :alt: LED显示编辑卡界面
+
+   LED显示编辑卡界面
+
+场景编辑选项卡可配置选项与配置规则可参考 **工具章节** 描述。
+
+当点击 ``任务选择`` 的 ``LED`` 任务时，会显示如下界面：
+
+.. _led_status_select_image:
+
+.. figure:: image/018_led_status_select.png
+   :scale: 100%
+   :align: center
+   :alt: LED任务显示界面
+
+   LED任务显示界面
+
+LED任务中的UI显示列表在 :ref:`led_status_config_t` 中定义，UI从一种状态切换到另外一种状态有2种逻辑：
+
+1. **状态切换：** 新的UI状态会覆盖当前的UI状态，举例说明：
+
+   - 上一次的UI状态是；红灯慢闪；
+   - 新的UI状态是；红灯闪3下；
+   - 切换结果：红灯闪3下，结束后LED处于熄灭状态；
+
+#. **打断执行：** 新的UI状态会打断当前UI状态执行，并在执行完成后，会恢复上一次UI的状态，举例说明
+
+   - 上一次的UI状态是；红灯慢闪；
+   - 新的UI状态是；红灯闪3下；
+   - 切换结果：红灯闪3下，结束后会恢复红灯慢闪的UI状态；
+   
+   前提是需要满足如下约束条件：
+    
+   - 上一次的UI状态是一个周期性显示的UI；
+   - 新的UI状态是一个单次显示的UI；
+
+   如果不满足上述条件，将按照 **状态切换** 逻辑处理；
+
+.. tip::
+    在TWS应用中，LED在状态切换时，默认会同步主从机之间的UI状态同步切换，效果上实现tws之间的同步闪烁，如需实现主从机/左右耳差异化显示的UI，可以在条件判断增加类似如下图的配置：
+
+    .. _led_status_left_image:
+
+        .. figure:: image/019_led_status_left.png
+           :scale: 50%
+           :align: center
+           :alt: TWS差异化UI显示
+
+           TWS差异化UI显示
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

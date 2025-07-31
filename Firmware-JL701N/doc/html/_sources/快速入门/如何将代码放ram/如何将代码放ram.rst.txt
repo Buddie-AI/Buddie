@@ -1,0 +1,34 @@
+
+
+
+如何将代码放ram
+========================
+
+概述
+------------------
+SDK提供将代码定位到ram的方法，以提高程序运行效率，本章节介绍如何将代码定位到ram中
+
+
+
+将整个.c文件的所有函数都放到指定段
+-------------------------------
+
+以cdc.c文件为例
+
+    .. figure:: imgs/cdc.png
+
+（1）在文件开头，添加 #pargma xxx_seg(".user_seg")，  其中，xxx可以是bss、data、code、const，分别表示未初始化的数据段，有初始值的数据段，代码段，只读数据段，user_seg为用户自定义的段名，你也可以将其放到已经存在的段里例如.volatile_ram_code，以用户要将本文件的所有函数放到用户定义的user_code段为例，则在.c文件开头添加 #pargma code_seg(".user_code")
+
+（2）需要把定义的段放到sdk_ld.c文件中，将user_code放到data_code区域，则实现了把定义到user_code段内的函数，全部放到data_code区域，也就是ram中。
+
+    .. figure:: imgs/将段放到data_code.png
+
+    
+将部分函数放到指定段
+------------------
+
+以hrs3603.c文件为例
+
+    .. figure:: imgs/volatile_ram_code.png
+
+这样Hrs3603_brust_read_reg函数就被放到ram中，用户可以直接使用AT(.volatile_ram_code)将代码定到volatile_ram_code这个段，也可以自定义一个user_code的段，然后使用AT(.user_code)，这里注意如果是用户自定义段，需要先把段放到sdk_ld.c中的data_code区域。

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>15.2. 清晰语音常用配置 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="15.3. 1-mic通话调试指引" href="cvp_1mic_manual.html" />
+    <link rel="prev" title="15.1. 清晰语音算法列表" href="cvp_algorithm_list.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">15. 通话清晰语音</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cvp_algorithm_list.html">15.1. 清晰语音算法列表</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">15.2. 清晰语音常用配置</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">15.2.1. 麦克风故障检测</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">15.2.1.1. 1、参数配置</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">15.2.2. 麦克风切换</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">15.2.2.1. 话务耳机使用切换</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">15.2.2.2. 双麦调试使用切换</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">15.2.3. 风噪检测</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#v100">15.2.3.1. 双麦V100版本风噪检测</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v200">15.2.3.2. 双麦V200版本风噪检测</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cvp_1mic_manual.html">15.3. <strong>1-mic</strong>通话调试指引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cvp_2mic_manual.html">15.4. <strong>2-mic</strong>通话调试指引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cvp_2mic_hybrid_manual.html">15.5. <strong>2-mic hybrid</strong>通话调试指引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cvp_3mic_manual.html">15.6. <strong>3-mic</strong>通话调试指引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cvp_uart_data_export.html">15.7. 串口写卡使用指引</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">15. </span>通话清晰语音</a> &raquo;</li>
+      <li><span class="section-number">15.2. </span>清晰语音常用配置</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">15.2. </span>清晰语音常用配置<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="id2">
+<h2><span class="section-number">15.2.1. </span>麦克风故障检测<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>使用双麦ENC的时候，当检测到其中一个麦克风被被堵塞导致双麦工作不正常的时候，程序主动切换成单麦模式，使用另外一个正常的麦克风，保证通话功能正常</p>
+<section id="id3">
+<h3><span class="section-number">15.2.1.1. </span>1、参数配置<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p><img alt="" src="../../_images/cvp_mfdt_1.png" /></br></p>
+<p><strong>MFDE_EN</strong> : 麦克风故障检测使能</br>
+<strong>Detection Time</strong> : 检测时间，影响单双麦切换的速度</br>
+<strong>Input Diff Threshold</strong> : 双麦能量差值，两个mic能量差异持续大于此阈值超过检测时间则会检测为故障</br>
+<strong>Input Lower Bound</strong> : 检测能量阈值，当处于故障状态时，正常的mic能量大于此阈值才会检测能量差异，避免安静环境下误判切回正常状态</br>
+<strong>MalfuncDet MaxFrequency</strong> ： 检测频率上限</br>
+<strong>MalfuncDet_MinFrequency</strong> ： 检测频率下限</br>
+<strong>OnlyDetect</strong> ： 是否只检测不切换</br></p>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">15.2.2. </span>麦克风切换<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3><span class="section-number">15.2.2.1. </span>话务耳机使用切换<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>双麦话务耳机通话可以调用一下接口切换单麦或者双麦使用</br></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">DMS_FLEXIBLE_DUAL_MIC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">	</span><span class="c1">//双mic</span>
+<span class="w">    </span><span class="n">DMS_FLEXIBLE_USE_TALK_MIC</span><span class="p">,</span><span class="w">	</span><span class="c1">//通话mic（主麦）</span>
+<span class="w">    </span><span class="n">DMS_FLEXIBLE_USE_REF_MIC</span><span class="p">,</span><span class="w">	</span><span class="c1">//参考mic（副麦）</span>
+<span class="p">}</span><span class="w"> </span><span class="n">DMS_FLEXIBLE_MIC</span><span class="p">;</span>
+
+<span class="cm">/* 话务耳机切换使用的mic</span>
+<span class="cm"> * DMS_FLEXIBLE_DUAL_MIC ：正常双麦话务耳机</span>
+<span class="cm"> * DMS_FLEXIBLE_USE_TALK_MIC ：使用主麦</span>
+<span class="cm"> * DMS_FLEXIBLE_USE_REF_MIC ：使用副麦</span>
+<span class="cm"> */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">aec_dms_flexible_selete_mic</span><span class="p">(</span><span class="n">DMS_FLEXIBLE_MIC</span><span class="w"> </span><span class="n">mic</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3><span class="section-number">15.2.2.2. </span>双麦调试使用切换<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p><img alt="" src="../../_images/cvp_debug_1.png" /></br></p>
+<p><code class="docutils literal notranslate"><span class="pre">此配置用于调试使用，支持在线调试</span></code></br></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>配置说明：
+    Default : 输出算法处理后的结果
+    Master Raw : 不经过算法处理，输出主麦的裸麦数据
+    Slave Raw : 不经过算法处理，输出副麦的裸麦数据
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">15.2.3. </span>风噪检测<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<section id="v100">
+<h3><span class="section-number">15.2.3.1. </span>双麦V100版本风噪检测<a class="headerlink" href="#v100" title="Link to this heading"></a></h3>
+<p>1、在audio_cvp.h里面配置使用双麦V100版本的风噪检测</br></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> *DMS版本配置</span>
+<span class="cm"> *DMS_GLOBAL_V100:第一版双麦算法</span>
+<span class="cm"> *DMS_GLOBAL_V200:第二版双麦算法，更少的ram和mips</span>
+<span class="cm"> */</span>
+<span class="cp">#define TCFG_AUDIO_DMS_GLOBAL_VERSION		DMS_GLOBAL_V100</span>
+</pre></div>
+</div>
+<p>2、在audio_cvp_dms.c里面通过CONST_DMS_WNC变量打开风噪检测使能</br></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> *风噪自适应GainFloor使能控制</span>
+<span class="cm"> *0:关闭, 1:开启</span>
+<span class="cm"> */</span>
+<span class="k">const</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">CONST_DMS_WNC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>3、参数说明</br>
+<strong>wn_detect_time</strong> ： 风噪检测的时间窗大小 越大越准，能过滤掉短时风噪，建议值 0.32f</br>
+<strong>wn_detct_time_ratio_thr</strong> ： 在时间窗内超过wn_detect_thr的帧数占比阈值 , 越大越难触发 建议值 0.8f</br>
+<strong>wn_detect_thr</strong> ： 风噪检测阈值 越大越难触发 建议值 0.5f</br>
+<strong>wn_minsuppress</strong> ： 检测到风噪时，替换GlobalMinSuppress为这个值</br></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>基本原理：
+每一帧都会计算一个风噪的概率，当大于wn_detect_thr时，当前帧会被标记为风噪帧。当在wn_detect_time的时间内有wn_detct_time_ratio_thr比例的帧为风噪帧则认为风噪存在，使用wn_minsuppress替换GlobalMinSuppress的值
+</pre></div>
+</div>
+<p>4、风噪状态值获取</br>
+可以通过int cvp_dms_get_wind_detect_state(void);获取风噪检测结果</br></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*获取风噪的检测结果，</span>
+<span class="cm">1：有风噪，</span>
+<span class="cm">0：无风噪*/</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">cvp_dms_get_wind_detect_state</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="v200">
+<h3><span class="section-number">15.2.3.2. </span>双麦V200版本风噪检测<a class="headerlink" href="#v200" title="Link to this heading"></a></h3>
+<p>1、在audio_cvp.h里面配置使用双麦V200版本的风噪检测</br></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> *DMS版本配置</span>
+<span class="cm"> *DMS_GLOBAL_V100:第一版双麦算法</span>
+<span class="cm"> *DMS_GLOBAL_V200:第二版双麦算法，更少的ram和mips</span>
+<span class="cm"> */</span>
+<span class="cp">#define TCFG_AUDIO_DMS_GLOBAL_VERSION		DMS_GLOBAL_V200</span>
+</pre></div>
+</div>
+<p>2、在audio_cvp_dms.c里面配置使用的风噪检测模式</br></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * 风噪降噪模式选择</span>
+<span class="cm"> * JLSP_WD_MODE1: 模式1为常规的降风噪模式，风噪残余会偏大些</span>
+<span class="cm"> * JLSP_WD_MODE2: 模式2为神经网络降风噪，风噪抑制会比较干净，但是会需要多消耗31kb的flash</span>
+<span class="cm"> */</span>
+<span class="k">const</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">CONST_JLSP_WD_MODE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JLSP_WD_MODE1</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>3、在audio_cvp_dms.c的audio_aec_open()函数里面,在调用aec_open()前面使能风噪检测</br></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">aec_param</span><span class="o">-&gt;</span><span class="n">EnableBit</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">WNC_EN</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>4、参数配置说明</br>
+（1）是否有风参数设置</br>
+<strong>wn_msc_th</strong> : 双麦非相关性阈值，根据双麦采集到的音频相关性取值，相关性越小取值越大，取值范围（0~1），默认取值0.6</br>
+<strong>ms_th</strong> ：麦增益能量阈值，用于衡量音频特定频段能量强度，需要根据实际风噪做确定；</br></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ms_th参数确定方法如下：
+    如果需要在大于3m/s风速下做降风噪，需要用样机在3m/s的实际环境下测试，使用int jlsp_get_wind_detect_info(int *wd_flag, int *wd_val, int *wd_lev)接口实时获取当前的风噪强度wd_val，把这个风噪强度的值wd_val填给ms_th。
+</pre></div>
+</div>
+<p><strong>offset</strong> ：风噪能量增益偏移阈值，需要根据麦的增益确定</br></p>
+<p><code class="docutils literal notranslate"><span class="pre">注意：有无风是由wn_msc_th和ms_th两个参数共同决定的。</span></code></br></p>
+<p>（2）风噪等级参数设定，anc划分风强等级使用</br>
+<strong>t1_bot</strong> ：低风噪等级能量下限阈值，即风强由强风/中风减小到弱风能量阈值，需要根据具体样机麦的增益以及采样率来确定，一般可以通过具体样机spp打印确定，取值范围16bit</br>
+<strong>t1_top</strong> ：低风噪等级能量上限阈值，即风噪由弱风增大到中风能量阈值，需要根据具体样机麦的增益以及采样率来确定，一般可以通过具体样机spp打印确定，取值范围16bit</br>
+<strong>t2_bot</strong> ：强风噪等级能量下限阈值，即风强由强风减小到中风能量阈值，需要根据具体样机麦的增益以及采样率来确定，一般可以通过具体样机spp打印确定，取值范围16bit</br>
+<strong>t2_top</strong> ：强风噪等级能量上限阈值，即风强由弱风/中风增大到强风能量阈值，需要根据具体样机麦的增益以及采样率来确定，一般可以通过具体样机spp打印确定，取值范围16bit</br>
+<strong>t1_bot_cnt_limit</strong> ：风强变到弱风等级连续帧数计数，可根据对状态转移延时需求来确定，位宽16bit</br>
+<strong>t1_top_cnt_limit</strong> ：风强由弱风变到中风等级连续帧数计数，可根据对状态转移延时需求来确定，位宽16bit</br>
+<strong>t2_bot_cnt_limit</strong> ：风强由强风变到中风连续帧数计数，可根据对状态转移延时需求来确定，位宽16bit</br>
+<strong>t2_top_cnt_limit</strong> ：风强变到强风连续帧数计数，可根据对状态转移延时需求来确定，位宽16bit</br></p>
+<p><img alt="" src="../../_images/cvp_wnc_lvl.png" /></br></p>
+<ul class="simple">
+<li><p>风强等级参数状态图)</br></p></li>
+</ul>
+<p><img alt="" src="../../_images/cvp_wnc_state.png" /></br></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>弱风到中风条件：eng &gt; t1_top 且 连续帧数大于t1_top_cnt_limit
+弱风到强风条件：eng &gt; t2_top 且 连续帧数大于t2_top_cnt_limit
+中风到弱风条件：eng &lt; t1_bot 且 连续帧数大于t1_bot_cnt_limit
+中风到强风条件：eng &gt; t2_top 且 连续帧数大于t2_top_cnt_limit
+强风到中风条件：eng &gt; t1_bot 且 eng &lt; t2_bot 且 连续帧数大于t2_bot_cnt_limit
+强风到弱风条件：eng &lt; t1_bot 且 连续帧数大于t1_bot_cnt_limit
+保持弱风条件：弱风到中风、强风条件都不满足
+保持中风条件：中风到弱风、强风条件都不满足
+保持强风条件：强风到中风、弱风条件都不满足
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cvp_algorithm_list.html" class="btn btn-neutral float-left" title="15.1. 清晰语音算法列表" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cvp_1mic_manual.html" class="btn btn-neutral float-right" title="15.3. 1-mic通话调试指引" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

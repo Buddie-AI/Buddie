@@ -1,0 +1,180 @@
+mcpwm
+#######################
+mcpwm模块支持两路输出pwm，支持故障保护功能，支持复用。
+
+
+
+
+
+mcpwm_init
+------------------------------
+    mcpwm功能初始化。
+
+原型:
+
+.. code-block:: c
+
+    int mcpwm_init(struct mcpwm_config *mcpwm_cfg);
+
+参数:
+
+    ==========     ====================
+    mcpwm_cfg       mcpwm配置
+    返回值          mcpwm配置句柄(id号)
+    ==========     ====================
+
+
+
+
+
+mcpwm_deinit
+------------------------------
+    mcpwm功能初始化取消。
+
+原型:
+
+.. code-block:: c
+
+    void mcpwm_deinit(int mcpwm_cfg_id);
+
+参数:
+
+    ============     ====================
+    rdec_cfg_id        init时返回的句柄（id号）
+    返回值              无
+    ============     ====================
+
+
+
+
+
+mcpwm_start
+------------------------------
+    mcpwm功能启动。
+
+原型:
+
+.. code-block:: c
+
+    void mcpwm_start(int mcpwm_cfg_id);
+
+参数:
+
+    ============     ====================
+    rdec_cfg_id        init时返回的句柄（id号）
+    返回值              无
+    ============     ====================
+
+
+
+
+
+mcpwm_pause
+------------------------------
+    mcpwm功能暂停。
+
+原型:
+
+.. code-block:: c
+
+    void mcpwm_pause(int mcpwm_cfg_id);
+
+参数:
+
+    ============     ====================
+    rdec_cfg_id        init时返回的句柄（id号）
+    返回值              无
+    ============     ====================
+
+
+
+
+
+mcpwm_resume
+------------------------------
+    mcpwm功能恢复。
+
+原型:
+
+.. code-block:: c
+
+    void mcpwm_resume(int mcpwm_cfg_id);
+
+参数:
+
+    ============     ====================
+    rdec_cfg_id        init时返回的句柄（id号）
+    返回值              无
+    ============     ====================
+
+
+
+
+
+mcpwm_set_frequencys
+------------------------------
+    设置mcpwm输出频率，单位Hz。
+
+原型:
+
+.. code-block:: c
+
+    void mcpwm_set_frequency(int mcpwm_cfg_id, mcpwm_aligned_mode_type align, u32 frequency);
+
+参数:
+
+    ============     ====================
+    rdec_cfg_id        init时返回的句柄（id号）
+    align             对齐方式：中心对齐、边沿对齐
+    frequency          频率，单位：Hz
+    返回值              无
+    ============     ====================
+
+
+
+
+
+mcpwm_set_duty
+------------------------------
+    设置mcpwm输出占空比。
+
+原型:
+
+.. code-block:: c
+
+    void mcpwm_set_duty(int mcpwm_cfg_id, u16 duty);
+
+参数:
+    ============     ====================
+    rdec_cfg_id        init时返回的句柄（id号）
+    duty               占空比，如：5123,51.23% 
+    返回值              无
+    ============     ====================
+
+
+
+
+
+mcpwm参考demo
+----------------------------------------
+
+.. code-block:: c
+    
+    struct mcpwm_config  usr_mcpwm_cfg;
+
+    usr_mcpwm_cfg.ch = MCPWM_CH0;                       //通道号
+    usr_mcpwm_cfg.aligned_mode = MCPWM_EDGE_ALIGNED;    //边沿对齐
+    usr_mcpwm_cfg.frequency = 1000;                     //1KHz
+    usr_mcpwm_cfg.duty = 5000;                          //占空比50%
+    usr_mcpwm_cfg.h_pin = IO_PORTC_00;                  //任意引脚输出，不需要就填-1
+    usr_mcpwm_cfg.l_pin = IO_PORTC_01;                  //任意引脚输出，不需要就填-1
+    usr_mcpwm_cfg.complementary_en = 0;                 //两个引脚的波形， 0: 同步， 1: 互补，互补波形的占空比体现在H引脚上
+    usr_mcpwm_cfg.detect_port = IO_PORTC_02;            //任意引脚保护检测，不需要就填-1
+    usr_mcpwm_cfg.edge = MCPWM_EDGE_FAILL;              //检测方式，下升沿触发
+    usr_mcpwm_cfg.irq_cb = usr_mcpwm_detect_test_func;  //故障保护回调函数
+    usr_mcpwm_cfg.irq_priority = 1;                     //优先级默认为1
+    int ch0_id = mcpwm_init(&usr_mcpwm_cfg);
+    mcpwm_start(ch0_id);
+
+
+

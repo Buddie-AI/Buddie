@@ -1,0 +1,265 @@
+系统定时器
+=================
+
+系统定时器（又名：软件定时器），其服务函数为一个名为"systimer"的任务。
+
+
+sys_timer_add
+--------------
+
+功能: 添加系统非timeout类型定时任务。
+    - 1、系统会进入低功耗，节拍不会丢失，定时结束会唤醒系统；
+    - 2、sys_timer由systimer线程提供时基，属于同步接口，也就是说在哪个线程add的sys_timer，当定时时基到了，systimer线程会发事件通知对应的add线程响应（回调函数被执行）；
+    - 3、与sys_timer_del成对使用。
+
+
+.. code-block:: c
+
+    u16 sys_timer_add(void *priv, void (*func)(void *priv), u32 msec);
+
+参数:
+
+    ==========     ====================
+    priv            定时任务处理函数的输入参数
+    func            定时任务处理函数
+    msec            定时时间
+
+    返回值          定时器分配的ID
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    void timer_callback(void *p) {
+        //TODO
+    }
+
+    u16 id = sys_timer_add(NULL, timer_callback, 10);
+
+
+
+
+sys_timer_del
+--------------
+
+功能: 删除ms级非timeout类型定时任务。
+
+
+.. code-block:: c
+
+    void sys_timer_del(u16);
+
+参数:
+
+    ==========     ====================
+    id              要删除的任务ID
+    返回值          void
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    sys_timer_del(id);
+
+
+
+sys_timeout_add
+--------------
+
+功能: 添加ms级系统timeout类型定时任务。
+    - 1、系统会进入低功耗，节拍不会丢失，定时结束会唤醒系统；
+    - 2、sys_timeout由systimer线程提供时基，属于同步接口，也就是说在哪个线程add的sys_timeout，定时时间到了systimer线程会发事件通知对应的add线程响应（回调函数被执行）；
+    - 3、timeout回调只会被执行一次；
+    - 4、与sys_timerout_del成对使用。
+
+
+.. code-block:: c
+
+    u16 sys_timeout_add(void *priv, void (*func)(void *priv), u32 msec);
+
+参数:
+
+    ==========     ====================
+    priv            定时任务处理函数的输入参数
+    func            定时任务处理函数
+    msec            定时时间
+
+    返回值          定时器分配的ID
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    void timeout_callback(void *p) {
+        //TODO
+    }
+
+    u16 id = sys_timeout_add(NULL, timeout_callback, 10);
+
+
+
+sys_timeout_del
+--------------
+
+功能: 删除ms级timeout类型定时任务。
+
+
+.. code-block:: c
+
+    void sys_timeout_del(u16);
+
+参数:
+
+    ==========     ====================
+    id              要删除的任务ID
+
+    返回值          void
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    sys_timeout_del(id);
+
+
+
+sys_timer_re_run
+-----------------
+
+功能: 重置ms级定时任务定时时间。
+
+
+.. code-block:: c
+
+    void sys_timer_re_run(u16 id);
+
+参数:
+
+    ==========     ====================
+    id              要删除的任务ID
+
+    返回值          void
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    sys_timer_re_run(id);
+
+
+
+sys_timer_set_user_data
+-----------------------
+
+功能: 重置ms级定时任务定时时间。
+
+
+.. code-block:: c
+
+    void sys_timer_set_user_data(u16 id, void *priv);
+
+参数:
+
+    ==========     ====================
+    id              要删除的任务ID
+    priv            处理函数的输入参数
+
+    返回值          void
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    sys_timer_set_user_data(id);
+
+
+sys_timer_get_user_data
+-----------------------
+
+功能: 获取ms级定时任务处理函数的输入参数的值。
+
+
+.. code-block:: c
+
+    void *sys_timer_get_user_data(u16 id);
+
+参数:
+
+    ==========     ====================
+    id              要获取处理函数的输入参数值的任务ID。
+
+    返回值          获取ms级定时任务处理函数的输入参数的值。
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    void *priv = sys_timer_get_user_data(id);
+
+
+
+sys_timer_modify
+-----------------------
+
+功能: 修改ms级定时任务定时时间。
+
+
+.. code-block:: c
+
+    int sys_timer_modify(u16 id, u32 msec);
+
+参数:
+
+    ==========     ====================
+    id              要获取处理函数的输入参数值的任务ID。
+    msec            定时时间
+
+    返回值          NULL
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    sys_timer_modify(id, 10);
+
+
+sys_timer_dump_time
+-----------------------
+
+
+功能: 获取比打印当前系统运行时间。
+
+
+.. code-block:: c
+
+    void sys_timer_dump_time(void);
+
+参数:
+
+    ==========     ====================
+    返回值          NULL
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    sys_timer_dump_time();
+

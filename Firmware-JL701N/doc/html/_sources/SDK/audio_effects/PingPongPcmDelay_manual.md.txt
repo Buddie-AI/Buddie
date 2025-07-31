@@ -1,0 +1,14 @@
+# PingPong
+
+## 功能介绍
+* PingPong延时模块
+
+## 参数说明
+* maxdelay_ms  最大延时模块，这个会影响申请的Buf大小
+* justmodDelay  延时过渡选项，如果是0的话，来回过渡速度较慢， 如果是1的话，会加入crossFade过渡速度会加快
+* pitchVb   声音加入的移调变化速度
+* feedback  反馈强度
+* lowCut    湿声feedback部分的低切频率
+* highCut   湿声feedback部分的高切频率
+* wetgain   湿声部分feedback的占比
+* drygain   湿声部分原音的占比

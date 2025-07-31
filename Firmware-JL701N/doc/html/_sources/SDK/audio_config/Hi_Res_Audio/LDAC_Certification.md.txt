@@ -1,0 +1,17 @@
+# LDAC认证流程
+
+## LDAC使用流程
+1、跟Sony签订协议，签订完毕，邮件告知深圳办
+
+2、深圳办收到协议签订协议，将邮件转给珠海，跟珠海申请LDAC使用支持，包括以下资料：
+ - LDAC lib
+ - LDAC测试报告：**Test #1 (LDAC Decoder Conformance Tests)**和**Test #2 (LDAC Compliance Standard Tests)**，其中Test #2的报告是芯片端的测试报告，客户提交给Sony的应该重新测试产品端的报告，并提交给Sony
+  
+3、SDK默认带的LDAC解码库，仅用于编译。步骤2获取到的release版本lib_ldac_dec.a，替换SDK：cpu/brxx/liba/**lib_ldac_dec.a**，rebuild即可正常使用
+
+4、通过Sony的认证报告后，即可联系JAS申请Hi-Res小金标。其中JAS申请流程，请参考官网：[Application process of Hi-Res AUDIO logo](https://www.jas-audio.or.jp/english/hi-res-logo-en/hi-res-logo-application-process)
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>LDAC授权，由客户直接跟Sony对接完成，原厂公司不参与其中，如果需要协助，请联系深圳办</p>
+</div>

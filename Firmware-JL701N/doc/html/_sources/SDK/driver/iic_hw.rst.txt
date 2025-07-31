@@ -1,0 +1,706 @@
+iic(硬件)
+#######################
+硬件iic，可以选择任意io，硬件iic频率不精确，频率受通信速度和上拉电阻影响略有偏差。
+
+
+-------------------------------------------------------
+硬件iic基本接口
+-------------------------------------------------------
+
+get_hw_iic_config
+-------------------------------------------------------
+为兼容旧接口新增，功能：获取硬件iic配置结构体。
+
+原型：
+
+.. code-block:: c
+
+    struct iic_master_config *get_hw_iic_config(hw_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    返回值            硬件iic配置信息
+    ============   =============================================
+
+hw_iic_init
+-------------------------------------------------------
+初始化硬件iic。
+
+原型：
+
+.. code-block:: c
+
+    //hw_iic_index:硬件iic索引号
+    enum iic_state_enum hw_iic_init(hw_iic_dev iic, struct iic_master_config *i2c_config);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    i2c_config       硬件iic配置信息
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+示例：
+
+.. code-block:: c
+
+    struct iic_master_config iic_config_test = {
+        .role = IIC_MASTER,
+        .scl_io = IIC_SCL_IO,
+        .sda_io = IIC_SDA_IO,
+        .io_mode = PORT_INPUT_PULLUP_10K,//上拉或浮空(外接上拉)
+        .hdrive = PORT_DRIVE_STRENGT_2p4mA,   //enum GPIO_HDRIVE 0:2.4MA, 1:8MA, 2:26.4MA, 3:40MA
+        .master_frequency = 100000, //硬件iic频率不精确(hz)
+        .io_filter = 1,
+    };
+    enum iic_state_enum iic_init_state = hw_iic_init(0, &iic_config_test);
+    if (iic_init_state == IIC_OK) {
+        log_info("iic master init ok");
+    } else {
+        log_error("iic master init fail");
+    }
+
+hw_iic_uninit
+-------------------------------------------------------
+关闭硬件iic，释放io为高阻状态。
+
+原型：
+
+.. code-block:: c
+
+    enum iic_state_enum hw_iic_uninit(hw_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+示例：
+
+.. code-block:: c
+    
+    enum iic_state_enum iic_init_state = hw_iic_uninit(0);
+    if (iic_init_state == IIC_OK) {
+        log_info("iic master uninit ok");
+    } else {
+        log_error("iic master uninit fail");
+    }
+
+hw_iic_suspend
+-------------------------------------------------------
+挂起硬件iic，释放io为高阻状态。
+
+原型：
+
+.. code-block:: c
+
+    enum iic_state_enum hw_iic_suspend(hw_iic_dev iic); 
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+hw_iic_resume
+-------------------------------------------------------
+恢复硬件iic，还原io状态到初始化状态。
+
+原型：
+
+.. code-block:: c
+    
+    enum iic_state_enum hw_iic_resume(hw_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+hw_iic_check_busy
+-------------------------------------------------------
+检查指定索引号的硬件iic是否繁忙，空闲方可通信。
+
+原型：
+
+.. code-block:: c
+    
+    enum iic_state_enum hw_iic_check_busy(hw_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+hw_iic_start
+-------------------------------------------------------
+硬件iic发送起始位。
+
+原型：
+
+.. code-block:: c
+ 
+    void hw_iic_start(hw_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    返回值            无
+    ============   =============================================
+
+hw_iic_stop
+-------------------------------------------------------
+硬件iic发送结束位。
+
+原型：
+
+.. code-block:: c
+ 
+    void hw_iic_stop(hw_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    返回值            无
+    ============   =============================================
+
+hw_iic_tx_byte
+-------------------------------------------------------
+硬件iic发送一个byte数据，返回应答状态。
+
+原型：
+
+.. code-block:: c
+ 
+    u8 hw_iic_tx_byte(hw_iic_dev iic, u8 byte);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    byte             待发送的数据
+    返回值            1：有应答，0：无应答
+    ============   =============================================
+
+hw_iic_rx_byte
+-------------------------------------------------------
+硬件iic接收一个byte数据。
+
+原型：
+
+.. code-block:: c
+ 
+    u8 hw_iic_rx_byte(hw_iic_dev iic, u8 ack);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    ack              1：收到数据后回应答，0：收到数据后不回应答
+    返回值            接收的数据
+    ============   =============================================
+
+hw_iic_read_buf
+-------------------------------------------------------
+硬件iic接收指定长度的数据。
+
+原型：
+
+.. code-block:: c
+ 
+    int hw_iic_read_buf(hw_iic_dev iic, void *buf, int len);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    buf              接收缓存buf
+    len              接收长度
+    返回值            接收的数据长度：=len：成功；其他值：失败
+    ============   =============================================
+
+hw_iic_write_buf
+-------------------------------------------------------
+硬件iic发送指定长度的数据。
+
+原型：
+
+.. code-block:: c
+ 
+    int hw_iic_write_buf(hw_iic_dev iic, const void *buf, int len);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    buf              发送缓存buf
+    len              发送长度
+    返回值            发送的数据长度：=len：成功；其他值：失败
+    ============   =============================================
+
+
+
+-------------------------------------------------------
+硬件iic设备交互接口
+-------------------------------------------------------
+
+hw_i2c_master_read_nbytes_from_device
+-------------------------------------------------------
+硬件iic从指定设备获取指定长度的数据（该类接口是对以上基本接口的封装）。
+
+原型：
+
+.. code-block:: c
+ 
+    int hw_i2c_master_read_nbytes_from_device(hw_iic_dev iic,   //iic索引
+            unsigned char dev_addr, //设备地址 //无设备寄存器地址
+            unsigned char *read_buf, int read_len);//缓存buf, 长度
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    dev_addr         指定设备地址
+    read_buf         接收缓存buf
+    read_len         接收长度
+    返回值            接收的数据长度：=read_len：成功；其他值：失败
+    ============   =============================================
+
+hw_i2c_master_read_nbytes_from_device_reg
+-------------------------------------------------------
+硬件iic从指定设备的某个寄存器地址获取指定长度的数据（该类接口是对以上基本接口的封装）。
+
+原型：
+
+.. code-block:: c
+ 
+    int hw_i2c_master_read_nbytes_from_device_reg(hw_iic_dev iic,
+            unsigned char dev_addr, //设备地址
+            unsigned char *reg_addr, unsigned char reg_len,//设备寄存器地址，长度
+            unsigned char *read_buf, int read_len);//缓存buf，长度
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    dev_addr         指定设备地址
+    reg_addr         设备的寄存器地址
+    reg_len          寄存器长度
+    read_buf         接收缓存buf
+    read_len         接收长度
+    返回值            接收的数据长度：=read_len：成功；其他值：失败
+    ============   =============================================
+
+hw_i2c_master_write_nbytes_to_device
+-------------------------------------------------------
+硬件iic将指定长度的数据发送到指定设备（该类接口是对以上基本接口的封装）。
+
+原型：
+
+.. code-block:: c
+ 
+    int hw_i2c_master_write_nbytes_to_device(hw_iic_dev iic,
+            unsigned char dev_addr, //设备地址 //无设备寄存器地址
+            unsigned char *write_buf, int write_len); //数据buf, 长度
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    dev_addr         指定设备地址
+    write_buf        发送缓存buf
+    write_len        发送长度
+    返回值            发送的数据长度：=write_len：成功；其他值：失败
+    ============   =============================================
+
+hw_i2c_master_write_nbytes_to_device_reg
+-------------------------------------------------------
+硬件iic将指定长度的数据发送到指定设备的某个寄存器地址（该类接口是对以上基本接口的封装）。
+
+原型：
+
+.. code-block:: c
+ 
+    int hw_i2c_master_write_nbytes_to_device_reg(hw_iic_dev iic,
+            unsigned char dev_addr, //设备地址
+            unsigned char *reg_addr, unsigned char reg_len,//设备寄存器地址，长度
+            unsigned char *write_buf, int write_len);//数据buf, 长度
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    dev_addr         指定设备地址
+    reg_addr         设备的寄存器地址
+    reg_len          寄存器长度
+    write_buf        发送缓存buf
+    write_len        发送长度
+    返回值            发送的数据长度：=write_len：成功；其他值：失败
+    ============   =============================================
+
+
+
+示例：
+
+.. code-block:: c
+
+    //详见文件 iic_master_demo.c
+
+
+
+
+-------------------------------------------------------
+硬件iic其他接口
+-------------------------------------------------------
+
+hw_iic_set_baud
+-------------------------------------------------------
+硬件iic设置频率。
+
+原型：
+
+.. code-block:: c
+ 
+    int hw_iic_set_baud(hw_iic_dev iic, u32 baud);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    baud             硬件iic频率（hz）
+    返回值            返回执行状态，<0：错误；0：成功。
+    ============   =============================================
+
+hw_iic_set_ack
+-------------------------------------------------------
+硬件iic设置应答。
+
+原型：
+
+.. code-block:: c
+ 
+    void hw_iic_set_ack(hw_iic_dev iic, u8 ack_en);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    ack_en           1：应答；0：不应答
+    返回值            无
+    ============   =============================================
+
+hw_iic_set_ie
+-------------------------------------------------------
+硬件iic设置中断开关。
+
+原型：
+
+.. code-block:: c
+ 
+    void hw_iic_set_ie(hw_iic_dev iic, i2c_pnd_typedef png, u8 en);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    png              iic中断类型。详见枚举i2c_pnd_typedef
+    en               1：使能png中断；0：关闭png中断
+    返回值            无
+    ============   =============================================
+
+hw_iic_get_pnd
+-------------------------------------------------------
+硬件iic获取中断标志。
+
+原型：
+
+.. code-block:: c
+ 
+    u8 hw_iic_get_pnd(hw_iic_dev iic, i2c_pnd_typedef png);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    png              iic中断类型。详见枚举i2c_pnd_typedef
+    返回值            1：有png中断；0：无png中断
+    ============   =============================================
+
+hw_iic_clr_pnd
+-------------------------------------------------------
+硬件iic清除对应的中断标志。
+
+原型：
+
+.. code-block:: c
+ 
+    void hw_iic_clr_pnd(hw_iic_dev iic, i2c_pnd_typedef png);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    png              iic中断类型。详见枚举i2c_pnd_typedef
+    返回值            无
+    ============   =============================================
+
+hw_iic_clr_all_pnd
+-------------------------------------------------------
+硬件iic清除所有中断标志。
+
+原型：
+
+.. code-block:: c
+ 
+    void hw_iic_clr_all_pnd(hw_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    返回值            无
+    ============   =============================================
+
+
+
+.. _topics-iic_slave_1:
+
+-------------------------------------------------------
+硬件iic从机基本接口
+-------------------------------------------------------
+
+
+hw_iic_slave_init
+-------------------------------------------------------
+硬件iic从机初始化。
+
+原型：
+
+.. code-block:: c
+
+    enum iic_state_enum hw_iic_slave_init(hw_iic_dev iic, struct hw_iic_slave_config *i2c_config);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    i2c_config       硬件iic配置信息
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+示例：
+
+.. code-block:: c
+
+    struct hw_iic_slave_config hw_iic_config_test = {
+        .config.role = IIC_SLAVE,
+        .config.scl_io = IIC_SCL_IO,
+        .config.sda_io = IIC_SDA_IO,
+        .config.io_mode = PORT_INPUT_PULLUP_10K,//上拉或浮空
+        .config.hdrive = PORT_DRIVE_STRENGT_2p4mA,   //enum GPIO_HDRIVE 0:2.4MA, 1:8MA, 2:26.4MA, 3:40MA
+        .config.ie_en = 1,
+        .config.io_filter = 1,
+        .iic_slave_irq_callback = hw_iic_isr_callback;
+        .slave_addr = 0x68,
+        .iic_slave_irq_callback = NULL,
+    };
+
+    enum iic_state_enum iic_init_state = hw_iic_slave_init(0, &hw_iic_config_test);
+    if (iic_init_state == IIC_OK) {
+        log_info("iic slave init ok");
+    } else {
+        log_error("iic slave init fail");
+    }
+
+hw_iic_slave_set_callback
+-------------------------------------------------------
+设置硬件iic从机回调函数。
+
+原型：
+
+.. code-block:: c
+
+    void hw_iic_slave_set_callback(hw_iic_dev iic, void (*iic_slave_irq_callback)(void));
+
+参数：
+    ======================   =============================================
+    iic                       硬件iic索引号0~n
+    iic_slave_irq_callback    硬件iic回调函数指针
+    返回值                     无
+    ======================   =============================================
+
+hw_iic_slave_set_addr
+-------------------------------------------------------
+设置硬件iic从机地址。
+
+原型：
+
+.. code-block:: c
+
+    void hw_iic_slave_set_addr(hw_iic_dev iic, u8 addr, u8 addr_ack);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    addr             硬件iic从机地址，高八位有效
+    addr_ack         地址自动应答，1：自动应答；0：不自动应答
+    返回值            无
+    ============   =============================================
+
+hw_iic_slave_get_addr
+-------------------------------------------------------
+获取硬件iic从机地址。
+
+原型：
+
+.. code-block:: c
+
+    u8 hw_iic_slave_get_addr(hw_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    返回值            从机地址
+    ============   =============================================
+
+hw_iic_slave_rx_prepare
+-------------------------------------------------------
+硬件iic从机接收准备，中断中不需要配置等待时间，轮询时可以配置等待时间，为响应及时，不调用延时，当计数达到wait_time退出。
+
+原型：
+
+.. code-block:: c
+
+    enum iic_slave_rx_state hw_iic_slave_rx_prepare(hw_iic_dev iic, u8 ack, u32 wait_time);//准备收//含结束位判断
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    ack              接收数据后是否应答1：应答；0：不应答
+    wait_time        等待时间
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+hw_iic_slave_rx_byte
+-------------------------------------------------------
+硬件iic从机接收一个byte，判断地址，并返回下一通信的接收发送状态, 不检查结束位。
+
+原型：
+
+.. code-block:: c
+
+    enum iic_slave_rx_state hw_iic_slave_rx_byte(hw_iic_dev iic, u8 *rx_byte);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    rx_byte          将收到的数据保存在rx_byte
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+hw_iic_slave_rx_nbyte
+-------------------------------------------------------
+硬件iic从机接收n个byte，轮询模式接收多字节函数，含结束位检查。
+
+原型：
+
+.. code-block:: c
+
+    int hw_iic_slave_rx_nbyte(hw_iic_dev iic, u8 *rx_buf);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    rx_buf           将收到的数据保存在rx_buf缓存
+    返回值            返回接收到的数据个数，单位byte
+    ============   =============================================
+
+hw_iic_slave_tx_check_ack
+-------------------------------------------------------
+硬件iic从机检查主机应答，主要用在中断回调。
+
+原型：
+
+.. code-block:: c
+
+    u8 hw_iic_slave_tx_check_ack(hw_iic_dev iic);//return:1:ack; 0:no ack
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    返回值            应答状态。0：无应答；1：应答
+    ============   =============================================
+
+hw_iic_slave_tx_byte
+-------------------------------------------------------
+硬件iic从机发送一个byte。
+
+原型：
+
+.. code-block:: c
+
+    void hw_iic_slave_tx_byte(hw_iic_dev iic, u8 byte);////判断ack, 准备准备发
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    byte             待发送的数据
+    返回值            无
+    ============   =============================================
+
+hw_iic_slave_tx_nbyte
+-------------------------------------------------------
+硬件iic从机发送n个byte，用于轮询模式，含结束位判断。
+
+原型：
+
+.. code-block:: c
+
+    int hw_iic_slave_tx_nbyte(hw_iic_dev iic, u8 *tx_buf);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    tx_buf           待发送的数据缓存
+    返回值            发送的数据个数
+    ============   =============================================
+
+
+
+.. _topics-iic_slave_2:
+
+-------------------------------------------------------
+硬件iic从机轮询模式设备交互接口
+-------------------------------------------------------
+
+hw_iic_slave_polling_rx
+-------------------------------------------------------
+轮询模式，硬件iic从机接收n个byte(n由主机决定)，该接口是对以上从机接口的封装。通信协议：rx协议:start,slave addr,data0,data1,,,,,,stop
+
+原型：
+
+.. code-block:: c
+
+    int hw_iic_slave_polling_rx(hw_iic_dev iic, u8 *rx_buf);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    rx_buf           待接收的数据缓存地址
+    返回值            接收的数据个数
+    ============   =============================================
+
+hw_iic_slave_polling_tx
+-------------------------------------------------------
+轮询模式，硬件iic从机发送n个byte(n由主机决定)，该接口是对以上从机接口的封装。通信协议：tx协议:start,addr read,data0,data1,,,,,nack,stop
+
+原型：
+
+.. code-block:: c
+
+    int hw_iic_slave_polling_tx(hw_iic_dev iic, u8 *tx_buf);
+
+参数：
+    ============   =============================================
+    iic              硬件iic索引号0~n
+    tx_buf           待发送的数据缓存地址
+    返回值            发送的数据个数
+    ============   =============================================
+
+
+
+
+示例：
+
+.. code-block:: c
+
+    //详见文件 iic_slave_demo.c

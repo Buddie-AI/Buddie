@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AC706N+AC706N方案 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>AC706N+AC706N方案</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ac706n-ac706n">
+<h1>AC706N+AC706N方案<a class="headerlink" href="#ac706n-ac706n" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>该方案实现了将RX芯片和DSP芯片的功能集成到一颗芯片上，可同时满足话筒接收和普通音箱功能。另外，该方案需要配合无线话筒SDK(AC706N)使用。</p>
+</div></blockquote>
+</section>
+<section id="id2">
+<h2>整体框图<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<img alt="../../../../../_images/BR29%E4%B8%89%E5%90%88%E4%B8%80%E6%95%B4%E4%BD%93%E6%A1%86%E5%9B%BE.png" src="../../../../../_images/BR29%E4%B8%89%E5%90%88%E4%B8%80%E6%95%B4%E4%BD%93%E6%A1%86%E5%9B%BE.png" />
+</section>
+<section id="id3">
+<h2>功能使用<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>使用该功能需要打开可视化配置工具上面 <strong>LE_AUDIO配置-&gt;公共配置-&gt;1T3使能</strong>。打开该配置后，可视化配置工具的其余参数也会发生相应变化，不建议手动随意更改相关参数。当使用三合一功能后，TX端需要使用AC706N的无线话筒SDK的2T1_simplex板级进行开发。开发时，需要保证TX端和RX端参数保持一致。另外，除了打开 <strong>1T3使能</strong> 外，音频流程图需要在可视化配置工具 <strong>音频流程-&gt;麦克风音效</strong> 选择 <strong>无线mic_单体声</strong> 框图。</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>JL701N三合一功能的音频采样率默认为32K，而AC706N无线话筒的音频采样率默认为48K。开发时需要手动修改AC706N无线话筒的音频采样率为32K。另外，在使用三合一功能时需要保证TX和RX的配对名一致，否则会连接不上。</p>
+</div>
+<a class="reference internal image-reference" href="../../../../../_images/701N配对名.png"><img alt="../../../../../_images/701N%E9%85%8D%E5%AF%B9%E5%90%8D.png" src="../../../../../_images/701N%E9%85%8D%E5%AF%B9%E5%90%8D.png" style="width: 930px; height: 500px;" /></a>
+<img alt="../../../../../_images/706N%E9%85%8D%E5%AF%B9%E5%90%8D.png" src="../../../../../_images/706N%E9%85%8D%E5%AF%B9%E5%90%8D.png" />
+</section>
+<section id="id4">
+<h2>代码流程<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ol class="arabic">
+<li><p>开机，进入蓝牙模式，等待蓝牙初始化完成。</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="../../../../../_images/蓝牙初始化.png"><img alt="../../../../../_images/%E8%93%9D%E7%89%99%E5%88%9D%E5%A7%8B%E5%8C%96.png" src="../../../../../_images/%E8%93%9D%E7%89%99%E5%88%9D%E5%A7%8B%E5%8C%96.png" style="width: 1000px; height: 500px;" /></a>
+</div></blockquote>
+</li>
+<li><p>蓝牙初始化完成后，初始化cis，设置音频切换回调接口句柄，打开cis。</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="../../../../../_images/打开cis.png"><img alt="../../../../../_images/%E6%89%93%E5%BC%80cis.png" src="../../../../../_images/%E6%89%93%E5%BC%80cis.png" style="width: 1000px; height: 500px;" /></a>
+<a class="reference internal image-reference" href="../../../../../_images/设置音频切换句柄.png"><img alt="../../../../../_images/%E8%AE%BE%E7%BD%AE%E9%9F%B3%E9%A2%91%E5%88%87%E6%8D%A2%E5%8F%A5%E6%9F%84.png" src="../../../../../_images/%E8%AE%BE%E7%BD%AE%E9%9F%B3%E9%A2%91%E5%88%87%E6%8D%A2%E5%8F%A5%E6%9F%84.png" style="width: 1000px; height: 500px;" /></a>
+</div></blockquote>
+</li>
+<li><p>等待与从机连接，连接成功后，打开le audio音频解码流。</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="../../../../../_images/连接成功.png"><img alt="../../../../../_images/%E8%BF%9E%E6%8E%A5%E6%88%90%E5%8A%9F.png" src="../../../../../_images/%E8%BF%9E%E6%8E%A5%E6%88%90%E5%8A%9F.png" style="width: 1000px; height: 500px;" /></a>
+<a class="reference internal image-reference" href="../../../../../_images/打开le_audio解码流.png"><img alt="../../../../../_images/%E6%89%93%E5%BC%80le_audio%E8%A7%A3%E7%A0%81%E6%B5%81.png" src="../../../../../_images/%E6%89%93%E5%BC%80le_audio%E8%A7%A3%E7%A0%81%E6%B5%81.png" style="width: 1000px; height: 500px;" /></a>
+</div></blockquote>
+</li>
+<li><p>连接断开，重新回到搜索设备状态。</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="../../../../../_images/断开连接.png"><img alt="../../../../../_images/%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5.png" src="../../../../../_images/%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5.png" style="width: 1000px; height: 500px;" /></a>
+</div></blockquote>
+</li>
+<li><p>cis全程保持打开，除了部分场景需要挂起；例如，通话、关机等场景。</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="../../../../../_images/场景处理.png"><img alt="../../../../../_images/%E5%9C%BA%E6%99%AF%E5%A4%84%E7%90%86.png" src="../../../../../_images/%E5%9C%BA%E6%99%AF%E5%A4%84%E7%90%86.png" style="width: 1000px; height: 500px;" /></a>
+<a class="reference internal image-reference" href="../../../../../_images/关机关cis.png"><img alt="../../../../../_images/%E5%85%B3%E6%9C%BA%E5%85%B3cis.png" src="../../../../../_images/%E5%85%B3%E6%9C%BA%E5%85%B3cis.png" style="width: 1000px; height: 500px;" /></a>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</section>
+<section id="id5">
+<h2>音效调试<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>由于资源问题，AC706N+AC706N方案话筒音效是放在话筒端处理，音乐音效则还在音箱端处理。</p>
+</div></blockquote>
+<section id="id6">
+<h3>话筒音效<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>话筒SDK带有一个默认的eq_cfg_hw.bin文件，该文件中所包含的音效为目前系统处理音效数量的上限。开发者可在此基础上选择自身所需音效，不需要的音效可通过Bypass来关闭。</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>编辑和在线调试音效需要使用SDK下载目录的efftool-0.1.50-beta-20240323.3.exe该工具来进行。</p>
+</div>
+<img alt="../../../../../_images/AC706N%2BAC706N%E8%AF%9D%E7%AD%92%E9%9F%B3%E6%95%88%E6%B5%81%E7%A8%8B%E5%9B%BE.png" src="../../../../../_images/AC706N%2BAC706N%E8%AF%9D%E7%AD%92%E9%9F%B3%E6%95%88%E6%B5%81%E7%A8%8B%E5%9B%BE.png" />
+</section>
+<section id="id7">
+<h3>音箱音效<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>由于AC706N的资源有限，音箱端只保留了人声消除和简单的EQ/DRC音效。具体流程图如下：</p>
+</div></blockquote>
+<img alt="../../../../../_images/%E8%B0%83%E9%9F%B3%E7%95%8C%E9%9D%A21.png" src="../../../../../_images/%E8%B0%83%E9%9F%B3%E7%95%8C%E9%9D%A21.png" />
+<img alt="../../../../../_images/AC706N%2BAC706N%E9%9F%B3%E7%AE%B1%E9%9F%B3%E6%95%88%E6%B5%81%E7%A8%8B%E5%9B%BE.png" src="../../../../../_images/AC706N%2BAC706N%E9%9F%B3%E7%AE%B1%E9%9F%B3%E6%95%88%E6%B5%81%E7%A8%8B%E5%9B%BE.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.2. 消息队列 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="7.3. 系统延时" href="delay.html" />
+    <link rel="prev" title="7.1. 任务" href="task.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">7. 操作系统</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="task.html">7.1. 任务</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.2. 消息队列</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#os-taskq-post">7.2.1. os_taskq_post</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#os-taskq-post-type">7.2.2. os_taskq_post_type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#os-taskq-post-msg">7.2.3. os_taskq_post_msg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#os-taskq-post-event">7.2.4. os_taskq_post_event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#os-taskq-pend">7.2.5. os_taskq_pend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#os-taskq-accept">7.2.6. os_taskq_accept</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#os-taskq-del-type">7.2.7. os_taskq_del_type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#os-taskq-flush">7.2.8. os_taskq_flush</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="delay.html">7.3. 系统延时</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sem.html">7.4. 信号量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mutex.html">7.5. 互斥量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="critical.html">7.6. 临界区</a></li>
+<li class="toctree-l2"><a class="reference internal" href="critical.html#id2">7.7. 临界区(不可屏蔽中断)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interrupt.html">7.8. 普通中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interrupt.html#id2">7.9. 不可屏蔽中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="unmask_interupt_demo.html">7.10. 不可屏蔽中断demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">7. </span>操作系统</a> &raquo;</li>
+      <li><span class="section-number">7.2. </span>消息队列</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">7.2. </span>消息队列<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<p>消息队列（Queue）是一种先进先出的数据结构，当两个线程需要发送某些数据结构进行通信时，可通过通过消息队列的方式发送消息，某些线程的状态会由于接收不到消息处于非运行阻塞状态，也会随着接收到其他线程或中断发送的消息恢复为运行状态进行消息处理。</p>
+<section id="os-taskq-post">
+<h2><span class="section-number">7.2.1. </span>os_taskq_post<a class="headerlink" href="#os-taskq-post" title="Link to this heading"></a></h2>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">os_taskq_post</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：向某个任务发送消息，消息类型为Q_MSG;</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>任务名</p></td>
+</tr>
+<tr class="row-odd"><td><p>argc</p></td>
+<td><p>消息个数</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>消息发送成功</p></td>
+</tr>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>消息发送失败</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>示例：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">2</span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">    </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">4</span><span class="w">    </span><span class="n">os_taskq_post</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5A</span><span class="p">);</span><span class="w"> </span><span class="c1">//向test任务发送消息</span>
+<span class="linenos">5</span><span class="w">    </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">6</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="os-taskq-post-type">
+<h2><span class="section-number">7.2.2. </span>os_taskq_post_type<a class="headerlink" href="#os-taskq-post-type" title="Link to this heading"></a></h2>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">os_taskq_post_type</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">argv</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：向某个任务发送消息;</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>任务名</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p>消息类型：</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Q_MSG</p></li>
+<li><p>Q_USER</p></li>
+<li><p>Q_EVENT</p></li>
+<li><p>Q_CALLBACK</p></li>
+</ol>
+</div></blockquote>
+</td>
+</tr>
+<tr class="row-even"><td><p>argc</p></td>
+<td><p>消息个数</p></td>
+</tr>
+<tr class="row-odd"><td><p>argv</p></td>
+<td><p>消息buf</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>消息发送成功</p></td>
+</tr>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>消息发送失败</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>示例：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="w">        </span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;system/includes.h&quot;</span>
+<span class="linenos">  2</span>
+<span class="linenos">  3</span><span class="w">        </span><span class="cm">/**</span>
+<span class="linenos">  4</span><span class="cm">        * @brief demo 1</span>
+<span class="linenos">  5</span><span class="cm">        *</span>
+<span class="linenos">  6</span><span class="cm">        * @return</span>
+<span class="linenos">  7</span><span class="cm">        */</span>
+<span class="linenos">  8</span><span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">_qcallback_handle</span><span class="p">()</span>
+<span class="linenos">  9</span><span class="w">        </span><span class="p">{</span>
+<span class="linenos"> 10</span><span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;_qcallback_handle</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos"> 11</span><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 12</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos"> 13</span><span class="w">        </span><span class="cm">/**</span>
+<span class="linenos"> 14</span><span class="cm">        * @brief 发送callback 无参数的Q_CALLBACK的taskq demo</span>
+<span class="linenos"> 15</span><span class="cm">        *</span>
+<span class="linenos"> 16</span><span class="cm">        * @return 发送是否成功</span>
+<span class="linenos"> 17</span><span class="cm">        */</span>
+<span class="linenos"> 18</span><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="nf">qcallback_msg_post_none_argv</span><span class="p">()</span>
+<span class="linenos"> 19</span><span class="w">        </span><span class="p">{</span>
+<span class="linenos"> 20</span><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+<span class="linenos"> 21</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">_qcallback_handle</span><span class="p">;</span><span class="w">       </span><span class="c1">// Function</span>
+<span class="linenos"> 22</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">                            </span><span class="c1">// 参数个数</span>
+<span class="linenos"> 23</span><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">os_taskq_post_type</span><span class="p">(</span><span class="s">&quot;app_core&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Q_CALLBACK</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
+<span class="linenos"> 24</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos"> 25</span><span class="w">        </span><span class="cm">/**</span>
+<span class="linenos"> 26</span><span class="cm">        * @brief demo 2</span>
+<span class="linenos"> 27</span><span class="cm">        *</span>
+<span class="linenos"> 28</span><span class="cm">        * @param msg1</span>
+<span class="linenos"> 29</span><span class="cm">        *</span>
+<span class="linenos"> 30</span><span class="cm">        * @return</span>
+<span class="linenos"> 31</span><span class="cm">        */</span>
+<span class="linenos"> 32</span><span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">_qcallback_handle1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">msg1</span><span class="p">)</span>
+<span class="linenos"> 33</span><span class="w">        </span><span class="p">{</span>
+<span class="linenos"> 34</span><span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;_qcallback_handle1 msg1:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">msg1</span><span class="p">);</span>
+<span class="linenos"> 35</span><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 36</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos"> 37</span><span class="w">        </span><span class="cm">/**</span>
+<span class="linenos"> 38</span><span class="cm">        * @brief 发送callback 1个参数的Q_CALLBACK的taskq demo</span>
+<span class="linenos"> 39</span><span class="cm">        *</span>
+<span class="linenos"> 40</span><span class="cm">        * @return 发送是否成功</span>
+<span class="linenos"> 41</span><span class="cm">        */</span>
+<span class="linenos"> 42</span><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="nf">qcallback_msg_post_one_argv</span><span class="p">()</span>
+<span class="linenos"> 43</span><span class="w">        </span><span class="p">{</span>
+<span class="linenos"> 44</span><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+<span class="linenos"> 45</span><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos"> 46</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">_qcallback_handle1</span><span class="p">;</span><span class="w">      </span><span class="c1">// Function</span>
+<span class="linenos"> 47</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                            </span><span class="c1">// 参数个数</span>
+<span class="linenos"> 48</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">msg</span><span class="p">;</span><span class="w">                          </span><span class="c1">// 参数1，可以是任意类型强转成int</span>
+<span class="linenos"> 49</span><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">os_taskq_post_type</span><span class="p">(</span><span class="s">&quot;app_core&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Q_CALLBACK</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
+<span class="linenos"> 50</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos"> 51</span><span class="w">        </span><span class="cm">/**</span>
+<span class="linenos"> 52</span><span class="cm">        * @brief demo 3</span>
+<span class="linenos"> 53</span><span class="cm">        *</span>
+<span class="linenos"> 54</span><span class="cm">        * @param msg1</span>
+<span class="linenos"> 55</span><span class="cm">        * @param msg2</span>
+<span class="linenos"> 56</span><span class="cm">        *</span>
+<span class="linenos"> 57</span><span class="cm">        * @return</span>
+<span class="linenos"> 58</span><span class="cm">        */</span>
+<span class="linenos"> 59</span><span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">_qcallback_handle2</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">msg1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">msg2</span><span class="p">)</span>
+<span class="linenos"> 60</span><span class="w">        </span><span class="p">{</span>
+<span class="linenos"> 61</span><span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;_qcallback_handle2 msg1:%d, msg2:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">msg1</span><span class="p">,</span><span class="w"> </span><span class="n">msg2</span><span class="p">);</span>
+<span class="linenos"> 62</span><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 63</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos"> 64</span><span class="w">        </span><span class="cm">/**</span>
+<span class="linenos"> 65</span><span class="cm">        * @brief 发送function 2个参数的Q_CALLBACK的taskq demo</span>
+<span class="linenos"> 66</span><span class="cm">        *</span>
+<span class="linenos"> 67</span><span class="cm">        * @return 发送是否成功</span>
+<span class="linenos"> 68</span><span class="cm">        */</span>
+<span class="linenos"> 69</span><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="nf">qcallback_msg_post_two_argv</span><span class="p">()</span>
+<span class="linenos"> 70</span><span class="w">        </span><span class="p">{</span>
+<span class="linenos"> 71</span><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="linenos"> 72</span><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos"> 73</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">_qcallback_handle2</span><span class="p">;</span><span class="w">      </span><span class="c1">// Function</span>
+<span class="linenos"> 74</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">                            </span><span class="c1">// 参数个数</span>
+<span class="linenos"> 75</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">msg</span><span class="p">;</span><span class="w">                          </span><span class="c1">// 参数1，可以是任意类型强转成int</span>
+<span class="linenos"> 76</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                      </span><span class="c1">// 参数2，可以是任意类型强转成int</span>
+<span class="linenos"> 77</span><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">os_taskq_post_type</span><span class="p">(</span><span class="s">&quot;app_core&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Q_CALLBACK</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
+<span class="linenos"> 78</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos"> 79</span><span class="w">        </span><span class="cm">/**</span>
+<span class="linenos"> 80</span><span class="cm">        * @brief Demo 4</span>
+<span class="linenos"> 81</span><span class="cm">        *</span>
+<span class="linenos"> 82</span><span class="cm">        * @param msg1</span>
+<span class="linenos"> 83</span><span class="cm">        * @param msgArrCount</span>
+<span class="linenos"> 84</span><span class="cm">        * @param msgArr</span>
+<span class="linenos"> 85</span><span class="cm">        *</span>
+<span class="linenos"> 86</span><span class="cm">        * @return</span>
+<span class="linenos"> 87</span><span class="cm">        */</span>
+<span class="linenos"> 88</span><span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">_qcallback_handleM</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">msg1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">msgArrCount</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">msgArr</span><span class="p">)</span>
+<span class="linenos"> 89</span><span class="w">        </span><span class="p">{</span>
+<span class="linenos"> 90</span><span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;_qcallback_handleM msg1:%d, msgArrCount:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">msg1</span><span class="p">,</span><span class="w"> </span><span class="n">msgArrCount</span><span class="p">);</span>
+<span class="linenos"> 91</span><span class="w">                </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">msgArrCount</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 92</span><span class="w">                        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;_qcallback_handleM i:%d, argv:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">msgArr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="linenos"> 93</span><span class="w">                </span><span class="p">}</span>
+<span class="linenos"> 94</span><span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;_qcallback_handleM end!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos"> 95</span><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="linenos"> 96</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos"> 97</span><span class="w">        </span><span class="cm">/**</span>
+<span class="linenos"> 98</span><span class="cm">        * @brief 发送function 多个（这里演示4个）参数且设置（bit8、bit9和bit10）的Q_CALLBACK的taskq demo</span>
+<span class="linenos"> 99</span><span class="cm">        *</span>
+<span class="linenos">100</span><span class="cm">        * bit10是Function支持多参数</span>
+<span class="linenos">101</span><span class="cm">        * bit8是Function的返回结果，需要在调用时把Function的返回结果的指针传入底层</span>
+<span class="linenos">102</span><span class="cm">        * bit9是设置信号量，需要在调用时把信号量传入底层，在底层等待Function执行完成后会释放这个信号量</span>
+<span class="linenos">103</span><span class="cm">        * （这里为了方便学习把多参数bit10、bit8和bit9做到一起，\</span>
+<span class="linenos">104</span><span class="cm">        * bit9的信号量使得多参数的数组释放和bit8的回调结果在所有代码处理能在当前函数完成，\</span>
+<span class="linenos">105</span><span class="cm">        * 所以推荐多参数bit10或bit8的使用和bit9一起）</span>
+<span class="linenos">106</span><span class="cm">        * 注：该函数不能在Function执行的任务中调用，会死锁</span>
+<span class="linenos">107</span><span class="cm">        *</span>
+<span class="linenos">108</span><span class="cm">        * @return 发送是否成功</span>
+<span class="linenos">109</span><span class="cm">        */</span>
+<span class="linenos">110</span><span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">qcallback_multi_argv_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">                                </span><span class="c1">//参数个数5</span>
+<span class="linenos">111</span><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="nf">qcallback_msg_post_multi_argv_bit8_bit9</span><span class="p">()</span>
+<span class="linenos">112</span><span class="w">        </span><span class="p">{</span>
+<span class="linenos">113</span><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">qcallback_multi_argv_num</span><span class="p">];</span>
+<span class="linenos">114</span><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+<span class="linenos">115</span><span class="w">                </span><span class="n">OS_SEM</span><span class="w"> </span><span class="o">*</span><span class="n">sem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">OS_SEM</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">OS_SEM</span><span class="p">));</span>
+<span class="linenos">116</span><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">sem</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">117</span><span class="w">                        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;qcallback_msg_post_multi_argv_bit8_bit9 malloc error!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos">118</span><span class="w">                        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="linenos">119</span><span class="w">                </span><span class="p">}</span>
+<span class="linenos">120</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">_qcallback_handleM</span><span class="p">;</span><span class="w">                  </span><span class="c1">// Function</span>
+<span class="linenos">121</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qcallback_multi_argv_num</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">BIT</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">BIT</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">BIT</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">                 </span><span class="c1">// 参数个数5</span>
+<span class="linenos">122</span><span class="w">                </span><span class="c1">// 以上的|BIT是使能功能bit8，bit9，bit10</span>
+<span class="linenos">123</span><span class="w">                </span><span class="c1">// 用户按需设置以上argv[1]的数值</span>
+<span class="linenos">124</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">                                                                            </span><span class="c1">// 参数1，可以是任意类型强转成int</span>
+<span class="linenos">125</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                                                                            </span><span class="c1">// 参数2</span>
+<span class="linenos">126</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w">                                                                            </span><span class="c1">// 参数3</span>
+<span class="linenos">127</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">                                                                            </span><span class="c1">// 参数4</span>
+<span class="linenos">128</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">                                                                            </span><span class="c1">// 参数5</span>
+<span class="linenos">129</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">err</span><span class="p">;</span><span class="w">                                 </span><span class="c1">// BIT8，Function返回值返回到bit8</span>
+<span class="linenos">130</span><span class="w">                </span><span class="n">argv</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sem</span><span class="p">;</span><span class="w">                                 </span><span class="c1">// BIT9，Function执行完成后会释放该信号量</span>
+<span class="linenos">131</span><span class="w">                </span><span class="n">os_sem_create</span><span class="p">(</span><span class="n">sem</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">                              </span><span class="c1">// 创建信号量，初始值为0</span>
+<span class="linenos">132</span><span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">ret_err</span><span class="p">;</span>
+<span class="linenos">133</span><span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">134</span><span class="w">                        </span><span class="c1">//      执行Function的任务不能与调用qcallback_msg_post_multi_argv_bit8_bit9()的任务相同</span>
+<span class="linenos">135</span><span class="w">                        </span><span class="n">ret_err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os_taskq_post_type</span><span class="p">(</span><span class="s">&quot;btstack&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Q_CALLBACK</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
+<span class="linenos">136</span><span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret_err</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">OS_ERR_NONE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">137</span><span class="w">                                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;qcallback_msg_post_multi_argv_bit8_bit9 pend1!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos">138</span><span class="w">                                </span><span class="n">os_sem_pend</span><span class="p">(</span><span class="n">sem</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">    </span><span class="c1">// 等待信号量，一直等待</span>
+<span class="linenos">139</span><span class="w">                                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;qcallback_msg_post_multi_argv_bit8_bit9 pend2!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos">140</span><span class="w">                                </span><span class="n">ret_err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">err</span><span class="p">;</span><span class="w">         </span><span class="c1">// 获得Function的返回值，见_qcallback_handle_bit8_bit9的返回值是100</span>
+<span class="linenos">141</span><span class="w">                                </span><span class="k">break</span><span class="p">;</span>
+<span class="linenos">142</span><span class="w">                        </span><span class="p">}</span>
+<span class="linenos">143</span><span class="w">                        </span><span class="n">os_time_dly</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="linenos">144</span><span class="w">                </span><span class="p">}</span>
+<span class="linenos">145</span><span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;qcallback_msg_post_multi_argv_bit8_bit9 free!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="linenos">146</span><span class="w">                </span><span class="n">free</span><span class="p">(</span><span class="n">sem</span><span class="p">);</span>
+<span class="linenos">147</span><span class="w">                </span><span class="n">free</span><span class="p">(</span><span class="n">err</span><span class="p">);</span>
+<span class="linenos">148</span><span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;qcallback_msg_post_multi_argv_bit8_bit9:%d!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ret_err</span><span class="p">);</span><span class="w">   </span><span class="c1">// 这里输出100</span>
+<span class="linenos">149</span><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">ret_err</span><span class="p">;</span>
+<span class="linenos">150</span><span class="w">        </span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="os-taskq-post-msg">
+<h2><span class="section-number">7.2.3. </span>os_taskq_post_msg<a class="headerlink" href="#os-taskq-post-msg" title="Link to this heading"></a></h2>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">os_taskq_post_msg</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：任务获取消息，消息类型为Q_MSG;</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>任务名</p></td>
+</tr>
+<tr class="row-odd"><td><p>argc</p></td>
+<td><p>获取消息buf长度</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>消息发送成功</p></td>
+</tr>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>消息发送失败</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>示例：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">2</span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">    </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">4</span><span class="w">    </span><span class="n">os_taskq_post_msg</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5A</span><span class="p">);</span><span class="w"> </span><span class="c1">//向test任务发送消息</span>
+<span class="linenos">5</span><span class="w">    </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">6</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="os-taskq-post-event">
+<h2><span class="section-number">7.2.4. </span>os_taskq_post_event<a class="headerlink" href="#os-taskq-post-event" title="Link to this heading"></a></h2>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">os_taskq_post_event</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：任务获取消息，消息类型为Q_EVENT;</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>任务名</p></td>
+</tr>
+<tr class="row-odd"><td><p>argc</p></td>
+<td><p>获取消息buf个数</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>消息发送成功</p></td>
+</tr>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>消息发送失败</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>示例：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">2</span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">    </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">4</span><span class="w">    </span><span class="n">os_taskq_post_event</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x5A</span><span class="p">);</span><span class="w"> </span><span class="c1">//向test任务发送事件消息</span>
+<span class="linenos">5</span><span class="w">    </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">6</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="os-taskq-pend">
+<h2><span class="section-number">7.2.5. </span>os_taskq_pend<a class="headerlink" href="#os-taskq-pend" title="Link to this heading"></a></h2>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">os_taskq_pend</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">fmt</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">argv</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：任务获取消息;</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>fmt</p></td>
+<td><p>保留</p></td>
+</tr>
+<tr class="row-odd"><td><p>argv</p></td>
+<td><p>获取消息buf</p></td>
+</tr>
+<tr class="row-even"><td><p>argc</p></td>
+<td><p>获取消息buf长度</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>OS_TASKQ</p></td>
+<td><p>消息获取成功</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>示例：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">my_task</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">msg</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 7</span><span class="w">        </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os_taskq_pend</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="n">ARRAY_SIZE</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="o">/</span><span class="n">TODO</span><span class="o">:</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="n">handle</span>
+<span class="linenos"> 9</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">res</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">OS_TASKQ</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">10</span><span class="w">            </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">11</span><span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">Q_MSG</span><span class="p">:</span>
+<span class="linenos">12</span><span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="linenos">13</span><span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">Q_USER</span><span class="p">:</span>
+<span class="linenos">14</span><span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="linenos">15</span><span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="no">Q_EVENT</span><span class="p">:</span>
+<span class="linenos">16</span><span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="linenos">17</span><span class="w">            </span><span class="k">default</span><span class="o">:</span>
+<span class="linenos">18</span><span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="linenos">19</span><span class="w">            </span><span class="p">}</span>
+<span class="linenos">20</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos">21</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">22</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="os-taskq-accept">
+<h2><span class="section-number">7.2.6. </span>os_taskq_accept<a class="headerlink" href="#os-taskq-accept" title="Link to this heading"></a></h2>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">os_taskq_accept</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">argv</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：任务非阻塞式获取消息;</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>argc</p></td>
+<td><p>获取消息buf长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>argv</p></td>
+<td><p>获取消息buf</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>OS_TASKQ</p></td>
+<td><p>消息获取成功</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>示例：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">my_task</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">msg</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 7</span><span class="w">        </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os_taskq_accept</span><span class="p">(</span><span class="n">ARRAY_SIZE</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span><span class="w"> </span><span class="n">msg</span><span class="p">);</span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">OS_TASKQ</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 9</span><span class="w">            </span><span class="o">/</span><span class="n">TODO</span><span class="o">:</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="n">handle</span>
+<span class="linenos">10</span><span class="w">        </span><span class="p">}</span>
+<span class="linenos">11</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">12</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="os-taskq-del-type">
+<h2><span class="section-number">7.2.7. </span>os_taskq_del_type<a class="headerlink" href="#os-taskq-del-type" title="Link to this heading"></a></h2>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">os_taskq_del_type</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">type</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：删除指定类型的消息;</p></li>
+<li><p>参数说明：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>任务名</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p>消息类型：</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Q_MSG</p></li>
+<li><p>Q_USER</p></li>
+<li><p>Q_EVENT</p></li>
+<li><p>Q_CALLBACK</p></li>
+</ol>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>返回值：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>消息删除成功</p></td>
+</tr>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>消息删除失败</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>示例：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="linenos">2</span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">    </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">4</span><span class="w">    </span><span class="n">os_taskq_del_type</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Q_EVENT</span><span class="p">);</span>
+<span class="linenos">5</span><span class="w">    </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">6</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="os-taskq-flush">
+<h2><span class="section-number">7.2.8. </span>os_taskq_flush<a class="headerlink" href="#os-taskq-flush" title="Link to this heading"></a></h2>
+<ul>
+<li><p>函数原型：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">os_taskq_flush</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>功能说明：强制处理完任务的所有消息;</p></li>
+<li><p>参数说明：无</p></li>
+<li><p>返回值：</p>
+<blockquote>
+<div><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>消息处理成功</p></td>
+</tr>
+<tr class="row-even"><td><p>非0</p></td>
+<td><p>消息处理失败</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><p>示例：</p>
+<blockquote>
+<div><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">my_task</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<span class="linenos"> 2</span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">msg</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 7</span><span class="w">        </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos"> 8</span><span class="w">        </span><span class="n">os_taskq_flush</span><span class="p">();</span>
+<span class="linenos"> 9</span><span class="w">        </span><span class="p">...</span><span class="w"> </span><span class="p">...</span>
+<span class="linenos">10</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">11</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="task.html" class="btn btn-neutral float-left" title="7.1. 任务" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="delay.html" class="btn btn-neutral float-right" title="7.3. 系统延时" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

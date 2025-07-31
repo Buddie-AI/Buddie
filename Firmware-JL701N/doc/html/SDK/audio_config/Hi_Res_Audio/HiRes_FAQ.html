@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12.13.2. Hi-Res Audio FAQ &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="12.13.3. LDAC认证流程" href="LDAC_Certification.html" />
+    <link rel="prev" title="12.13.1. Hi-Res Audio通用" href="HiRes_cfg.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">12. 音频配置</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../DAC_cfg.html">12.1. DAC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ADC_cfg.html">12.2. ADC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Linein_cfg.html">12.3. Linein配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ANC/index.html">12.4. ANC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../General_cfg.html">12.5. 通用音频配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../phone_call_cfg.html">12.6. 通话配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_algo_cfg.html">12.7. 音频算法配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../codec.html">12.8. 编解码配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../music_palyback.html">12.9. 音乐播放配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../production_test.html">12.10. 产测配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kws.html">12.11. 离线语音识别KWS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spatial_audio.html">12.12. 空间音效</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">12.13. Hi-Res Audio</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="HiRes_cfg.html">12.13.1. Hi-Res Audio通用</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">12.13.2. Hi-Res Audio FAQ</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hi-res">12.13.2.1. Hi-Res使能后距离短容易卡顿</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ldac40khz">12.13.2.2. LDAC频响曲线没有到40kHz</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lhdc">12.13.2.3. LHDC频响测试数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">12.13.2.4. LHDC质量设置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">12.13.2.5. 小米手机支持自带播放器测试不到对应采样率的有效带宽</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="LDAC_Certification.html">12.13.3. LDAC认证流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LHDC_Certification.html">12.13.4. LHDC认证流程</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Side_Tone.html">12.14. 通话监听</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_code_size.html">12.15. 音频代码优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audio_delay.html">12.16. 延时配置（Delay）</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">12. </span>音频配置</a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">12.13. </span>Hi-Res Audio</a> &raquo;</li>
+      <li><span class="section-number">12.13.2. </span>Hi-Res Audio FAQ</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hi-res-audio-faq">
+<h1><span class="section-number">12.13.2. </span>Hi-Res Audio FAQ<a class="headerlink" href="#hi-res-audio-faq" title="Link to this heading"></a></h1>
+<section id="hi-res">
+<h2><span class="section-number">12.13.2.1. </span>Hi-Res使能后距离短容易卡顿<a class="headerlink" href="#hi-res" title="Link to this heading"></a></h2>
+<p>相较于SBC和AAC格式，LDAC/LHDC的码率较高，最高可到900kbps以上，对蓝牙的带宽要求很高。所以它不能做到跟AAC和SBC一样的距离。最高码率情况下，有些场景（干扰较强）可能距离只有1到2米。当出现距离较短的时候，可以从以下方面进行调整优化：</p>
+<ul class="simple">
+<li><p><strong>优化蓝牙性能</strong><br>
+优化蓝牙收发性能，可以提高数据传输成功率，减少重发，从而减少数据出现欠载的情况</p></li>
+<li><p><strong>调整音频延时</strong><br>
+适当加大LDAC或者LHDC格式的延时，在蓝牙传输出现阻塞的时候 ，可以优化卡顿的情况。</p></li>
+<li><p><strong>调整音效流程</strong><br>
+由于LDAC/LHDC是96kHz甚至192kHz，采样率高，音效模块需要处理更多的采样点。可能会跑不过来，或者运行时间过长。调整音效模块流程，加大系统时钟，可以缩短运行时间，或者根据系统资源情况，将代码高频运行代码指定到RAM运行</p></li>
+</ul>
+</section>
+<section id="ldac40khz">
+<h2><span class="section-number">12.13.2.2. </span>LDAC频响曲线没有到40kHz<a class="headerlink" href="#ldac40khz" title="Link to this heading"></a></h2>
+<p><strong>LDAC不同的质量，会影响频响</strong>，官方文档将LDAC质量划为以下3档：<br>
+<strong>HQ</strong> : Encode setting for High Quality.<br>
+<strong>SQ</strong> : Encode setting for Standard Quality.<br>
+<strong>MQ</strong> : Encode setting for Mobile use Quality.<br>
+<img alt="LDAC Frequency Response" src="../../../_images/LDAC_FR.png" /><br>
+所以，测试LDAC频响的时候，需要确认以下两点：<br></p>
+<ul class="simple">
+<li><p>&lt;1&gt;输出采样率设置到96kHz或以上<br></p></li>
+<li><p>&lt;2&gt;LDAC质量选择，如果要达到40kHz以上，需要配置到高质量(如下图华为Nova10手机所示的<code class="docutils literal notranslate"><span class="pre">首选音质</span></code>)<br>
+<img alt="Nova10 LDAC" src="../../../_images/LDAC_bps.png" /></p></li>
+</ul>
+</section>
+<section id="lhdc">
+<h2><span class="section-number">12.13.2.3. </span>LHDC频响测试数据<a class="headerlink" href="#lhdc" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>V3/V4频响曲线（48kHz有效频响）</strong><br>
+<img alt="LHDC V4 FR" src="../../../_images/LHDC_V4_FR.png" /></p></li>
+</ul>
+<br>
+<ul class="simple">
+<li><p><strong>V5频响曲线（96kHz有效频响）</strong><br>
+<img alt="LHDC V5 FR" src="../../../_images/LHDC_V5_FR.png" /></p></li>
+</ul>
+</section>
+<section id="id1">
+<h2><span class="section-number">12.13.2.4. </span>LHDC质量设置<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>LHDC质量设置，一般是在<strong>开发者选项</strong>里面配置，只有<code class="docutils literal notranslate"><span class="pre">质量优先</span></code>、<code class="docutils literal notranslate"><span class="pre">偏重音频质量</span></code>(不同手机描述不同)，才能正确选择采样率到96kHz或者192kHz，否则会出现选择了96kHz，退出采样率选择菜单，重新进入采样率选择界面，采样率切回48kHz的情况。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>LDAC和LHDC的质量配置方法是类似的，使用过程可以相互参考</p>
+</div>
+<p><img alt="LHDC Quality" src="../../../_images/LHDC_Quality.png" /></p>
+</section>
+<section id="id2">
+<h2><span class="section-number">12.13.2.5. </span>小米手机支持自带播放器测试不到对应采样率的有效带宽<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>小米14（其他型号可参考小米14）自带播放器，表面看起来也是QQ音乐，但是实际上播放96kHz以上采样率文件的时候是不完整的，这个时候用来测试LHDC/LDAC也是有问题的。<br>
+建议下载官方发布的最新版本QQ音乐播放器测试，亲测可行👍</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="HiRes_cfg.html" class="btn btn-neutral float-left" title="12.13.1. Hi-Res Audio通用" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="LDAC_Certification.html" class="btn btn-neutral float-right" title="12.13.3. LDAC认证流程" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

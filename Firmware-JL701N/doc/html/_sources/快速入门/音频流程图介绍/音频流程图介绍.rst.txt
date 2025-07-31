@@ -1,0 +1,144 @@
+
+
+
+音频流程图介绍
+========================
+
+概述
+------------------
+SDK提供可视化的音频流程图，方便理解整个音频数据流的处理流程，界面介绍如下：
+
+    .. figure:: imgs/界面介绍.png
+
+
+（1）音频流模式：主要是音频场景模式选择，默认是系统模式、媒体、通话等，也可按需添加，具体可查看本文档 《13.音频流程》
+
+（2）节点模块：主要是音频流程图中的节点处理单元，具体可查看本文档《14.音效调试》里对节点模块的介绍
+
+（3）音频流参数：设置多个参数选择卡可用于区分节点不同的配置参数组合，用于不同的效果切换。
+
+（4）音频流场景：主要选择声道场景流程，默认支持立体声、2.1channel等，可按需新增场景
+
+（5）操作使能： 界面显示的数据流程图使能，如果关闭，本数据流程图不起效，操作里可选择一些对流程图的一些操作，例如新增参数组等功能
+
+（6）数据流（画板）：界面显示的数据流程图具体的数据流走向内容
+
+
+音频流程图与代码的对应关系
+---------------------------
+
+以媒体场景（LINEIN数据流），2.1channel，标准参数为列，介绍音频流程图与代码的关系，如果需要新加音频图可参考修改
+
+    .. figure:: imgs/数据流与代码.png
+
+（1）现有的场景播放实现代码基本都放在SDK\\audio\\interface\\player文件夹内：
+    .. figure:: imgs/播放代码实现.png
+
+LINEIN 播放对应的文件为linein_player.c
+    
+（2）linein_player基本接口
+  linein_player_open和linein_player_close是分别实现流的开启和关闭；
+  linein_player_runing 是流状态启动判断。
+  场景与代码关联实现在linein_player_open函数。
+
+
+ linein_player_open说明：
+
+    .. figure:: imgs/linien播放实现.png
+
+ a、场景UUID获取：
+  jlstream_event_notify函数通过 name：linein获取到场景uuid：PIPELINE_UUID_MEDIA,该函数具体实现在SDK\\apps\\soundbox\\audio\\jlstream_event_handler.c
+
+  .. figure:: imgs/场景UUID.png
+  .. figure:: imgs/场景UUID获取.png
+
+
+ b、解析数据流：
+  jlstream_pipeline_parse为解析数据流。NODE_UUID_LINEIN 为数据流起点的UUID,即linein节点UUID，(每个节点都有唯一UUID，可通过工具->项目UUID查看)
+   
+  .. figure:: imgs/节点UUID.png
+
+    以上两个步骤已基本实现数据流和代码的关联
+
+（3）linein音效参数切换
+ 音效参数切换代码实现在\\SDK\\apps\\soundbox\\audio\\scene_switch.c 文件。
+ 音效参数切换通过切换参数选择卡是实现。参数选择卡是通过序号去标识[0-x]。
+ 切换接口：void effect_scene_set(u8 scene)。
+ 
+  .. figure:: imgs/参数卡切换.png
+
+调整默认的音频流程通路节点模块
+------------------------------------
+如果方案用的是SDK自带的音频流程图，但想对其中的一些节点模块调整顺序或者删减，下面以媒体场景为例，提供参考方法：
+
+1、交换Surround Effect 和 Bass Terble顺序：
+  删除节点连接线：
+
+  .. figure:: imgs/删除连接线.png  
+
+  交换节点顺序：
+
+  .. figure:: imgs/交换节点顺序.png  
+
+  重新连接节点，同时要调整节点输出输出位宽，不匹配时连线会变成红色
+
+  .. figure:: imgs/重新连接.png  
+
+2、删除EQ2节点删除：
+
+  选中EQ2节点，按dele删除
+
+  .. figure:: imgs/节点删除.png
+
+删除后需重新会连节点，单要注意节点间的位宽关系。由于Smix1Media是16位输出切无位宽转换功能，所有需要把DRC1的输入位宽改16
+
+  .. figure:: imgs/重新连接节点.png
+  .. figure:: imgs/重新连接节点2.png
+
+代码使用上无需修改
+
+3、添加DynamicEQ节点：
+  在DRC1与EQ2之间加入DynamicEQ节点，先场景中拖入DynamicEQ节点，删除EQ2与DRC1之间连接线
+
+  .. figure:: imgs/添加节点.png
+  .. figure:: imgs/连接节点.png
+
+重新连接DRC1-DynamicEQ-EQ2。要注意节点间的位宽使用匹配，不匹配时连线会变成红色
+
+  .. figure:: imgs/位宽不匹配.png
+
+节点配置参数更新获取都需要用到节点名称，
+
+   .. figure:: imgs/节点名称.png
+
+新增节点时，如果不同选项卡之间需要更新参数，需要增加切换代码
+
+ .. figure:: imgs/新增节点选项卡切换.png
+
+新建场景模式
+------------------
+如果默认的场景满足不了方案需求，也可以选择新建场景模式或者分组
+
+1.鼠标移动到音频流程图，点击右键，选择新建文件
+    .. figure:: imgs/新建场景模式.png
+
+
+2.输入新建场景模式名称，例如测试模式，
+
+    .. figure:: imgs/输入名称.png
+
+3.点击确认，可在新加的场景流程图上添加需要的流程图
+
+    .. figure:: imgs/新加的场景模式.png
+
+4.添加流程图时，分组的名称和数量要与其他的场景模式一样才能自动切换，例如选择立体声时，其他场景能自动切换到立体声分组
+
+    .. figure:: imgs/新建分组.png
+
+5.重命名和删除，鼠标移动到需要删除的场景模式，点击右键，选择对应的操作
+
+    .. figure:: imgs/重命名和删除.png
+
+6.选择需要的节点模块，用鼠标点击并且拖动到画板上，按开发方案的需求连接节点模块
+
+7.设计好音频流程图后，参考音频流程图与代码的对应关系，在程序端实现对应的音频数据流

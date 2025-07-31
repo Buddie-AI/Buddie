@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12.12. 空间音效 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="12.13. Hi-Res Audio" href="Hi_Res_Audio/index.html" />
+    <link rel="prev" title="12.11. 离线语音识别KWS" href="kws.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">12. 音频配置</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DAC_cfg.html">12.1. DAC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ADC_cfg.html">12.2. ADC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Linein_cfg.html">12.3. Linein配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ANC/index.html">12.4. ANC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="General_cfg.html">12.5. 通用音频配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phone_call_cfg.html">12.6. 通话配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_algo_cfg.html">12.7. 音频算法配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codec.html">12.8. 编解码配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="music_palyback.html">12.9. 音乐播放配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html">12.10. 产测配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kws.html">12.11. 离线语音识别KWS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">12.12. 空间音效</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">12.12.1. 功能介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">12.12.2. 配置说明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">12.12.2.1. 固定头部模式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">12.12.2.2. 固定头部+头部跟踪模式</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">12.12.3. 参数说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">12.12.4. 常用接口</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">12.12.4.1. 切模式接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">12.12.4.2. 角度回正接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">12.12.4.3. 角度自动回正时间</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">12.12.5. 校准说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">12.12.6. 常见问题</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Hi_Res_Audio/index.html">12.13. Hi-Res Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Side_Tone.html">12.14. 通话监听</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_code_size.html">12.15. 音频代码优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_delay.html">12.16. 延时配置（Delay）</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">12. </span>音频配置</a> &raquo;</li>
+      <li><span class="section-number">12.12. </span>空间音效</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">12.12. </span>空间音效<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="id2">
+<h2><span class="section-number">12.12.1. </span>功能介绍<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>  空间音频是在全景声的基础上进行算法优化，利用陀螺仪跟踪头部姿态，调整声音方位。在空间音频中，虚拟声场提供了比立体声宽广得多、也丰富得多的细节。因此，空间音频的意义不仅在于歌曲听起来更加立体环绕，还在于使音乐给人的感觉更像是身临音乐现场，声音环绕在四周，营造一种现场演唱会的感觉。在空间音频的音乐播放中，声音可以随用户动作的变化而变化，带来真正的沉浸式体验。</p>
+<ul class="simple">
+<li><p><strong>固定头部模式</strong>：即仅仅有空间感的音效，不会跟踪头部动态。</p></li>
+<li><p><strong>头部跟踪模式</strong>：头部跟踪是在空间音频的基础上，增加了动态头部追踪技术。通过跟踪头部动作，音效也随之对应变化，使得空间音频的体验更加丰富。</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2><span class="section-number">12.12.2. </span>配置说明<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="id4">
+<h3><span class="section-number">12.12.2.1. </span>固定头部模式<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>  只需要空间音频，不需要头部跟踪的情况下，不需要开传感器</p>
+<p>（1）选择传感器选择：<code class="docutils literal notranslate"><span class="pre">没有传感器</span></code></br>
+<img alt="" src="../../_images/spatial_effects_1.png" /></br></p>
+<p>（2）在蓝牙音乐流程图的解码节点后面添加空间音效节点</br>
+<img alt="" src="../../_images/spatial_effects_2.png" /></br></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>注意：tws的时候，加了空间音效节点，空间音效节点前面的数据流会跑双声道处理，在解码节点后面接空间音效节点数据流运算量最少
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3><span class="section-number">12.12.2.2. </span>固定头部+头部跟踪模式<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>  头部跟踪模式需要陀螺仪传感器的配合，所有需要在固定头部模式配置的情况下，打开传感器配置</br></p>
+<p>（1）配置<code class="docutils literal notranslate"><span class="pre">传感器选择</span></code></br>
+  TWS耳机的时候，头部跟踪只需要用一个耳机陀螺仪的数据，所有需要选择使用左耳的传感器还是右耳的传感器</br>
+  头戴式立体声选择<strong>传感器在左耳</strong>和<strong>传感器在右耳</strong>都可以，但是不能选择<strong>没有传感器</strong></br>
+<img alt="" src="../../_images/spatial_effects_3.png" /></br></p>
+<p>（2）配置IIC引脚</br>
+  程序支持使用软件IIC接口读取传感器，在board_ac701n_demo_cfg.h文件配置引脚</br>
+<img alt="" src="../../_images/spatial_effects_4.png" /></br></p>
+<p>（3）选择传感器型号</br>
+  目前支持的陀螺仪传感器型号有：MPU6887P、ICM42670P、QMI8658、LSM6DSL、_MPU6050</br></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>a、使能传感器TCFG_IMUSENSOR_ENABLE
+b、使能对应的传感器，只能使能一个传感器，不可以同时使能多个传感器
+c、配置AD0_SELETE_IO引脚，没有时配置NO_CONFIG_PORT
+d、配置TCFG_IMU_SENSOR_PWR_PORT传感器供电引脚，没有时配置NO_CONFIG_PORT
+</pre></div>
+</div>
+<p><img alt="" src="../../_images/spatial_effects_5.png" /></br>
+<img alt="" src="../../_images/spatial_effects_6.png" /></br>
+</br>
+（4）确认传感器位置</br>
+  确认耳机佩戴时传感器相对于人头部的位置的方位参数，然后填到spatial_effects.c文件的space_motion_param_init函数里面的tranval参数里面</br>
+<img alt="" src="../../_images/spatial_effects_8.png" /></br>
+</br></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>确认方法：
+根据人头的东、北、天坐标和传感器x、y、z坐标按顺序对比，方向不重合为0，找到重合的组合，方向相同为1，方向相反为-1
+组合顺序：
+东 - x
+东 - y
+东 - z
+北 - x
+北 - y
+北 - z
+天 - x
+天 - y
+天 - z
+
+注意：人头部的东北天坐标可以简单理解为，正前方是北，右手边是东，正上方是天
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">12.12.3. </span>参数说明<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<p>（1）头部跟踪参数</br></p>
+<ul class="simple">
+<li><p><strong>track_sensitivity</strong> : 头部跟踪灵敏度，表示角度更新的快慢，处理突然转头声音产生突变</br></p></li>
+<li><p><strong>angle_reset_sensitivity</strong> : 静止角度复位灵敏度，表示静止时间后，角度复位过程的快慢，处理立刻复位角度，声音突变的情况</br></p></li>
+</ul>
+<p>（2）V1.0.0音效算法参数</br></p>
+<ul class="simple">
+<li><p><strong>trackKIND</strong> : 角度合成算法选择</br></p></li>
+<li><p><strong>ReverbKIND</strong> : 混响算法选择</br></p></li>
+<li><p><strong>reverbance</strong> : 湿声比例</br></p></li>
+<li><p><strong>dampingval</strong> : 高频decay</br></p></li>
+</ul>
+<p>（2）V2.0.0音效算法参数</br></p>
+<ul class="simple">
+<li><p><strong>radius</strong> : 声源半径，调节声音远近的效果</br></p></li>
+<li><p><strong>bias_angle</strong> : 偏角，调节声像</br></p></li>
+</ul>
+</section>
+<section id="id7">
+<h2><span class="section-number">12.12.4. </span>常用接口<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
+<section id="id8">
+<h3><span class="section-number">12.12.4.1. </span>切模式接口<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="c1">//1、空间音效模式定义枚举</span>
+<span class="k">enum</span><span class="w"> </span><span class="n">SPATIAL_EFX_MODE</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">SPATIAL_EFX_OFF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">		</span><span class="c1">//空间音效关闭</span>
+<span class="w">    </span><span class="n">SPATIAL_EFX_FIXED</span><span class="p">,</span><span class="w">	        </span><span class="c1">//固定头部</span>
+<span class="w">    </span><span class="n">SPATIAL_EFX_TRACKED</span><span class="p">,</span><span class="w">	    </span><span class="c1">//头部跟踪</span>
+<span class="p">};</span>
+<span class="cm">/*空间音效模式切换接口*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">audio_spatial_effects_mode_switch</span><span class="p">(</span><span class="k">enum</span><span class="w"> </span><span class="n">SPATIAL_EFX_MODE</span><span class="w"> </span><span class="n">mode</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3><span class="section-number">12.12.4.2. </span>角度回正接口<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p>在spatial_effect.c文件里面把全局变量angleresetflag设置成1，可使角度回正0度，</br>
+可通过在spatial_effect.c里面定义函数spatial_audio_angle_reset()，并调用实现角度回正</br></p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cm">/*角度归0回正*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">spatial_audio_angle_reset</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">angleresetflag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3><span class="section-number">12.12.4.3. </span>角度自动回正时间<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>在spatial_effect.h里面配置宏<strong>ANGLE_RESET_TIME</strong>来设置角度自动回正时间，单位是秒</br></p>
+</section>
+</section>
+<section id="id11">
+<h2><span class="section-number">12.12.5. </span>校准说明<a class="headerlink" href="#id11" title="Link to this heading"></a></h2>
+<p>  头部跟踪模式使用到陀螺仪传感器，需要使用测试盒对传感器进行校准</br></p>
+<p>（1）升级测试盒固件</br>
+a、本地升级方式</br>
+<img alt="" src="../../_images/imu_trim_1.png" /></br>
+</br>
+b、在线升级方式</br>
+<img alt="" src="../../_images/imu_trim_2.png" /></br>
+</br>
+（2）设置测试盒校准命令：“DUT命令模式使能”设置成1，“串口命令配置”设为01</br>
+<img alt="" src="../../_images/imu_trim_3.png" /></br>
+</br>
+（3）校准传感器</br>
+  a、将含有传感器的耳机保持pcb板子静止在水平面上(即传感器x轴和y轴在水平面上，z轴垂直于地面)；注意：水平面需要保证平坦，且没有任何的倾斜，校准过程不可以移动，保证能够用夹具固定而不是手拿以确保静止条件；</br>
+  b、测试盒串口和耳机充电引脚接在一起，进入传感器校准，校准10s后结束校准；</br></p>
+<ul class="simple">
+<li><p>开始校准：测试盒“di”一声，显示屏显示“trim run…”</p></li>
+<li><p>校准过程：显示屏显示“trim run…”</p></li>
+<li><p>校准成功：测试盒“didi”两声，显示屏显示“trim succ ！”</p></li>
+<li><p>校准失败：测试盒“dididi”三声，显示屏显示“trim fail ！”</p></li>
+</ul>
+</section>
+<section id="id12">
+<h2><span class="section-number">12.12.6. </span>常见问题<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
+<p>（1）空间音效跟踪模式没有效果</br>
+  通过开机打印检查传感器初始化是否成功，如果不成功，检查程序传感器iic引脚、iic供电引脚和iic地址选择引脚是否配置正确，检查硬件电路是否正常。</br>
+<img alt="" src="../../_images/spatial_effects_7.png" /></br>
+</br>
+（2）空间音效跟踪模式效果不对</br>
+  耳机陀螺仪传感器是否校准过？重新用测试盒校准一遍，确认校准成功</br></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="kws.html" class="btn btn-neutral float-left" title="12.11. 离线语音识别KWS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Hi_Res_Audio/index.html" class="btn btn-neutral float-right" title="12.13. Hi-Res Audio" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

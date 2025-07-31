@@ -1,0 +1,14 @@
+# 分贝指示器（Indicator）
+
+## 功能介绍
+
+显示当前位置数据的分贝值（Peak算法）
+
+### 参数介绍
+*指示器显示当前值，当前值超过设置的阈值时，会显示红色如下图
+
+![indicator](./assets/indicator_01.png)
+
+![indicator](./assets/indicator_02.png)
+
+

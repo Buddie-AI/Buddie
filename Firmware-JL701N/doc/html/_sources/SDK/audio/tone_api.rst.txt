@@ -1,0 +1,231 @@
+提示音
+=============
+
+提示音播放API是系统提供的用于播放提示音文件的接口, 支持播放单个文件或文件列表，
+默认采用排队方式，相互之间不打断，可用".*"代替文件后缀名
+
+
+play_tone_file
+----------------------------------------
+播放单个提示音文件, 默认采用叠加方式播放，在某些资源受限的情况下也可能以打断方式播放。
+
+原型: 
+
+.. code-block:: c
+
+    int play_tone_file(const char *file_name)
+
+参数:
+
+    ============   ===================================
+    file_name       文件名
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    play_tone_file("tone_en/power_on.*"); 
+
+
+play_tone_file_callback
+-------------------------------
+播放单个提示音文件,支持播放事件回调。可用于播放完提示音后执行其它操作
+
+原型: 
+
+.. code-block:: c
+
+    int play_tone_file_callback(const char *file_name, void *priv, tone_player_cb_t callback)
+
+参数:
+
+    ============   ===================================
+    file_name       文件名
+    priv            回调callback函数传递的私有参数
+    callback        回调函数
+    ============   ===================================
+
+示例：
+
+.. code-block:: c
+
+    int play_poweron_callback(void *priv, enum stream_event event)
+    {
+        if (event == STREAM_EVENT_STOP) {
+            // 提示音播放结束，do something
+        }
+        return 0;
+    }
+
+    play_tone_file_callback("tone_en/power_on.*", NULL, play_poweron_callback);
+
+
+play_tone_file_alone
+----------------------------------------
+打断方式播放单个提示音文件
+
+原型: 
+
+.. code-block:: c
+
+    int play_tone_file_alone(const char *file_name)
+
+参数:
+
+    ============   ===================================
+    file_name       文件名
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    play_tone_file_alone("tone_en/low_power.*"); 
+
+
+play_tone_file_alone_callback
+-------------------------------
+打断方式播放单个提示音文件,支持播放事件回调。可用于播放完提示音后执行其它操作
+
+原型: 
+
+.. code-block:: c
+
+    int play_tone_file_alone_callback(const char *file_name, void *priv, tone_player_cb_t callback)
+
+参数:
+
+    ============   ===================================
+    file_name       文件名
+    priv            回调callback函数传递的私有参数
+    callback        回调函数
+    ============   ===================================
+
+示例：
+
+.. code-block:: c
+
+    int play_lowpower_callback(void *priv, enum stream_event event)
+    {
+        if (event == STREAM_EVENT_STOP) {
+            // 提示音播放结束，do something
+        }
+        return 0;
+    }
+
+    play_tone_file_alone_callback("tone_en/low_power.*", NULL, play_lowpower_callback);
+
+play_tone_files
+----------------------------------------
+播放多个提示音文件, 默认采用叠加方式播放，在某些资源受限的情况下也可能以打断方式播放。
+
+原型: 
+
+.. code-block:: c
+
+    int play_tone_files(const char *file_name[], u8 file_num)
+
+参数:
+
+    ============   ===================================
+    file_name       文件名指针数组,提示音播放过程中不能被释放
+    file_num        文件个数
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    static const char *file_list[] = {
+        "tone_en/1.*",
+        "tone_en/2.*",
+        "tone_en/3.*",
+        "tone_en/4.*"
+    };
+
+    void main()
+    {
+        play_tone_files(file_list, 4);
+    }
+
+play_tone_files_callback
+----------------------------------------
+播放多个提示音文件, 支持播放事件回调。
+
+原型: 
+
+.. code-block:: c
+
+    int play_tone_files(const char *file_name[], u8 file_num, void *priv, tone_player_cb_t callback)
+
+参数:
+
+    ============   ===================================
+    file_name       文件名指针数组,提示音播放过程中不能被释放
+    file_num        文件个数
+    priv            回调callback函数传递的私有参数
+    callback        回调函数
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    static const char *file_list[] = {
+        "tone_en/1.*",
+        "tone_en/2.*",
+        "tone_en/3.*",
+        "tone_en/4.*"
+    };
+
+    int play_files_callback(void *priv, enum stream_event event)
+    {
+        if (event == STREAM_EVENT_STOP) {
+            // 提示音播放结束，do something
+        }
+        return 0;
+    }
+
+    void main()
+    {
+        play_tone_files(file_list, 4, NULL, play_files_callback);
+    }
+
+
+tone_player_stop
+----------------------------------------
+停止播放当前提示音并清空播放队列。
+
+原型: 
+
+.. code-block:: c
+
+    int tone_player_stop()
+
+示例:
+
+.. code-block:: c
+
+    tone_player_stop();
+
+
+tone_player_runing
+----------------------------------------
+返回1表是正在播放提示音,返回0表示没有在播放提示音。
+
+原型: 
+
+.. code-block:: c
+
+    int tone_player_runing()
+
+示例:
+
+.. code-block:: c
+
+    if (tone_player_runing()) {
+        //正在播放提示音，do something
+    }
+
+

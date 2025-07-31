@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>19.1. 1拖2抢占说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="20. SDK测试报告" href="../report/index.html" />
+    <link rel="prev" title="19. 1T2" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">19. 1T2</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">19.1. 1拖2抢占说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">19.1.1. 软件架构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">19.1.2. 流程描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">19.1.3. 播歌和电话抢占</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">19.1.3.1. 功能流程图</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">19.1.3.2. 相关文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">19.1.3.3. 相关函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">19.1.3.4. 相关流程</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">19.1.4. 播歌和播歌抢占</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id10">19.1.4.1. 功能流程图</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">19.1.4.2. 相关文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">19.1.4.3. 相关函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">19.1.4.4. 相关流程</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">19.1.5. 通话和通话抢占</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id15">19.1.5.1. 功能流程图</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">19.1.5.2. 来电铃声叠加流程分解</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">19.1.5.3. 相关文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18">19.1.5.4. 相关函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id19">19.1.5.5. 相关流程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">19. </span>1T2</a> &raquo;</li>
+      <li><span class="section-number">19.1. </span>1拖2抢占说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">19.1. </span>1拖2抢占说明<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<ol class="arabic simple">
+<li><p>1拖2功能是指支持一对TWS耳机同时可以连接两个设备</p></li>
+<li><p>1拖2抢占是指两个设备通话、播歌、铃声之间根据不同情景进行抢占</p></li>
+</ol>
+<section id="id2">
+<h2><span class="section-number">19.1.1. </span>软件架构<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E6%80%BB%E4%BD%93%E6%A1%86%E6%9E%B6.png" src="../../_images/%E6%80%BB%E4%BD%93%E6%A1%86%E6%9E%B6.png" />
+</figure>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>dual_a2dp_play.c 包含播歌抢占播歌、通话抢占播歌的场景处理代码</p></li>
+<li><p>dual_phone_call.c 主要是两个设备电话的抢占策略代码</p></li>
+<li><p>tws_phone_call.c 包含来电铃声叠加相关场景处理代码</p></li>
+<li><p>bt_slience_detect.c 包含播歌抢占播歌时能量检测代码</p></li>
+</ul>
+</div>
+</section>
+<section id="id3">
+<h2><span class="section-number">19.1.2. </span>流程描述<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>通话抢占播歌、播歌抢占播歌,是在dual_a2dp_play.c中的a2dp_bt_status_event_handler事件回调函数中,收到设备A的BT_STATUS_XXXX蓝牙事件后,判断设备B的状态实现抢占策略。</p></li>
+<li><p>通话抢占通话,主要是在dual_phone_call.c中的bt_dual_phone_call_msg_handler中,收到设备A的电话相关的蓝牙事件,判断设备B的电话状态实现抢占策略。</p></li>
+<li><p>来电铃声叠加,主要是在tws_phone_call.c中的bt_phone_status_event_handler,处理设备A和设备B之间的铃声叠加。</p></li>
+</ol>
+</section>
+<section id="id4">
+<h2><span class="section-number">19.1.3. </span>播歌和电话抢占<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3><span class="section-number">19.1.3.1. </span>功能流程图<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../../_images/%E9%80%9A%E8%AF%9D%E5%92%8C%E6%92%AD%E6%AD%8C%E6%8A%A2%E5%8D%A0.png" src="../../_images/%E9%80%9A%E8%AF%9D%E5%92%8C%E6%92%AD%E6%AD%8C%E6%8A%A2%E5%8D%A0.png" />
+</figure>
+</section>
+<section id="id6">
+<h3><span class="section-number">19.1.3.2. </span>相关文件<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">apps</span><span class="err">\</span><span class="n">earphone</span><span class="err">\</span><span class="n">mode</span><span class="err">\</span><span class="n">bt</span><span class="err">\</span><span class="n">dual_a2dp_play</span><span class="p">.</span><span class="n">c</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3><span class="section-number">19.1.3.3. </span>相关函数<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="kt">int</span><span class="w"> </span><span class="n">a2dp_bt_status_event_handler</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">event</span><span class="p">)</span>
+<span class="n">播歌相关蓝牙事件消息处理函数</span><span class="p">,</span><span class="n">判断设备B的状态实现抢占抢占策略</span>
+
+<span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="k">extern</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">bt_get_call_status_for_addr</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">);</span>
+<span class="n">获取指定地址的设备的电话状态</span>
+
+<span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="kt">bool</span><span class="w"> </span><span class="n">a2dp_player_is_playing</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">bt_addr</span><span class="p">);</span>
+<span class="n">获取对应地址a2dp_player状态</span><span class="p">,</span><span class="mi">0</span><span class="o">:</span><span class="n">a2dp_player暂停</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">a2dp_player在使用</span>
+
+<span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="kt">int</span><span class="w"> </span><span class="n">btstack_device_control</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cmd</span><span class="p">);</span>
+<span class="n">给对应设备下发指令</span><span class="p">,</span><span class="n">比如说btstack_device_control</span><span class="p">(</span><span class="n">device_b</span><span class="p">,</span><span class="w"> </span><span class="n">USER_CTRL_AVCTP_OPID_PAUSE</span><span class="p">);</span><span class="n">下发播歌暂停指令</span>
+
+<span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="k">extern</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">a2dp_media_mute</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">);</span>
+<span class="n">对应地址的设备禁音</span>
+
+<span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="k">extern</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">a2dp_media_unmute</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">);</span>
+<span class="n">对应地址的设备解除禁音</span>
+
+<span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="k">extern</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">a2dp_media_is_mute</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">);</span>
+<span class="n">判断对应地址的设备是否禁音</span><span class="p">,</span><span class="mi">1</span><span class="o">:</span><span class="n">禁音</span><span class="w">  </span><span class="mi">0</span><span class="o">:</span><span class="n">没有禁音</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3><span class="section-number">19.1.3.4. </span>相关流程<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>设备A开始播歌或者点击播歌事件触发,如果设备B电话链路已建立,设备A播歌暂停并静音</p></li>
+<li><p>设备A电话链路已建立事件触发,如果设备B播歌中,设备B播歌暂停并静音</p></li>
+<li><p>设备B电话链路断开事件触发,如果设备B静音中,设备B解除静音并恢复播歌</p></li>
+</ol>
+</section>
+</section>
+<section id="id9">
+<h2><span class="section-number">19.1.4. </span>播歌和播歌抢占<a class="headerlink" href="#id9" title="Link to this heading"></a></h2>
+<section id="id10">
+<h3><span class="section-number">19.1.4.1. </span>功能流程图<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<figure class="align-default">
+<img alt="../../_images/%E6%92%AD%E6%AD%8C%E5%92%8C%E6%92%AD%E6%AD%8C%E6%8A%A2%E5%8D%A0.png" src="../../_images/%E6%92%AD%E6%AD%8C%E5%92%8C%E6%92%AD%E6%AD%8C%E6%8A%A2%E5%8D%A0.png" />
+</figure>
+</section>
+<section id="id11">
+<h3><span class="section-number">19.1.4.2. </span>相关文件<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">apps</span><span class="err">\</span><span class="n">earphone</span><span class="err">\</span><span class="n">mode</span><span class="err">\</span><span class="n">bt</span><span class="err">\</span><span class="n">dual_a2dp_play</span><span class="p">.</span><span class="n">c</span>
+<span class="n">apps</span><span class="err">\</span><span class="n">earphone</span><span class="err">\</span><span class="n">mode</span><span class="err">\</span><span class="n">bt</span><span class="err">\</span><span class="n">bt_slience_detect</span><span class="p">.</span><span class="n">c</span>
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h3><span class="section-number">19.1.4.3. </span>相关函数<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="kt">int</span><span class="w"> </span><span class="n">a2dp_bt_status_event_handler</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">event</span><span class="p">)</span>
+<span class="n">收到设备A的蓝牙事件消息</span><span class="p">,</span><span class="n">判断设备B的状态实现抢占策略</span>
+
+<span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="kt">void</span><span class="w"> </span><span class="n">bt_start_a2dp_slience_detect</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">bt_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ingore_packet_num</span><span class="p">);</span>
+<span class="n">使能对应地址的设备的能量检测</span><span class="p">,</span><span class="n">ingore_packet_num是一开始要忽略的包数</span>
+
+<span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">a2dp_app_msg_handler</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">msg</span><span class="p">)</span>
+<span class="n">处理播歌相关应用层消息函数</span>
+
+<span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="kt">int</span><span class="w"> </span><span class="n">bt_slience_detect_get_result</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">bt_addr</span><span class="p">);</span>
+<span class="n">获取对应地址的设备的能量检测结果</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span><span class="n">没有检测</span><span class="w">  </span><span class="mi">1</span><span class="o">:</span><span class="n">没有能量</span><span class="w">  </span><span class="mi">2</span><span class="o">:</span><span class="n">有能量</span>
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h3><span class="section-number">19.1.4.4. </span>相关流程<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>设备A开始播歌事件触发,如果设备B正在播歌,设备A启动能量检测,如果设备A有能量,设备A播歌、设备B播歌暂停并禁音</p></li>
+</ol>
+</section>
+</section>
+<section id="id14">
+<h2><span class="section-number">19.1.5. </span>通话和通话抢占<a class="headerlink" href="#id14" title="Link to this heading"></a></h2>
+<section id="id15">
+<h3><span class="section-number">19.1.5.1. </span>功能流程图<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<figure class="align-default" id="id20">
+<img alt="../../_images/%E9%80%9A%E8%AF%9D%E5%92%8C%E9%80%9A%E8%AF%9D%E6%8A%A2%E5%8D%A0.png" src="../../_images/%E9%80%9A%E8%AF%9D%E5%92%8C%E9%80%9A%E8%AF%9D%E6%8A%A2%E5%8D%A0.png" />
+<figcaption>
+<p><span class="caption-text">优先级：通话中&gt;去掉&gt;来电&gt;播歌</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="id16">
+<h3><span class="section-number">19.1.5.2. </span>来电铃声叠加流程分解<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>先后来电:</p></li>
+</ol>
+<figure class="align-default">
+<img alt="../../_images/%E5%85%88%E5%90%8E%E6%9D%A5%E7%94%B5.png" src="../../_images/%E5%85%88%E5%90%8E%E6%9D%A5%E7%94%B5.png" />
+</figure>
+<ol class="arabic simple" start="2">
+<li><p>通话中来电</p></li>
+</ol>
+<figure class="align-default">
+<img alt="../../_images/%E9%80%9A%E8%AF%9D%E4%B8%AD%E6%9D%A5%E7%94%B5.png" src="../../_images/%E9%80%9A%E8%AF%9D%E4%B8%AD%E6%9D%A5%E7%94%B5.png" />
+</figure>
+<ol class="arabic simple" start="3">
+<li><p>先来电再去电</p></li>
+</ol>
+<figure class="align-default">
+<img alt="../../_images/%E5%85%88%E6%9D%A5%E7%94%B5%E5%86%8D%E5%8E%BB%E7%94%B5.png" src="../../_images/%E5%85%88%E6%9D%A5%E7%94%B5%E5%86%8D%E5%8E%BB%E7%94%B5.png" />
+</figure>
+<ol class="arabic simple" start="4">
+<li><p>来电接听</p></li>
+</ol>
+<figure class="align-default">
+<img alt="../../_images/%E6%9D%A5%E7%94%B5%E6%8E%A5%E5%90%AC.png" src="../../_images/%E6%9D%A5%E7%94%B5%E6%8E%A5%E5%90%AC.png" />
+</figure>
+<ol class="arabic simple" start="5">
+<li><p>通话挂断</p></li>
+</ol>
+<figure class="align-default">
+<img alt="../../_images/%E9%80%9A%E8%AF%9D%E6%8C%82%E6%96%AD.png" src="../../_images/%E9%80%9A%E8%AF%9D%E6%8C%82%E6%96%AD.png" />
+</figure>
+</section>
+<section id="id17">
+<h3><span class="section-number">19.1.5.3. </span>相关文件<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">apps</span><span class="err">\</span><span class="n">earphone</span><span class="err">\</span><span class="n">mode</span><span class="err">\</span><span class="n">bt</span><span class="err">\</span><span class="n">dual_phone_call</span><span class="p">.</span><span class="n">c</span>
+<span class="n">apps</span><span class="err">\</span><span class="n">earphone</span><span class="err">\</span><span class="n">mode</span><span class="err">\</span><span class="n">bt</span><span class="err">\</span><span class="n">tws_phone_call</span><span class="p">.</span><span class="n">c</span>
+</pre></div>
+</div>
+</section>
+<section id="id18">
+<h3><span class="section-number">19.1.5.4. </span>相关函数<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="kt">void</span><span class="w"> </span><span class="n">bt_dual_phone_call_msg_handler</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">msg</span><span class="p">);</span>
+<span class="mi">1</span><span class="n">T2时电话蓝牙消息处理函数</span><span class="p">,</span><span class="n">判断B设备状态实现抢占</span>
+
+<span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="kt">int</span><span class="w"> </span><span class="n">btstack_get_call_esco_status</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">device</span><span class="p">);</span>
+<span class="n">获取指定设备的esco状态</span><span class="p">,</span><span class="mi">0</span><span class="o">:</span><span class="n">esco链路已建立</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="n">esco链路断开</span>
+
+<span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="kt">int</span><span class="w"> </span><span class="n">btstack_device_control</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cmd</span><span class="p">);</span>
+<span class="n">下发指令到指定设备</span><span class="p">,</span><span class="n">比如btstack_device_control</span><span class="p">(</span><span class="n">device_a</span><span class="p">,</span><span class="w"> </span><span class="n">USER_CTRL_DISCONN_SCO</span><span class="p">);</span><span class="n">让设备A断开esco链路</span>
+
+<span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">bt_phone_status_event_handler</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">msg</span><span class="p">)</span>
+<span class="n">来电</span><span class="err">、</span><span class="n">去电</span><span class="err">、</span><span class="n">esco连接断开等事件响应处理</span><span class="p">,</span><span class="n">然后给tws双耳发送CMD_PHONE_INCOME等命令</span>
+
+<span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">tws_esco_play_in_task</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">)</span>
+<span class="n">tws响应CMD_PHONE_INCOME等命令</span><span class="p">,</span><span class="n">播放铃声</span><span class="p">,</span><span class="n">打开</span><span class="o">/</span><span class="n">关闭esco链路流程</span>
+
+<span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="kt">int</span><span class="w"> </span><span class="n">bt_phone_income</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">after_conn</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">bt_addr</span><span class="p">)</span>
+<span class="n">来电铃声处理流程</span><span class="p">,</span><span class="n">由于加了来电铃声叠加</span><span class="p">,</span><span class="n">这里只处理第一台手机来电</span><span class="p">(</span><span class="n">记录第一台手机的地址</span><span class="p">,</span><span class="n">带内还是本地铃声</span><span class="p">,</span><span class="n">播放铃声等</span><span class="p">),</span><span class="n">第二台手机来电交给bt_phone_outband_ring</span><span class="p">()</span><span class="n">做</span>
+
+<span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="kt">int</span><span class="w"> </span><span class="n">bt_phone_hangup</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">bt_addr</span><span class="p">)</span>
+<span class="n">挂断处理</span><span class="p">,</span><span class="n">如果另一台手机是来电状态</span><span class="p">,</span><span class="n">就需要恢复播放来电手机的铃声</span>
+
+<span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">second_phone_call_send_cmd_delay</span><span class="p">(</span><span class="n">u32</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">u32</span><span class="w"> </span><span class="n">cmd</span><span class="p">)</span>
+<span class="n">给第二台手机设超时定时器发送CMD_PHONE_INCOME或CMD_PHONE_OUTBAND_RING命令</span><span class="p">,</span><span class="n">设超时是为了等待这段时间内是否有BT_STATUS_SCO_CONNECTION_REQ事件到来播放带内铃声</span><span class="p">,</span><span class="n">超时没esco连接就播本地铃声</span><span class="p">,</span><span class="n">超时内有esco连接就通过esco播带内铃声</span><span class="err">。</span>
+
+<span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">bt_phone_outband_ring</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">bt_addr</span><span class="p">)</span>
+<span class="n">叠加播放本地铃声</span>
+</pre></div>
+</div>
+</section>
+<section id="id19">
+<h3><span class="section-number">19.1.5.5. </span>相关流程<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>先来电 &gt; 后来电</p>
+<ul class="simple">
+<li><p>设备A(支持带内铃声)来电,播带内铃声,设备B(支持带内铃声)来电,设备B断开esco,叠加本地铃声；</p></li>
+<li><p>设备A(支持带内铃声)来电,播带内铃声,设备B(不支持带内铃声)来电,叠加本地铃声；</p></li>
+<li><p>设备A(不支持带内铃声)来电,播本地铃声,设备B(支持带内铃声)来电,叠加带内铃声；</p></li>
+<li><p>设备A(不支持带内铃声)来电,播本地铃声,设备B(不支持带内铃声)来电,播本地铃声；</p></li>
+</ul>
+</li>
+<li><p>先来电 &lt; 后通话</p>
+<ul class="simple">
+<li><p>两个设备都在来电状态,接听其中一个,另一个断开esco,转为本地铃声与通话声音叠加；</p></li>
+</ul>
+</li>
+<li><p>先去电 &gt; 后来电</p>
+<ul class="simple">
+<li><p>设备A去电,设备B(支持 or 不支持带内铃声)来电,设备B断开esco,叠加本地铃声；</p></li>
+</ul>
+</li>
+<li><p>先来电 &lt; 后去电</p>
+<ul class="simple">
+<li><p>设备A(支持带内铃声)来电,设备B去电,设备A断开esco,无论设备A来电铃声是带内或是本地,都转为本地铃声,与设备B去电声音叠加；</p></li>
+</ul>
+</li>
+<li><p>先通话 &gt; 后来电</p>
+<ul class="simple">
+<li><p>设备A通话中,设备B(支持带内铃声)来电,设备B断开esco,叠加本地铃声,接听设备B,通话声音用设备输出,不由耳机输出。</p></li>
+</ul>
+</li>
+<li><p>挂断恢复来电铃声</p>
+<ul class="simple">
+<li><p>设备A通话中,设备B来电中(本地铃声),挂断设备A,先停设备B本地铃声,设备A断开esco,再恢复设备B铃声</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="19. 1T2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../report/index.html" class="btn btn-neutral float-right" title="20. SDK测试报告" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

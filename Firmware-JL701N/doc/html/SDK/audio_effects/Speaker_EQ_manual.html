@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>14.37. SPK_EQ &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="14.38. 高级频谱显示" href="SpectrumAdvance_manual.html" />
+    <link rel="prev" title="14.36. 位宽转换" href="BitWidth_Convert_manual.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">14. 音效调试</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="effects_common/index.html">14.1. 音效通用说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AudioEffects_List.html">14.2. 音效列表（Effects List）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EQ_manual.html">14.3. 均衡器（EQ）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VirtualBass_manual.html">14.4. 虚拟低音（VBass）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VoiceChanger_manual.html">14.5. 变声（VoiceChanger）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CrossOver_manual.html">14.6. 分频器（CrossOver）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DRC_manual.html">14.7. 动态范围压缩（DRC）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dynamic_EQ_manual.html">14.8. 动态均衡器（Dynamic EQ）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dynamic_EQ_manual.html#dynamic-eq-pro">14.9. 动态均衡器（Dynamic EQ Pro）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Echo_manual.html">14.10. 回声（Echo）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PlateReverb_manual.html">14.11. Plate Reverb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Reverb_manual.html">14.12. Reverb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HowlingFrequencyShift_manual.html">14.13. 移频（Frequency Shift）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HowlingSuppress_manual.html">14.14. 啸叫抑制（Howling Suppress）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NoiseGate_manual.html">14.15. 噪声门限（Noise Gate）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="StereoWidener_manual.html">14.16. 立体声扩展器（Stereo Widener）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SurroundEffect_manual.html">14.17. 3D环绕音（3D Surround）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HarmonicExciter_manual.html">14.18. 谐波增强（Harmonic Exciter）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Autotune_manual.html">14.19. 电音（Autotune）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BandMerge_manual.html">14.20. 频带合并（Band Merge）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BassTreble_manual.html">14.21. 高低音（Bass and Treble）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EnergyDetect_manual.html">14.22. 能量检测（EnergyDetect）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Gain_manual.html">14.23. 增益模块（Gain）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PitchSpeed_manual.html">14.24. 变速变调（PitchSpeed）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Spectrum_manual.html">14.25. 频谱显示（Spectrum）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="StereoMix_manual.html">14.26. 立体声混合（Stereo Mix）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VocalRemover_manual.html">14.27. 人声消除（Vocal Remover）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Chorus_manual.html">14.28. 合唱（Chorus）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Indicator_manual.html">14.29. 分贝指示器（Indicator）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ChannelAdapter_manual.html">14.30. 声道适配</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NoiseSuppressor_manual.html">14.31. 降噪（Noise Suppressor）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AutoDuck_manual.html">14.32. 自动闪避（AutoDuck）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AutoWah_manual.html">14.33. 自动哇（AutoWah）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PingPongPcmDelay_manual.html">14.34. PingPong</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3D_Effect_manual.html">14.35. 3D音效(3D Effect)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BitWidth_Convert_manual.html">14.36. 位宽转换</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">14.37. SPK_EQ</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">14.37.1. 开发背景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">14.37.2. 实现过程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">14.37.3. 通信方式</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#spp">14.37.3.1. spp通信方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uart">14.37.3.2. uart通信方式</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">14.37.4. 数据格式（SPP通信方式下的数据交互协议）</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">14.37.5. 流程示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SpectrumAdvance_manual.html">14.38. 高级频谱显示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="StereoMtapsEcho_manua.html">14.39. StereoMtapsEcho</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpatialEffect.html">14.40. 空间音效</a></li>
+<li class="toctree-l2"><a class="reference internal" href="limiter_manual.html">14.41. Limiter and MB Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Volume_manual.html">14.42. 音量控制器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Fade_manual.html">14.43. 淡入（Fade）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NF_suppressor_manual.html">14.44. 噪声抑制（NoiseFloor Suppressor）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcm_delay_manual.html">14.45. 延时（PCM Delay）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Virtual_Surround_Pro_manual.html">14.46. 声场扩宽器</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">14. </span>音效调试</a> &raquo;</li>
+      <li><span class="section-number">14.37. </span>SPK_EQ</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spk-eq">
+<h1><span class="section-number">14.37. </span>SPK_EQ<a class="headerlink" href="#spk-eq" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2><span class="section-number">14.37.1. </span>开发背景<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> 同一型号的样机所配置的喇叭，由于产品批次、品控等原因，可能频响曲线会存在较大差异，从而导致同一型号的样机存在不同的听感。此时需要使用`Speaker EQ`弥补喇叭频响曲线，让不同喇叭的频响趋于统一（一般会使之接近于一条直线）。
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">14.37.2. </span>实现过程<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>将SpeakerEQ节点拉到输出节点(DAC/IIS_TX)之前即可。可使用spp串口通信调节每一段eq的系数值
+</pre></div>
+</div>
+<p><img alt="Speaker_EQ1" src="../../_images/Speaker_EQ1.png" /></p>
+</section>
+<section id="id3">
+<h2><span class="section-number">14.37.3. </span>通信方式<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="spp">
+<h3><span class="section-number">14.37.3.1. </span>spp通信方式<a class="headerlink" href="#spp" title="Link to this heading"></a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>默认使用SPP通信，根据实际测试的频响值调节每一段EQ的系数。
+</pre></div>
+</div>
+</section>
+<section id="uart">
+<h3><span class="section-number">14.37.3.2. </span>uart通信方式<a class="headerlink" href="#uart" title="Link to this heading"></a></h3>
+<p>在<strong>音频配置-&gt;ANC配置</strong>中，打开<code class="docutils literal notranslate"><span class="pre">串口调试/产测</span></code>功能。
+<img alt="Speaker_EQ1" src="../../_images/Speaker_EQ2.png" /></p>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">14.37.4. </span>数据格式（SPP通信方式下的数据交互协议）<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>（1）JL上位机在线调试协议</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Byte offset</p></th>
+<th class="head"><p>备注</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>数据包的长度（从offset = 1起计算）</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>数据包类型</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Seq,数据包序号，循环递增，取值范围（0~255）</p></td>
+</tr>
+<tr class="row-odd"><td><p>3~N</p></td>
+<td><p>Payload具体数据</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Tips:其中EQ指令，数据包类型为0X0C；seq 可填1。数据格式为小端格式
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>（2）Payload数据格式</strong><br>
+<code class="docutils literal notranslate"><span class="pre">MAGIC+CRC16+DATA</span></code></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>MAGIC (u16)</p></th>
+<th class="head"><p>CRC16 (u16)</p></th>
+<th class="head"><p>DATA(u8)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>标识符0X3344</p></td>
+<td><p>CRC16校验</p></td>
+<td><p>数据</p></td>
+</tr>
+<tr class="row-odd"><td><p>2 Byte</p></td>
+<td><p>2 Byte</p></td>
+<td><p>17Byte/5Byte/1Byte</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>注意：	CRC16（CRC-XModem）只需校验DATA的数据
+</pre></div>
+</div>
+<ul>
+<li><p><strong>（3）DATA命令信息</strong><br></p>
+<p>更新左声道某一段EQ相关参数：</p>
+</li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cmd 1byte</p></th>
+<th class="head"><p>Private_data 16byte</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x1</p></td>
+<td><p>struct eq_seg_info</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>更新右声道某一段EQ相关参数：
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cmd 1byte</p></th>
+<th class="head"><p>Private_data 16byte</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x5</p></td>
+<td><p>struct eq_seg_info</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct eq_seg_info {
+    u16 index;       //eq段序号，表示第几段（0~9）
+    u16 iir_type;    //滤波器类型EQ_IIR_TYPE(高通：0， 低通：1，带通：2，高架：3,低架：4)
+    int freq;        //中心截止频率（20~22k Hz）
+    float gain;      //增益（-12 ~12 db）)
+    float q;         //q值（0.3~30)
+};
+
+Struct {
+    u8 cmd:
+    struct eq_seg_info seg;
+};
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>更新左声道总增益
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cmd 1byte</p></th>
+<th class="head"><p>Private_data 4byte</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x2</p></td>
+<td><p>Float</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>更新右声道总增益
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cmd 1byte</p></th>
+<th class="head"><p>Private_data 4byte</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x6</p></td>
+<td><p>Float</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Struct</span> <span class="p">{</span>
+     <span class="n">u8</span> <span class="n">cmd</span><span class="p">;</span>
+     <span class="n">Float</span> <span class="n">global_gain</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>保存参数
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cmd 1byte</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x3</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>参数复位</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cmd 1byte</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x4</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>查询是否支持设置总增益</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>软件应答”OK”,表示支持总增益设置</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cmd 1byte</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x7</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>获取单或左声道eq系数表</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>软件应答10段系数表（共160byte）struct eq_seg_info seg[10]</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cmd 1byte</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x8</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>获取右声道eq系数表
+软件应答10段系数表（共160byte）struct eq_seg_info seg[10]</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cmd 1byte</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x9</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>获取单或左声道eq总增益
+软件应答float global_gain</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cmd 1byte</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xa</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>获取右声道eq总增益
+软件应答float global_gain_r</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cmd 1byte</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0xb</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h2><span class="section-number">14.37.5. </span>流程示例<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>（1）更新单或左声道总增益为1dB</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+<th class="head"><p>Global_gain</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x0B</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x2</p></td>
+<td><p>0x3F8000</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：0B 0C 01 44 33 <mark>03 04</mark> 02 00 00 80 3F</p>
+<p>小机成功收到，并执行成功则回复：05 00 01 4F 4B 00</p>
+<p>小机成功收到，并执行错误则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（2）更新右声道总增益为1dB</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+<th class="head"><p>Global_gain</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x0B</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x6</p></td>
+<td><p>0x3F8000</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：0B 0C 01 44 33 <mark>03 04</mark> 06 00 00 80 3F</p>
+<p>小机成功收到，并执行成功则回复：05 00 01 4F 4B 00</p>
+<p>小机成功收到，并执行错误则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（3）更新单或左声道总增益为-1dB</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+<th class="head"><p>Global_gain</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x0B</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x2</p></td>
+<td><p>0xBF8000</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：0B 0C 01 44 33 <mark>03 04</mark> 02 00 00 80 BF</p>
+<p>小机成功收到，并执行成功则回复：05 00 01 4F 4B 00</p>
+<p>小机成功收到，并执行错误则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（4）更新右声道总增益为-1dB</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+<th class="head"><p>Global_gain</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x0B</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x6</p></td>
+<td><p>0xBF8000</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：0B 0C 01 44 33 <mark>03 04</mark> 06 00 00 80 BF</p>
+<p>小机成功收到，并执行成功则回复：05 00 01 4F 4B 00</p>
+<p>小机成功收到，并执行错误则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（5）单或左声道第0段系数、配置带通、中心频率1kHz、增益1dB、Q值0.7</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+<th class="head"><p>index</p></th>
+<th class="head"><p>iir_type</p></th>
+<th class="head"><p>freq</p></th>
+<th class="head"><p>gain</p></th>
+<th class="head"><p>Q</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x17</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x1</p></td>
+<td><p>0x0000</p></td>
+<td><p>0x0002</p></td>
+<td><p>0x000003E8</p></td>
+<td><p>0x3F800000</p></td>
+<td><p>0x3F333333</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：17 0C 01 44 33 <mark>03 04</mark> 01 00 00 02 00 E8 03 00 00 00 00 80 3F 33 33 33 3F</p>
+<p>小机成功收到，并执行成功则回复：05 00 01 4F 4B 00</p>
+<p>小机成功收到，并执行错误则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（6）右声道第0段系数、配置带通、中心频率1kHz、增益1dB、Q值0.7</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+<th class="head"><p>index</p></th>
+<th class="head"><p>iir_type</p></th>
+<th class="head"><p>freq</p></th>
+<th class="head"><p>gain</p></th>
+<th class="head"><p>Q</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x17</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x5</p></td>
+<td><p>0x0000</p></td>
+<td><p>0x0002</p></td>
+<td><p>0x000003E8</p></td>
+<td><p>0x3F800000</p></td>
+<td><p>0x3F333333</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：17 0C 01 44 33 <mark>03 04</mark> 05 00 00 02 00 E8 03 00 00 00 00 80 3F 33 33 33 3F</p>
+<p>小机成功收到，并执行成功则回复：05 00 01 4F 4B 00</p>
+<p>小机成功收到，并执行错误则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（7）单或左声道第5段系数、配置带通、中心频率10kHz、增益-5dB、Q值0.7</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+<th class="head"><p>index</p></th>
+<th class="head"><p>iir_type</p></th>
+<th class="head"><p>freq</p></th>
+<th class="head"><p>gain</p></th>
+<th class="head"><p>Q</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x17</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x1</p></td>
+<td><p>0x0005</p></td>
+<td><p>0x0002</p></td>
+<td><p>0x00002710</p></td>
+<td><p>0xC0A00000</p></td>
+<td><p>0x3F333333</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：17 0C 01 44 33 <mark>03 04</mark> 01 05 00 02 00 10 27 00 00 00 00 A0 C0 33 33 33 3F</p>
+<p>小机成功收到，并执行成功则回复：05 00 01 4F 4B 00</p>
+<p>小机成功收到，并执行错误则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（8）右声道第5段系数、配置带通、中心频率10kHz、增益-5dB、Q值0.7</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+<th class="head"><p>index</p></th>
+<th class="head"><p>iir_type</p></th>
+<th class="head"><p>freq</p></th>
+<th class="head"><p>gain</p></th>
+<th class="head"><p>Q</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x17</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x5</p></td>
+<td><p>0x0005</p></td>
+<td><p>0x0002</p></td>
+<td><p>0x00002710</p></td>
+<td><p>0xC0A00000</p></td>
+<td><p>0x3F333333</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：17 0C 01 44 33 <mark>03 04</mark> 05 05 00 02 00 10 27 00 00 00 00 A0 C0 33 33 33 3F</p>
+<p>小机成功收到，并执行成功则回复：05 00 01 4F 4B 00</p>
+<p>小机成功收到，并执行错误则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（9）参数保存</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x07</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x3</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：07 0C 01 44 33 <mark>03 04</mark> 03
+小机成功收到，并执行成功则回复：05 00 01 4F 4B 00
+小机成功收到，并执行错误则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（10）参数复位</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x07</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x4</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：07 0C 01 44 33 <mark>03 04</mark> 04</p>
+<p>小机成功收到，并执行成功则回复：05 00 01 4F 4B 00</p>
+<p>小机成功收到，并执行错误则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（11）查询是否支持设置总增益</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x07</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x7</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：07 0C 01 44 33 <mark>03 04</mark> 07</p>
+<p>小机成功收到，支持设置总增益则回复：05 00 01 4F 4B 00</p>
+<p>小机成功收到，但不支持设置总增益则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（12）获取单或左声道eq系数表</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x07</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x8</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：07 0C 01 44 33 <mark>03 04</mark> 08</p>
+<p>小机成功收到，支持设置总增益则回复：05 00 01  + (160byte的10段系数)</p>
+<p>小机成功收到，但不支持该命令，则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（13）获取右声道eq系数表</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x07</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0x9</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：07 0C 01 44 33 <mark>03 04</mark> 09</p>
+<p>小机成功收到，支持设置总增益则回复：05 00 01  + (160byte的10段系数)</p>
+<p>小机成功收到，但不支持该命令，则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（14）获取单或左声道eq总增益</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x07</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0xa</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：07 0C 01 44 33 <mark>03 04</mark> 0a</p>
+<p>小机成功收到，支持设置总增益则回复：05 00 01  + (4个byte的float型总增益)</p>
+<p>小机成功收到，但不支持该命令，则回复：05 00 01 45 52 00</p>
+<ul class="simple">
+<li><p><strong>（15）获取右声道eq总增益</strong><br></p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>len</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>seq</p></th>
+<th class="head"><p>magic</p></th>
+<th class="head"><p>crc</p></th>
+<th class="head"><p>cmd</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x07</p></td>
+<td><p>0xC</p></td>
+<td><p>0x1</p></td>
+<td><p>0x3344</p></td>
+<td><p>0x0403</p></td>
+<td><p>0xb</p></td>
+</tr>
+</tbody>
+</table>
+<p>上位机发送：07 0C 01 44 33 <mark>03 04</mark> 0b</p>
+<p>小机成功收到，支持设置总增益则回复：05 00 01  + (4个byte的float型总增益)</p>
+<p>小机成功收到，但不支持该命令，则回复：05 00 01 45 52 00</p>
+<hr class="docutils" />
+<p>示例中的高亮的<mark>crc</mark>值是随意填写，sdk默认不做crc校验</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="BitWidth_Convert_manual.html" class="btn btn-neutral float-left" title="14.36. 位宽转换" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SpectrumAdvance_manual.html" class="btn btn-neutral float-right" title="14.38. 高级频谱显示" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.3. rcsp开发说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.4. rscp按键配置说明" href="rcsp%E6%8C%89%E9%94%AE%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E.html" />
+    <link rel="prev" title="2.2. 常用蓝牙库接口函数" href="%E5%B8%B8%E7%94%A8%E8%93%9D%E7%89%99%E5%BA%93%E6%8E%A5%E5%8F%A3%E5%87%BD%E6%95%B0.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. 蓝牙协议栈</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="event.html">2.1. 协议栈事件说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="%E5%B8%B8%E7%94%A8%E8%93%9D%E7%89%99%E5%BA%93%E6%8E%A5%E5%8F%A3%E5%87%BD%E6%95%B0.html">2.2. 常用蓝牙库接口函数</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.3. rcsp开发说明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rcsp-profile">2.3.1. rcsp profile自定义说明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcspble">2.3.2. rcsp自定义ble设备名字</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">2.3.3. rcsp自定义ble广播内容</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.3.4. rcsp自定义数据的发送与接收</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcspatt-read-write-callback">2.3.5. rcsp截取att_read/write_callback的实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsp-ble">2.3.6. rcsp ble连接参数设置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.3.7. rcsp功能配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">2.3.8. 两路rcsp配置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcspdebug">2.3.9. rcsp的debug开关</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcspble-spp">2.3.10. rcsp支持ble+spp连接共存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsptws">2.3.11. rcsp连接信息的tws主从切换问题跟进</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcsp-sppspp">2.3.12. rcsp spp通道与在线调音的spp通道互斥问题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blercsp">2.3.13. 客户想要通过自己ble服务的读写特征走rcsp命令</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rcsp%E6%8C%89%E9%94%AE%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E.html">2.4. rscp按键配置说明</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">2. </span>蓝牙协议栈</a> &raquo;</li>
+      <li><span class="section-number">2.3. </span>rcsp开发说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rcsp">
+<h1><span class="section-number">2.3. </span>rcsp开发说明<a class="headerlink" href="#rcsp" title="Link to this heading"></a></h1>
+<p>通过打开可视化配置工具的ble+rcsp开关即可开启设备的rcsp功能，设备开机后默认会开启ble广播等待手机APP进行连接。</p>
+<p>杰理提供官方APP如：杰理之家（耳机、音箱功能）、宜动健康（手表功能）、杰理OTA（专做升级开发使用）。iPhone的App Store，Android手机的应用商店中搜索即可下载。</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/rcsp_on.png" src="../../_images/rcsp_on.png" />
+</figure>
+</div></blockquote>
+<section id="rcsp-profile">
+<h2><span class="section-number">2.3.1. </span>rcsp profile自定义说明<a class="headerlink" href="#rcsp-profile" title="Link to this heading"></a></h2>
+<p>在apps/common/third_party_profile/multi_protocol_main.c文件中更改rcsp ble profile内容。ble profile创建教程详见杰理make_gatt_services工具。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// rcsp ble profile，用户可以此为基础添加需要ble服务和特征</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">rcsp_profile_data</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="c1">//////////////////////////////////////////////////////</span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// 0x0001 PRIMARY_SERVICE  1800</span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">//////////////////////////////////////////////////////</span>
+<span class="w">   </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x28</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x18</span><span class="p">,</span>
+
+<span class="w">   </span><span class="cm">/* CHARACTERISTIC,  2a00, READ | WRITE | DYNAMIC, */</span>
+<span class="w">   </span><span class="c1">// 0x0002 CHARACTERISTIC 2a00 READ | WRITE | DYNAMIC</span>
+<span class="w">   </span><span class="mh">0x0d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="mh">0x28</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2a</span><span class="p">,</span>
+<span class="w">   </span><span class="c1">// 0x0003 VALUE 2a00 READ | WRITE | DYNAMIC</span>
+<span class="w">   </span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x2a</span><span class="p">,</span>
+
+<span class="w">   </span><span class="c1">//////////////////////////////////////////////////////</span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">// 0x0004 PRIMARY_SERVICE  ae00</span>
+<span class="w">   </span><span class="c1">//</span>
+<span class="w">   </span><span class="c1">//////////////////////////////////////////////////////</span>
+<span class="w">   </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x28</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0xae</span><span class="p">,</span>
+
+<span class="w">   </span><span class="cm">/* CHARACTERISTIC,  ae01, WRITE_WITHOUT_RESPONSE | DYNAMIC, */</span>
+<span class="w">   </span><span class="c1">// 0x0005 CHARACTERISTIC ae01 WRITE_WITHOUT_RESPONSE | DYNAMIC</span>
+<span class="w">   </span><span class="mh">0x0d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x05</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="mh">0x28</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0xae</span><span class="p">,</span>
+<span class="w">   </span><span class="c1">// 0x0006 VALUE ae01 WRITE_WITHOUT_RESPONSE | DYNAMIC</span>
+<span class="w">   </span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0x06</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0xae</span><span class="p">,</span>
+
+<span class="w">   </span><span class="cm">/* CHARACTERISTIC,  ae02, NOTIFY, */</span>
+<span class="w">   </span><span class="c1">// 0x0007 CHARACTERISTIC ae02 NOTIFY</span>
+<span class="w">   </span><span class="mh">0x0d</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x07</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x03</span><span class="p">,</span><span class="w"> </span><span class="mh">0x28</span><span class="p">,</span><span class="w"> </span><span class="mh">0x10</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0xae</span><span class="p">,</span>
+<span class="w">   </span><span class="c1">// 0x0008 VALUE ae02 NOTIFY</span>
+<span class="w">   </span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x10</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x08</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0xae</span><span class="p">,</span>
+<span class="w">   </span><span class="c1">// 0x0009 CLIENT_CHARACTERISTIC_CONFIGURATION</span>
+<span class="w">   </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0a</span><span class="p">,</span><span class="w"> </span><span class="mh">0x01</span><span class="p">,</span><span class="w"> </span><span class="mh">0x09</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x02</span><span class="p">,</span><span class="w"> </span><span class="mh">0x29</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span>
+
+<span class="w">   </span><span class="c1">// END</span>
+<span class="w">   </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="rcspble">
+<h2><span class="section-number">2.3.2. </span>rcsp自定义ble设备名字<a class="headerlink" href="#rcspble" title="Link to this heading"></a></h2>
+<p>用户外部实现这个函数，用来定义自己的ble设备名，不实现则默认使用经典蓝牙名。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief     rcsp用户自定义ble设备名字</span>
+<span class="cm">*/</span>
+<span class="c1">// 需要外部实现以下函数返回自定义ble设备名</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">rcsp_ble_name</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;ble_name&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2><span class="section-number">2.3.3. </span>rcsp自定义ble广播内容<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>apps/common/third_party_profile/jieli/rcsp/adv/ble_rcsp_adv.c</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief rcsp的adv广播包，具体内容见代码</span>
+<span class="cm">*/</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">rcsp_make_set_adv_data</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+
+<span class="cm">/**</span>
+<span class="cm">* @brief rcsp的response广播包，具体内容见代码</span>
+<span class="cm">*           常用该函数来设置广播包中的ble设备名</span>
+<span class="cm">*/</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">rcsp_make_set_rsp_data</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">2.3.4. </span>rcsp自定义数据的发送与接收<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>用户通过rcsp的profile自定义自己ble的服务与特征来发送接收自定义数据，或者需要经过rcsp ble特征来发送接收自定义数据，或者需要使用spp进行自定义数据的发送与接收，需要外部文件通过以下两个函数，来做到自定义数据的发送与接收。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* @brief 用于外部接收ble/spp自定义数据使用</span>
+<span class="cm">*</span>
+<span class="cm">* @param ble_con_hdl ble发送句柄</span>
+<span class="cm">* @param remote_addr spp发送地址</span>
+<span class="cm">* @param buf 接收数据</span>
+<span class="cm">* @param len 接收数据的长度</span>
+<span class="cm">* @param att_handle ble_con_hdl有值时，ble的特征值，一般是用户自定义的特征</span>
+<span class="cm">*/</span>
+<span class="c1">// 需要外部实现以下函数来处理自定义数据</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">bt_rcsp_custom_recieve_callback</span><span class="p">(</span><span class="n">u16</span><span class="w"> </span><span class="n">ble_con_hdl</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">remote_addr</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">att_handle</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="c1">// custom data handle</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm">* @brief 用于发送ble/spp自定义数据使用</span>
+<span class="cm">*</span>
+<span class="cm">* @param ble_con_hdl ble发送句柄</span>
+<span class="cm">* @param remote_addr spp发送地址 注：当ble_con_hdl与remote_addr都不填时，给所有的设备都发数据</span>
+<span class="cm">* @param buf 发送的数据</span>
+<span class="cm">* @param len 发送的数据长度</span>
+<span class="cm">* @param att_handle ble_con_hdl有值时，可填用户自定义的特征, 为0是rcsp的特征值</span>
+<span class="cm">* @param att_op_type 参考att_op_type_e枚举的排序</span>
+<span class="cm">*/</span>
+<span class="c1">// 需要外部直接调用这个函数来发送自定义数据</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">bt_rcsp_custom_data_send</span><span class="p">(</span><span class="n">u16</span><span class="w"> </span><span class="n">ble_con_hdl</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">remote_addr</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">att_handle</span><span class="p">,</span><span class="w"> </span><span class="n">att_op_type_e</span><span class="w"> </span><span class="n">att_op_type</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="rcspatt-read-write-callback">
+<h2><span class="section-number">2.3.5. </span>rcsp截取att_read/write_callback的实现<a class="headerlink" href="#rcspatt-read-write-callback" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">*    @brief 用于外部自定义att_read_callback的使用</span>
+<span class="cm">*</span>
+<span class="cm">*    @param hdl ble的结构体句柄</span>
+<span class="cm">*    @param connection_handle ble的连接句柄</span>
+<span class="cm">*    @param att_handle ble特征值</span>
+<span class="cm">*    @param offset</span>
+<span class="cm">*    @param buffer 读特征的数据</span>
+<span class="cm">*    @param buffer_size 读特征的数据长度</span>
+<span class="cm">*/</span>
+<span class="kt">uint16_t</span><span class="w"> </span><span class="n">bt_rcsp_custom_att_read_callback</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">hdl</span><span class="p">,</span><span class="w"> </span><span class="n">hci_con_handle_t</span><span class="w"> </span><span class="n">connection_handle</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">att_handle</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">buffer_size</span><span class="p">)</span>
+
+<span class="cm">/**</span>
+<span class="cm">*    @brief 用于外部自定义att_write_callback的使用</span>
+<span class="cm">*</span>
+<span class="cm">*    @param hdl ble的结构体句柄</span>
+<span class="cm">*    @param connection_handle ble的连接句柄</span>
+<span class="cm">*    @param att_handle ble特征值</span>
+<span class="cm">*    @param transaction_mode</span>
+<span class="cm">*    @param offset</span>
+<span class="cm">*    @param buffer 写特征的数据</span>
+<span class="cm">*    @param buffer_size 写特征的数据长度</span>
+<span class="cm">*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">bt_rcsp_custom_att_write_callback</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">hdl</span><span class="p">,</span><span class="w"> </span><span class="n">hci_con_handle_t</span><span class="w"> </span><span class="n">connection_handle</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">att_handle</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">transaction_mode</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">buffer_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="rcsp-ble">
+<h2><span class="section-number">2.3.6. </span>rcsp ble连接参数设置<a class="headerlink" href="#rcsp-ble" title="Link to this heading"></a></h2>
+<p>当需要设置ble数据的传输速度的时候，apps/common/third_party_profile/jieli/rcsp/ble_rcsp_server.c</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 正常连接时候的连接参数列表，序号越大速度越快</span>
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">conn_update_param_t</span><span class="w"> </span><span class="n">connection_param_table</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="p">{</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">600</span><span class="p">},</span>
+
+<span class="w">   </span><span class="p">{</span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="mi">600</span><span class="p">},</span><span class="c1">//11</span>
+
+<span class="w">   </span><span class="p">{</span><span class="mi">8</span><span class="p">,</span><span class="w">  </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">600</span><span class="p">},</span><span class="c1">//3.7</span>
+
+<span class="w">   </span><span class="cm">/* {12, 28, 4, 600},//3.7 */</span>
+
+<span class="w">   </span><span class="cm">/* {12, 24, 30, 600},//3.05 */</span>
+<span class="p">};</span>
+
+<span class="c1">// 升级时候的连接参数列表，序号越大速度越快</span>
+<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">conn_update_param_t</span><span class="w"> </span><span class="n">connection_param_table_update</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="p">{</span><span class="mi">96</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="mi">600</span><span class="p">},</span>
+
+<span class="w">   </span><span class="p">{</span><span class="mi">60</span><span class="p">,</span><span class="w">  </span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="mi">600</span><span class="p">},</span>
+
+<span class="w">   </span><span class="p">{</span><span class="mi">60</span><span class="p">,</span><span class="w">  </span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="mi">600</span><span class="p">},</span>
+
+<span class="w">   </span><span class="cm">/* {8,   20, 0,  600}, */</span>
+
+<span class="w">   </span><span class="p">{</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">},</span><span class="cm">/*ios 提速*/</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2><span class="section-number">2.3.7. </span>rcsp功能配置<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>rcsp默认有多种功能，用户可以根据自身需求到apps/common/third_party_profile/jieli/rcsp/rcsp_cfg.h文件中自行配置，包括RCSP_MODE_EARPHONE、RCSP_MODE_SOUNDBOX等，以耳机为例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// 在文件中找到被宏定义包围的：(RCSP_MODE == RCSP_MODE_EARPHONE)</span>
+
+<span class="cp">#define RCSP_MSG_DISTRIBUTION_VER                                                            RCSP_MSG_DISTRIBUTION_VER_VISUAL_CFG_TOOL               </span><span class="c1">// 可视化配置工具的消息分发管理</span>
+
+<span class="cp">#define RCSP_ADV_EN                                                                                             1</span>
+<span class="cp">#define RCSP_DEVICE_STATUS_ENABLE                                                            1               </span><span class="c1">// 设备状态信息功能</span>
+<span class="cp">#define RCSP_BT_CONTROL_ENABLE                                                                       0               </span><span class="c1">// bt控制功能</span>
+
+<span class="cp">#define RCSP_UPDATE_EN                                                                               1               </span><span class="c1">// 是否支持rcsp升级</span>
+<span class="cp">#if CONFIG_DOUBLE_BANK_ENABLE                                                           </span><span class="c1">// 双备份才能打开同步升级流程</span>
+<span class="cp">#define OTA_TWS_SAME_TIME_ENABLE                                                             1               </span><span class="c1">// 是否支持TWS同步升级</span>
+<span class="cp">#define OTA_TWS_SAME_TIME_NEW                                                                1               </span><span class="c1">// 使用新的tws ota流程</span>
+<span class="cp">#define UPDATE_MD5_ENABLE                                                                    0               </span><span class="c1">// 升级是否支持MD5校验</span>
+<span class="cp">#else</span>
+<span class="cp">#define OTA_TWS_SAME_TIME_ENABLE                                                             0               </span><span class="c1">// 是否支持TWS同步升级</span>
+<span class="cp">#define OTA_TWS_SAME_TIME_NEW                                                                0               </span><span class="c1">// 使用新的tws ota流程</span>
+<span class="cp">#define UPDATE_MD5_ENABLE                                                                    0               </span><span class="c1">// 升级是否支持MD5校验</span>
+<span class="cp">#endif      </span><span class="c1">//CONFIG_DOUBLE_BANK_ENABLE</span>
+
+
+
+<span class="c1">// 默认的功能模块使能</span>
+<span class="cp">#define RCSP_ADV_NAME_SET_ENABLE                                                     1               </span><span class="c1">// 蓝牙名设置</span>
+<span class="cp">#define RCSP_ADV_KEY_SET_ENABLE                                                      1               </span><span class="c1">// 按键设置</span>
+<span class="cp">#define RCSP_ADV_LED_SET_ENABLE                                                      0               </span><span class="c1">// 灯光设置</span>
+<span class="cp">#define RCSP_ADV_MIC_SET_ENABLE                                                      1               </span><span class="c1">// mic设置</span>
+<span class="cp">#define RCSP_ADV_WORK_SET_ENABLE                                                     1               </span><span class="c1">// 模式设置（游戏模式）</span>
+<span class="cp">#define RCSP_ADV_HALTER_ENABLE                                                                       0               </span><span class="c1">// 挂脖功能</span>
+<span class="cp">#define RCSP_ADV_EQ_SET_ENABLE                                                       1               </span><span class="c1">// eq设置</span>
+<span class="cp">#define RCSP_ADV_MUSIC_INFO_ENABLE                                                   1               </span><span class="c1">// 音乐信息设置</span>
+<span class="cp">#define RCSP_ADV_HIGH_LOW_SET                                                                           1            </span><span class="c1">// 高低音设置</span>
+<span class="cp">#define RCSP_ADV_FIND_DEVICE_ENABLE                                                  1               </span><span class="c1">// 查找设备设置</span>
+<span class="cp">#define RCSP_ADV_PRODUCT_MSG_ENABLE                                                  1               </span><span class="c1">// 获取产品信息</span>
+<span class="cp">#define RCSP_ADV_COLOR_LED_SET_ENABLE                                                0               </span><span class="c1">// 彩灯设置</span>
+<span class="cp">#define RCSP_ADV_KARAOKE_SET_ENABLE                                                          0               </span><span class="c1">// 卡拉OK设置</span>
+<span class="cp">#define RCSP_ADV_KARAOKE_EQ_SET_ENABLE                                                       0               </span><span class="c1">// 卡拉OK EQ设置</span>
+<span class="cp">#define RCSP_ADV_AI_NO_PICK                                                                          0               </span><span class="c1">// 智能免摘</span>
+<span class="cp">#define RCSP_ADV_ASSISTED_HEARING                                                            0               </span><span class="c1">// 辅听，注意开启辅听后，需要关闭ANC相关功能</span>
+
+<span class="cp">#if !RCSP_ADV_ASSISTED_HEARING</span>
+<span class="cp">#define RCSP_ADV_ANC_VOICE                                                                           1               </span><span class="c1">// 主动降噪</span>
+
+<span class="cp">#if RCSP_ADV_ANC_VOICE</span>
+<span class="cp">#define RCSP_ADV_ADAPTIVE_NOISE_REDUCTION                                    0               </span><span class="c1">// 自适应降噪</span>
+<span class="cp">#define RCSP_ADV_SCENE_NOISE_REDUCTION                                                       0               </span><span class="c1">// 场景降噪</span>
+<span class="cp">#define RCSP_ADV_WIND_NOISE_DETECTION                                                        0               </span><span class="c1">// 风噪检测</span>
+<span class="cp">#define RCSP_ADV_VOICE_ENHANCEMENT_MODE                                              0               </span><span class="c1">// 人声增强模式</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+<p>特别的，如果只需要RCSP的升级功能，则只需要设置RCSP_UPDATE_EN为1即可，其他设置为0：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define RCSP_UPDATE_EN                                                                               1               </span><span class="c1">//是否支持rcsp升级</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">2.3.8. </span>两路rcsp配置<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>rcsp支持一拖二功能（即同时被两个手机的手机APP连接）：但是功能有限，配置两路rcsp后，仅支持开启EQ、ANC、更改设备名、按键配置、游戏模式、升级、一拖二管理、mic管理等。</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/rcsp_1t2.png" src="../../_images/rcsp_1t2.png" />
+</figure>
+</div></blockquote>
+</section>
+<section id="rcspdebug">
+<h2><span class="section-number">2.3.9. </span>rcsp的debug开关<a class="headerlink" href="#rcspdebug" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">app_info_debug_enable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// | BIT(4);                          //      rcsp库内部打印</span>
+<span class="cm">/* #define RCSP_API_LOG              0 */</span><span class="w">                                                    </span><span class="c1">// rcsp认证相关</span>
+<span class="cm">/* #define RCSP_PACKET_LOG           1 */</span>
+<span class="cm">/* #define RCSP_PROTOCOL_LOG 2 */</span><span class="w">                                            </span><span class="c1">// rcsp发送接收数据相关</span>
+<span class="cm">/* #define SPP_USER_LOG              3 */</span>
+<span class="cm">/* #define RCSP_INTERFACE_LOG        4 */</span><span class="w">                                            </span><span class="c1">// rcsp连接相关</span>
+</pre></div>
+</div>
+</section>
+<section id="rcspble-spp">
+<h2><span class="section-number">2.3.10. </span>rcsp支持ble+spp连接共存<a class="headerlink" href="#rcspble-spp" title="Link to this heading"></a></h2>
+<p>适用于某些需要Android手机APP先连接ble然后连接spp后，再断开ble的需求。</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="n">rcsp_allow_ble_spp_connect_simultaneously</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">                    </span><span class="c1">// 1t1时，是否允许ble连接的同时连接spp</span>
+</pre></div>
+</div>
+</section>
+<section id="rcsptws">
+<h2><span class="section-number">2.3.11. </span>rcsp连接信息的tws主从切换问题跟进<a class="headerlink" href="#rcsptws" title="Link to this heading"></a></h2>
+<p>有时候开发会遇到主从切换之后，新的主机虽然连着手机APP，但是手机APP却无法和新主机通讯的问题：</p>
+<p>1.在手机APP与设备连接的时候会调用void bt_rcsp_set_conn_info(u16 con_handle, void <a href="#id5"><span class="problematic" id="id6">*</span></a>remote_addr, bool isconn);函数，底层会调用void rcsp_interface_bt_handle_tws_sync(void)将连接信息tws同步到从机；</p>
+<p>2.双耳tws配对连接之后，会调用void rcsp_interface_bt_handle_tws_sync(void)将连接信息tws同步到从机；</p>
+<p>3.在上述1-2步骤后，apps/common/third_party_profile/jieli/rcsp/rcsp_functions/rcsp_bt_manage.c的文件中，包含void rcsp_interface_bt_handle_tws_sync(void)的实现，就是把主机的连接信息通过tws命令传给从机，这里留下了屏蔽的打印用于追踪主从切换导致的通讯问题。</p>
+</section>
+<section id="rcsp-sppspp">
+<h2><span class="section-number">2.3.12. </span>rcsp spp通道与在线调音的spp通道互斥问题<a class="headerlink" href="#rcsp-sppspp" title="Link to this heading"></a></h2>
+<p>由于rcsp spp通道使用的是公共id，当开启rcsp功能后会导致在线调音的spp通道无效，底层默认设置了弱函数，用户可在apps/common/third_party_profile/jieli/online_db/spp_online_db.c中添加该弱函数的实现即可恢复在线调音功能。具体弱函数实现代码如下：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">user_spp_handler_for_multi_dev_callback</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">local_id</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">packet_type</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">ch</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">packet</span><span class="p">,</span><span class="w"> </span><span class="n">u16</span><span class="w"> </span><span class="n">len</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">packet_type</span><span class="p">)</span>
+<span class="w">   </span><span class="p">{</span>
+<span class="w">   </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+<span class="w">      </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;debug online spp connect ------- </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">online_spp_state_cbk</span><span class="p">(</span><span class="n">packet_type</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">   </span><span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span>
+<span class="w">      </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;debug online spp disconnect ------- </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">online_spp_state_cbk</span><span class="p">(</span><span class="n">packet_type</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">   </span><span class="k">case</span><span class="w"> </span><span class="mi">7</span><span class="p">:</span>
+<span class="w">      </span><span class="n">log_info</span><span class="p">(</span><span class="s">&quot;spp_api_rx(%d) </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+<span class="w">      </span><span class="n">log_info_hexdump</span><span class="p">(</span><span class="n">packet</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+<span class="w">      </span><span class="n">online_spp_recieve_cbk</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">packet</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">   </span><span class="k">default</span><span class="o">:</span>
+<span class="w">      </span><span class="k">break</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="blercsp">
+<h2><span class="section-number">2.3.13. </span>客户想要通过自己ble服务的读写特征走rcsp命令<a class="headerlink" href="#blercsp" title="Link to this heading"></a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">*    @brief 用于外部自定义att_write_callback的使用</span>
+<span class="cm">*         外部实现这个函数，收到对应的写特征数据传到rcsp底层</span>
+<span class="cm">*</span>
+<span class="cm">*    @param hdl ble的结构体句柄</span>
+<span class="cm">*    @param connection_handle ble的连接句柄</span>
+<span class="cm">*    @param att_handle ble特征值</span>
+<span class="cm">*    @param transaction_mode</span>
+<span class="cm">*    @param offset</span>
+<span class="cm">*    @param buffer 写特征的数据</span>
+<span class="cm">*    @param buffer_size 写特征的数据长度</span>
+<span class="cm">*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">bt_rcsp_custom_att_write_callback</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">hdl</span><span class="p">,</span><span class="w"> </span><span class="n">hci_con_handle_t</span><span class="w"> </span><span class="n">connection_handle</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">att_handle</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">transaction_mode</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">buffer_size</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="k">switch</span><span class="p">(</span><span class="n">att_handle</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">case</span><span class="w"> </span><span class="no">xxx用户自定义的写特征</span><span class="err">：</span>
+<span class="w">         </span><span class="no">bt_rcsp_recieve_callback</span><span class="p">(</span><span class="no">hdl</span><span class="p">,</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w"> </span><span class="no">buffer</span><span class="p">,</span><span class="w"> </span><span class="no">buffer_size</span><span class="p">)</span><span class="err">;</span>
+<span class="w">   </span><span class="err">}</span>
+<span class="err">}</span>
+
+<span class="cm">/**</span>
+<span class="cm">*    @brief 设置rcsp的ble的默认发送特征</span>
+<span class="cm">*         外部调用这个函数，就可以改成用户自定义的服务读特征来发送rcsp数据</span>
+<span class="cm">*         一般在multi_protocol_main.c文件里面的bt_rcsp_interface_init函数前面调用即可</span>
+<span class="cm">*</span>
+<span class="cm">*    @param att_handle ble_con_hdl有值时，可填用户自定义的特征, 为0是rcsp的特征值</span>
+<span class="cm">*    @param att_op_type 参考att_op_type_e枚举的排序，为0是rcsp的特征值</span>
+<span class="cm">*/</span>
+<span class="no">void</span><span class="w"> </span><span class="no">bt_rcsp_set_default_send_att_msg</span><span class="p">(</span><span class="no">uint16_t</span><span class="w"> </span><span class="no">att_handle</span><span class="p">,</span><span class="w"> </span><span class="no">att_op_type_e</span><span class="w"> </span><span class="no">att_op_type</span><span class="p">)</span><span class="err">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="%E5%B8%B8%E7%94%A8%E8%93%9D%E7%89%99%E5%BA%93%E6%8E%A5%E5%8F%A3%E5%87%BD%E6%95%B0.html" class="btn btn-neutral float-left" title="2.2. 常用蓝牙库接口函数" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rcsp%E6%8C%89%E9%94%AE%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E.html" class="btn btn-neutral float-right" title="2.4. rscp按键配置说明" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

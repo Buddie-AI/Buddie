@@ -1,0 +1,31 @@
+# 变声（VoiceChanger）
+
+## 功能介绍
+
+实时变声处理模块，实现 变调，变声，机器音等效果
+
+## 使用说明
+
+### 参数简述
+* **变声模式 [effectv]**  选择变声算法，大致算法分类下面进行说明
+* **变调参数 [shiftv]**   改变音调高低，调出不同效果
+* **共振峰参数 [formant_shift]** 改变音色，有些变声模式下，这个参数无效
+
+
+### 变声模式说明
+
+- **变调模式 [PITCHSHIFT]**
+    - 变调参数越大，音调越低，声音越沉。 越小，音调越高，声音越尖锐
+    - 共振峰参数无效
+
+- **变声模式 [SPECTRUM, F0_DOMAIN, F0_TD]**
+    - 变调参数影响音高，共振峰参数影响音色
+    - 其中SPECTRUM抗干扰性优于 F0_TD跟F0_DOMAIN，F0_TD效果更自然些
+
+- **机器音模式 [ROBORT,FEEDBACK]**
+    - 其中ROBORT是平调机器音， FEEDBACK是调制机器音
+    - 这2种模式下，均通过变调参数来调节音调
+
+- **搞怪模式 [catoorn，whisper, melody]**
+    - cartoon模式下，通过不同的shfitv跟formant_shift的组合，调出不同效果，其中快照中有duck跟minions
+    - whisper跟melody 是 气音，固定旋律音

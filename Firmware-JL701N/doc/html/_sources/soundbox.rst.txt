@@ -1,0 +1,66 @@
+.. JL_Adapter_SDK documentation master file, created by
+   sphinx-quickstart on Wed Jun 16 08:53:25 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+
+.. figure:: _static/完整LOGO.png
+    :align: right
+    :figclass: align-right
+    :width: 70%
+
+
+============================
+杰理蓝牙音频SDK使用手册
+============================
+
+本文档由杰理官方推出，适用于TWS 1拖2 耳机SDK和AC703N音箱SDK
+
+.. toctree::
+   :maxdepth: 3
+   :caption: SDK入门
+   :numbered:
+
+   SDK/framework/index.rst
+   快速入门/index.rst
+
+.. toctree::
+   :maxdepth: 4
+   :caption: SDK Reference
+   :numbered:
+   
+   SDK/soundbox/index.rst
+
+
+.. toctree::
+   :maxdepth: 3
+   :caption: API Reference
+   :numbered:
+   
+   SDK/audio/index.rst
+   SDK/btstack/index.rst
+   SDK/driver/index.rst
+   SDK/driver/pmu/index.rst
+   SDK/led_ui/index.rst
+   SDK/system/file_system/index.rst
+   SDK/system/os/index.rst
+   SDK/system/timer/index.rst
+   SDK/system/clock_manage/index.rst
+   SDK/dev_manager/index.rst
+   SDK/system/通用组件/index.rst
+   SDK/audio_config/index.rst
+   SDK/audio_flow/index.rst
+   SDK/audio_effects/index.rst
+   SDK/audio_cvp/index.rst
+   SDK/audio_FAQ/index.rst
+   SDK/system/report/index.rst
+   SDK/system/ui/index.rst
+   SDK/mic_effect/index.rst
+   SDK/le_audio/index.rst
+
+
+
+
+   
+
+   

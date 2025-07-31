@@ -1,0 +1,50 @@
+Heap报告
+=================
+
+栈信息报告包含以下内容：
+    - 1.虚拟内存可用大小(unit:byte)
+    - 2.物理内存可用大小(unit:byte)
+    - 3.-
+
+
+.. code-block:: c
+
+    输出示例：
+    Current free heap 10240 bytes, minimum ever free heap 512d bytes, physics memory size 256 bytes
+
+    说明：
+    Current free heap : 虚拟内存当前可以用值
+    minimum ever free heap : 虚拟内存记录最小值
+    physics memory size : 物理内存当前可以用值
+
+
+
+mem_stats
+------------------------------
+
+功能:
+
+    刷新当前频率，具体流程如下：
+        - 1.设置到最高频率
+        - 2.根据操作系统的IDLE情况进行下调频率
+
+.. code-block:: c
+
+    void mem_stats(void);
+
+参数:
+
+    ==========     ====================
+    -
+    返回值
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    mem_stats();
+
+
+

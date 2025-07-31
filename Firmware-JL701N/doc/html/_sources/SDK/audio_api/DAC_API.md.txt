@@ -1,0 +1,54 @@
+# DAC接口
+
+## DAC开关节点状态
+在`audio_setup.c`中，自定义DAC开关状态回调函数。
+```c
+void audio_dac_power_state(u8 state)
+{
+    switch (state) {
+    case DAC_ANALOG_OPEN_PREPARE:
+        //DAC打开前，即准备打开
+        printf("DAC power_on start\n");
+        break;
+    case DAC_ANALOG_OPEN_FINISH:
+        //DAC打开后，即打开完成，可在此处调用功放解mute操作
+        printf("DAC power_on end\n");
+        break;
+    case DAC_ANALOG_CLOSE_PREPARE:
+        //DAC关闭前，即准备关闭
+        printf("DAC power_off start\n");
+        break;
+    case DAC_ANALOG_CLOSE_FINISH:
+        //DAC关闭后，即关闭完成
+        printf("DAC power_off end\n");
+        break;
+    }
+}
+```
+
+<div class="admonition note">
+<p class="admonition-title">常见使用场景</p>
+<p>为了避免开关DAC有Pop_UP噪声，在开关DAC前mute功放，开DAC完成后unmute功放。示例如下</p>
+</div>
+
+```c
+void audio_dac_power_state(u8 state)
+{
+    switch (state) {
+    case DAC_ANALOG_OPEN_PREPARE:
+        //DAC打开前，即准备打开
+        printf("DAC power_on start\n");
+        PA_mute();//准备打开DAC，mute功放
+        break;
+    case DAC_ANALOG_OPEN_FINISH:
+        //DAC打开后，即打开完成，可在此处调用功放解mute操作
+        printf("DAC power_on end\n");
+        PA_umute();//DAC打开完成，umute
+        break;
+    case DAC_ANALOG_CLOSE_PREPARE:
+        //DAC关闭前，即准备关闭
+        printf("DAC power_off start\n");
+        PA_mute();//准备关闭DAC，mute功放
+        break;
+    }
+}

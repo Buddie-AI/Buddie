@@ -1,0 +1,162 @@
+rdec
+#######################
+rdec支持两线输入，兼容phase_4、phase_2、phase_1三种模式（不同芯片支持不同模式），模块支持复用。
+
+
+
+
+
+rdec_init
+------------------------------
+    rdec功能初始化。
+
+原型:
+
+.. code-block:: c
+
+    int rdec_init(struct rdec_config *rdec_cfg);
+
+参数:
+
+    ==========     ====================
+    rdec_cfg        rdec配置
+    返回值          rdec配置句柄(id号)
+    ==========     ====================
+
+
+
+
+
+rdec_deinit
+------------------------------
+    rdec功能初始化取消。
+
+原型:
+
+.. code-block:: c
+
+    void rdec_deinit(int rdec_cfg_id);
+
+参数:
+
+    ============     ====================
+    rdec_cfg_id        init时返回的句柄（id号）
+    返回值              无
+    ============     ====================
+
+
+
+
+
+rdec_start
+------------------------------
+    rdec功能启动。
+
+原型:
+
+.. code-block:: c
+
+    void rdec_start(int rdec_cfg_id);
+
+参数:
+
+    ==========     ====================
+    rdec_cfg_id     init时返回的句柄（id号）
+    返回值          无
+    ==========     ====================
+
+
+
+
+
+rdec_pause
+------------------------------
+    rdec功能暂停。
+
+原型:
+
+.. code-block:: c
+
+    void rdec_pause(int rdec_cfg_id);
+
+参数:
+
+    ==========     ====================
+    rdec_cfg_id     init时返回的句柄（id号）
+    返回值          无
+    ==========     ====================
+
+
+
+
+
+rdec_resume
+------------------------------
+    rdec功能恢复。
+
+原型:
+
+.. code-block:: c
+
+    void rdec_resume(int rdec_cfg_id);
+
+参数:
+
+    ==========     ====================
+    rdec_cfg_id     init时返回的句柄（id号）
+    返回值          无
+    ==========     ====================
+
+
+
+
+
+rdec_get_value
+------------------------------
+    获取rdec计数值，有符号。
+
+原型:
+
+.. code-block:: c
+
+    s8 rdec_get_value(int rdec_cfg_id);
+
+参数:
+
+    ==========     ====================
+    rdec_cfg_id     init时返回的句柄（id号）
+    返回值          计数值，-128~127
+    ==========     ====================
+
+
+
+
+
+phase_2模式demo
+----------------------------------------
+
+.. code-block:: c
+    
+    int usr_cfg_id; //当前配置的句柄（id号）
+    int data = 0; //编码器累计值
+    static void rdec_timer_test_func()
+    {
+        s8 dat = rdec_get_value(usr_cfg_id);
+        data += dat;
+        rdec_debug("data = %d, dat = %d\n", data, dat);
+    }
+
+    void rdec_test_func()
+    {
+        usr_timer_add(NULL, rdec_timer_test_func, 1000, 1); //1s读取一次编码器值
+        struct rdec_config usr_rdec_cfg = {
+            .ch = RDEC_0, //RDEC_0模块
+            .mode = RDEC_PHASE_2, //phase_2模式
+            .port_0 = IO_PORTC_00, //A相IO口
+            .port_1 = IO_PORTC_01, //B相IO口
+            .clk = -1, //给-1，使用默认时钟s
+        };
+        usr_cfg_id =  rdec_init(&usr_rdec_cfg);
+        rdec_start(usr_cfg_id);
+        rdec_pause(usr_cfg_id);
+    }

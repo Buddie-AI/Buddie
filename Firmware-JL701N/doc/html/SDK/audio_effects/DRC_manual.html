@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>14.7. 动态范围压缩（DRC） &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="14.8. 动态均衡器（Dynamic EQ）" href="Dynamic_EQ_manual.html" />
+    <link rel="prev" title="14.6. 分频器（CrossOver）" href="CrossOver_manual.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">14. 音效调试</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="effects_common/index.html">14.1. 音效通用说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AudioEffects_List.html">14.2. 音效列表（Effects List）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EQ_manual.html">14.3. 均衡器（EQ）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VirtualBass_manual.html">14.4. 虚拟低音（VBass）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VoiceChanger_manual.html">14.5. 变声（VoiceChanger）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CrossOver_manual.html">14.6. 分频器（CrossOver）</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">14.7. 动态范围压缩（DRC）</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">14.7.1. 动态范围压缩</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">14.7.1.1. 功能介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">14.7.1.2. 参数说明</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#drc-detector">14.7.2. 动态范围压缩检测器(DRC Detector)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">14.7.2.1. 功能介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">14.7.2.2. 参数说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Dynamic_EQ_manual.html">14.8. 动态均衡器（Dynamic EQ）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dynamic_EQ_manual.html#dynamic-eq-pro">14.9. 动态均衡器（Dynamic EQ Pro）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Echo_manual.html">14.10. 回声（Echo）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PlateReverb_manual.html">14.11. Plate Reverb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Reverb_manual.html">14.12. Reverb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HowlingFrequencyShift_manual.html">14.13. 移频（Frequency Shift）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HowlingSuppress_manual.html">14.14. 啸叫抑制（Howling Suppress）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NoiseGate_manual.html">14.15. 噪声门限（Noise Gate）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="StereoWidener_manual.html">14.16. 立体声扩展器（Stereo Widener）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SurroundEffect_manual.html">14.17. 3D环绕音（3D Surround）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HarmonicExciter_manual.html">14.18. 谐波增强（Harmonic Exciter）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Autotune_manual.html">14.19. 电音（Autotune）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BandMerge_manual.html">14.20. 频带合并（Band Merge）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BassTreble_manual.html">14.21. 高低音（Bass and Treble）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EnergyDetect_manual.html">14.22. 能量检测（EnergyDetect）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Gain_manual.html">14.23. 增益模块（Gain）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PitchSpeed_manual.html">14.24. 变速变调（PitchSpeed）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Spectrum_manual.html">14.25. 频谱显示（Spectrum）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="StereoMix_manual.html">14.26. 立体声混合（Stereo Mix）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VocalRemover_manual.html">14.27. 人声消除（Vocal Remover）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Chorus_manual.html">14.28. 合唱（Chorus）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Indicator_manual.html">14.29. 分贝指示器（Indicator）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ChannelAdapter_manual.html">14.30. 声道适配</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NoiseSuppressor_manual.html">14.31. 降噪（Noise Suppressor）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AutoDuck_manual.html">14.32. 自动闪避（AutoDuck）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AutoWah_manual.html">14.33. 自动哇（AutoWah）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PingPongPcmDelay_manual.html">14.34. PingPong</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3D_Effect_manual.html">14.35. 3D音效(3D Effect)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BitWidth_Convert_manual.html">14.36. 位宽转换</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Speaker_EQ_manual.html">14.37. SPK_EQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpectrumAdvance_manual.html">14.38. 高级频谱显示</a></li>
+<li class="toctree-l2"><a class="reference internal" href="StereoMtapsEcho_manua.html">14.39. StereoMtapsEcho</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SpatialEffect.html">14.40. 空间音效</a></li>
+<li class="toctree-l2"><a class="reference internal" href="limiter_manual.html">14.41. Limiter and MB Limiter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Volume_manual.html">14.42. 音量控制器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Fade_manual.html">14.43. 淡入（Fade）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NF_suppressor_manual.html">14.44. 噪声抑制（NoiseFloor Suppressor）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcm_delay_manual.html">14.45. 延时（PCM Delay）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Virtual_Surround_Pro_manual.html">14.46. 声场扩宽器</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">14. </span>音效调试</a> &raquo;</li>
+      <li><span class="section-number">14.7. </span>动态范围压缩（DRC）</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="drc">
+<h1><span class="section-number">14.7. </span>动态范围压缩（DRC）<a class="headerlink" href="#drc" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2><span class="section-number">14.7.1. </span>动态范围压缩<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3><span class="section-number">14.7.1.1. </span>功能介绍<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>DRC是对输入信号进行动态范围控制的模块</strong>。DRC 最多支持4段，可以通过输入输出幅度曲线设置为限幅器，压缩器，扩展器等多种类型。在输入输出幅度曲线上双击可添加阈值，将鼠标放在绿色的阈值上点右键可进行编辑与删除。
+<strong>横坐标是输入幅度.纵坐标是输出幅度，单位是dB，为归一化的dB数值，计算公式：20<em>log10(input_value)。如16bit PCM满幅大小32767,$ 20</em>log10(32767) \approx 90dB$</strong></p></li>
+</ul>
+<p><img alt="DRC" src="../../_images/DRC01.png" /></p>
+</section>
+<section id="id3">
+<h3><span class="section-number">14.7.1.2. </span>参数说明<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>启动时间</strong>：当输入信号幅度超过所设置的阈值时，DRC开始控制所需要的时间。</p></li>
+<li><p><strong>释放时间</strong>：当输入信号幅度低于所设置的阈值时，DRC恢复到原始信号所需要的时间</p></li>
+<li><p><strong>RMS时间</strong>：rms检测时间，当选择RMS时才生效。</p></li>
+<li><p><strong>输入增益</strong>：对输入DRC信号进行预衰减或者预放大。</p></li>
+<li><p><strong>输出增益</strong>：对输出DRC信号进行衰减或者放大。</p></li>
+<li><p><strong>PEAK或者RMS选项</strong>：DRC使用PEAK或者RMS模式，RMS失真度比PEAK低，但RMS所需要的buf更大以及所需的mips更多。</p></li>
+<li><p><strong>Precision或者Precision+选项</strong>：Precosion+比Precision精度更高，但所需要的mips更多。</p></li>
+<li><p><strong>bypass</strong>：勾选后DRC不运行,占用的内存也会释放</p></li>
+</ul>
+</section>
+</section>
+<section id="drc-detector">
+<h2><span class="section-number">14.7.2. </span>动态范围压缩检测器(DRC Detector)<a class="headerlink" href="#drc-detector" title="Link to this heading"></a></h2>
+<section id="id4">
+<h3><span class="section-number">14.7.2.1. </span>功能介绍<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>DRC Detector 根据DET端口的信号变化，控制IN端口输入信号的动态范围，（DET端口可以是其他数据流作为检测源，例如用混响流的某个信号作为输入源，控制播歌流IN端口的信号）</strong>。DRC Detector最多支持4段，可以通过输入输出幅度曲线设置为限幅器，压缩器，扩展器等多种类型。在输入输出幅度曲线上双击可添加阈值，将鼠标放在绿色的阈值上点右键可进行编辑与删除。
+<strong>横坐标是输入幅度.纵坐标是输出幅度，单位是dB，为归一化的dB数值，计算公式：20<em>log10(input_value)。如16bit PCM满幅大小32767,$ 20</em>log10(32767) \approx 90dB$</strong></p></li>
+</ul>
+<p><img alt="DRC" src="../../_images/DRC_Detector01.png" /></p>
+</section>
+<section id="id5">
+<h3><span class="section-number">14.7.2.2. </span>参数说明<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>启动时间</strong>：当输入信号幅度超过所设置的阈值时，DRC Detector开始控制所需要的时间。</p></li>
+<li><p><strong>释放时间</strong>：当输入信号幅度低于所设置的阈值时，DRC Detector恢复到原始信号所需要的时间</p></li>
+<li><p><strong>RMS时间</strong>：rms检测时间，当选择RMS时才生效。</p></li>
+<li><p><strong>检测增益</strong>：对DET端口的信号进行预衰减或者预放大。</p></li>
+<li><p><strong>输出增益</strong>：对输出DRC Detector信号进行衰减或者放大。</p></li>
+<li><p><strong>PEAK或者RMS选项</strong>：DRC Detector使用PEAK或者RMS模式，RMS失真度比PEAK低，但RMS所需要的buf更大以及所需的mips更多。</p></li>
+<li><p><strong>Precision或者Precision+选项</strong>：Precosion+比Precision精度更高，但所需要的mips更多。</p></li>
+<li><p><strong>bypass</strong>：勾选后DRC Detector不运行,占用的内存也会释放</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="CrossOver_manual.html" class="btn btn-neutral float-left" title="14.6. 分频器（CrossOver）" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Dynamic_EQ_manual.html" class="btn btn-neutral float-right" title="14.8. 动态均衡器（Dynamic EQ）" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

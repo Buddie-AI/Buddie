@@ -1,0 +1,342 @@
+iic（软件模拟）
+#######################
+软件模拟iic，可以选择任意io，软件iic频率不准。
+
+
+-------------------------------------------------------
+软件iic基本接口
+-------------------------------------------------------
+
+get_soft_iic_config
+-------------------------------------------------------
+为兼容旧接口新增，功能：获取软件iic配置结构体。
+
+原型：
+
+.. code-block:: c
+
+    struct iic_master_config *get_soft_iic_config(soft_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    返回值            软件iic配置信息
+    ============   =============================================
+
+soft_iic_init
+-------------------------------------------------------
+初始化软件iic。
+
+原型：
+
+.. code-block:: c
+
+    //soft_iic_index:软件iic索引号
+    enum iic_state_enum soft_iic_init(soft_iic_dev iic, struct iic_master_config *i2c_config);
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    i2c_config       软件iic配置信息
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+示例：
+
+.. code-block:: c
+
+    struct iic_master_config iic_config_test = {
+        .role = IIC_MASTER,
+        .scl_io = IIC_SCL_IO,
+        .sda_io = IIC_SDA_IO,
+        .io_mode = PORT_INPUT_PULLUP_10K,//上拉或浮空(外接上拉)
+        .hdrive = PORT_DRIVE_STRENGT_2p4mA,   //enum GPIO_HDRIVE 0:2.4MA, 1:8MA, 2:26.4MA, 3:40MA
+        .master_frequency = 100000, //软件iic频率不准(hz)
+        .io_filter = 1,  //软件无效
+    };
+    enum iic_state_enum iic_init_state = soft_iic_init(0, &iic_config_test);
+    if (iic_init_state == IIC_OK) {
+        log_info("iic master init ok");
+    } else {
+        log_error("iic master init fail");
+    }
+
+soft_iic_uninit
+-------------------------------------------------------
+关闭软件iic，释放io为高阻状态。
+
+原型：
+
+.. code-block:: c
+
+    enum iic_state_enum soft_iic_uninit(soft_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+示例：
+
+.. code-block:: c
+    
+    enum iic_state_enum iic_init_state = soft_iic_uninit(0);
+    if (iic_init_state == IIC_OK) {
+        log_info("iic master uninit ok");
+    } else {
+        log_error("iic master uninit fail");
+    }
+
+soft_iic_suspend
+-------------------------------------------------------
+挂起软件iic，释放io为高阻状态。
+
+原型：
+
+.. code-block:: c
+
+    enum iic_state_enum soft_iic_suspend(soft_iic_dev iic); 
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+soft_iic_resume
+-------------------------------------------------------
+恢复软件iic，还原io状态到初始化状态。
+
+原型：
+
+.. code-block:: c
+    
+    enum iic_state_enum soft_iic_resume(soft_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+soft_iic_check_busy
+-------------------------------------------------------
+检查指定索引号的软件iic是否繁忙，空闲方可通信。
+
+原型：
+
+.. code-block:: c
+    
+    enum iic_state_enum soft_iic_check_busy(soft_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    返回值            返回执行状态，详见枚举enum iic_state_enum
+    ============   =============================================
+
+soft_iic_start
+-------------------------------------------------------
+软件iic发送起始位。
+
+原型：
+
+.. code-block:: c
+ 
+    void soft_iic_start(soft_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    返回值            无
+    ============   =============================================
+
+soft_iic_stop
+-------------------------------------------------------
+软件iic发送结束位。
+
+原型：
+
+.. code-block:: c
+ 
+    void soft_iic_stop(soft_iic_dev iic);
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    返回值            无
+    ============   =============================================
+
+soft_iic_tx_byte
+-------------------------------------------------------
+软件iic发送一个byte数据，返回应答状态。
+
+原型：
+
+.. code-block:: c
+ 
+    u8 soft_iic_tx_byte(soft_iic_dev iic, u8 byte);
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    byte             待发送的数据
+    返回值            1：有应答，0：无应答
+    ============   =============================================
+
+soft_iic_rx_byte
+-------------------------------------------------------
+软件iic接收一个byte数据。
+
+原型：
+
+.. code-block:: c
+ 
+    u8 soft_iic_rx_byte(soft_iic_dev iic, u8 ack);
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    ack              1：收到数据后回应答，0：收到数据后不回应答
+    返回值            接收的数据
+    ============   =============================================
+
+soft_iic_read_buf
+-------------------------------------------------------
+软件iic接收指定长度的数据。
+
+原型：
+
+.. code-block:: c
+ 
+    int soft_iic_read_buf(soft_iic_dev iic, void *buf, int len);
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    buf              接收缓存buf
+    len              接收长度
+    返回值            接收的数据长度：=len：成功；其他值：失败
+    ============   =============================================
+
+soft_iic_write_buf
+-------------------------------------------------------
+软件iic发送指定长度的数据。
+
+原型：
+
+.. code-block:: c
+ 
+    int soft_iic_write_buf(soft_iic_dev iic, const void *buf, int len);
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    buf              发送缓存buf
+    len              发送长度
+    返回值            发送的数据长度：=len：成功；其他值：失败
+    ============   =============================================
+
+
+-------------------------------------------------------
+软件iic设备交互接口
+-------------------------------------------------------
+
+soft_i2c_master_read_nbytes_from_device
+-------------------------------------------------------
+软件iic从指定设备获取指定长度的数据（该类接口是对以上基本接口的封装）。
+
+原型：
+
+.. code-block:: c
+ 
+    int soft_i2c_master_read_nbytes_from_device(soft_iic_dev iic,   //iic索引
+            unsigned char dev_addr, //设备地址 //无设备寄存器地址
+            unsigned char *read_buf, int read_len);//缓存buf, 长度
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    dev_addr         指定设备地址
+    read_buf         接收缓存buf
+    read_len         接收长度
+    返回值            接收的数据长度：=read_len：成功；其他值：失败
+    ============   =============================================
+
+soft_i2c_master_read_nbytes_from_device_reg
+-------------------------------------------------------
+软件iic从指定设备的某个寄存器地址获取指定长度的数据（该类接口是对以上基本接口的封装）。
+
+原型：
+
+.. code-block:: c
+ 
+    int soft_i2c_master_read_nbytes_from_device_reg(soft_iic_dev iic,
+            unsigned char dev_addr, //设备地址
+            unsigned char *reg_addr, unsigned char reg_len,//设备寄存器地址，长度
+            unsigned char *read_buf, int read_len);//缓存buf，长度
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    dev_addr         指定设备地址
+    reg_addr         设备的寄存器地址
+    reg_len          寄存器长度
+    read_buf         接收缓存buf
+    read_len         接收长度
+    返回值            接收的数据长度：=read_len：成功；其他值：失败
+    ============   =============================================
+
+soft_i2c_master_write_nbytes_to_device
+-------------------------------------------------------
+软件iic将指定长度的数据发送到指定设备（该类接口是对以上基本接口的封装）。
+
+原型：
+
+.. code-block:: c
+ 
+    int soft_i2c_master_write_nbytes_to_device(soft_iic_dev iic,
+            unsigned char dev_addr, //设备地址 //无设备寄存器地址
+            unsigned char *write_buf, int write_len); //数据buf, 长度
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    dev_addr         指定设备地址
+    write_buf        发送缓存buf
+    write_len        发送长度
+    返回值            发送的数据长度：=write_len：成功；其他值：失败
+    ============   =============================================
+
+soft_i2c_master_write_nbytes_to_device_reg
+-------------------------------------------------------
+软件iic将指定长度的数据发送到指定设备的某个寄存器地址（该类接口是对以上基本接口的封装）。
+
+原型：
+
+.. code-block:: c
+ 
+    int soft_i2c_master_write_nbytes_to_device_reg(soft_iic_dev iic,
+            unsigned char dev_addr, //设备地址
+            unsigned char *reg_addr, unsigned char reg_len,//设备寄存器地址，长度
+            unsigned char *write_buf, int write_len);//数据buf, 长度
+
+参数：
+    ============   =============================================
+    iic              软件iic索引号0~n
+    dev_addr         指定设备地址
+    reg_addr         设备的寄存器地址
+    reg_len          寄存器长度
+    write_buf        发送缓存buf
+    write_len        发送长度
+    返回值            发送的数据长度：=write_len：成功；其他值：失败
+    ============   =============================================
+
+
+示例：
+
+.. code-block:: c
+
+    //详见文件 iic_master_demo.c
+

@@ -1,0 +1,140 @@
+# 算法集成指引
+
+
+## 资源监视
+***
+芯片资源主要是指**CPU算力**和**内存RAM**资源，这里枚举不同系列大致`可供第三方算法使用`的资源信息，仅供参考，非确切数据<br>
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>CPU x1 x2表示CPU个数，单核还是双核</p>
+</div>
+
+- AC700N系列<br>
+
+|   |RAM|Clock|Notes|
+|---|---|---|---|
+| earphone |  播歌 35K <br> 通话 64K | 112 MHz  |CPU x1|
+
+- JL701N系列<br>
+
+|   |RAM|Clock|Notes|
+|---|---|---|---|
+| earphone |  播歌 498K <br> 通话 522K |  144 MHz  |CPU x2|
+
+- JL703N系列<br>
+
+- JL708N系列<br>
+
+### Memory监视接口
+
+ ```C
+ mem_stats(); 
+```
+    
+输出log示例如下：
+```
+[00:00:06.154]Current free heap 93196 bytes, minimum ever free heap 68288 bytes, physics memory size 53888 bytes
+```
+其中`physics memory size 53888 bytes`，即表示目前系统剩余53888 bytes SRAM。
+
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>剩余的memory资源不能全部用来做算法处理。由于系统运行过程内存是动态变化的，所以最终方案应该保留一定额度（至少10k Bytes）的RAM空间。</p>
+</div>
+
+### Clock监视接口
+```C
+int curr_clk = clk_get("sys");
+printf("curr_clk:%d\n",curr_clk);
+```
+ 
+输出log示例如下：
+```
+[00:00:06.154]curr_clk:192000000
+```
+表示当前系统运行时钟是192MHz。
+
+### CPU监视接口
+```C
+int core_usage[2];
+int c = os_cpu_usage(NULL, core_usage);
+if (c >= 0) {
+    printf("cpu usage:%d,%d\n",core_usage[0], core_usage[1]);
+     int jlstream0_usage = os_cpu_usage("jlstream_0", NULL);
+     printf("jlstream0 task usage:%d\n",jlstream0_usage);
+}
+```
+  
+输出log示例如下：
+```
+[00:00:06.153]cpu usage:27,10
+[00:00:06.153]jlstream0 task usage:7
+```
+表示当前系统运行过程，CPU0占用率27%，CPU1占用率10%，jlstream0任务的占用率是7%
+
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>单核CPU，log输出仅统计一个CPU的占用率</p>
+</div>
+
+
+
+## 效率监视
+***
+
+当算法运行开销超过CPU的运算能力，音频播放通路会发生欠载，即数据流速达不到DAC/IIS或者其他播放设备播放速度，通常会报`underrun`错误或`蓝牙buffer接收满`的错误，打印信息为 uuuu (即`under run`，DAC欠载)、FFFF（即`Full`，输入溢出）。<br>
+此时需要检查优化算法的运行效率，是否CPU算力满足，当检查算法消耗mips未超过CPU设计标准负荷，且CPU满载，则有可能为播歌+算法的运行开销处于当前系统时钟（频率）的边界值，那么需要提高系统时钟以确保正常运行。
+
+```C
+unsigned long start_ts = jiffies_usec();    //算法运行开始时间戳
+third_party_effect_run();                   //算法运行实例
+int run_time = jiffies_usec2offset(start_ts, jiffies_usec());	//算法运行时间
+printf("run_time:%d(us)\n",run_time);
+```
+
+## 加速模块
+***
+
+### FFT加速模块
+- **（1）demo路径**<br>
+  - SDK\audio\cpu\ `brxx` \audio_demo\audio_fft_demo.c （其中`brxx`为cpu目录下的一个通配文件夹）
+- **（2）FFT特性**<br>
+  - 实数运算：√
+  - 复数运算：√
+  - 定点运算：√
+  - 浮点运算：×
+- **（3）FFT位宽**<br>
+  - IFFT输入位宽：[29:0]<br>
+  - FFT位宽<br>
+
+  |	FFT模式	|	FFT点数	|		最大输入位宽|
+  |---|---|---|
+  |	复数	|	64<br>128<br>256<br>512<br>1024	|		[21 : 0]<br>[20 : 0]<br>[19 : 0]<br>[18 : 0]<br>[17 : 0] |					
+  | 实数	|64<br>128<br>256<br>512<br>1024  |		[20 : 0]<br>[18 : 0]<br>[17 : 0]<br>[18 : 0]<br>[16 : 0] |
+
+
+- **（4）FFT效率**<br>
+  - FFT硬件加速器和软件FFT效率对比，大概是1：4的比例。
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>单次运算长度越长，效率越接近1：4，长度越短，硬件FFT配置启动关闭消耗占比会变大，甚至超过硬件FFT真实运行时间</p>
+</div>
+
+### 数学函数加速模块
+- **引用路径**<br>
+SDK\interface\utils\math\cpu\ `brxx` \asm\math_fast_function.h （其中`brxx`为cpu目录下的一个通配文件夹）
+
+    ```C
+    #include "asm/math_fast_function.h"
+    ```
+
+## 异常跟踪
+***
+
+算法移植过程，有时候会触发系统异常（**Exception**）。系统异常指芯片在运行的代码时，由于软件/硬件状态出错，当该错误状态未在硬件/软件程序设计覆盖的容错范围，就会引起的系统处于未知状态的异常，异常的结果是触发**系统复位**或者进入**系统异常中断函数**。遇到这种情况，调试指引请参考：[🔗系统异常调试指引](https://doc.zh-jieli.com/AC63/zh-cn/master/getting_started/code_debug/printf_debug.html#id7)
+
+## 算法授权
+***
+算法移植完成，如有需要通过授权方式许可芯片，请参考：[🔗多算法授权使用说明](https://doc.zh-jieli.com/Tools/zh-cn/mass_prod_tools/multi_auth/index.html)

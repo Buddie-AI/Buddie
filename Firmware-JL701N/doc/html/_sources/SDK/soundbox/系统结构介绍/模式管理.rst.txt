@@ -1,0 +1,311 @@
+模式管理
+###############
+
+概述
+------------
+介绍APP模式相关操作和api
+
+
+上电模式设置
+-------------------
+SDK默认上电进入poweron模式播放提示音后跳转到蓝牙模式，如果是插着充电线会进入idle模式
+
+    .. figure:: imgs/上电模式设置.png
+       :scale: 80%
+       :align: center
+	   
+       图 1：上电模式设置
+
+进入poweron模式播放提示音后默认跳转蓝牙模式，可在此按需修改
+
+    .. figure:: imgs/开机提示音后模式跳转.png
+       :scale: 80%
+       :align: center
+	   
+       图 2：开机提示音后模式跳转
+
+
+
+模式切换
+---------------------
+模式切换流程图如下：
+
+    .. figure:: imgs/模式切换流程.png
+       :scale: 80%
+       :align: center
+	   
+       图 3：模式切换流程图
+
+模式切换在对应模式主循环处理，例如music mode 在app_enter_music_mode（）中处理
+检测是否有退出模式消息和获取下一个模式的处理如下：
+.. code-block:: c
+
+    next_mode = app_mode_switch_handler(msg);
+
+
+
+模式创建
+---------------------
+以music模式为例，介绍模式创建的步骤
+
+1.添加music mode 在app mode的顺序
+
+.. code-block:: c
+
+    enum app_mode_index {
+        APP_MODE_BT_INDEX,
+        APP_MODE_MUSIC_INDEX,
+        APP_MODE_FM_INDEX,
+        APP_MODE_RECORD_INDEX,
+        APP_MODE_LINEIN_INDEX,
+        APP_MODE_RTC_INDEX,
+        APP_MODE_PC_INDEX,
+        APP_MODE_SPDIF_INDEX,
+    };
+
+
+2.注册music模式到app_mode
+
+.. code-block:: c
+
+    REGISTER_APP_MODE(music_mode) = {
+        .name 	= APP_MODE_MUSIC,
+        .index  = APP_MODE_MUSIC_INDEX,
+        .ops 	= &music_mode_ops,
+    };
+
+3.添加music 模式主循环处理
+
+.. code-block:: c
+
+    struct app_mode *app_enter_music_mode(int arg)
+    {
+        int msg[16];
+        struct app_mode *next_mode;
+
+        app_music_init();
+
+        while (1) {
+            if (!app_get_message(msg, ARRAY_SIZE(msg), music_mode_key_table)) {
+                continue;
+            }
+            next_mode = app_mode_switch_handler(msg);
+            if (next_mode) {
+                break;
+            }
+
+            switch (msg[0]) {
+            case MSG_FROM_APP:
+                music_app_msg_handler(msg + 1);
+                break;
+            case MSG_FROM_DEVICE:
+                music_device_msg_handler(msg + 1);
+                break;
+            }
+
+            app_default_msg_handler(msg);
+        }
+
+        app_music_exit();
+
+        return next_mode;
+    }
+
+
+4.在app_task_loop()添加music mode入口
+
+.. code-block:: c
+
+    static void app_task_loop(void *p)
+    {
+        struct app_mode *mode;
+
+        mode = app_task_init();
+
+        while (1) {
+            app_set_current_mode(mode);
+
+            switch (mode->name) {
+            case APP_MODE_IDLE:
+                mode = app_enter_idle_mode(g_mode_switch_arg);
+                break;
+            case APP_MODE_POWERON:
+                mode = app_enter_poweron_mode(g_mode_switch_arg);
+                break;
+    #if TCFG_APP_BT_EN
+            case APP_MODE_BT:
+                mode = app_enter_bt_mode(g_mode_switch_arg);
+                break;
+    #endif
+
+    #if TCFG_APP_MUSIC_EN
+            case APP_MODE_MUSIC:
+                mode = app_enter_music_mode(g_mode_switch_arg);
+                break;
+    #endif
+
+            default:
+                break;
+            }
+        }
+
+    }
+
+
+模式相关API介绍
+------------------------
+
+app_mode_switch_handler
+----------------------------------------
+检测是否有退出模式消息和获取下一个模式的模式信息。
+
+原型: 
+
+.. code-block:: c
+
+    struct app_mode *app_mode_switch_handler(int *msg)
+
+参数:
+
+    ============   ===================================
+    msg            获取到的消息
+    返回值          模式信息
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    next_mode = app_mode_switch_handler(msg);
+
+
+app_get_mode_by_name
+----------------------------------------
+通过模式名称获取对应的模式信息。
+
+原型: 
+
+.. code-block:: c
+
+    struct app_mode *app_get_mode_by_name(u8 name)
+
+参数:
+
+    ============   ===================================
+    name            模式名称
+    返回值          模式信息
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    next_mode = app_get_mode_by_name(APP_MODE_MUSIC);
+
+
+app_get_next_mode
+----------------------------------------
+获取下一个模式的模式信息。
+
+原型: 
+
+.. code-block:: c
+
+    struct app_mode *app_get_next_mode()
+
+
+示例:
+
+.. code-block:: c
+
+    next_mode = app_get_next_mode(); 
+
+
+app_get_prev_mode
+----------------------------------------
+获取上一个模式的模式信息。
+
+原型: 
+
+.. code-block:: c
+
+    struct app_mode *app_get_prev_mode()
+
+
+示例:
+
+.. code-block:: c
+
+    struct app_mode *mode = app_get_prev_mode(); 
+
+
+
+app_in_mode
+----------------------------------------
+查询mode是否是当前运行中的mode。
+
+原型: 
+
+.. code-block:: c
+
+    bool app_in_mode(u8 name)
+
+参数:
+
+    ============   ===================================
+    name            模式名称
+    返回值           true：是   false：否
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    if (false == app_in_mode(APP_MODE_MUSIC))
+    {
+        return；
+    }
+
+
+app_get_current_mode
+----------------------------------------
+获取获取当前运行中的模式信息。
+
+原型: 
+
+.. code-block:: c
+
+    struct app_mode *app_get_current_mode() 
+
+
+示例:
+
+.. code-block:: c
+
+    mode = app_get_current_mode(); 
+
+
+int app_goto_mode()
+-------------------------------------------------
+跳转到对应的模式。
+
+原型: 
+
+.. code-block:: c
+
+    int app_goto_mode(u8 mode_name, int param)
+
+参数:
+
+    ============   ===================================
+    mode_name       目标模式
+    param           进入目标模式处理的arg
+    返回值           0：跳转成功   非0：跳转不成功
+    ============   ===================================
+
+示例:
+
+.. code-block:: c
+
+    app_goto_mode(APP_MODE_IDLE, IDLE_MODE_PLAY_POWEROFF);
+

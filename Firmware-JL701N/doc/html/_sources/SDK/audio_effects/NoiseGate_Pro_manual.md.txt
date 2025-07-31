@@ -1,0 +1,17 @@
+# NoiseGate Pro
+
+## 功能介绍
+对输入信号经过高低通处理后，检测是否低于阈值启动噪声门限
+
+## 参数说明
+- **Attack Time**： 噪声门限启动时间
+- **Release Time**： 噪声门限释放时间
+- **Attack Hold Time**：持续 `Attack Hold Time` 时间低于阈值才启动噪声门限
+- **Threshold**：噪声门限阈值
+- **Gain**：低于噪声门限阈值的增益
+- **LowPass Frequency**：低通截止频率
+- **HighPass Frequency**：高通截止频率
+- **LowPass Roll-Off**：低通阶数
+- **HighPass Roll-Off**：高通阶数
+- **LowPass Enable**：低通使能
+- **HighPass Enable**：高通使能

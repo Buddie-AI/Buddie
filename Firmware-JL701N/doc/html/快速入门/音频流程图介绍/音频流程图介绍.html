@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.2. 音频流程图介绍 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2.3. 在线调音介绍" href="../%E5%9C%A8%E7%BA%BF%E8%B0%83%E9%9F%B3%E4%BB%8B%E7%BB%8D/%E5%9C%A8%E7%BA%BF%E8%B0%83%E9%9F%B3%E4%BB%8B%E7%BB%8D.html" />
+    <link rel="prev" title="2.1. 可视化工具使用介绍" href="../jltool/%E9%85%8D%E7%BD%AE%E5%B7%A5%E5%85%B7.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. 快速入门</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../jltool/%E9%85%8D%E7%BD%AE%E5%B7%A5%E5%85%B7.html">2.1. 可视化工具使用介绍</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.2. 音频流程图介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.2.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.2.2. 音频流程图与代码的对应关系</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">2.2.3. 调整默认的音频流程通路节点模块</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2.2.4. 新建场景模式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../%E5%9C%A8%E7%BA%BF%E8%B0%83%E9%9F%B3%E4%BB%8B%E7%BB%8D/%E5%9C%A8%E7%BA%BF%E8%B0%83%E9%9F%B3%E4%BB%8B%E7%BB%8D.html">2.3. 在线调音介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../%E5%A6%82%E4%BD%95%E5%B0%86%E4%BB%A3%E7%A0%81%E6%94%BEram/%E5%A6%82%E4%BD%95%E5%B0%86%E4%BB%A3%E7%A0%81%E6%94%BEram.html">2.4. 如何将代码放ram</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SDK/report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html"><span class="section-number">2. </span>快速入门</a> &raquo;</li>
+      <li><span class="section-number">2.2. </span>音频流程图介绍</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">2.2. </span>音频流程图介绍<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="id2">
+<h2><span class="section-number">2.2.1. </span>概述<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>SDK提供可视化的音频流程图，方便理解整个音频数据流的处理流程，界面介绍如下：</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E7%95%8C%E9%9D%A2%E4%BB%8B%E7%BB%8D.png" src="../../_images/%E7%95%8C%E9%9D%A2%E4%BB%8B%E7%BB%8D.png" />
+</figure>
+</div></blockquote>
+<p>（1）音频流模式：主要是音频场景模式选择，默认是系统模式、媒体、通话等，也可按需添加，具体可查看本文档 《13.音频流程》</p>
+<p>（2）节点模块：主要是音频流程图中的节点处理单元，具体可查看本文档《14.音效调试》里对节点模块的介绍</p>
+<p>（3）音频流参数：设置多个参数选择卡可用于区分节点不同的配置参数组合，用于不同的效果切换。</p>
+<p>（4）音频流场景：主要选择声道场景流程，默认支持立体声、2.1channel等，可按需新增场景</p>
+<p>（5）操作使能： 界面显示的数据流程图使能，如果关闭，本数据流程图不起效，操作里可选择一些对流程图的一些操作，例如新增参数组等功能</p>
+<p>（6）数据流（画板）：界面显示的数据流程图具体的数据流走向内容</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">2.2.2. </span>音频流程图与代码的对应关系<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>以媒体场景（LINEIN数据流），2.1channel，标准参数为列，介绍音频流程图与代码的关系，如果需要新加音频图可参考修改</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E6%95%B0%E6%8D%AE%E6%B5%81%E4%B8%8E%E4%BB%A3%E7%A0%81.png" src="../../_images/%E6%95%B0%E6%8D%AE%E6%B5%81%E4%B8%8E%E4%BB%A3%E7%A0%81.png" />
+</figure>
+</div></blockquote>
+<dl>
+<dt>（1）现有的场景播放实现代码基本都放在SDK\audio\interface\player文件夹内：</dt><dd><figure class="align-default">
+<img alt="../../_images/%E6%92%AD%E6%94%BE%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0.png" src="../../_images/%E6%92%AD%E6%94%BE%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0.png" />
+</figure>
+</dd>
+</dl>
+<p>LINEIN 播放对应的文件为linein_player.c</p>
+<dl>
+<dt>（2）linein_player基本接口</dt><dd><blockquote>
+<div><p>linein_player_open和linein_player_close是分别实现流的开启和关闭；
+linein_player_runing 是流状态启动判断。
+场景与代码关联实现在linein_player_open函数。</p>
+</div></blockquote>
+<p>linein_player_open说明：</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/linien%E6%92%AD%E6%94%BE%E5%AE%9E%E7%8E%B0.png" src="../../_images/linien%E6%92%AD%E6%94%BE%E5%AE%9E%E7%8E%B0.png" />
+</figure>
+</div></blockquote>
+<dl>
+<dt>a、场景UUID获取：</dt><dd><p>jlstream_event_notify函数通过 name：linein获取到场景uuid：PIPELINE_UUID_MEDIA,该函数具体实现在SDK\apps\soundbox\audio\jlstream_event_handler.c</p>
+<figure class="align-default">
+<img alt="../../_images/%E5%9C%BA%E6%99%AFUUID.png" src="../../_images/%E5%9C%BA%E6%99%AFUUID.png" />
+</figure>
+<figure class="align-default">
+<img alt="../../_images/%E5%9C%BA%E6%99%AFUUID%E8%8E%B7%E5%8F%96.png" src="../../_images/%E5%9C%BA%E6%99%AFUUID%E8%8E%B7%E5%8F%96.png" />
+</figure>
+</dd>
+<dt>b、解析数据流：</dt><dd><p>jlstream_pipeline_parse为解析数据流。NODE_UUID_LINEIN 为数据流起点的UUID,即linein节点UUID，(每个节点都有唯一UUID，可通过工具-&gt;项目UUID查看)</p>
+<figure class="align-default" id="id6">
+<img alt="../../_images/%E8%8A%82%E7%82%B9UUID.png" src="../../_images/%E8%8A%82%E7%82%B9UUID.png" />
+<figcaption>
+<p><span class="caption-text">以上两个步骤已基本实现数据流和代码的关联</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</dd>
+</dl>
+</dd>
+<dt>（3）linein音效参数切换</dt><dd><p>音效参数切换代码实现在\SDK\apps\soundbox\audio\scene_switch.c 文件。
+音效参数切换通过切换参数选择卡是实现。参数选择卡是通过序号去标识[0-x]。
+切换接口：void effect_scene_set(u8 scene)。</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E5%8F%82%E6%95%B0%E5%8D%A1%E5%88%87%E6%8D%A2.png" src="../../_images/%E5%8F%82%E6%95%B0%E5%8D%A1%E5%88%87%E6%8D%A2.png" />
+</figure>
+</div></blockquote>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h2><span class="section-number">2.2.3. </span>调整默认的音频流程通路节点模块<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>如果方案用的是SDK自带的音频流程图，但想对其中的一些节点模块调整顺序或者删减，下面以媒体场景为例，提供参考方法：</p>
+<dl>
+<dt>1、交换Surround Effect 和 Bass Terble顺序：</dt><dd><p>删除节点连接线：</p>
+<figure class="align-default">
+<img alt="../../_images/%E5%88%A0%E9%99%A4%E8%BF%9E%E6%8E%A5%E7%BA%BF.png" src="../../_images/%E5%88%A0%E9%99%A4%E8%BF%9E%E6%8E%A5%E7%BA%BF.png" />
+</figure>
+<p>交换节点顺序：</p>
+<figure class="align-default">
+<img alt="../../_images/%E4%BA%A4%E6%8D%A2%E8%8A%82%E7%82%B9%E9%A1%BA%E5%BA%8F.png" src="../../_images/%E4%BA%A4%E6%8D%A2%E8%8A%82%E7%82%B9%E9%A1%BA%E5%BA%8F.png" />
+</figure>
+<p>重新连接节点，同时要调整节点输出输出位宽，不匹配时连线会变成红色</p>
+<figure class="align-default">
+<img alt="../../_images/%E9%87%8D%E6%96%B0%E8%BF%9E%E6%8E%A5.png" src="../../_images/%E9%87%8D%E6%96%B0%E8%BF%9E%E6%8E%A5.png" />
+</figure>
+</dd>
+</dl>
+<p>2、删除EQ2节点删除：</p>
+<blockquote>
+<div><p>选中EQ2节点，按dele删除</p>
+<figure class="align-default">
+<img alt="../../_images/%E8%8A%82%E7%82%B9%E5%88%A0%E9%99%A4.png" src="../../_images/%E8%8A%82%E7%82%B9%E5%88%A0%E9%99%A4.png" />
+</figure>
+</div></blockquote>
+<p>删除后需重新会连节点，单要注意节点间的位宽关系。由于Smix1Media是16位输出切无位宽转换功能，所有需要把DRC1的输入位宽改16</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E9%87%8D%E6%96%B0%E8%BF%9E%E6%8E%A5%E8%8A%82%E7%82%B9.png" src="../../_images/%E9%87%8D%E6%96%B0%E8%BF%9E%E6%8E%A5%E8%8A%82%E7%82%B9.png" />
+</figure>
+<figure class="align-default">
+<img alt="../../_images/%E9%87%8D%E6%96%B0%E8%BF%9E%E6%8E%A5%E8%8A%82%E7%82%B92.png" src="../../_images/%E9%87%8D%E6%96%B0%E8%BF%9E%E6%8E%A5%E8%8A%82%E7%82%B92.png" />
+</figure>
+</div></blockquote>
+<p>代码使用上无需修改</p>
+<dl>
+<dt>3、添加DynamicEQ节点：</dt><dd><p>在DRC1与EQ2之间加入DynamicEQ节点，先场景中拖入DynamicEQ节点，删除EQ2与DRC1之间连接线</p>
+<figure class="align-default">
+<img alt="../../_images/%E6%B7%BB%E5%8A%A0%E8%8A%82%E7%82%B9.png" src="../../_images/%E6%B7%BB%E5%8A%A0%E8%8A%82%E7%82%B9.png" />
+</figure>
+<figure class="align-default">
+<img alt="../../_images/%E8%BF%9E%E6%8E%A5%E8%8A%82%E7%82%B9.png" src="../../_images/%E8%BF%9E%E6%8E%A5%E8%8A%82%E7%82%B9.png" />
+</figure>
+</dd>
+</dl>
+<p>重新连接DRC1-DynamicEQ-EQ2。要注意节点间的位宽使用匹配，不匹配时连线会变成红色</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E4%BD%8D%E5%AE%BD%E4%B8%8D%E5%8C%B9%E9%85%8D.png" src="../../_images/%E4%BD%8D%E5%AE%BD%E4%B8%8D%E5%8C%B9%E9%85%8D.png" />
+</figure>
+</div></blockquote>
+<p>节点配置参数更新获取都需要用到节点名称，</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E8%8A%82%E7%82%B9%E5%90%8D%E7%A7%B0.png" src="../../_images/%E8%8A%82%E7%82%B9%E5%90%8D%E7%A7%B0.png" />
+</figure>
+</div></blockquote>
+<p>新增节点时，如果不同选项卡之间需要更新参数，需要增加切换代码</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E9%80%89%E9%A1%B9%E5%8D%A1%E5%88%87%E6%8D%A2.png" src="../../_images/%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E9%80%89%E9%A1%B9%E5%8D%A1%E5%88%87%E6%8D%A2.png" />
+</figure>
+</div></blockquote>
+</section>
+<section id="id5">
+<h2><span class="section-number">2.2.4. </span>新建场景模式<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<p>如果默认的场景满足不了方案需求，也可以选择新建场景模式或者分组</p>
+<dl>
+<dt>1.鼠标移动到音频流程图，点击右键，选择新建文件</dt><dd><figure class="align-default">
+<img alt="../../_images/%E6%96%B0%E5%BB%BA%E5%9C%BA%E6%99%AF%E6%A8%A1%E5%BC%8F.png" src="../../_images/%E6%96%B0%E5%BB%BA%E5%9C%BA%E6%99%AF%E6%A8%A1%E5%BC%8F.png" />
+</figure>
+</dd>
+</dl>
+<p>2.输入新建场景模式名称，例如测试模式，</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E8%BE%93%E5%85%A5%E5%90%8D%E7%A7%B0.png" src="../../_images/%E8%BE%93%E5%85%A5%E5%90%8D%E7%A7%B0.png" />
+</figure>
+</div></blockquote>
+<p>3.点击确认，可在新加的场景流程图上添加需要的流程图</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E6%96%B0%E5%8A%A0%E7%9A%84%E5%9C%BA%E6%99%AF%E6%A8%A1%E5%BC%8F.png" src="../../_images/%E6%96%B0%E5%8A%A0%E7%9A%84%E5%9C%BA%E6%99%AF%E6%A8%A1%E5%BC%8F.png" />
+</figure>
+</div></blockquote>
+<p>4.添加流程图时，分组的名称和数量要与其他的场景模式一样才能自动切换，例如选择立体声时，其他场景能自动切换到立体声分组</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E6%96%B0%E5%BB%BA%E5%88%86%E7%BB%84.png" src="../../_images/%E6%96%B0%E5%BB%BA%E5%88%86%E7%BB%84.png" />
+</figure>
+</div></blockquote>
+<p>5.重命名和删除，鼠标移动到需要删除的场景模式，点击右键，选择对应的操作</p>
+<blockquote>
+<div><figure class="align-default">
+<img alt="../../_images/%E9%87%8D%E5%91%BD%E5%90%8D%E5%92%8C%E5%88%A0%E9%99%A4.png" src="../../_images/%E9%87%8D%E5%91%BD%E5%90%8D%E5%92%8C%E5%88%A0%E9%99%A4.png" />
+</figure>
+</div></blockquote>
+<p>6.选择需要的节点模块，用鼠标点击并且拖动到画板上，按开发方案的需求连接节点模块</p>
+<p>7.设计好音频流程图后，参考音频流程图与代码的对应关系，在程序端实现对应的音频数据流</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../jltool/%E9%85%8D%E7%BD%AE%E5%B7%A5%E5%85%B7.html" class="btn btn-neutral float-left" title="2.1. 可视化工具使用介绍" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../%E5%9C%A8%E7%BA%BF%E8%B0%83%E9%9F%B3%E4%BB%8B%E7%BB%8D/%E5%9C%A8%E7%BA%BF%E8%B0%83%E9%9F%B3%E4%BB%8B%E7%BB%8D.html" class="btn btn-neutral float-right" title="2.3. 在线调音介绍" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

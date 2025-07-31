@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>local_tws本地音乐转发 说明 &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../../../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>local_tws本地音乐转发 说明</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="local-tws">
+<h1>local_tws本地音乐转发 说明<a class="headerlink" href="#local-tws" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>该方案实现非蓝牙模式下的本地音频转发。</p>
+</div></blockquote>
+</section>
+<section id="id2">
+<h2>整体框图<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<img alt="../../../../../_images/%E6%95%B4%E4%BD%93%E6%A1%86%E5%9B%BE.png" src="../../../../../_images/%E6%95%B4%E4%BD%93%E6%A1%86%E5%9B%BE.png" />
+</section>
+<section id="id3">
+<h2>功能使用<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>使用该功能需要打开可视化配置工具上面 <strong>蓝牙配置-&gt;TWS-&gt;本地音乐转发</strong>。</p>
+<img alt="../../../../../_images/%E9%85%8D%E7%BD%AE%E5%BC%80%E5%85%B3.png" src="../../../../../_images/%E9%85%8D%E7%BD%AE%E5%BC%80%E5%85%B3.png" />
+<p>打开该配置后，音频流程的媒体框图会自动切换到 <strong>Local_TWS</strong></p>
+<img alt="../../../../../_images/%E5%AA%92%E4%BD%93%E6%B5%81%E7%A8%8B%E5%9B%BE.png" src="../../../../../_images/%E5%AA%92%E4%BD%93%E6%B5%81%E7%A8%8B%E5%9B%BE.png" />
+</div></blockquote>
+</section>
+<section id="id4">
+<h2>流程设计及代码流程<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>流程设计：若TWS主从机均处于蓝牙模式，则不区分Source和Sink角色，跟传统的TWS对箱使用保持一致。在一端切到非蓝牙模式时（如音乐，FM，AUX，PC等），当前音箱将成为  <strong>Source</strong> 角色，此时另一端音箱会切到Sink模式，作为接收设备接收Source设备发送的音频进行播放。</p></li>
+</ol>
+<img alt="../../../../../_images/LOCAL_TWS%E6%B5%81%E7%A8%8B%E5%9B%BE.png" src="../../../../../_images/LOCAL_TWS%E6%B5%81%E7%A8%8B%E5%9B%BE.png" />
+<img alt="../../../../../_images/%E6%A8%A1%E5%BC%8F%E5%88%87%E6%8D%A2%E6%B6%88%E6%81%AF%E6%97%B6%E5%BA%8F.png" src="../../../../../_images/%E6%A8%A1%E5%BC%8F%E5%88%87%E6%8D%A2%E6%B6%88%E6%81%AF%E6%97%B6%E5%BA%8F.png" />
+<ol class="arabic" start="2">
+<li><p>代码流程： 下面以linein模式为例讲解local_tws代码流程，用户客户参考该模式给自己添加的模式添加本地转发功能</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>各个模式使用 <strong>REGISTER_LOCAL_TWS_OPS</strong> 注册接口到local_tws，结构体需要注册当前模式的idx和当前模式本地音频的打开接口。</p></li>
+</ul>
+<img alt="../../../../../_images/linein%E6%A8%A1%E5%BC%8F%E6%B3%A8%E5%86%8C.png" src="../../../../../_images/linein%E6%A8%A1%E5%BC%8F%E6%B3%A8%E5%86%8C.png" />
+<ul class="simple">
+<li><p>模式进入的时候，调用 <strong>local_tws_enter_mode</strong> 并传递参数，第一个参数为当前模式的模式提示音，第二个参数为本地音频播放接口的传参。调用接口返回值为 -1，说明tws未连接，走非tws流程播放提示音。</p></li>
+</ul>
+<img alt="../../../../../_images/linein%E6%A8%A1%E5%BC%8F%E8%BF%9B%E5%85%A5.png" src="../../../../../_images/linein%E6%A8%A1%E5%BC%8F%E8%BF%9B%E5%85%A5.png" />
+<ul class="simple">
+<li><p>模式进入会判断当前模式是否非蓝牙模式，非蓝牙模式成为 <strong>Source</strong> 设备，调用 <strong>local_tws_become_to_source</strong>, 发送命令 <strong>CMD_TWS_ENTER_SINK_MODE_REQ</strong> 给对端设备，对端设备收到后，会切到Sink模式并回复 <strong>CMD_TWS_ENTER_SINK_MODE_RSP</strong> ， Source在收到RSP之后调用同步播放提示音接口，并且在提示音结束的回调中打开本地解码。</p></li>
+</ul>
+<img alt="../../../../../_images/Source%E6%89%93%E5%BC%80%E6%9C%AC%E5%9C%B0%E8%A7%A3%E7%A0%81.png" src="../../../../../_images/Source%E6%89%93%E5%BC%80%E6%9C%AC%E5%9C%B0%E8%A7%A3%E7%A0%81.png" />
+<ul class="simple">
+<li><p>在Source端打开和关闭本地解码， Sink端会分别收到 <strong>TWS_EVENT_DATA_TRANS_START</strong> 和 <strong>TWS_EVENT_DATA_TRANS_CLOSE</strong>, 分别在这两个事件处打开 <strong>TWS接收数据流</strong></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>这里用户不需要修改，仅需要了解即可。</p>
+</div>
+<ul class="simple">
+<li><p>模式退出的时候，调用 <strong>local_tws_exit_mode</strong>， 通知对端设备关闭解码。</p></li>
+</ul>
+<img alt="../../../../../_images/linein%E6%A8%A1%E5%BC%8F%E9%80%80%E5%87%BA.png" src="../../../../../_images/linein%E6%A8%A1%E5%BC%8F%E9%80%80%E5%87%BA.png" />
+</div></blockquote>
+</li>
+<li><p>TWS消息交互：tws之间可以通过 <strong>local_tws_cmd_send</strong> 进行数据交互， 用户可以参考SDK的使用自己添加需要交互的信息，以音量回报为例：</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>第一次参数是CMD， 用户可以自己添加， 第二个参数是CMD带的参数或者数据。</p></li>
+</ul>
+<img alt="../../../../../_images/%E9%9F%B3%E9%87%8F%E5%9B%9E%E6%8A%A5.png" src="../../../../../_images/%E9%9F%B3%E9%87%8F%E5%9B%9E%E6%8A%A5.png" />
+<ul class="simple">
+<li><p>对端收到命令之后在 <strong>local_tws_msg_handler</strong> 函数处理。</p></li>
+</ul>
+<img alt="../../../../../_images/%E5%91%BD%E4%BB%A4%E5%A4%84%E7%90%86.png" src="../../../../../_images/%E5%91%BD%E4%BB%A4%E5%A4%84%E7%90%86.png" />
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</section>
+<section id="id5">
+<h2>模块接口设计<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
+<section id="local-tws-enter-mode">
+<h3>local_tws_enter_mode<a class="headerlink" href="#local-tws-enter-mode" title="Link to this heading"></a></h3>
+<p>各个模式进入时调用开启local_tws流程，如果当前模式为蓝牙模式则通知对方进入蓝牙模式，非蓝牙模式则通知对方进入sink模式。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">local_tws_enter_mode</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">file_name</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">priv</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>file_name</p></td>
+<td><p>当前模式提示音</p></td>
+</tr>
+<tr class="row-even"><td><p>priv</p></td>
+<td><p>source端播完提示音之后启动本地解码时需要的参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>是否启动成功，0表示调用成功，-1表示不成功，不成功则执行原本单机的模式初始化流程。</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">app_linein_init</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">linein_idle_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">//开启ui</span>
+
+<span class="w">    </span><span class="cm">/* ui_update_status(STATUS_LINEIN_MODE); */</span>
+
+<span class="cp">#if TCFG_LOCAL_TWS_ENABLE</span>
+<span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">local_tws_enter_mode</span><span class="p">(</span><span class="n">get_tone_files</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">linein_mode</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<span class="cp">#endif </span><span class="c1">//TCFG_LOCAL_TWS_ENABLE</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">tone_player_stop</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">play_tone_file_callback</span><span class="p">(</span><span class="n">get_tone_files</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">linein_mode</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">linein_tone_play_end_callback</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">linein_tone_play_end_callback</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">STREAM_EVENT_NONE</span><span class="p">);</span><span class="w"> </span><span class="c1">// 提示音播放失败就直接调用 linein start</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="cp">#ifdef TCFG_PITCH_SPEED_NODE_ENABLE</span>
+<span class="w">    </span><span class="n">app_var</span><span class="p">.</span><span class="n">pitch_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PITCH_0</span><span class="p">;</span><span class="w">    </span><span class="c1">//设置变调初始模式</span>
+<span class="cp">#endif</span>
+<span class="w">    </span><span class="n">app_send_message</span><span class="p">(</span><span class="n">APP_MSG_ENTER_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">APP_MODE_LINEIN</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="local-tws-exit-mode">
+<h3>local_tws_exit_mode<a class="headerlink" href="#local-tws-exit-mode" title="Link to this heading"></a></h3>
+<p>各个模式退出当前模式时调用同步状态和释放资源</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">app_linein_exit</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="cp">#if TCFG_LOCAL_TWS_ENABLE</span>
+<span class="w">    </span><span class="n">local_tws_exit_mode</span><span class="p">();</span>
+<span class="cp">#endif</span>
+<span class="w">    </span><span class="n">linein_stop</span><span class="p">();</span>
+<span class="w">    </span><span class="n">linein_idle_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">app_send_message</span><span class="p">(</span><span class="n">APP_MSG_EXIT_MODE</span><span class="p">,</span><span class="w"> </span><span class="n">APP_MODE_LINEIN</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">local_tws_exit_mode</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="local-tws-cmd-send">
+<h3>local_tws_cmd_send<a class="headerlink" href="#local-tws-cmd-send" title="Link to this heading"></a></h3>
+<p>local_tws 命令发送接口, 用于TWS信息交流</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">local_tws_cmd_send</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>data</p></td>
+<td><p>需要发送的命令数据</p></td>
+</tr>
+<tr class="row-even"><td><p>len</p></td>
+<td><p>命令数据的长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">local_tws_vol_report</span><span class="p">(</span><span class="n">u8</span><span class="w"> </span><span class="n">vol</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">u8</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">CMD_TWS_VOL_REPORT</span><span class="p">,</span><span class="w"> </span><span class="n">vol</span><span class="p">};</span>
+<span class="w">    </span><span class="n">log_info</span><span class="p">(</span><span class="s">&quot;%s %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">__func__</span><span class="p">,</span><span class="w"> </span><span class="n">vol</span><span class="p">);</span>
+<span class="w">    </span><span class="n">local_tws_cmd_send</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">data</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="local-tws-get-role">
+<h3>local_tws_get_role<a class="headerlink" href="#local-tws-get-role" title="Link to this heading"></a></h3>
+<p>用于获取当前设备的角色</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="n">local_tws_get_role</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>无</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>当前设备角色</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="n">local_tws_get_role</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">LOCAL_TWS_ROLE_SOURCE</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;current devices is SOURCE</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

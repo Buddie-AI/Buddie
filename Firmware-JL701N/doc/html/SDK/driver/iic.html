@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.5. iic &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3.6. USB" href="usb.html" />
+    <link rel="prev" title="3.4. uart" href="uart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. 外设驱动</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="gpio.html">3.1. gpio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gptimer.html">3.2. gptimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpadc.html">3.3. gpadc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uart.html">3.4. uart</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.5. iic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">3.5.1. 示例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">3.5.2. 硬件/软件iic设备交互接口</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#i2c-master-read-nbytes-from-device">3.5.2.1. i2c_master_read_nbytes_from_device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#i2c-master-read-nbytes-from-device-reg">3.5.2.2. i2c_master_read_nbytes_from_device_reg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#i2c-master-write-nbytes-to-device">3.5.2.3. i2c_master_write_nbytes_to_device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#i2c-master-write-nbytes-to-device-reg">3.5.2.4. i2c_master_write_nbytes_to_device_reg</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3.5.3. 硬件/软件iic基本接口</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-iic-config">3.5.3.1. get_iic_config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iic-init">3.5.3.2. iic_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iic-uninit">3.5.3.3. iic_uninit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iic-suspend">3.5.3.4. iic_suspend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iic-resume">3.5.3.5. iic_resume</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iic-check-busy">3.5.3.6. iic_check_busy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iic-start">3.5.3.7. iic_start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iic-stop">3.5.3.8. iic_stop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iic-tx-byte">3.5.3.9. iic_tx_byte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iic-rx-byte">3.5.3.10. iic_rx_byte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iic-read-buf">3.5.3.11. iic_read_buf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iic-write-buf">3.5.3.12. iic_write_buf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">3.5.4. 硬件iic从机接口</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="usb.html">3.6. USB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rdec.html">3.7. rdec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mcpwm.html">3.8. mcpwm</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_config/index.html">12. 音频配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">3. </span>外设驱动</a> &raquo;</li>
+      <li><span class="section-number">3.5. </span>iic</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="iic">
+<h1><span class="section-number">3.5. </span>iic<a class="headerlink" href="#iic" title="Link to this heading"></a></h1>
+<p>硬件iic/软件模拟iic主机接口，可以选择任意io，硬件iic频率不精确，受通信速度和上拉电阻影响略有偏差，软件iic频率不准。</p>
+<p>软件硬件iic选择：（c文件中添加如下代码）</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#if 1 </span><span class="c1">//0:软件iic,  1:硬件iic</span>
+<span class="cp">#define _IIC_USE_HW</span>
+<span class="cp">#endif</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;iic_api.h&quot;</span>
+</pre></div>
+</div>
+<section id="id1">
+<h2><span class="section-number">3.5.1. </span>示例<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">详见文件</span> <span class="n">iic_master_demo</span><span class="o">.</span><span class="n">c</span>
+        <span class="n">iic_eeprom_test</span><span class="o">.</span><span class="n">c</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">3.5.2. </span>硬件/软件iic设备交互接口<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="i2c-master-read-nbytes-from-device">
+<h3><span class="section-number">3.5.2.1. </span>i2c_master_read_nbytes_from_device<a class="headerlink" href="#i2c-master-read-nbytes-from-device" title="Link to this heading"></a></h3>
+<p>硬件/软件iic从指定设备获取指定长度的数据（该类接口是对以下基本接口的封装）。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">i2c_master_read_nbytes_from_device</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">,</span><span class="w">   </span><span class="c1">//iic索引</span>
+<span class="w">        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">dev_addr</span><span class="p">,</span><span class="w"> </span><span class="c1">//设备地址 //无设备寄存器地址</span>
+<span class="w">        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">read_buf</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">read_len</span><span class="p">);</span><span class="c1">//缓存buf, 长度</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>dev_addr</p></td>
+<td><p>指定设备地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>read_buf</p></td>
+<td><p>接收缓存buf</p></td>
+</tr>
+<tr class="row-even"><td><p>read_len</p></td>
+<td><p>接收长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>接收的数据长度：=read_len：成功；其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="i2c-master-read-nbytes-from-device-reg">
+<h3><span class="section-number">3.5.2.2. </span>i2c_master_read_nbytes_from_device_reg<a class="headerlink" href="#i2c-master-read-nbytes-from-device-reg" title="Link to this heading"></a></h3>
+<p>硬件/软件iic从指定设备的某个寄存器地址获取指定长度的数据（该类接口是对以下基本接口的封装）。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">i2c_master_read_nbytes_from_device_reg</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">dev_addr</span><span class="p">,</span><span class="w"> </span><span class="c1">//设备地址</span>
+<span class="w">        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">reg_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">reg_len</span><span class="p">,</span><span class="c1">//设备寄存器地址，长度</span>
+<span class="w">        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">read_buf</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">read_len</span><span class="p">);</span><span class="c1">//缓存buf，长度</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>dev_addr</p></td>
+<td><p>指定设备地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>reg_addr</p></td>
+<td><p>设备的寄存器地址</p></td>
+</tr>
+<tr class="row-even"><td><p>reg_len</p></td>
+<td><p>寄存器长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>read_buf</p></td>
+<td><p>接收缓存buf</p></td>
+</tr>
+<tr class="row-even"><td><p>read_len</p></td>
+<td><p>接收长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>接收的数据长度：=read_len：成功；其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="i2c-master-write-nbytes-to-device">
+<h3><span class="section-number">3.5.2.3. </span>i2c_master_write_nbytes_to_device<a class="headerlink" href="#i2c-master-write-nbytes-to-device" title="Link to this heading"></a></h3>
+<p>硬件/软件iic将指定长度的数据发送到指定设备（该类接口是对以下基本接口的封装）。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">i2c_master_write_nbytes_to_device</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">dev_addr</span><span class="p">,</span><span class="w"> </span><span class="c1">//设备地址 //无设备寄存器地址</span>
+<span class="w">        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">write_buf</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">write_len</span><span class="p">);</span><span class="w"> </span><span class="c1">//数据buf, 长度</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>dev_addr</p></td>
+<td><p>指定设备地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>write_buf</p></td>
+<td><p>发送缓存buf</p></td>
+</tr>
+<tr class="row-even"><td><p>write_len</p></td>
+<td><p>发送长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>发送的数据长度：=write_len：成功；其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="i2c-master-write-nbytes-to-device-reg">
+<h3><span class="section-number">3.5.2.4. </span>i2c_master_write_nbytes_to_device_reg<a class="headerlink" href="#i2c-master-write-nbytes-to-device-reg" title="Link to this heading"></a></h3>
+<p>硬件/软件iic将指定长度的数据发送到指定设备的某个寄存器地址（该类接口是对以下基本接口的封装）。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">i2c_master_write_nbytes_to_device_reg</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">,</span>
+<span class="w">        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">dev_addr</span><span class="p">,</span><span class="w"> </span><span class="c1">//设备地址</span>
+<span class="w">        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">reg_addr</span><span class="p">,</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">reg_len</span><span class="p">,</span><span class="c1">//设备寄存器地址，长度</span>
+<span class="w">        </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">write_buf</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">write_len</span><span class="p">);</span><span class="c1">//数据buf, 长度</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>dev_addr</p></td>
+<td><p>指定设备地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>reg_addr</p></td>
+<td><p>设备的寄存器地址</p></td>
+</tr>
+<tr class="row-even"><td><p>reg_len</p></td>
+<td><p>寄存器长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>write_buf</p></td>
+<td><p>发送缓存buf</p></td>
+</tr>
+<tr class="row-even"><td><p>write_len</p></td>
+<td><p>发送长度</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>发送的数据长度：=write_len：成功；其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+</section>
+<section id="id3">
+<h2><span class="section-number">3.5.3. </span>硬件/软件iic基本接口<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="get-iic-config">
+<h3><span class="section-number">3.5.3.1. </span>get_iic_config<a class="headerlink" href="#get-iic-config" title="Link to this heading"></a></h3>
+<p>为兼容旧接口新增，功能：获取硬件/软件iic配置结构体。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">iic_master_config</span><span class="w"> </span><span class="o">*</span><span class="n">get_iic_config</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>硬件/软件iic配置信息</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="iic-init">
+<h3><span class="section-number">3.5.3.2. </span>iic_init<a class="headerlink" href="#iic-init" title="Link to this heading"></a></h3>
+<p>初始化硬件/软件iic。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">//iic_index:硬件/软件iic索引号</span>
+<span class="k">enum</span><span class="w"> </span><span class="n">iic_state_enum</span><span class="w"> </span><span class="nf">iic_init</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">iic_master_config</span><span class="w"> </span><span class="o">*</span><span class="n">i2c_config</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>i2c_config</p></td>
+<td><p>硬件/软件iic配置信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>返回执行状态，详见枚举enum iic_state_enum</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">iic_master_config</span><span class="w"> </span><span class="n">iic_config_test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">.</span><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IIC_MASTER</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">scl_io</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IIC_SCL_IO</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">sda_io</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IIC_SDA_IO</span><span class="p">,</span>
+<span class="w">    </span><span class="p">.</span><span class="n">io_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PORT_INPUT_PULLUP_10K</span><span class="p">,</span><span class="c1">//上拉或浮空(外接上拉)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">hdrive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PORT_DRIVE_STRENGT_2p4mA</span><span class="p">,</span><span class="w">   </span><span class="c1">//enum GPIO_HDRIVE 0:2.4MA, 1:8MA, 2:26.4MA, 3:40MA</span>
+<span class="w">    </span><span class="p">.</span><span class="n">master_frequency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100000</span><span class="p">,</span><span class="w"> </span><span class="c1">//硬件/软件iic频率不准(hz)</span>
+<span class="w">    </span><span class="p">.</span><span class="n">io_filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="c1">//硬件/软件无效</span>
+<span class="p">};</span>
+<span class="k">enum</span><span class="w"> </span><span class="n">iic_state_enum</span><span class="w"> </span><span class="n">iic_init_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iic_init</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">iic_config_test</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iic_init_state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">IIC_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">log_info</span><span class="p">(</span><span class="s">&quot;iic master init ok&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">log_error</span><span class="p">(</span><span class="s">&quot;iic master init fail&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="iic-uninit">
+<h3><span class="section-number">3.5.3.3. </span>iic_uninit<a class="headerlink" href="#iic-uninit" title="Link to this heading"></a></h3>
+<p>关闭硬件/软件iic，释放io为高阻状态。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">iic_state_enum</span><span class="w"> </span><span class="nf">iic_uninit</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>返回执行状态，详见枚举enum iic_state_enum</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>示例：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">iic_state_enum</span><span class="w"> </span><span class="n">iic_init_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iic_uninit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iic_init_state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">IIC_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">log_info</span><span class="p">(</span><span class="s">&quot;iic master uninit ok&quot;</span><span class="p">);</span>
+<span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">log_error</span><span class="p">(</span><span class="s">&quot;iic master uninit fail&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="iic-suspend">
+<h3><span class="section-number">3.5.3.4. </span>iic_suspend<a class="headerlink" href="#iic-suspend" title="Link to this heading"></a></h3>
+<p>挂起硬件/软件iic，释放io为高阻状态。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">iic_state_enum</span><span class="w"> </span><span class="nf">iic_suspend</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>返回执行状态，详见枚举enum iic_state_enum</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="iic-resume">
+<h3><span class="section-number">3.5.3.5. </span>iic_resume<a class="headerlink" href="#iic-resume" title="Link to this heading"></a></h3>
+<p>恢复硬件/软件iic，还原io状态到初始化状态。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">iic_state_enum</span><span class="w"> </span><span class="nf">iic_resume</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>返回执行状态，详见枚举enum iic_state_enum</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="iic-check-busy">
+<h3><span class="section-number">3.5.3.6. </span>iic_check_busy<a class="headerlink" href="#iic-check-busy" title="Link to this heading"></a></h3>
+<p>检查指定索引号的硬件/软件iic是否繁忙，空闲方可通信。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span><span class="w"> </span><span class="n">iic_state_enum</span><span class="w"> </span><span class="nf">iic_check_busy</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>返回执行状态，详见枚举enum iic_state_enum</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="iic-start">
+<h3><span class="section-number">3.5.3.7. </span>iic_start<a class="headerlink" href="#iic-start" title="Link to this heading"></a></h3>
+<p>硬件/软件iic发送起始位。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">iic_start</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="iic-stop">
+<h3><span class="section-number">3.5.3.8. </span>iic_stop<a class="headerlink" href="#iic-stop" title="Link to this heading"></a></h3>
+<p>硬件/软件iic发送结束位。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">iic_stop</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>无</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="iic-tx-byte">
+<h3><span class="section-number">3.5.3.9. </span>iic_tx_byte<a class="headerlink" href="#iic-tx-byte" title="Link to this heading"></a></h3>
+<p>硬件/软件iic发送一个byte数据，返回应答状态。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="nf">iic_tx_byte</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">byte</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>byte</p></td>
+<td><p>待发送的数据</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>1：有应答，0：无应答</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="iic-rx-byte">
+<h3><span class="section-number">3.5.3.10. </span>iic_rx_byte<a class="headerlink" href="#iic-rx-byte" title="Link to this heading"></a></h3>
+<p>硬件/软件iic接收一个byte数据。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">u8</span><span class="w"> </span><span class="nf">iic_rx_byte</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">,</span><span class="w"> </span><span class="n">u8</span><span class="w"> </span><span class="n">ack</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>ack</p></td>
+<td><p>1：收到数据后回应答，0：收到数据后不回应答</p></td>
+</tr>
+<tr class="row-odd"><td><p>返回值</p></td>
+<td><p>接收的数据</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="iic-read-buf">
+<h3><span class="section-number">3.5.3.11. </span>iic_read_buf<a class="headerlink" href="#iic-read-buf" title="Link to this heading"></a></h3>
+<p>硬件/软件iic接收指定长度的数据。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">iic_read_buf</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>buf</p></td>
+<td><p>接收缓存buf</p></td>
+</tr>
+<tr class="row-odd"><td><p>len</p></td>
+<td><p>接收长度</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>接收的数据长度：=len：成功；其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+<section id="iic-write-buf">
+<h3><span class="section-number">3.5.3.12. </span>iic_write_buf<a class="headerlink" href="#iic-write-buf" title="Link to this heading"></a></h3>
+<p>硬件/软件iic发送指定长度的数据。</p>
+<p>原型：</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">iic_write_buf</span><span class="p">(</span><span class="n">iic_dev</span><span class="w"> </span><span class="n">iic</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">len</span><span class="p">);</span>
+</pre></div>
+</div>
+<dl>
+<dt>参数：</dt><dd><table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>iic</p></td>
+<td><p>硬件/软件iic索引号0~n</p></td>
+</tr>
+<tr class="row-even"><td><p>buf</p></td>
+<td><p>发送缓存buf</p></td>
+</tr>
+<tr class="row-odd"><td><p>len</p></td>
+<td><p>发送长度</p></td>
+</tr>
+<tr class="row-even"><td><p>返回值</p></td>
+<td><p>发送的数据长度：=len：成功；其他值：失败</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">3.5.4. </span>硬件iic从机接口<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="iic_hw.html#topics-iic-slave-2"><span class="std std-ref">硬件iic从机轮询模式设备交互接口</span></a></p></li>
+<li><p><a class="reference internal" href="iic_hw.html#topics-iic-slave-1"><span class="std std-ref">硬件iic从机基本接口</span></a></p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="uart.html" class="btn btn-neutral float-left" title="3.4. uart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usb.html" class="btn btn-neutral float-right" title="3.6. USB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+# 自动哇（AutoWah）
+
+## 功能介绍
+* 实现autoWah效果
+
+## 参数简述：
+* **wahType**：         选择wah效果
+* **modrate**：         影响wah音的速率
+* **freq_min**：        影响wah音部分的低切频率
+* **freq_max**：        影响wah音部分的高切频率
+* **wet**：        wah音的增益
+* **dry**：        干声的增益

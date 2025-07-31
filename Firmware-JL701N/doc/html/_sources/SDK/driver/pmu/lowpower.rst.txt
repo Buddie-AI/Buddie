@@ -1,0 +1,175 @@
+低功耗模式
+#######################
+
+备注：AC703N暂时支持powerdown、soff模式
+
+低功耗模式包括 softoff、powerdown、poweroff，以下及本章节从主系统角度上来看，不包括 pmu 模块(p33、p11)
+
+    - softoff：所有模拟模块、数字模块都掉电。
+    - soff keep p11：进入soft off模式，保持p11 cpu
+    - light powerdown：部分模拟模块掉电/关闭，部分数字模块停止。
+    - powerdown：模拟模块掉电/关闭，数字模块低电、停止运行。
+    - poweroff：模拟模块掉电/关闭，除 rvdd 外数字模块掉电、停止运行。
+
+当然，所有的低功耗模式并不是一成不变的，在不违背此低功耗模式下，可选择维持更多的资源。
+
+
+软关机
+--------
+软关机为功耗最低的模式，软关机后，主系统所有资源都会掉电。
+
+soff_latch_release
+>>>>>>>>>>>>>>>>>>>>>
+    该函数为软关机复位后释放模块。如下图所示以保持gpio状态为例来说明latch模块用法：
+    
+- softoff之后cpu所有资源掉电
+- 模拟模块如gpio状态锁住
+- cpu复位之后恢复默认状态
+- cpu初始化
+- 模拟模块释放
+
+.. figure:: file/softoff_io.svg
+   :width: 500
+   :align: center
+   :alt: 复位
+
+
+原型:
+   
+.. code-block:: c
+
+    void soff_latch_release();
+
+
+mask_softflag_config
+>>>>>>>>>>>>>>>>>>>>>>
+    软关机将信息保存到p33不掉电的存储单元中，唤醒复位之后获取信息配置，例如rom io的状态、flash启动口的信息等。
+    配置rom的io是因为在rom中释放rom io，可在释放之前重新初始化io的状态。
+
+原型:
+   
+.. code-block:: c
+
+    void mask_softflag_config(const struct boot_soft_flag_t *softflag);
+
+参数:
+    ===================     ====================================================
+    softflag                配置不掉电存储信息
+    ===================     ====================================================
+
+示例：
+
+.. code-block:: c
+
+    void mask_io_cfg()
+    {
+        struct boot_soft_flag_t boot_soft_flag = {0};
+        boot_soft_flag.flag0.boot_ctrl.flash_port = JL_IOMAP->CON0 & BIT(16) ? 2 : 1;
+
+        //配置usb io在解锁之前的状态
+        boot_soft_flag.flag1.misc.usbdm = SOFTFLAG_HIGH_RESISTANCE;
+        boot_soft_flag.flag1.misc.usbdp = SOFTFLAG_HIGH_RESISTANCE;
+
+        boot_soft_flag.flag1.misc.ldoin = SOFTFLAG_HIGH_RESISTANCE;
+
+        boot_soft_flag.flag2.pb12_pb13.pb12 = SOFTFLAG_HIGH_RESISTANCE;
+        boot_soft_flag.flag2.pb12_pb13.pb13 = SOFTFLAG_HIGH_RESISTANCE;
+
+        boot_soft_flag.flag3.pb14_res.pb14 = SOFTFLAG_HIGH_RESISTANCE;
+
+        mask_softflag_config(&boot_soft_flag);
+    }
+
+power_set_soft_poweroff
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+    调用此函数进入软关机。
+
+原型:
+   
+.. code-block:: c
+
+    void power_set_soft_poweroff();
+
+睡眠
+-------------
+睡眠由操作系统调度，对于蓝牙低功耗系统来说，当满足蓝牙&&系统空闲时可进入低功耗，换句话说，系统模块/蓝牙可阻挡进入低功耗。
+
+.. figure:: file/sleep.svg
+   :width: 200
+   :align: center
+   :alt: 复位
+
+debug_timeout
+>>>>>>>>>>>>>>>>
+debug_timeout是分析蓝牙&系统可进入低功耗的时间，可打开此模块来分析打印：lib_driver_config.c中debug_timeout=1。
+
+.. code-block:: c
+
+    //a为蓝牙可进入低功耗时间、b为系统可进入低功耗时间
+    printf("a:%d, b:%d\n", a, b);
+
+debug_is_idle
+>>>>>>>>>>>>>>>>>>
+当系统可进入低功耗的时间为0是，可能是系统模块阻挡进入了低功耗，可打开此模块来分析打印：lib_driver_config.c中debug_is_idle=1。
+
+.. code-block:: c
+
+    //name为模块名字，busy为不可进入低功耗
+    printf("Name : %s busy", p->name);
+
+
+REGISTER_LP_TARGET
+>>>>>>>>>>>>>>>>>>>>>>>>
+当用户暂时不进入低功耗模式时，可配置模块busy，阻挡进入低功耗，即debug_is_idle中查询的模块。
+
+.. code-block:: c
+
+    //以key_driver为示例：
+    static u8 key_idle_query(void)
+    {
+        if (g_key_idle_query_en) {
+            return !g_is_key_active;
+        } else {
+            return 1;
+        }
+    }
+
+    REGISTER_LP_TARGET(key_driver_target) = {
+        .name = "key",
+        .is_idle = key_idle_query,
+    };
+
+低功耗回调函数
+-----------------------
+    进入低功耗回调用户函数，需要注意：
+
+- 此函数前置状态为进入操作系统临界
+- 睡眠模式回调函数请勿做延时操作（打印、延时函数等）
+
+原型:
+   
+.. code-block:: c
+
+    void power_set_callback(u8 mode, void (*powerdown_enter)(u8 step), void (*powerdown_exit)(u32), void (*soft_poweroff_enter)(void));
+
+参数:
+    ===================     ====================================================
+    powerdown_enter          进入睡眠模式回调
+    powerdown_exit           退出睡眠模式回调
+    soft_poweroff_enter      进入软关机模式回调
+    ===================     ====================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

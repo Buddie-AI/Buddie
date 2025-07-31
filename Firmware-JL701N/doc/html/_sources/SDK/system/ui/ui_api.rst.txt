@@ -1,0 +1,177 @@
+UI 接口说明
+-----------------
+
+显示页面
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 	  int ui_show_main(int id);
+功能描述 	  显示指定页面
+参数说明 	  id : 页面的 id 号
+输出 		  0：显示成功 其他：显示失败
+例子 		  ui_show_main(PAGE_0); //PAGE_0 为页面的 ID 号，参考 style.h 文件
+关联模块 	  lcd_ui_api.c
+==========   ===========
+
+隐藏页面
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 		int ui_hide_main(int id);
+功能描述 		隐藏指定页面
+参数说明 		id : 页面的 id 号
+输出 			0：隐藏成功 其他:隐藏失败
+例子 			ui_hide_main(PAGE_0); //PAGE_0 为页面的 ID 号，参考 style.h 文件
+关联模块 		lcd_ui_api.c
+==========   ===========
+
+隐藏当前页面
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 		int ui_hide_curr_main();
+功能描述 		隐藏当前页面
+参数说明 		无
+输出 			0：隐藏成功 其他：隐藏失败
+例子 			ui_hide_curr_main();
+关联模块 		lcd_ui_api.c
+==========   ===========
+
+获取当前页面 ID
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 		int ui_get_current_window_id();
+功能描述 		获取当前页面的 id 号
+参数说明 		无
+输出 			当前页面的 id 号
+例子	 		ui_get_current_window_id();
+关联模块 		lcd_ui_api.c
+==========   ===========
+
+显示控件
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 		int ui_show(int id);
+功能描述 		显示控件
+参数说明 		id：控件的 id 号
+输出 			0：成功 其他：失败
+例子 			ui_show(PIC_1);//显示图片控件 PIC_1, PIC_1 为图片控件的 ID 号，参考 style.h
+关联模块 		lcd_ui_api.c
+==========   ===========
+
+隐藏控件
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 		int ui_hide(int id);
+功能描述 		隐藏控件
+参数说明 		id：控件的 id 号
+输出 			0：成功 其他：失败
+例子 			ui_hide(PIC_1);//隐藏图片控件 PIC_1, PIC_1 为图片控件的 ID 号，参考 style.h
+关联模块 		lcd_ui_api.c
+==========   ===========
+
+显示图片
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 		int ui_pic_show_image_by_id(int id, int index);
+功能描述 		在图片列表里切换显示图片
+参数说明 		id：控件 id index：图片列表中的索引
+输出 			0：成功 其他：失败
+例子
+关联模块 		ui_pic.c
+==========   ===========
+
+显示文本
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 		int ui_text_set_index(struct ui_text *text, int index);
+功能描述 		在文字列表里切换显示（strpic 编码格式）
+参数说明 		text：文本控件句柄 index:文字索引
+输出 			0：成功 其他：失败
+例子
+关联模块 		ui_text.c
+==========   ===========
+
+显示指定的文本（strpic 编码格式）
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 		int ui_text_show_index_by_id(int id, int index);
+功能描述 		在文字列表里切换显示（strpic 编码格式）
+参数说明 		id：文本控件 id 号 index:文字索引
+输出 			0：成功 其他：失败
+例子
+关联模块 		ui_text.c
+==========   ===========
+
+显示 UNICODE 编码（text 编码格式）
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 		int ui_text_set_textw_by_id(int id, const char *str, int strlen, int endian, u32 flags);
+功能描述 		unicode 编码显示接口
+
+参数说明
+			  | 
+			  | id：文本控件id
+			  | str:unicode 编码 
+			  | strlen：编码长度
+			  | endian:大小端
+			  | flags:标志位
+输出
+例子
+关联模块		ui_text.c
+==========   ===========
+
+显示 UTF8 编码（text 编码格式）
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 		int ui_text_set_textu_by_id(int id, const char *str, int strlen, u32 flags);
+功能描述 		utf8 编码显示接口
+参数说明 		
+				| 
+				| id：文本控件 id
+				| str:utf8 编码
+				| strlen：编码长度
+				| flags:标志位
+输出 			0：成功 其他：失败
+例子
+关联模块		ui_text.c
+==========   ===========
+
+显示数字
+~~~~~~~~~~~~~~~
+
+==========   ===========
+函数原型 		int ui_number_update_by_id(int id, struct unumber *n);
+功能描述 		更新数字显示
+参数说明 		
+				| 
+				| id：数字控件 ID
+				| enum {
+				| 	TYPE_NUM, //数字
+				| 	TYPE_STRING, //数字字符串
+				| };
+				| struct unumber {
+				| 	u8 numbs; //数字个数
+				| 	u8 type; //类型
+				| 	u32 number[2]; //数值，当 TYPE_NUM 时有效
+				| 	u8 *num_str; //字符串,当 TYPE_STRING 时有效
+				| };
+				| n:需要显示的数字参数
+输出 			0：成功 其他：失败
+例子 			
+				| 
+				| struct unumber n;
+				| n.type = TYPE_NUM;
+				| n.numbs = 1;
+				| n.number[0] = 10;
+				| ui_number_update_by_id(NUMBER, &n);
+关联模块 		ui_number.c
+==========   ===========

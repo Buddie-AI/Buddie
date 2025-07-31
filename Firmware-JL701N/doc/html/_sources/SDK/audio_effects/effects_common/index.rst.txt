@@ -1,0 +1,8 @@
+音效通用说明
+############
+
+.. toctree::
+   :maxdepth: 1
+
+   multi_config_manual.md
+   

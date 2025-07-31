@@ -1,0 +1,198 @@
+用户定时器
+=================
+
+
+系统定时器（又名：硬件定时器），其服务函数为一个硬件"timer1"定时器。
+
+
+
+usr_timer_add
+-------------
+
+
+功能: 获取比打印当前系统运行时间。
+     - 1、usr_timer的参数priority（优先级）为1，使用该类定时器，系统无法进入低功耗；
+     - 2、usr_timer的参数priority（优先级）为0，使用该类定时器，系统低功耗会忽略该节拍，节拍不会丢失，但是定时周期会变；
+     - 3、usr_timer属于异步接口， add的时候注册的扫描函数将在硬件定时器中时基到时候被调用;
+     - 4、对应释放接口usr_timer_del。
+     - 5、定时到后会自动重新加载。
+
+
+.. code-block:: c
+
+    u16 usr_timer_add(void *priv, void (*func)(void *priv), u32 msec, u8 priority);
+
+参数:
+
+    ==========     ====================
+    priv            定时任务处理函数的输入参数
+    func            定时任务处理函数
+    msec            定时时间
+    priority        优先级，范围：0/1
+
+    返回值          NULL
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    void timer_callback(void *p) {
+        //TODO
+    }
+
+    u16 id = usr_timer_add(NULL, timer_callback, 10, 0);
+
+
+
+usr_timer_del
+--------------
+
+功能: usr_timer删除接口。
+
+
+.. code-block:: c
+
+    void usr_timer_del(u16);
+
+参数:
+
+    ==========     ====================
+    id              要删除的任务ID
+    返回值          void
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    usr_timer_del(id);
+
+
+usr_timer_modify
+------------------
+
+功能: usr_timerout修改超时时间接口
+
+
+.. code-block:: c
+
+    int usr_timer_modify(u16 id, u32 msec);
+
+参数:
+
+    ==========     ====================
+    id              要删除的任务ID
+    msec            定时时间，单位：毫秒
+
+    返回值          void
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    usr_timer_modify(id, 10);
+
+
+
+
+usr_timeout_add
+-------------
+
+
+功能: 获取比打印当前系统运行时间。
+     - 1、usr_timer的参数priority（优先级）为1，使用该类定时器，系统无法进入低功耗；
+     - 2、usr_timer的参数priority（优先级）为0，使用该类定时器，系统低功耗会忽略该节拍，节拍不会丢失，但是定时周期会变；
+     - 3、usr_timer属于异步接口， add的时候注册的扫描函数将在硬件定时器中时基到时候被调用;
+     - 4、对应释放接口usr_timer_del。
+     - 5、timeout回调只会被执行一次。
+
+
+.. code-block:: c
+
+    u16 usr_timer_add(void *priv, void (*func)(void *priv), u32 msec, u8 priority);
+
+参数:
+
+    ==========     ====================
+    priv            定时任务处理函数的输入参数
+    func            定时任务处理函数
+    msec            定时时间
+    priority        优先级，范围：0/1
+
+    返回值          NULL
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    void timer_callback(void *p) {
+        //TODO
+    }
+
+    u16 id = usr_timeout_add(NULL, timer_callback, 10, 0);
+
+
+
+usr_timeout_del
+---------------
+
+功能: usr_timeout删除接口。
+
+
+.. code-block:: c
+
+    void usr_timeout_del(u16);
+
+参数:
+
+    ==========     ====================
+    id              要删除的任务ID
+
+    返回值          void
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    usr_timeout_del(id);
+
+
+
+usr_timeout_modify
+------------------
+
+功能: usr_timerout修改超时时间接口
+
+
+.. code-block:: c
+
+    int usr_timeout_modify(u16 id, u32 msec);
+
+参数:
+
+    ==========     ====================
+    id              要删除的任务ID
+    msec            定时时间，单位：毫秒
+
+    返回值          void
+    ==========     ====================
+
+
+示例:
+
+.. code-block:: c
+
+    usr_timeout_modify(id, 10);
+
+
+
+

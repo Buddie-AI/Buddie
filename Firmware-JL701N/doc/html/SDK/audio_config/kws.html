@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12.11. 离线语音识别KWS &mdash; JL Project Documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../https://doc.zh-jieli.com/static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/documentation_options.js?v=fa47ad08"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="https://doc.zh-jieli.com/static/js/custom.js"></script>
+        <script src="../../_static/js/custom.js?v=bfa33168"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="12.12. 空间音效" href="spatial_audio.html" />
+    <link rel="prev" title="12.10. 产测配置" href="production_test.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> JieLi_蓝牙音频
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">SDK入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../framework/index.html">1. 技术框架</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">2. 快速入门</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">SDK Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../earphone/index.html">1. 简介</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../audio/index.html">1. 音频播放</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../btstack/index.html">2. 蓝牙协议栈</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. 外设驱动</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/pmu/index.html">4. 电源管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pwm_led/index.html">5. LED状态显示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/file_system/index.html">6. 文件系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/os/index.html">7. 操作系统</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/timer/index.html">8. 定时器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/clock_manage/index.html">9. 时钟管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev_manager/index.html">10. 设备管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/%E9%80%9A%E7%94%A8%E7%BB%84%E4%BB%B6/index.html">11. 通用组件</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">12. 音频配置</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DAC_cfg.html">12.1. DAC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ADC_cfg.html">12.2. ADC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Linein_cfg.html">12.3. Linein配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ANC/index.html">12.4. ANC配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="General_cfg.html">12.5. 通用音频配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phone_call_cfg.html">12.6. 通话配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_algo_cfg.html">12.7. 音频算法配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codec.html">12.8. 编解码配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="music_palyback.html">12.9. 音乐播放配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="production_test.html">12.10. 产测配置</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">12.11. 离线语音识别KWS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#yes-no">12.11.1. yes/no关键词识别</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">12.11.1.1. 使能配置和麦克风配置</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">12.11.2. 通用词条识别</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">12.11.2.1. 使能配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">12.11.2.2. 回音消除使能配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">12.11.2.3. 麦克风配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">12.11.2.4. KWS模式配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="spatial_audio.html">12.12. 空间音效</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hi_Res_Audio/index.html">12.13. Hi-Res Audio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Side_Tone.html">12.14. 通话监听</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_code_size.html">12.15. 音频代码优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audio_delay.html">12.16. 延时配置（Delay）</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_flow/index.html">13. 音频流程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_effects/index.html">14. 音效调试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_cvp/index.html">15. 通话清晰语音</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../audio_FAQ/index.html">16. 音频FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../system/report/index.html">17. 系统状态报告</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../earphone_le_audio/index.html">18. LE_Audio</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1T2/index.html">19. 1T2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../report/index.html">20. SDK测试报告</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">JieLi_蓝牙音频</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">12. </span>音频配置</a> &raquo;</li>
+      <li><span class="section-number">12.11. </span>离线语音识别KWS</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kws">
+<h1><span class="section-number">12.11. </span>离线语音识别KWS<a class="headerlink" href="#kws" title="Link to this heading"></a></h1>
+<p>离线语音识别包含yes/no的接听/挂断电话和通用词条的识别<br>
+<strong>支持的系列：</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系 列</p></th>
+<th class="head"><p>AC700N</p></th>
+<th class="head"><p>JL701N</p></th>
+<th class="head"><p>JL703N</p></th>
+<th class="head"><p>JL708N</p></th>
+<th class="head"><p>备注</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>YES/NO</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>通用词条</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p>√</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<section id="yes-no">
+<h2><span class="section-number">12.11.1. </span>yes/no关键词识别<a class="headerlink" href="#yes-no" title="Link to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>来电的时候，说yes接听电话，说no挂断电话
+</pre></div>
+</div>
+<section id="id1">
+<h3><span class="section-number">12.11.1.1. </span>使能配置和麦克风配置<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>打开离线离线语音识别的开关，设置使用哪个麦克风
+<img alt="" src="../../_images/kws_yes_no.png" /></p>
+</section>
+</section>
+<section id="id2">
+<h2><span class="section-number">12.11.2. </span>通用词条识别<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>识别到语音中有预设的关键词（例如“播放歌曲”、“上一首”、“增大音量”），然后执行相应的操作
+</pre></div>
+</div>
+<section id="id3">
+<h3><span class="section-number">12.11.2.1. </span>使能配置<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>打开离线离线语音识别的开关<br>
+<img alt="" src="../../_images/kws_en.png" /><br></p>
+</section>
+<section id="id4">
+<h3><span class="section-number">12.11.2.2. </span>回音消除使能配置<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>如果语音识别麦克风和喇叭没有做好隔离，会导致耳机播歌的时候，麦克风录到的人声被播歌音乐声覆盖，使语音识别率降低或者误识别等情况，这时候需要打开语音识别回音消除功能。<br>
+<br>
+打开离线离线语音识别回音消除的开关<br>
+<img alt="" src="../../_images/kws_aec_en.png" /><br></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>使用注意事项：
+（1）打开回音消除后，播歌需要的RAM,MPIS和功耗会明显提高
+（2）目前只有单麦通话的方案支持使用播歌语音识别回音消除功能
+（3）开语音识别回音消除功能需要保证播歌DAC的采样率是16k的倍数
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3><span class="section-number">12.11.2.3. </span>麦克风配置<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p>选择使用哪个MIC做语音识别，MIC具体的参数通过通话ADC节点配置<br>
+<img alt="" src="../../_images/kws_mic_sel.png" /><br></p>
+</section>
+<section id="id6">
+<h3><span class="section-number">12.11.2.4. </span>KWS模式配置<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>选择识别模式：中文近场语音识别、中文远场语音识别和印度近场语音识别<br>
+<img alt="" src="../../_images/kws_mode_sel.png" /><br></p>
+<ul class="simple">
+<li><p>中文近场语音识别：识别中文，识别距离较近，大约10cm左右,支持的关键词如下：</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>关键词</p></th>
+<th class="head"><p>模式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>小杰小杰/小杰同学</p></td>
+<td><p>唤醒手机语音助手/Siri</p></td>
+</tr>
+<tr class="row-odd"><td><p>播放音乐</p></td>
+<td><p>多媒体（通话不可用）</p></td>
+</tr>
+<tr class="row-even"><td><p>停止播放</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>暂停播放</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>增大音量</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>减小音量</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>上一首</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>下一首</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>打开降噪</p></td>
+<td><p>ANC模式（通话不可用）</p></td>
+</tr>
+<tr class="row-odd"><td><p>关闭降噪</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>打开通透</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>接听电话</p></td>
+<td><p>通话来电模式</p></td>
+</tr>
+<tr class="row-even"><td><p>挂断电话</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>中文远场语音识别：识别中文，识别距离较远，可识别5米范围内的关键词，需要获取授权才能正常使用，没有授权每次可以只体验 20 分钟支持的关键词如下：</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>关键词</p></th>
+<th class="head"><p>模式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>播放音乐</p></td>
+<td><p>多媒体（通话不可用）</p></td>
+</tr>
+<tr class="row-odd"><td><p>暂停播放</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>增大音量</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>减小音量</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>上一首</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>下一首</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>印度近场语音识别：识别印度语，识别距离较近，大约10cm左右,支持的关键词如下：</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>关键词</p></th>
+<th class="head"><p>模式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>play music</p></td>
+<td><p>多媒体（通话不可用）</p></td>
+</tr>
+<tr class="row-odd"><td><p>stop music</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>volume up</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>volume down</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>previous song</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>next song</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>answer call</p></td>
+<td><p>通话来电模式</p></td>
+</tr>
+<tr class="row-odd"><td><p>reject call</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="production_test.html" class="btn btn-neutral float-left" title="12.10. 产测配置" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="spatial_audio.html" class="btn btn-neutral float-right" title="12.12. 空间音效" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2010-2023, 杰理科技股份有限公司.
+      <span class="lastupdated">Last updated on Oct 08, 2024.
+      </span></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

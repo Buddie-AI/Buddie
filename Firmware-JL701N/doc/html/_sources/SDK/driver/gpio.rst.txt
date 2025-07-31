@@ -1,0 +1,514 @@
+gpio
+#######################
+gpio接口包括输入，输出，强驱，io中断，crossbar功能映射配置，所有接口支持同组最多16个，或者单个io操作。
+所有端口都具有外部中断功能。所有io共用同一个中断回调。要使用外部中断线，必须将端口配置为输入模式，io中断的数量请参阅对应Soc规格书。
+
+
+GPIO引脚输入输出模式
+----------------------------------------
+
+配置io输入，输出，高阻，强驱
+
+.. code-block:: c
+
+    #define GPIO_PIN_0                 ((uint16_t)0x0001)  /* Pin 0 selected    */
+    #define GPIO_PIN_1                 ((uint16_t)0x0002)  /* Pin 1 selected    */
+    #define GPIO_PIN_2                 ((uint16_t)0x0004)  /* Pin 2 selected    */
+    #define GPIO_PIN_3                 ((uint16_t)0x0008)  /* Pin 3 selected    */
+    #define GPIO_PIN_4                 ((uint16_t)0x0010)  /* Pin 4 selected    */
+    #define GPIO_PIN_5                 ((uint16_t)0x0020)  /* Pin 5 selected    */
+    #define GPIO_PIN_6                 ((uint16_t)0x0040)  /* Pin 6 selected    */
+    #define GPIO_PIN_7                 ((uint16_t)0x0080)  /* Pin 7 selected    */
+    #define GPIO_PIN_8                 ((uint16_t)0x0100)  /* Pin 8 selected    */
+    #define GPIO_PIN_9                 ((uint16_t)0x0200)  /* Pin 9 selected    */
+    #define GPIO_PIN_10                ((uint16_t)0x0400)  /* Pin 10 selected   */
+    #define GPIO_PIN_11                ((uint16_t)0x0800)  /* Pin 11 selected   */
+    #define GPIO_PIN_12                ((uint16_t)0x1000)  /* Pin 12 selected   */
+    #define GPIO_PIN_13                ((uint16_t)0x2000)  /* Pin 13 selected   */
+    #define GPIO_PIN_14                ((uint16_t)0x4000)  /* Pin 14 selected   */
+    #define GPIO_PIN_15                ((uint16_t)0x8000)  /* Pin 15 selected   */
+    #define GPIO_PIN_All               ((uint16_t)0xFFFF)  /* All pins selected */
+
+    #define GPIO_PIN_MASK              (0x0000FFFFu) /* PIN mask for assert test */
+    #include "asm/gpio_hw.h"
+
+`````````````````````````````````````````````````
+gpio_init
+`````````````````````````````````````````````````
+初始化gpio，支持同组最多16个，或者单个io操作。
+
+原型：
+
+.. code-block:: c
+
+    int gpio_init(enum gpio_port port, const struct gpio_config *config);
+
+参数：
+    ============   ===========================================
+    port             io端口号，详见枚举enum gpio_port
+    config           io配置信息
+    返回值            暂未使用
+    ============   ===========================================
+
+示例：
+
+.. code-block:: c
+
+    struct gpio_config gpio_config_test = {
+        .pin = PORT_PIN_0 | PORT_PIN_1 | PORT_PIN_2 | PORT_PIN_3,//多个IO一起初始化
+        .mode = PORT_OUTPUT_LOW,//PORT_INPUT_PULLUP_10K,
+        .hd = PORT_DRIVE_STRENGT_2p4mA,
+    };
+    //配置PB0/PB1/PB2/PB3输出模式并输出0
+    gpio_init(PORTB, &gpio_config_test);
+
+`````````````````````````````````````````````````
+gpio_deinit
+`````````````````````````````````````````````````
+释放gpio，配置为高阻态，支持同组最多16个，或者单个io操作。
+
+原型：
+
+.. code-block:: c
+
+    int gpio_deinit(enum gpio_port port, u32 pin);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    返回值            暂未使用
+    ============   =========================================================
+
+示例：
+
+.. code-block:: c
+
+    //恢复PA3/PA10为高阻态
+    gpio_deinit(PORTA, PORT_PIN_3 | PORT_PIN_10);
+
+`````````````````````````````````````````````````
+gpio_set_mode
+`````````````````````````````````````````````````
+初始化gpio，配置同组多个io模式，支持同组最多16个，或者单个io操作。与gpio_init相比少了io强驱配置。
+
+原型：
+
+.. code-block:: c
+
+    int gpio_set_mode(enum gpio_port port, u32 pin, enum gpio_mode mode);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    mode             io模式，如PORT_INPUT_PULLUP_10K，详见枚举enum gpio_mode
+    返回值            0：成功，<0：失败
+    ============   =========================================================
+
+示例：
+
+.. code-block:: c
+
+    int ret = gpio_set_mode(PORTB, PORT_PIN_1, PORT_OUTPUT_LOW);
+    if (ret < 0) {
+        printf("gpio init error");
+    }else{
+        printf("gpio init succ");
+    }
+
+`````````````````````````````````````````````````
+gpio_get_mode
+`````````````````````````````````````````````````
+该函数体未实现。
+
+原型：
+
+.. code-block:: c
+
+    enum gpio_mode gpio_get_mode(enum gpio_port port, u32 pin);
+
+`````````````````````````````````````````````````
+gpio_read
+`````````````````````````````````````````````````
+gpio输入模式下，读取io状态，兼容旧接口，只获取单个io状态。
+
+原型：
+
+.. code-block:: c
+
+    int gpio_read(u32 gpio);// 读取单个io输入值. gpio:IO_PORTA_00
+
+参数：
+    ============   =========================================================
+    gpio             具体某个io，如：IO_PORTA_00
+    返回值            0：io输入低；1：io输入高；<0：错误
+    ============   =========================================================
+
+`````````````````````````````````````````````````
+gpio_read_port
+`````````````````````````````````````````````````
+gpio输入模式下，读取io状态，支持获取同组最多16个，或者单个io状态。
+
+原型：
+
+.. code-block:: c
+
+    //读取同组多个io值. 形参详见枚举; pin:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    int gpio_read_port(enum gpio_port port, u32 pin);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    返回值            <0：失败；>=0：成功，低16个bit表示每个io状态（pin对应的bit有效）
+    ============   =========================================================
+
+`````````````````````````````````````````````````
+gpio_write
+`````````````````````````````````````````````````
+gpio输出模式下，设置io输出状态，兼容旧接口，只配置单个io状态。
+
+原型：
+
+.. code-block:: c
+
+    // 设置单个io输出电平(需先配置为输出). gpio:IO_PORTA_00; value:0:out 0, 1:out 1
+    int gpio_write(u32 gpio, u32 value);
+
+参数：
+    ============   =========================================================
+    gpio             具体某个io，如：IO_PORTA_00
+    value            1：输出高；0：输出低
+    返回值            无效
+    ============   =========================================================
+
+`````````````````````````````````````````````````
+gpio_write_port
+`````````````````````````````````````````````````
+gpio输出模式下，设置io输出状态，支持配置同组最多16个，或者单个io状态。
+
+原型：
+
+.. code-block:: c
+
+    // 设置同组多个io输出电平(需先配置为输出).
+    int gpio_write_port(enum gpio_port port, u32 pin, int out_state);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    out_state            1：输出高；0：输出低
+    返回值            无效
+    ============   =========================================================
+
+`````````````````````````````````````````````````
+gpio_toggle_port
+`````````````````````````````````````````````````
+gpio输出模式下，翻转io输出状态，支持配置同组最多16个，或者单个io。
+
+原型：
+
+.. code-block:: c
+
+    //需先配置为输出
+    int gpio_toggle_port(enum gpio_port port, u32 pin);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    返回值            <0：错误；0：成功
+    ============   =========================================================
+
+`````````````````````````````````````````````````
+gpio_get_out_level
+`````````````````````````````````````````````````
+gpio任意模式下，获取io输出寄存器的状态，支持配置同组最多16个，或者单个io。
+
+原型：
+
+.. code-block:: c
+
+    int gpio_get_out_level(enum gpio_port port, u32 pin);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    返回值            <0：错误；>=0：成功，低16个bit表示每个io状态（pin对应的bit有效）
+    ============   =========================================================
+
+`````````````````````````````````````````````````
+gpio_set_drive_strength
+`````````````````````````````````````````````````
+配置io输出驱动等级，支持配置同组最多16个，或者单个io。
+
+原型：
+
+.. code-block:: c
+
+    int gpio_set_drive_strength(enum gpio_port port, u32 pin, enum gpio_drive_strength drive);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    drive            驱动级别。详见枚举enum gpio_drive_strength
+    返回值            无效
+    ============   =========================================================
+
+`````````````````````````````````````````````````
+gpio_get_drive_strength
+`````````````````````````````````````````````````
+获取gpio输出强度等级，只支持单个io。
+
+原型：
+
+.. code-block:: c
+
+    // 获取单个io输出强度 pin:只能带入1个io
+    enum gpio_drive_strength  gpio_get_drive_strength(enum gpio_port port, u32 pin);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 等
+    返回值            驱动级别。详见枚举enum gpio_drive_strength
+    ============   =========================================================
+
+
+GPIO中断
+----------------------------------------
+
+配置io外部中断功能，所有io共用同一个中断回调，内部会根据触发边沿配置好上下拉。
+
+`````````````````````````````````````````````````
+gpio_irq_config
+`````````````````````````````````````````````````
+初始化gpio中断功能，内部会根据触发边沿配置好上下拉，支持同组最多16个，或者单个io操作。不同芯片中断io及数目不同，请参阅对应Soc规格书。
+
+原型：
+
+.. code-block:: c
+
+    //默认开中断
+    //禁止同一个io同一边沿多次注册
+    //单边沿与双边沿切换: 请先注销(PORT_IRQ_DISABLE)再注册
+    int gpio_irq_config(enum gpio_port port, const struct gpio_irq_config_st *config);
+
+参数：
+    ============   ===========================================
+    port             io端口号，详见枚举enum gpio_port
+    config           io中断配置信息
+    返回值            暂未使用
+    ============   ===========================================
+
+示例：
+
+.. code-block:: c
+
+    void gpio_irq_callback_p_test1(enum gpio_port port, u32 pin, enum gpio_irq_edge edge)
+    {
+        printf("port%d.%d:%d-cb1\n", port, pin, edge);
+    }
+    struct gpio_irq_config_st gpio_irq_config_test = {
+        .pin = PORT_PIN_0 | PORT_PIN_2,
+        .irq_edge = PORT_IRQ_EDGE_FALL,//PORT_IRQ_ANYEDGE
+        .callback = gpio_irq_callback_p_test1,
+    };
+    gpio_irq_config(PORTA, &gpio_irq_config_test);
+
+`````````````````````````````````````````````````
+gpio_irq_set_callback
+`````````````````````````````````````````````````
+设置或修改io中断回调函数，可以设置为null，支持同组最多16个，或者单个io操作。
+
+原型：
+
+.. code-block:: c
+
+    int gpio_irq_set_callback(enum gpio_port port, u32 pin, gpio_irq_callback_p callback);
+
+参数：
+    ============   ===========================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    callback         回调函数指针，可以为NULL
+    返回值            暂未使用
+    ============   ===========================================
+
+`````````````````````````````````````````````````
+gpio_irq_set_edge
+`````````````````````````````````````````````````
+设置或修改io中断触发沿，只有注册单边沿触发才能调用该函数切换边沿，支持同组最多16个，或者单个io操作。
+
+原型：
+
+.. code-block:: c
+
+    //只有注册单边沿触发才能调用该函数切换边沿
+    //单边沿与双边沿切换: 请先注销再注册
+    int gpio_irq_set_edge(enum gpio_port port, u32 pin, enum gpio_irq_edge irq_edge);
+
+参数：
+    ============   ===========================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    irq_edge         触发边沿，详见枚举enum gpio_irq_edge
+    返回值            暂未使用
+    ============   ===========================================
+
+`````````````````````````````````````````````````
+gpio_irq_get_edge
+`````````````````````````````````````````````````
+获取io中断触发沿，只支持单个io操作。
+
+原型：
+
+.. code-block:: c
+
+    //  获取单个io触发边沿 pin:只能带入1个io
+    enum gpio_irq_edge gpio_irq_get_edge(enum gpio_port port, u32 pin);
+
+参数：
+    ============   ===========================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0等
+    返回值           触发边沿，详见枚举enum gpio_irq_edge
+    ============   ===========================================
+
+`````````````````````````````````````````````````
+gpio_irq_enable
+`````````````````````````````````````````````````
+临时打开io中断，支持同组最多16个，或者单个io操作。
+
+原型：
+
+.. code-block:: c
+
+    int gpio_irq_enable(enum gpio_port port, u32 pin);
+
+参数：
+    ============   ===========================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    返回值           暂未使用
+    ============   ===========================================
+
+`````````````````````````````````````````````````
+gpio_irq_disable
+`````````````````````````````````````````````````
+临时关闭io中断，支持同组最多16个，或者单个io操作。
+
+原型：
+
+.. code-block:: c
+
+    int gpio_irq_disable(enum gpio_port port, u32 pin);
+
+参数：
+    ============   ===========================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 or PORT_PIN_0 | PORT_PIN_2等
+    返回值           暂未使用
+    ============   ===========================================
+
+GPIO crossbar功能配置
+----------------------------------------
+
+将外设功能映射到io。
+
+`````````````````````````````````````````````````
+gpio_set_function
+`````````````````````````````````````````````````
+将外设功能映射到io。只支持单个io操作。
+
+原型：
+
+.. code-block:: c
+
+    // 配置单个io为特殊功能. pin:只能带入1个io
+    int gpio_set_function(enum gpio_port port, u32 pin, enum gpio_function fn);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 等
+    fn               外设功能，详见枚举：enum gpio_function
+    返回值            <0：错误；0：成功
+    ============   =========================================================
+
+示例：
+
+.. code-block:: c
+
+    int ret = gpio_set_function(PORTB, PORT_PIN_1, PORT_FUNC_UART0_TX);
+    if (ret < 0) {
+        printf("gpio uart0 tx error");
+    }else{
+        printf("gpio uart0 tx succ");
+    }
+
+`````````````````````````````````````````````````
+gpio_disable_function
+`````````````````````````````````````````````````
+将映射到io的外设功能注销，同时配置释放io，配置为高阻。只支持单个io操作。
+
+原型：
+
+.. code-block:: c
+
+    // 注销单个io的特殊功能. pin:只能带入1个io
+    int gpio_disable_function(enum gpio_port port, u32 pin, enum gpio_function fn);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 等
+    fn               外设功能，详见枚举：enum gpio_function
+    返回值            <0：错误；0：成功
+    ============   =========================================================
+
+`````````````````````````````````````````````````
+gpio_request_function
+`````````````````````````````````````````````````
+注册io功能复用。只支持单个io操作。（暂未实现）
+
+原型：
+
+.. code-block:: c
+
+    // io复用时，io资源申请
+    int gpio_request_function(enum gpio_port port, u32 pin, enum gpio_function fn, u32 timeout);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 等
+    fn               外设功能，详见枚举：enum gpio_function
+    timeout          获取io权限要等待的时间，单位：
+    返回值            <0：错误；0：成功
+    ============   =========================================================
+
+`````````````````````````````````````````````````
+gpio_release_function
+`````````````````````````````````````````````````
+注销io功能复用。只支持单个io操作。（暂未实现）
+
+原型：
+
+.. code-block:: c
+
+    // io复用时，io资源释放
+    int gpio_release_function(enum gpio_port port, u32 pin, enum gpio_function fn);
+
+参数：
+    ============   =========================================================
+    port             io端口号，详见枚举enum gpio_port
+    pin              具体的io序号，如:PORT_PIN_0 等
+    fn               外设功能，详见枚举：enum gpio_function
+    返回值            <0：错误；0：成功
+    ============   =========================================================
+  
