@@ -71,7 +71,7 @@ BUDDIE 是为 AGI 时代设计的开源 AI 语音交互解决方案，提供从�
 BUDDIE 目前分别开发了软硬件演示平台。软件基于 Flutter 架构开发，支持 Android 和 iOS 用户。硬件平台基于杰理开放平台设计。具体演示可参考以下链接：
 
 ## 贡献指南
-欢迎所有开发者、硬件工程师、AI 研究员、测试人员、技术文档作者等参与！BUDDIE 欢迎在软件和硬件领域的各种贡献。你可以在 docs/types-of-contributions.md 了解更多。如果你有兴趣贡献代码，请阅读 docs/CONTRIBUTING.md，并随时查看我们的 GitHub issues，展示你的实力。
+欢迎所有开发者、硬件工程师、AI 研究员、测试人员、技术文档作者等加入！BUDDIE 欢迎在软件和硬件领域的各种贡献，所有类型的贡献都非常欢迎，详情可参阅 [contributions.md](contributions.md)。若你有兴趣贡献代码，请阅读我们的 [contributions.md](contributions.md)，并随时查看我们的 GitHub issues，积极参与展示你的能力。
 
 ### 💻 **软件贡献**
 - **Flutter 应用开发**：帮助完善我们的跨平台移动应用
@@ -94,8 +94,6 @@ BUDDIE 目前分别开发了软硬件演示平台。软件基于 Flutter 架构�
 在开始贡献前，请确保你已阅读并同意我们的贡献者许可协议。表示同意，只需编辑本文件并提交 Pull Request。
 
 如需报告 Bug、提出新功能或其他建议，也可新建 Issue 并选择最合适的模板。
-
-如需翻译和语言支持，可访问我们的 i18n General Space。
 
 想了解更多贡献方式或不知道从哪里开始？欢迎加入 BUDDIE 大使计划，我们与热情的社区成员紧密合作，并为合格贡献者提供丰富的支持和资源，包括硬件开发套件。
 
@@ -121,11 +119,6 @@ BUDDIE 目前分别开发了软硬件演示平台。软件基于 Flutter 架构�
 - **文档中心**：[docs.buddie.ai](https://docs.buddie.ai)
 - **社区论坛**：[community.buddie.ai](https://community.buddie.ai)
 - **Discord 服务器**：[加入 Discord](https://discord.gg/buddie-ai)
-
-### 🐛 **问题反馈**
-- **Bug 报告**：[创建 Issue](https://github.com/memx-life/buddie/issues/new?template=bug_report.md)
-- **功能请求**：[请求新功能](https://github.com/memx-life/buddie/issues/new?template=feature_request.md)
-- **安全问题**：[security@memx.life](mailto:security@memx.life)
 
 ---
 
