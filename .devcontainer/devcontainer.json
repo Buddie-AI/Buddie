@@ -1,0 +1,27 @@
+{
+    "name": "Remote Development Environment",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-vscode.vscode-typescript-next",
+                "ms-vscode.cpptools",
+                "ms-vscode.cmake-tools",
+                "ms-vscode.hexeditor",
+                "ms-vscode.remote-containers"
+            ]
+        }
+    },
+    
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    },
+    
+    "postCreateCommand": "echo 'Remote development environment ready!'",
+    
+    "remoteUser": "vscode"
+} 

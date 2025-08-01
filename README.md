@@ -1,5 +1,7 @@
 # 
-
+<p align="center">
+  <a href="README.md">English</a> | <a href="README.zh_CN.md">简体中文</a>
+</p>
 
 <div style="text-align: center; margin: 20px 0;">
   <img src="image/logo.png" alt="BUDDIE.AI Logo" style="max-width: 1200px; height: auto;">
@@ -11,19 +13,29 @@
 
 ## 🎯 Build Your AI Voice Interaction Assistant
 
-## ✨ 打造每个人的专属 AI 语音交互伙伴！
 
-![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=for-the-badge)
-![AI](https://img.shields.io/badge/AI-Voice%20Assistant-green?style=for-the-badge)
-![GitHub Downloads](https://img.shields.io/github/downloads/yourname/yourproject/total?style=for-the-badge&logo=github&color=0ABAB5)
-![GitHub Release](https://img.shields.io/github/release/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5)
-![GitHub Stars](https://img.shields.io/github/stars/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5)
-![GitHub Forks](https://img.shields.io/github/forks/yourname/yourproject?style=for-the-badge&logo=github&color=0ABAB5)
+<p align="center">
+  <a href="https://github.com/Buddie-AI/Buddie">
+    <img src="https://img.shields.io/github/stars/Buddie-AI/Buddie?style=flat-square&color=4F8CC9&label=Star&logo=github&logoColor=gray" alt="GitHub stars"/>
+  </a>
+  <a href="https://github.com/Buddie-AI/Buddie/fork">
+    <img src="https://img.shields.io/github/forks/Buddie-AI/Buddie?style=flat-square&color=4F8CC9&label=Fork&logo=github&logoColor=gray" alt="GitHub forks"/>
+  </a>
+  <a href="https://github.com/Buddie-AI/Buddie/releases/latest">
+    <img src="https://img.shields.io/github/downloads/Buddie-AI/Buddie/total?style=flat-square&color=9EA7AD&label=Download&logo=cloud-download&logoColor=4F8CC9" alt="Releases"/>
+  </a>
+  <a href="#contributors">
+    <img src="https://img.shields.io/badge/all_contributors-∞-lightgray?style=flat-square&color=8BC34A&label=Contributors" alt="All Contributors"/>
+  </a>
+  <a href="https://www.typescriptlang.org/">
+    <img src="https://img.shields.io/badge/TypeScript-%5E5.0-8BC34A?logo=typescript&style=flat-square&logoColor=gray" alt="TypeScript-version-icon"/>
+  </a>
+</p>
 </div>
 
 
 
-## 🚀 Getting started & staying tuned with us.
+## 🚀 Getting started & staying tuned with Buddie
 
 ### ⭐ **Star** our project to get notified of all updates first!
 
@@ -102,8 +114,8 @@ If you have questions, you are welcome to contact us. One of the best places to 
 
 
 ## Contributors
-<a href="https://github.com/memx-life/buddie/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=memx-life/buddie" />
+<a href="https://github.com/Buddie-AI/Buddie/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Buddie-AI/Buddie" alt="All contributors" />
 </a>
 
 We welcome contributions from the community! Thank you to all the contributors who have helped make BUDDIE better.
