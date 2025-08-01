@@ -82,7 +82,7 @@ BUDDIE currently develops separate demo platforms for software and hardware. The
 
 
 ## Contributing
-Calling all developers, hardware engineers, AI researchers, testers, tech writers and more! BUDDIE welcomes contributions across both software and hardware domains. Contributions of all types are more than welcome, you can read more in docs/types-of-contributions.md. If you are interested in contributing code, read our docs/CONTRIBUTING.md and feel free to check out our GitHub issues to get stuck in to show us what you're made of.
+Calling all developers, hardware engineers, AI researchers, testers, tech writers and more! BUDDIE welcomes contributions across both software and hardware domains. Contributions of all types are more than welcome—read more in [contributions.md](contributions.md). If you are interested in contributing code, read our [CONTRIBUTING.md](contributions.md) and feel free to check out our GitHub issues to get started.
 
 ### 💻 **Software Contributions**
 - **Flutter App Development**: Help improve our cross-platform mobile application
@@ -105,8 +105,6 @@ Calling all developers, hardware engineers, AI researchers, testers, tech writer
 Before you start contributing, please make sure you have read and accepted our Contributor License Agreement. To indicate your agreement, simply edit this file and submit a pull request.
 
 For bug reports, feature requests and other suggestions you can also create a new issue and choose the most appropriate template for your feedback.
-
-For translation and language support you can visit our i18n General Space.
 
 Looking for other ways to contribute and wondering where to start? Check out the BUDDIE Ambassador program, we work closely with passionate community members and provide them with a wide range of support and resources including hardware development kits for qualified contributors.
 
@@ -135,11 +133,6 @@ We welcome contributions from the community! Thank you to all the contributors w
 - **Documentation**: [docs.buddie.ai](https://docs.buddie.ai)
 - **Community Forum**: [community.buddie.ai](https://community.buddie.ai)
 - **Discord Server**: [Join our Discord](https://discord.gg/buddie-ai)
-
-### 🐛 **Report Issues**
-- **Bug Reports**: [Create an Issue](https://github.com/memx-life/buddie/issues/new?template=bug_report.md)
-- **Feature Requests**: [Request a Feature](https://github.com/memx-life/buddie/issues/new?template=feature_request.md)
-- **Security Issues**: [security@memx.life](mailto:security@memx.life)
 
 ---
 
