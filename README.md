@@ -11,7 +11,7 @@
 
 # 🤖 BUDDIE.AI
 
-## 🎯 Build Your AI Voice Interaction Assistant
+## 🎯 Build the buddie that gets you. 
 
 
 <p align="center">

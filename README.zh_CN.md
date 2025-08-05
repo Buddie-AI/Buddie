@@ -11,7 +11,7 @@
 
 # 🤖 BUDDIE.AI
 
-## 🎯 构建你的 AI 语音交互助手
+## 🎯 打造更懂你的AI伙伴
 
 <p align="center">
   <a href="https://github.com/Buddie-AI/Buddie">
