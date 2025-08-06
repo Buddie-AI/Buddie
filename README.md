@@ -45,7 +45,7 @@
 <h2 align="center">🚀 Star our project to get notified of all updates first!</h2>
 
 <p align="center">
-  <img src="image/star.gif" alt="Star Buddie Project" style="max-width: 400px; height: auto; margin: 20px 0;" />
+  <img src="image/star.gif" alt="Star Buddie Project" style="max-width: 100px; height: auto; margin: 10px 0;" />
 </p>
 
 
