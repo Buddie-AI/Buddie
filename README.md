@@ -40,10 +40,9 @@
 
 
 
-## 🚀 Getting started & staying tuned with Buddie
 
 
-<h2 align="center">Star our project to get notified of all updates first!</h2>
+<h2 align="center">🚀 Star our project to get notified of all updates first!</h2>
 
 <p align="center">
   <img src="image/star.gif" alt="Star Buddie Project" style="max-width: 400px; height: auto; margin: 20px 0;" />
@@ -103,11 +102,11 @@ Fully open-source PCB design! Circuit layouts, schematics, and BOM lists are all
 ## Demo
 BUDDIE currently develops separate demo platforms for software and hardware. The software is developed based on Flutter architecture, supporting both Android and iOS users. The hardware platform is designed based on the Jieli open platform. Specific demos can be found at the following links:
 
-If you want to learn more about the firmware, you can visit [here](Firmware-JL701N/README.md).
+- If you want to learn more about the firmware, you can visit [here](Firmware-JL701N/README.md).
 
-If you want to learn more about the APP, you can visit [here](APP/README.md).
+- If you want to learn more about the APP, you can visit [here](APP/README.md).
 
-If you want to learn more about the circuit, you can visit [here](PCB/README.md).
+- If you want to learn more about the circuit, you can visit [here](PCB/README.md).
 
 
 

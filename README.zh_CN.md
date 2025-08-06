@@ -42,14 +42,11 @@
 
 
 
-## 🚀 开始使用并关注 Buddie
 
-
-
-<h2 align="center">给我们的项目点星标，第一时间获取所有更新通知！</h2>
+<h2 align="center">🚀 给我们的项目点星标，第一时间获取所有更新通知！</h2>
 
 <p align="center">
-  <img src="image/star.gif" alt="Star Buddie Project" style="max-width: 400px; height: auto; margin: 20px 0;" />
+  <img src="image/star.gif" alt="Star Buddie Project" style="max-width: 200px; height: auto; margin: 20px 0;" />
 </p>
 
 
