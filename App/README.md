@@ -1,7 +1,7 @@
+<p align="center">
+  <a href="README.md">English</a> | <a href="README.zh_CN.md">简体中文</a>
+</p>
 # Buddie 🌱
-
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/MemX-Workspace/Bud-App/pulls)
 
 **BUDDIE** is a mobile application designed to be your centralized life hub — seamlessly listening to all your personal information and becoming a truly intelligent AI assistant who understands you, both at work and in daily life.
 For the best experience, pair it with our dedicated Buddie AI Earbuds.
@@ -87,3 +87,6 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for details.
 ## 💡 Acknowledgements
 
 We would like to thank the following individuals and projects for their inspiration, support, and contributions:
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/MemX-Workspace/Bud-App/pulls)
