@@ -108,6 +108,8 @@ BUDDIE currently develops separate demo platforms for software and hardware. The
 
 - If you want to learn more about the circuit, you can visit [here](PCB/README.md).
 
+- If you want to learn more about function details, you can visit[here](https://bud.inc).
+
 
 
 ## Contributing
