@@ -64,10 +64,10 @@ BUDDIE 是首个全栈开源 AI 语音交互解决方案，提供从硬件设计
 <p align="center">
   <a href="https://www.youtube.com/watch?v=ejEINaEQieY" target="_blank"><b>▶️ 观看 BUDDIE 演示视频</b></a>
 </p>
-
+<!-- 
 <p align="center">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/ejEINaEQieY" title="BUDDIE Demo Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display: block; margin: 0 auto;"></iframe>
-</p>
+</p> -->
 
 
 

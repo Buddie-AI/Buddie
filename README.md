@@ -64,9 +64,9 @@ BUDDIE is the first full-stack open-source AI voice interaction solution, provid
   <a href="https://www.youtube.com/watch?v=ejEINaEQieY" target="_blank"><b>▶️ Watch the BUDDIE Demo Video</b></a>
 </p>
 
-<p align="center">
+<!-- <p align="center">
   <iframe width="560" height="315" src="https://www.youtube.com/embed/ejEINaEQieY" title="BUDDIE Demo Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display: block; margin: 0 auto;"></iframe>
-</p>
+</p> -->
 
 
 
