@@ -20,22 +20,7 @@
 </p>
 
 <p align="center">
-  <!-- 
-    如果你在访问 GitHub 仓库时看到 "repo not found"（仓库未找到），可能有以下几种原因：
-    1. 仓库名称或路径拼写错误，请检查链接是否正确。
-    2. 仓库被设置为私有，当前账号没有访问权限。
-    3. 仓库已被删除或转移到其他组织/用户下。
-    4. 你的网络环境（如中国大陆）可能被 GitHub 屏蔽或访问受限，建议尝试科学上网或更换网络环境。
-    5. 账号未登录或登录状态异常，尝试重新登录 GitHub。
-    6. 访问频率过高被 GitHub 暂时限制，稍后重试。
 
-    解决方法：
-    - 仔细检查仓库链接拼写。
-    - 确认仓库是否为公开仓库，或联系仓库管理员获取访问权限。
-    - 检查网络环境，必要时使用代理/VPN。
-    - 登录正确的 GitHub 账号。
-    - 仓库迁移后请查找新的仓库地址。
-  -->
   <a href="https://github.com/Buddie-AI/Buddie" target="_blank">
     <img src="https://img.shields.io/github/stars/Buddie-AI/Buddie?logo=github&labelColor=%23181817&logoColor=%23ffffff&color=%23181817" alt="GitHub Stars"/>
   </a>
