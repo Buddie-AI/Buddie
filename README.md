@@ -145,11 +145,11 @@ If you have questions, you are welcome to contact us. One of the best places to 
 
 ## Contributors
 
-<div align="center">
+<p align="center">
   <a href="https://github.com/Buddie-AI/Buddie/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=Buddie-AI/Buddie&size=large" alt="All contributors" />
+    <img src="https://contrib.rocks/image?repo=Buddie-AI/Buddie&size=large" alt="All contributors" referrerpolicy="no-referrer" />
   </a>
-</div>
+</p>
 
 We welcome contributions from the community! Thank you to all the contributors who have helped make BUDDIE better.
 
