@@ -22,19 +22,19 @@
 <p align="center">
 
   <a href="https://github.com/Buddie-AI/Buddie" target="_blank">
-    <img src="https://img.shields.io/github/stars/Buddie-AI/Buddie?logo=star&labelColor=%239EA7AD&logoColor=%23f5f5f5&color=%239EA7AD" alt="GitHub Stars"/>
+    <img src="https://img.shields.io/github/stars/Buddie-AI/Buddie?style=flat-square&logo=github&labelColor=%234F8CC9&logoColor=%23ffffff&color=%234F8CC9" alt="GitHub Stars"/>
   </a>
   <a href="https://github.com/Buddie-AI/Buddie/fork" target="_blank">
-    <img src="https://img.shields.io/github/forks/Buddie-AI/Buddie?logo=fork&labelColor=%239EA7AD&logoColor=%23f5f5f5&color=%239EA7AD" alt="GitHub Forks"/>
+    <img src="https://img.shields.io/github/forks/Buddie-AI/Buddie?style=flat-square&logo=github&labelColor=%238BC34A&logoColor=%23ffffff&color=%238BC34A" alt="GitHub Forks"/>
   </a>
   <a href="https://github.com/Buddie-AI/Buddie/releases/latest" target="_blank">
-    <img src="https://img.shields.io/github/downloads/Buddie-AI/Buddie/total?logo=download&labelColor=%239EA7AD&logoColor=%23f5f5f5&color=%239EA7AD" alt="Downloads"/>
+    <img src="https://img.shields.io/github/downloads/Buddie-AI/Buddie/total?style=flat-square&logo=download&labelColor=%239EA7AD&logoColor=%23f5f5f5&color=%239EA7AD" alt="Downloads"/>
   </a>
   <a href="https://discord.gg/hSDEbnqB" target="_blank">
-    <img src="https://img.shields.io/discord/1082486657678311454?logo=discord&labelColor=%235462eb&logoColor=%23f5f5f5&color=%235462eb" alt="Chat on Discord"/>
+    <img src="https://img.shields.io/discord/1082486657678311454?style=flat-square&logo=discord&labelColor=%235462eb&logoColor=%23f5f5f5&color=%235462eb" alt="Chat on Discord"/>
   </a>
   <a href="https://github.com/Buddie-AI/Buddie/graphs/contributors" target="_blank">
-    <img src="https://img.shields.io/github/contributors/Buddie-AI/Buddie?logo=github&labelColor=%238BC34A&logoColor=%23ffffff&color=%238BC34A" alt="Contributors"/>
+    <img src="https://img.shields.io/github/contributors/Buddie-AI/Buddie?style=flat-square&logo=github&labelColor=%238BC34A&logoColor=%23ffffff&color=%238BC34A" alt="Contributors"/>
   </a>
 </p>
 </div>
@@ -174,5 +174,5 @@ We welcome contributions from the community! Thank you to all the contributors w
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 <a href="https://opensource.org/licenses/MIT" target="_blank">
-  <img src="https://img.shields.io/badge/License-MIT-yellow?logo=opensource&labelColor=%20%23FFD700&color=%20%23FFD700" alt="License: MIT"/>
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square&logo=opensource&labelColor=%23FFD700&logoColor=%23ffffff&color=%23FFD700" alt="License: MIT"/>
 </a>
