@@ -169,6 +169,16 @@ We welcome contributions from the community! Thank you to all the contributors w
 
 ---
 
+## 🤝 Ecosystem
+
+We're proud to work with amazing organizations:
+
+<div align="center">
+
+### Development Tools
+<a href="https://github.com/NevaMind-AI/memU"><img src="image\memo.png" alt="memU" height="40" style="margin: 10px;"></a>
+</div>
+
 ## 📄 License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
