@@ -16,7 +16,7 @@
 <p align="center">
   <a href="https://bud.inc">Hello, Buddie</a> ·
   <a href="https://bud.inc">Documentation</a> ·
-  <a href="https://discord.gg/hSDEbnqB">Buddie Disord</a>
+  <a href="https://discord.gg/VnReYezFV3">Buddie Disord</a>
 </p>
 
 <p align="center">
@@ -30,7 +30,7 @@
   <a href="https://github.com/Buddie-AI/Buddie/releases/latest" target="_blank">
     <img src="https://img.shields.io/github/downloads/Buddie-AI/Buddie/total?style=flat-square&logo=download&labelColor=%239EA7AD&logoColor=%23f5f5f5&color=%239EA7AD" alt="Downloads"/>
   </a>
-  <a href="https://discord.gg/hSDEbnqB" target="_blank">
+  <a href="https://discord.gg/VnReYezFV3" target="_blank">
     <img src="https://img.shields.io/discord/1082486657678311454?style=flat-square&logo=discord&labelColor=%235462eb&logoColor=%23f5f5f5&color=%235462eb" alt="Chat on Discord"/>
   </a>
   <a href="https://github.com/Buddie-AI/Buddie/graphs/contributors" target="_blank">
@@ -165,7 +165,7 @@ We welcome contributions from the community! Thank you to all the contributors w
 ### 🌐 **Community & Resources**
 - **Project Homepage**: [Hello, Buddie](https://bud.inc)
 - **Documentation**: [get started here!](https://bud.inc)
-- **Discord Server**: [Join our Discord](https://discord.gg/hSDEbnqB)
+- **Discord Server**: [Join our Discord](https://discord.gg/VnReYezFV3)
 
 ---
 
