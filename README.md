@@ -22,10 +22,10 @@
 <p align="center">
 
   <a href="https://github.com/Buddie-AI/Buddie" target="_blank">
-    <img src="https://img.shields.io/github/stars/Buddie-AI/Buddie?logo=star&labelColor=%23181817&logoColor=%23f5f5f5&color=%23181817" alt="GitHub Stars"/>
+    <img src="https://img.shields.io/github/stars/Buddie-AI/Buddie?logo=star&labelColor=%239EA7AD&logoColor=%23f5f5f5&color=%239EA7AD" alt="GitHub Stars"/>
   </a>
   <a href="https://github.com/Buddie-AI/Buddie/fork" target="_blank">
-    <img src="https://img.shields.io/github/forks/Buddie-AI/Buddie?logo=fork&labelColor=%23181817&logoColor=%23f5f5f5&color=%23181817" alt="GitHub Forks"/>
+    <img src="https://img.shields.io/github/forks/Buddie-AI/Buddie?logo=fork&labelColor=%239EA7AD&logoColor=%23f5f5f5&color=%239EA7AD" alt="GitHub Forks"/>
   </a>
   <a href="https://github.com/Buddie-AI/Buddie/releases/latest" target="_blank">
     <img src="https://img.shields.io/github/downloads/Buddie-AI/Buddie/total?logo=download&labelColor=%239EA7AD&logoColor=%23f5f5f5&color=%239EA7AD" alt="Downloads"/>
