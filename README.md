@@ -22,20 +22,19 @@
 <p align="center">
 
   <a href="https://github.com/Buddie-AI/Buddie" target="_blank">
-    <img src="https://img.shields.io/github/stars/Buddie-AI/Buddie?logo=github&labelColor=%23181817&logoColor=%23ffffff&color=%23181817" alt="GitHub Stars"/>
+    <img src="https://img.shields.io/github/stars/Buddie-AI/Buddie?logo=star&labelColor=%23181817&logoColor=%23f5f5f5&color=%23181817" alt="GitHub Stars"/>
   </a>
+  <a href="https://github.com/Buddie-AI/Buddie/fork" target="_blank">
+    <img src="https://img.shields.io/github/forks/Buddie-AI/Buddie?logo=fork&labelColor=%23181817&logoColor=%23f5f5f5&color=%23181817" alt="GitHub Forks"/>
   </a>
-  <a href="https://github.com/Buddie-AI/Buddie/fork">
-    <img src="https://img.shields.io/github/forks/Buddie-AI/Buddie?logo=github&labelColor=%23181817&logoColor=%23ffffff&color=%23181817" alt="GitHub Forks"/>
-  </a>
-  <a href="https://github.com/Buddie-AI/Buddie/releases/latest">
-    <img src="https://img.shields.io/github/downloads/Buddie-AI/Buddie/total?logo=cloud-download&labelColor=%239EA7AD&logoColor=%23ffffff&color=%239EA7AD" alt="Downloads"/>
+  <a href="https://github.com/Buddie-AI/Buddie/releases/latest" target="_blank">
+    <img src="https://img.shields.io/github/downloads/Buddie-AI/Buddie/total?logo=download&labelColor=%239EA7AD&logoColor=%23f5f5f5&color=%239EA7AD" alt="Downloads"/>
   </a>
   <a href="https://discord.gg/hSDEbnqB" target="_blank">
-    <img src="https://img.shields.io/discord/1082486657678311454?logo=discord&labelColor=%20%235462eb&logoColor=%20%23f5f5f5&color=%20%235462eb" alt="Chat on Discord"/>
+    <img src="https://img.shields.io/discord/1082486657678311454?logo=discord&labelColor=%235462eb&logoColor=%23f5f5f5&color=%235462eb" alt="Chat on Discord"/>
   </a>
   <a href="https://github.com/Buddie-AI/Buddie/graphs/contributors" target="_blank">
-    <img src="https://img.shields.io/github/contributors/Buddie-AI/Buddie?logo=github&labelColor=%20%238BC34A&logoColor=%20%23ffffff&color=%20%238BC34A" alt="Contributors"/>
+    <img src="https://img.shields.io/github/contributors/Buddie-AI/Buddie?logo=github&labelColor=%238BC34A&logoColor=%23ffffff&color=%238BC34A" alt="Contributors"/>
   </a>
 </p>
 </div>
