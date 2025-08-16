@@ -176,7 +176,7 @@ We're proud to work with amazing organizations:
 <div align="center">
 
 ### Development Tools
-<a href="https://github.com/NevaMind-AI/memU"><img src="image\memo.png" alt="memU" height="40" style="margin: 20px;"></a>
+<a href="https://github.com/NevaMind-AI/memU"><img src="image\memo.png" alt="memU" height="80" style="margin: 20px;"></a>
 </div>
 
 ## 📄 License
